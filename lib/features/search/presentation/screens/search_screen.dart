@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medora/core/constants/common_widgets/sliver_loading%20_list.dart' show SliverLoadingList;
@@ -51,14 +50,16 @@ class SearchScreen extends StatelessWidget {
                             .onSearchQueryChanged( value);
                       },
                       decoration: InputDecoration(
-                        hintText: 'Search...',
-                        prefixIcon: const Padding(
-                          padding: EdgeInsets.all(8),
+                        prefixIcon: Padding(
+                          padding: const EdgeInsets.all(12),
                           child: FaIcon(
                             FontAwesomeIcons.magnifyingGlass,
-                            color: AppColors.grey,
+                            color: Colors.grey.shade600,
+                            size: 15.sp,
                           ),
                         ),
+                        contentPadding: EdgeInsets.symmetric(vertical: 12),
+                        hintText: 'Find the right doctor for you',
                         hintStyle: textTheme.hintFieldStyle,
                         fillColor: AppColors.fieldFillColor,
                         filled: true,
@@ -70,27 +71,25 @@ class SearchScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 45,
-                    width: 50,
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        padding: WidgetStateProperty.all(EdgeInsets.zero),
-                        backgroundColor:
-                            WidgetStateProperty.all(AppColors.fieldFillColor),
-                        elevation: WidgetStateProperty.all(1),
-                        shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.r),
-                            side: BorderSide(
-                              color: AppColors.fieldBorderColor,
-                            ))),
-                      ),
-                      onPressed: () {},
-                      child: FaIcon(
-                        FontAwesomeIcons.sliders,
-                        color: Colors.black54,
-                        size: 18.sp,
-                      ),
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      padding: WidgetStateProperty.all(EdgeInsets.zero),
+                      backgroundColor:
+                          WidgetStateProperty.all(AppColors.fieldFillColor),
+                      
+
+                      elevation: WidgetStateProperty.all(1),
+                      shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          side: BorderSide(
+                            color: AppColors.fieldBorderColor,
+                          ))),
+                    ),
+                    onPressed: () {},
+                    child: FaIcon(
+                      FontAwesomeIcons.sliders,
+                      color: Colors.black54,
+                      size: 18.sp,
                     ),
                   )
                 ],

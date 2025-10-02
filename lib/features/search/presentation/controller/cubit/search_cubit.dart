@@ -18,7 +18,7 @@ class SearchCubit extends Cubit<SearchStates> {
   void onSearchQueryChanged(String query) {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
 
-    _debounce = Timer(const Duration(seconds: 2), () {
+    _debounce = Timer(const Duration(seconds: 1), () {
       if (query.isNotEmpty) {
         _searchDoctorsByName(doctorName:  query);
       } else {
@@ -35,8 +35,11 @@ class SearchCubit extends Cubit<SearchStates> {
     emit(state.copyWith(
       searchResultsState: LazyRequestState.loading,
     ));
+    final lowercasedDoctorName = doctorName.toLowerCase();
+
     final response =
-        await searchRepository.searchDoctorsByName(doctorName: doctorName);
+    await searchRepository.searchDoctorsByName(doctorName: lowercasedDoctorName);
+
 
     response.fold((failure) {
       print('SpecialtyDoctorsCubit.getDoctorsBySpecialty failure: $failure');

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
+import 'package:medora/core/extensions/string_extensions.dart';
 
 import '../../../../core/constants/common_widgets/custom_shimmer.dart';
 import '../../../../generated/assets.dart';
@@ -55,7 +56,7 @@ class DoctorProfileHeader extends StatelessWidget {
           children: [
             const SizedBox(height: 5),
             Text(
-              doctorInfo.name,
+              doctorInfo.name.capitalizeFirstLetter(),
               style: Theme.of(context).textTheme.mediumBlack.copyWith(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.w700,

@@ -11,27 +11,7 @@ class SearchRepository extends SearchRepositoryBase {
       {required String doctorName}) async {
 
 
-    try {
-      // final snapshot = await FirebaseFirestore.instance
-      //     .collection('doctors')
-      //     .where('name', isEqualTo: doctorName)
-      //     .limit(10)
-      //     .get();
-      // final List<DoctorModel> doctorList = snapshot.docs.map((doc) {
-      //   final doctorData = doc.data();
-      //
-      //   return DoctorModel.fromJson({
-      //     'doctorId': doc.id,
-      //     ...doctorData, // Spread Operator to integrate fields
-      //   });
-      // }).toList();
-      // return right(doctorList);
-
-      // 1. تحديد بداية البحث
-      final String startAt = doctorName;
-
-      // 2. تحديد نهاية البحث
-      final String endAt = '$doctorName\uf8ff';
+    try { final String startAt = doctorName;final String endAt = '$doctorName\uf8ff';
 
       final snapshot = await FirebaseFirestore.instance
           .collection('doctors')

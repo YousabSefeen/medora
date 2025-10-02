@@ -157,7 +157,7 @@ class DoctorProfileCubit extends Cubit<DoctorProfileState>
       DoctorModel(
         doctorId: FirebaseAuth.instance.currentUser!.uid,
         imageUrl:AppStrings.images[0],
-        name: controllers.nameController.text,
+        name: controllers.nameController.text.toLowerCase(),
         specialties: state.confirmedSpecialties,
         bio: controllers.bioController.text,
         location: controllers.locationController.text,
