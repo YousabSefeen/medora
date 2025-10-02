@@ -1,0 +1,1 @@
+enum PasswordVisibilityState { visible, unVisible }

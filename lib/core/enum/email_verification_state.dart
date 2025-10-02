@@ -1,0 +1,4 @@
+enum EmailVerificationState {
+  verified,
+  notVerified,
+}
