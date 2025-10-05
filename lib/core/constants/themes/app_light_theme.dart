@@ -24,11 +24,7 @@ class AppLightTheme {
         letterSpacing: 1,
       ),
     ),
-    iconTheme: IconThemeData(
-      color: AppColors.softBlue,
-      size: 22.sp,
-    ),
-
+    iconTheme: IconThemeData(color: AppColors.softBlue, size: 22.sp),
 
     textSelectionTheme: TextSelectionThemeData(
       selectionColor: Colors.blue.shade200,
@@ -36,21 +32,20 @@ class AppLightTheme {
     ),
 
     scrollbarTheme: ScrollbarThemeData(
-        // Margin on both sides (right/left)
-        crossAxisMargin: 5,
+      // Margin on both sides (right/left)
+      crossAxisMargin: 5,
 
-        interactive: true,
-        trackVisibility: const WidgetStatePropertyAll(true),
+      interactive: true,
+      trackVisibility: const WidgetStatePropertyAll(true),
 
-        thumbColor: WidgetStateProperty.all(AppColors.softBlue),
+      thumbColor: WidgetStateProperty.all(AppColors.softBlue),
 
-        trackColor: WidgetStateProperty.all(Colors.amber),
-        trackBorderColor: WidgetStateProperty.all(Colors.black),
-        radius: const Radius.circular(8),
-        thickness: WidgetStateProperty.all(5),
-      ),
-      drawerTheme: const DrawerThemeData(
-
+      trackColor: WidgetStateProperty.all(Colors.black26),
+      trackBorderColor: WidgetStateProperty.all(Colors.black),
+      radius: const Radius.circular(8),
+      thickness: WidgetStateProperty.all(5),
+    ),
+    drawerTheme: const DrawerThemeData(
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -75,35 +70,41 @@ class AppLightTheme {
       position: PopupMenuPosition.under,
     ),
     listTileTheme: ListTileThemeData(
-        titleTextStyle: GoogleFonts.caladea(
-            textStyle: TextStyle(
-                fontSize: 18.sp,
-                color: Colors.blue,
-                fontWeight: FontWeight.w900,
-                letterSpacing: 2)),
-        subtitleTextStyle: TextStyle(
-            fontSize: 12.sp,
-            color: Colors.black54,
-            height: 1.5,
-            fontWeight: FontWeight.w500)),
+      titleTextStyle: GoogleFonts.caladea(
+        textStyle: TextStyle(
+          fontSize: 18.sp,
+          color: Colors.blue,
+          fontWeight: FontWeight.w900,
+          letterSpacing: 2,
+        ),
+      ),
+      subtitleTextStyle: TextStyle(
+        fontSize: 12.sp,
+        color: Colors.black54,
+        height: 1.5,
+        fontWeight: FontWeight.w500,
+      ),
+    ),
 
     elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ButtonStyle(
-          elevation:const WidgetStatePropertyAll(1),
-          shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
-
-          )),
-      backgroundColor: const WidgetStatePropertyAll(AppColors.darkBlue),
-      foregroundColor: const WidgetStatePropertyAll(AppColors.white),
-      overlayColor: const WidgetStatePropertyAll(AppColors.grey),
-      textStyle: WidgetStatePropertyAll(GoogleFonts.raleway(
-          color: Colors.white,
-          fontSize: 13.sp,
-          fontWeight: FontWeight.w700,
-          letterSpacing: 1,
-        )),
-      )),
+      style: ButtonStyle(
+        elevation: const WidgetStatePropertyAll(1),
+        shape: WidgetStatePropertyAll(
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+        ),
+        backgroundColor: const WidgetStatePropertyAll(AppColors.darkBlue),
+        foregroundColor: const WidgetStatePropertyAll(AppColors.white),
+        overlayColor: const WidgetStatePropertyAll(AppColors.grey),
+        textStyle: WidgetStatePropertyAll(
+          GoogleFonts.raleway(
+            color: Colors.white,
+            fontSize: 13.sp,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 1,
+          ),
+        ),
+      ),
+    ),
     /*
      shape: WidgetStatePropertyAll(RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
@@ -117,15 +118,17 @@ class AppLightTheme {
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
         padding: const WidgetStatePropertyAll(EdgeInsets.only(left: 5)),
-        textStyle: WidgetStatePropertyAll(GoogleFonts.raleway(
-          textStyle: TextStyle(
+        textStyle: WidgetStatePropertyAll(
+          GoogleFonts.raleway(
+            textStyle: TextStyle(
               fontSize: 18.sp,
               color: Colors.white,
               fontWeight: FontWeight.w700,
-              letterSpacing: 1.2
+              letterSpacing: 1.2,
               // color: Takes the text color from foregroundColor,
-              ),
-        )),
+            ),
+          ),
+        ),
         foregroundColor: const WidgetStatePropertyAll(Colors.white),
         overlayColor: const WidgetStatePropertyAll(Color(0xff427D9D)),
       ),
@@ -147,17 +150,12 @@ class AppLightTheme {
       margin: EdgeInsets.zero,
       shadowColor: Colors.white,
       elevation: 10,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.r),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
     ),
     dividerTheme: DividerThemeData(
       color: AppColors.customLightBlue,
       thickness: 2,
     ),
-    checkboxTheme: CheckboxThemeData(
-
-    )
+    checkboxTheme: CheckboxThemeData(),
   );
 }
-

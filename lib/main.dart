@@ -17,8 +17,7 @@ import 'package:medora/features/auth/presentation/controller/cubit/login_cubit.d
     show LoginCubit;
 import 'package:medora/features/home/presentation/controller/cubits/bottom_nav_cubit.dart'
     show BottomNavCubit;
-import 'package:medora/features/home/presentation/screens/bottom_nav_screen.dart'
-    show BottomNavScreen;
+import 'package:medora/features/home/presentation/screens/bottom_nav_screen.dart' show BottomNavScreen;
 import 'package:medora/features/payment_gateways/paymob/presentation/controller/cubit/paymob_payment_cubit.dart'
     show PaymobPaymentCubit;
 import 'package:medora/features/payment_gateways/stripe/presentation/View/Screens/stripe_payment_screen.dart'
@@ -73,12 +72,37 @@ void main() async {
 
         //Payment Gateways
         BlocProvider(create: (_) => serviceLocator<PaymobPaymentCubit>()),
-
-
       ],
       child: MyApp(),
     ),
   );
+
+  /*
+  runApp(
+    DevicePreview(
+      enabled: !kReleaseMode,
+      builder: (context) =>  MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => serviceLocator<BottomNavCubit>()),
+          BlocProvider(create: (_) => serviceLocator<LoginCubit>()),
+          BlocProvider(create: (_) => serviceLocator<RegisterCubit>()),
+          BlocProvider(create: (_) => serviceLocator<DoctorProfileCubit>()),
+          BlocProvider(create: (_) => serviceLocator<DoctorListCubit>()),
+          BlocProvider(create: (_) => serviceLocator<AppointmentCubit>()),
+          BlocProvider(create: (_) => serviceLocator<AppSettingsCubit>()),
+
+          BlocProvider(create: (_) => serviceLocator<SearchCubit>()),
+
+          //Payment Gateways
+          BlocProvider(create: (_) => serviceLocator<PaymobPaymentCubit>()),
+
+
+        ],
+        child: MyApp(),
+      ),
+    ),
+  );
+   */
 }
 
 class MyApp extends StatelessWidget {
@@ -94,6 +118,8 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) => MaterialApp(
+        // useInheritedMediaQuery: true,
+        // locale: DevicePreview.locale(context),
         navigatorKey: navigatorKey,
         title: 'Flutter Task',
         debugShowCheckedModeBanner: false,
@@ -131,9 +157,41 @@ class MyApp extends StatelessWidget {
           );
         },
 
-        home: BottomNavScreen(), // أو شاشتك الرئيسية
-        //  home: OneScreen(), // أو شاشتك الرئيسية
-        //     home: PaypalPaymentScreen(), // أو شاشتك الرئيسية
+           home: BottomNavScreen(), // أو شاشتك الرئيسية
+        //     home: CustomSlider(), // أو شاشتك الرئيسية
+      ),
+    );
+  }
+}
+
+class CustomSlider extends StatefulWidget {
+  const CustomSlider({super.key});
+
+  @override
+  State<CustomSlider> createState() => _CustomSliderState();
+}
+
+class _CustomSliderState extends State<CustomSlider> {
+  double _value = 50;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+
+          children: [
+            Text('CustomSlider'),
+            Slider(min: 50, max: 100, onChanged: (value) {
+              print('_CustomSliderState.build value $value');
+
+              setState(() {
+                _value = value;
+              });
+            }, value: _value),
+          ],
+        ),
       ),
     );
   }

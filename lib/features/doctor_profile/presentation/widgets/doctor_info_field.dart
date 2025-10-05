@@ -7,7 +7,7 @@ import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'form_title.dart';
 
 class DoctorInfoField extends StatelessWidget {
-  final String label;
+  final String? label;
   final TextEditingController? controller;
   final TextInputType keyboardType;
   final int maxLines;
@@ -17,7 +17,7 @@ class DoctorInfoField extends StatelessWidget {
 
   const DoctorInfoField({
     super.key,
-    required this.label,
+      this.label,
     this.controller,
     this.keyboardType = TextInputType.text,
     this.maxLines = 1,
@@ -31,7 +31,7 @@ class DoctorInfoField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        FormTitle(label: label),
+       label != null ? FormTitle(label: label!):const SizedBox(),
         TextFormField(
           style: textTheme.styleInputField
             ,
@@ -40,6 +40,7 @@ class DoctorInfoField extends StatelessWidget {
           maxLines: maxLines,
           validator: validator,
           decoration: InputDecoration(
+        //    isDense: true,
             hintText: hintText,
             hintStyle: textTheme.hintFieldStyle,
             fillColor:AppColors.fieldFillColor,

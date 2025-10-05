@@ -3,14 +3,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medora/core/constants/common_widgets/sliver_loading%20_list.dart' show SliverLoadingList;
+import 'package:medora/core/constants/app_alerts/app_alerts.dart';
+import 'package:medora/core/constants/app_strings/app_strings.dart';
+import 'package:medora/core/constants/common_widgets/sliver_loading%20_list.dart'
+    show SliverLoadingList;
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
-import 'package:medora/features/doctor_list/presentation/widgets/doctor_list_view.dart' show DoctorListView;
-import 'package:medora/features/search/presentation/controller/cubit/search_cubit.dart' show SearchCubit;
-import 'package:medora/features/search/presentation/controller/states/search_states.dart' show SearchStates;
-import 'package:medora/features/search/presentation/widgets/search_welcome_widget.dart' show SearchWelcomeWidget;
+import 'package:medora/features/doctor_list/presentation/widgets/doctor_list_view.dart'
+    show DoctorListView;
+import 'package:medora/features/doctor_profile/presentation/widgets/doctor_info_field.dart';
+import 'package:medora/features/search/presentation/controller/cubit/search_cubit.dart'
+    show SearchCubit;
+import 'package:medora/features/search/presentation/controller/states/search_states.dart'
+    show SearchStates;
+import 'package:medora/features/search/presentation/widgets/search_app_bar.dart' show SearchAppBarSection;
+import 'package:medora/features/search/presentation/widgets/search_results_handler.dart' show SearchResultsHandler;
+import 'package:medora/features/search/presentation/widgets/search_welcome_widget.dart'
+    show SearchWelcomeWidget;
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
@@ -18,10 +28,21 @@ class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+
+    return BlocBuilder<SearchCubit, SearchStates>(
+      builder: (context, state) {
+        return CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            const SearchAppBarSection(),
+            SearchResultsHandler(searchState: state),
+          ],
+        );
+      },
+    );
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
       slivers: [
-
         SliverToBoxAdapter(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,7 +55,8 @@ class SearchScreen extends StatelessWidget {
                   fontWeight: FontWeight.w900,
                   color: AppColors.black,
                   height: 1.2,
-                  letterSpacing: 1,wordSpacing: 5
+                  letterSpacing: 1,
+                  wordSpacing: 5,
                 ),
                 textAlign: TextAlign.start,
               ),
@@ -45,9 +67,7 @@ class SearchScreen extends StatelessWidget {
                     child: TextFormField(
                       style: textTheme.styleInputField,
                       onChanged: (value) {
-                        context
-                            .read<SearchCubit>()
-                            .onSearchQueryChanged( value);
+                        context.read<SearchCubit>().onSearchQueryChanged(value);
                       },
                       decoration: InputDecoration(
                         prefixIcon: Padding(
@@ -74,49 +94,47 @@ class SearchScreen extends StatelessWidget {
                   ElevatedButton(
                     style: ButtonStyle(
                       padding: WidgetStateProperty.all(EdgeInsets.zero),
-                      backgroundColor:
-                          WidgetStateProperty.all(AppColors.fieldFillColor),
-                      
+                      backgroundColor: WidgetStateProperty.all(
+                        AppColors.fieldFillColor,
+                      ),
 
                       elevation: WidgetStateProperty.all(1),
-                      shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                      shape: WidgetStateProperty.all(
+                        RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.r),
-                          side: BorderSide(
-                            color: AppColors.fieldBorderColor,
-                          ))),
+                          side: BorderSide(color: AppColors.fieldBorderColor),
+                        ),
+                      ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      _displaySpecialtySelectionSheet(context);
+                    },
                     child: FaIcon(
                       FontAwesomeIcons.sliders,
                       color: Colors.black54,
                       size: 18.sp,
                     ),
-                  )
+                  ),
                 ],
               ),
-
             ],
           ),
         ),
 
         BlocBuilder<SearchCubit, SearchStates>(
           builder: (context, state) {
-
-
             switch (state.searchResultsState) {
-
-
               case LazyRequestState.lazy:
-              return const SearchWelcomeWidget();
+                return const SearchWelcomeWidget();
               case LazyRequestState.loading:
                 return const SliverLoadingList(height: 150);
               case LazyRequestState.loaded:
-              return    DoctorListView(doctorList: state.searchResults);
+                return DoctorListView(doctorList: state.searchResults);
               case LazyRequestState.error:
                 return const SliverToBoxAdapter(
                   child: Center(
                     child: Text(
-                    '  state.doctorListError',
+                      '  state.doctorListError',
                       style: TextStyle(fontSize: 30, color: Colors.red),
                     ),
                   ),
@@ -145,7 +163,7 @@ class SearchScreen extends StatelessWidget {
             // }
 
             // عرض قائمة النتائج
-            return      const SearchWelcomeWidget();
+            return const SearchWelcomeWidget();
             return DoctorListView(doctorList: state.searchResults);
           },
         ),
@@ -156,8 +174,111 @@ class SearchScreen extends StatelessWidget {
   OutlineInputBorder _buildBorder(Color color) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(18.r),
-      borderSide: BorderSide(
-        color: color,
+      borderSide: BorderSide(color: color),
+    );
+  }
+
+  void _displaySpecialtySelectionSheet(BuildContext context) {
+    final screenHeight = MediaQuery.sizeOf(context).height;
+
+    AppAlerts.showCustomBottomSheet(
+      context: context,
+      appBarBackgroundColor: AppColors.customWhite,
+      appBarTitle: 'Filters',
+      appBarTitleColor: AppColors.black,
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(15, 50, 15, 0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: 10,
+          children: [
+
+            Text('Specialties', style: Theme.of(context).textTheme.titleLarge),
+
+            _buildSpecialtiesFilters(screenHeight),
+            Text('Location', style: Theme.of(context).textTheme.titleLarge),
+         //   Text('Location', style: Theme.of(context).textTheme.titleLarge),
+            _buildLocationFiltersField(context),
+            SizedBox(height: 300),
+          ],
+        ),
+      ),
+    );
+  }
+     DoctorInfoField _buildLocationFiltersField(BuildContext context){
+     return  DoctorInfoField( );
+  }
+  Container _buildSpecialtiesFilters(double screenHeight) {
+    return Container(
+          height: screenHeight * 0.15,
+
+          //   height: 125,
+          width: double.maxFinite,
+          color: Colors.white,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return GridView.builder(
+
+                scrollDirection: Axis.horizontal,
+                physics: const BouncingScrollPhysics(),
+
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  //childAspectRatio: _calculateDynamicAspectRatio(constraints.maxWidth),
+                  childAspectRatio: 2 / 5,
+                ),
+
+                itemCount: AppStrings.allMedicalSpecialties.length,
+                itemBuilder: (context, index) =>
+                    _buildResponsiveSpecialtyItem(
+                      context,
+                      index,
+                      constraints.maxWidth,
+                    ),
+              );
+            },
+          ),
+        );
+  }
+
+  // بناء item متجاوب
+  Widget _buildResponsiveSpecialtyItem(
+    BuildContext context,
+    int index,
+    double maxWidth,
+  ) {
+    final specialty = AppStrings.allMedicalSpecialties[index];
+
+    return Container(
+
+      alignment: Alignment.center,
+      decoration: ShapeDecoration(
+        color: Colors.white,
+        shadows: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.r),
+          side: BorderSide(color: AppColors.grey, width: 0.5),
+        ),
+      ),
+      child: Text(
+        specialty,
+        style: Theme.of(context).textTheme.mediumBlack.copyWith(
+          color: Colors.black,
+          height: 1.2,
+          fontWeight: FontWeight.w600,
+          fontSize: 10,
+        ),
+        textAlign: TextAlign.center,
+
+        overflow: TextOverflow.visible,
       ),
     );
   }
