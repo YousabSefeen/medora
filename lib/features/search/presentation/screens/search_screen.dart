@@ -17,8 +17,10 @@ import 'package:medora/features/search/presentation/controller/cubit/search_cubi
     show SearchCubit;
 import 'package:medora/features/search/presentation/controller/states/search_states.dart'
     show SearchStates;
-import 'package:medora/features/search/presentation/widgets/search_app_bar.dart' show SearchAppBarSection;
-import 'package:medora/features/search/presentation/widgets/search_results_handler.dart' show SearchResultsHandler;
+import 'package:medora/features/search/presentation/widgets/search_app_bar.dart'
+    show SearchAppBarSection;
+import 'package:medora/features/search/presentation/widgets/search_results_handler.dart'
+    show SearchResultsHandler;
 import 'package:medora/features/search/presentation/widgets/search_welcome_widget.dart'
     show SearchWelcomeWidget;
 
@@ -192,12 +194,11 @@ class SearchScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 10,
           children: [
-
             Text('Specialties', style: Theme.of(context).textTheme.titleLarge),
 
             _buildSpecialtiesFilters(screenHeight),
             Text('Location', style: Theme.of(context).textTheme.titleLarge),
-         //   Text('Location', style: Theme.of(context).textTheme.titleLarge),
+            //   Text('Location', style: Theme.of(context).textTheme.titleLarge),
             _buildLocationFiltersField(context),
             SizedBox(height: 300),
           ],
@@ -205,42 +206,42 @@ class SearchScreen extends StatelessWidget {
       ),
     );
   }
-     DoctorInfoField _buildLocationFiltersField(BuildContext context){
-     return  DoctorInfoField( );
+
+  DoctorInfoField _buildLocationFiltersField(BuildContext context) {
+    return DoctorInfoField();
   }
+
   Container _buildSpecialtiesFilters(double screenHeight) {
     return Container(
-          height: screenHeight * 0.15,
+      height: screenHeight * 0.15,
 
-          //   height: 125,
-          width: double.maxFinite,
-          color: Colors.white,
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return GridView.builder(
+      //   height: 125,
+      width: double.maxFinite,
+      color: Colors.white,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return GridView.builder(
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
 
-                scrollDirection: Axis.horizontal,
-                physics: const BouncingScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              //childAspectRatio: _calculateDynamicAspectRatio(constraints.maxWidth),
+              childAspectRatio: 2 / 5,
+            ),
 
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  //childAspectRatio: _calculateDynamicAspectRatio(constraints.maxWidth),
-                  childAspectRatio: 2 / 5,
-                ),
-
-                itemCount: AppStrings.allMedicalSpecialties.length,
-                itemBuilder: (context, index) =>
-                    _buildResponsiveSpecialtyItem(
-                      context,
-                      index,
-                      constraints.maxWidth,
-                    ),
-              );
-            },
-          ),
-        );
+            itemCount: AppStrings.allMedicalSpecialties.length,
+            itemBuilder: (context, index) => _buildResponsiveSpecialtyItem(
+              context,
+              index,
+              constraints.maxWidth,
+            ),
+          );
+        },
+      ),
+    );
   }
 
   // بناء item متجاوب
@@ -252,7 +253,6 @@ class SearchScreen extends StatelessWidget {
     final specialty = AppStrings.allMedicalSpecialties[index];
 
     return Container(
-
       alignment: Alignment.center,
       decoration: ShapeDecoration(
         color: Colors.white,

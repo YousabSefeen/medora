@@ -21,8 +21,27 @@ linter:
   # `// ignore_for_file: name_of_lint` syntax on the line or in the file
   # producing the lint.
   rules:
-    # avoid_print: false  # Uncomment to disable the `avoid_print` rule
-    # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
+    - use_super_parameters
+    - prefer_const_constructors
+    - avoid_print # تجنب استخدام print (استخدم بدائل مثل debugPrint)
+    - camel_case_types # أسماء الكلاسات يجب أن تكون بصيغة CamelCase
+    - constant_identifier_names # أسماء الثوابت يجب أن تكون بصيغة uppercase_with_underscores
+    - prefer_const_constructors # تفضيل استخدام const لتحسين الأداء
+    - prefer_const_literals_to_create_immutables # استخدام const مع القوائم أو المجموعات
+    - prefer_final_fields # تفضيل final على المتغيرات المتغيرة إن أمكن
+    - annotate_overrides # تأكد من أن الدوال الموروثة مشروحة بـ @override
+    - avoid_empty_else # تجنب استخدام else الفارغ
+    - curly_braces_in_flow_control_structures # استخدام الأقواس { } في الحلقات وif
+    - prefer_single_quotes # تفضيل استخدام الاقتباسات المفردة بدلاً من المزدوجة
+    - sort_child_properties_last # ترتيب الخصائص بحيث تكون خاصية child في النهاية
+    - unnecessary_null_checks # تجنب التحقق من null عند عدم الحاجة
+    - use_key_in_widget_constructors # التأكد من وجود المفتاح key في Widgets
+    - prefer_is_not_empty # تفضيل استخدام isNotEmpty بدلاً من length > 0
+    - unnecessary_this # تجنب استخدام this غير الضروري
+    - avoid_redundant_argument_values # تجنب القيم الافتراضية الزائدة في المعاملات
+    - prefer_typing_uninitialized_variables # تحديد نوع المتغيرات غير المُهيئة
+    - prefer_interpolation_to_compose_strings # تفضيل استخدام interpolation بدلًا من +
+    - avoid_unnecessary_containers # تجنب استخدام Container عند وجود Widgets أبسط
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

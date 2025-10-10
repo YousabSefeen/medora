@@ -45,6 +45,47 @@ class AppLightTheme {
       radius: const Radius.circular(8),
       thickness: WidgetStateProperty.all(5),
     ),
+
+
+    sliderTheme: SliderThemeData(
+      valueIndicatorColor: AppColors.white,
+      inactiveTickMarkColor: Colors.white,
+      activeTickMarkColor: AppColors.greenLight,
+      inactiveTrackColor: AppColors.red,
+      trackHeight: 6,
+      tickMarkShape: const RoundSliderTickMarkShape(tickMarkRadius: 1),
+
+      valueIndicatorTextStyle: TextStyle(
+        fontSize: 12.sp,
+        fontWeight: FontWeight.w400,
+        color: Colors.black,
+      ),
+
+      valueIndicatorShape: const PaddleSliderValueIndicatorShape(),
+      overlayShape: SliderComponentShape.noThumb,
+      overlappingShapeStrokeColor: Colors.amber,
+
+      valueIndicatorStrokeColor: const Color(0xffF92727),
+
+      thumbSize: const WidgetStatePropertyAll(Size(5, 5)),
+
+      thumbShape: const RoundSliderThumbShape(
+        enabledThumbRadius: 14.0,
+        pressedElevation: 8.0,
+      ),
+
+      /// لون النطاق الفعال
+      activeTrackColor: AppColors.greenLight,
+
+
+      showValueIndicator: ShowValueIndicator.always,
+
+      /// لون الدائرة
+      thumbColor: AppColors.white,
+      overlayColor: Colors.blue.shade100,
+    ),
+
+
     drawerTheme: const DrawerThemeData(
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(
@@ -105,16 +146,6 @@ class AppLightTheme {
         ),
       ),
     ),
-    /*
-     shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-        side: const BorderSide(color: Colors.black26, width: 1.7),
-      )),
-      elevation: const WidgetStatePropertyAll(0),
-      backgroundColor: const WidgetStatePropertyAll(Colors.white),
-      foregroundColor: const WidgetStatePropertyAll(Colors.black),
-      overlayColor: const WidgetStatePropertyAll(Colors.black12),
-     */
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
         padding: const WidgetStatePropertyAll(EdgeInsets.only(left: 5)),
@@ -152,10 +183,10 @@ class AppLightTheme {
       elevation: 10,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
     ),
-    dividerTheme: DividerThemeData(
+    dividerTheme: const DividerThemeData(
       color: AppColors.customLightBlue,
       thickness: 2,
     ),
-    checkboxTheme: CheckboxThemeData(),
+    checkboxTheme: const CheckboxThemeData(),
   );
 }

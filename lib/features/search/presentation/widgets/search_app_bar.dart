@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:medora/core/constants/app_alerts/app_alerts.dart';
+import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/features/search/presentation/widgets/filter_button.dart';
+import 'package:medora/features/search/presentation/widgets/filter_section_title.dart'
+    show FilterSectionTitle;
 import 'package:medora/features/search/presentation/widgets/location_filter_field.dart'
     show LocationFilterField;
+import 'package:medora/features/search/presentation/widgets/price_range_filter.dart'
+    show PriceRangeFilter;
 import 'package:medora/features/search/presentation/widgets/search_text_field.dart';
 import 'package:medora/features/search/presentation/widgets/specialties_filter_grid.dart'
     show SpecialtiesFilterGrid;
@@ -33,7 +38,7 @@ class _SearchAppBarSectionState extends State<SearchAppBarSection> {
   }
 
   Widget _buildTitle() {
-    return Text(
+    return const Text(
       'Let\'s Find Your\nDoctor',
       style: TextStyle(
         fontSize: 22,
@@ -48,7 +53,7 @@ class _SearchAppBarSectionState extends State<SearchAppBarSection> {
   Widget _buildSearchRow(BuildContext context) {
     return Row(
       children: [
-        Expanded(child: SearchTextField()),
+        const Expanded(child: SearchTextField()),
         const SizedBox(width: 12),
         FilterButton(onPressed: () => _showFilterBottomSheet(context)),
       ],
@@ -59,9 +64,9 @@ class _SearchAppBarSectionState extends State<SearchAppBarSection> {
     AppAlerts.showCustomBottomSheet(
       shouldShowScrollbar: false,
       context: context,
-      appBarBackgroundColor: Colors.white,
-      appBarTitle: 'Filters',
-      appBarTitleColor: Colors.black,
+      appBarBackgroundColor: AppColors.white,
+      appBarTitle: 'Filter Search',
+      appBarTitleColor: AppColors.black,
       body: const FilterBottomSheetContent(),
     );
   }
@@ -72,31 +77,33 @@ class FilterBottomSheetContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.fromLTRB(15, 50, 15, 0),
-      child: Column(
+    return Container(
+      padding: const EdgeInsets.only(left: 15),
+
+      child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+
         children: [
+          FilterSectionTitle(title: 'Price Range', showPaddingTop: false),
+
+          Padding(
+            padding: EdgeInsets.only(right: 15),
+            child: PriceRangeFilter(),
+          ),
+
           FilterSectionTitle(title: 'Specialties'),
-          SizedBox(height: 12),
+
           SpecialtiesFilterGrid(),
-          SizedBox(height: 24),
+
           FilterSectionTitle(title: 'Location'),
-          SizedBox(height: 12),
-          LocationFilterField(),
+
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            child: LocationFilterField(),
+          ),
+          SizedBox(height: 50),
         ],
       ),
     );
-  }
-}
-
-class FilterSectionTitle extends StatelessWidget {
-  final String title;
-
-  const FilterSectionTitle({super.key, required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(title, style: Theme.of(context).textTheme.titleLarge);
   }
 }

@@ -109,7 +109,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   static final GlobalKey<NavigatorState> navigatorKey =
-      GlobalKey<NavigatorState>();
+  GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +129,7 @@ class MyApp extends StatelessWidget {
         builder: (context, child) {
           return BlocListener<AppSettingsCubit, AppSettingsStates>(
             listenWhen: (previous, current) =>
-                previous.internetState != current.internetState,
+            previous.internetState != current.internetState,
             listener: (context, state) {
               if (state.internetState == InternetState.disconnected) {
                 ScaffoldMessenger.of(context).clearSnackBars();
@@ -157,7 +157,7 @@ class MyApp extends StatelessWidget {
           );
         },
 
-           home: BottomNavScreen(), // أو شاشتك الرئيسية
+        home: BottomNavScreen(), // أو شاشتك الرئيسية
         //     home: CustomSlider(), // أو شاشتك الرئيسية
       ),
     );
@@ -254,7 +254,7 @@ class TwoScreen extends StatelessWidget {
                   AppRouter.pop(
                     context,
                     returnValue:
-                        'AppRouterNames.paymobPayment AppRouterNames.paymobPayment AppRouterNames.paymobPayment AppRouterNames.paymobPaymentXXXXXXXXXX',
+                    'AppRouterNames.paymobPayment AppRouterNames.paymobPayment AppRouterNames.paymobPayment AppRouterNames.paymobPaymentXXXXXXXXXX',
                   );
                 },
                 child: Text('Check'),

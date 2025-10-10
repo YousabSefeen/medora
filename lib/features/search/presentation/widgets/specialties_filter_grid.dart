@@ -32,8 +32,9 @@ class _SpecialtiesFilterGridState extends State<SpecialtiesFilterGrid> {
       child: ScrollbarTheme(
         data: Theme.of(context).scrollbarTheme.copyWith(
           crossAxisMargin: 0,
-          trackBorderColor: WidgetStateProperty.all(AppColors.white),
-          thumbColor: WidgetStateProperty.all(Colors.blueAccent),
+          trackBorderColor: WidgetStateProperty.all(AppColors.fieldBorderColor ),
+          trackColor: WidgetStateProperty.all(AppColors.fieldBorderColor ),
+          thumbColor: WidgetStateProperty.all(Colors.blue),
         ),
         child: Scrollbar(
           controller: gridScrollController,

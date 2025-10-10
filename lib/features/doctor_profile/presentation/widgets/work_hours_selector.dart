@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart' show AppStrings;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
+import 'package:medora/features/doctor_profile/presentation/widgets/work_hours_range_display.dart' show WorkHoursRangeDisplay;
+
 
 import '../../../../../core/animations/custom_animated_expansion_tile.dart';
 import '../../../../core/animations/animated_fade_transition.dart';
 import '../controller/cubit/doctor_profile_cubit.dart';
 import '../controller/states/doctor_profile_state.dart';
-import 'selected_work_hours_display.dart';
+
 import 'time_range_picker.dart';
 
 class WorkHoursSelector extends StatelessWidget {
@@ -40,7 +42,7 @@ class WorkHoursSelector extends StatelessWidget {
                 .copyWith(fontWeight: FontWeight.w400)),
       );
     } else {
-      return SelectedWorkHoursDisplay(workHoursSelected: workHoursSelected);
+      return WorkHoursRangeDisplay(selectedWorkHours: workHoursSelected);
     }
   }
 

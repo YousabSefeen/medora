@@ -61,7 +61,6 @@ dependencies:
   connectivity_plus: ^6.1.4
   animated_text_kit: ^4.2.3
   animated_drop_down_form_field: ^0.0.1
-
   flutter_svg: ^2.0.16
   dio: ^5.7.0
   top_snackbar_flutter: ^3.1.0
