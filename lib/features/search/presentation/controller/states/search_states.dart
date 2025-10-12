@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart' show RangeValues;
+import 'package:medora/core/constants/app_strings/app_strings.dart' show AppStrings;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
     show DoctorModel;
@@ -13,6 +14,8 @@ class SearchStates extends Equatable {
   final double? pendingMinPrice;
   final double? pendingMaxPrice;
 
+  final List<String> selectedSpecialties; // 👈 جديد
+
   const SearchStates({
     this.searchResults = const [],
     this.searchResultsState = LazyRequestState.lazy,
@@ -21,6 +24,8 @@ class SearchStates extends Equatable {
     this.priceRange = const RangeValues(100, 500),
     this.pendingMinPrice,
     this.pendingMaxPrice,
+
+    this.selectedSpecialties = const [], // 👈 جديد - Set لمنع التكرار
   });
 
   SearchStates copyWith({
@@ -31,6 +36,8 @@ class SearchStates extends Equatable {
     RangeValues? priceRange,
     double? pendingMinPrice,
     double? pendingMaxPrice,
+
+    List<String>? selectedSpecialties, // 👈 جديد
   }) {
     return SearchStates(
       searchResults: searchResults ?? this.searchResults,
@@ -41,6 +48,7 @@ class SearchStates extends Equatable {
       priceRange: priceRange ?? this.priceRange,
       pendingMinPrice: pendingMinPrice ?? this.pendingMinPrice,
       pendingMaxPrice: pendingMaxPrice ?? this.pendingMaxPrice,
+      selectedSpecialties: selectedSpecialties ?? this.selectedSpecialties, // 👈 جديد
     );
   }
 
@@ -53,5 +61,6 @@ class SearchStates extends Equatable {
     priceRange,
     pendingMinPrice,
     pendingMaxPrice,
+    selectedSpecialties,
   ];
 }

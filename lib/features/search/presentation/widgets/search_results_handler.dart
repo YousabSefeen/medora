@@ -30,11 +30,11 @@ class SearchResultsHandler extends StatelessWidget {
   }
 
   Widget _buildErrorState(SearchStates state) {
-    return SliverToBoxAdapter(
+    return const SliverToBoxAdapter(
       child: Center(
         child: Text(
           'Error loading search results', // TODO: Use actual error message
-          style: const TextStyle(fontSize: 16, color: Colors.red),
+          style:  TextStyle(fontSize: 16, color: Colors.red),
         ),
       ),
     );

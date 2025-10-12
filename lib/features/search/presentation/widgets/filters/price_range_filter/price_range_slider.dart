@@ -22,7 +22,7 @@ class PriceRangeSlider extends StatelessWidget {
           priceRangeSlider.end.round().toString(),
         ),
         onChanged: (RangeValues newRangeValues) =>
-            context.read<SearchCubit>().updatePriceRange(newRangeValues),
+            context.read<SearchCubit>().updatePriceSlider(newRangeValues),
       ),
     );
   }

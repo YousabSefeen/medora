@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart';
 import 'package:medora/core/constants/themes/app_colors.dart';
-import 'package:medora/core/constants/themes/app_text_styles.dart';
+import 'package:medora/features/search/presentation/widgets/filters/specialities_filter/specialty_item.dart'
+    show SpecialtyItem;
 
 class SpecialtiesFilterGrid extends StatefulWidget {
   const SpecialtiesFilterGrid({super.key});
@@ -28,21 +29,24 @@ class _SpecialtiesFilterGridState extends State<SpecialtiesFilterGrid> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 125,
+      height: 135,
       child: ScrollbarTheme(
         data: Theme.of(context).scrollbarTheme.copyWith(
-          crossAxisMargin: 0,
-          trackBorderColor: WidgetStateProperty.all(AppColors.fieldBorderColor ),
-          trackColor: WidgetStateProperty.all(AppColors.fieldBorderColor ),
-          thumbColor: WidgetStateProperty.all(Colors.blue),
+          crossAxisMargin: 1,
+          mainAxisMargin: 1,
+          trackBorderColor: WidgetStateProperty.all(AppColors.white),
+          //  trackColor: WidgetStateProperty.all(Color(0xff708993)),
+          trackColor: WidgetStateProperty.all(Colors.black12),
+          thumbColor: WidgetStateProperty.all(AppColors.white),
         ),
         child: Scrollbar(
           controller: gridScrollController,
+
           thumbVisibility: true,
           child: GridView.builder(
             controller: gridScrollController,
             scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.only(bottom: 20),
+            padding: const EdgeInsets.only(bottom: 20),
             physics: const BouncingScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
@@ -51,43 +55,12 @@ class _SpecialtiesFilterGridState extends State<SpecialtiesFilterGrid> {
               childAspectRatio: 2 / 5,
             ),
             itemCount: AppStrings.allMedicalSpecialties.length,
-            itemBuilder: (context, index) => _buildSpecialtyItem(
-              context,
-              AppStrings.allMedicalSpecialties[index],
+            itemBuilder: (context, index) => SpecialtyItem(
+              key: ValueKey(AppStrings.allMedicalSpecialties[index]),
+              specialty: AppStrings.allMedicalSpecialties[index],
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildSpecialtyItem(BuildContext context, String specialty) {
-    return Container(
-      alignment: Alignment.center,
-      decoration: ShapeDecoration(
-        color: Colors.white,
-        shadows: const [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 10,
-            offset: Offset(0, 5),
-          ),
-        ],
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-          side: const BorderSide(color: AppColors.grey, width: 0.5),
-        ),
-      ),
-      child: Text(
-        specialty,
-        style: Theme.of(context).textTheme.mediumBlack.copyWith(
-          color: Colors.black,
-          height: 1.2,
-          fontWeight: FontWeight.w600,
-          fontSize: 10,
-        ),
-        textAlign: TextAlign.center,
-        overflow: TextOverflow.visible,
       ),
     );
   }

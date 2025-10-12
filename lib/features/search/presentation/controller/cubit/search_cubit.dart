@@ -57,10 +57,12 @@ class SearchCubit extends Cubit<SearchStates> {
     );
   }
 
-  void updatePriceRange(RangeValues newRangeValues) =>
+  /// Price Range filter methods
+
+  void updatePriceSlider(RangeValues newRangeValues) =>
       emit(state.copyWith(priceRange: newRangeValues));
 
-  void updateMinPrice(double newMinPrice) {
+  void updateMinPriceField(double newMinPrice) {
     final clampedMin = newMinPrice.clamp(50, 1500);
 
     if (clampedMin >= state.priceRange.end) {
@@ -88,7 +90,7 @@ class SearchCubit extends Cubit<SearchStates> {
     }
   }
 
-  void updateMaxPrice(double newMaxPrice) {
+  void updateMaxPriceField(double newMaxPrice) {
     final clampedMax = newMaxPrice.clamp(50, 1500);
 
     if (clampedMax <= state.priceRange.start) {
@@ -114,6 +116,39 @@ class SearchCubit extends Cubit<SearchStates> {
         ),
       );
     }
+  }
+
+  /// Medical specialties filter methods
+
+  // 👇 دوال إدارة التخصصات
+  void toggleSpecialty(String specialty) {
+    final newSelectedSpecialties = List<String>.from(state.selectedSpecialties);
+
+    if (newSelectedSpecialties.contains(specialty)) {
+      newSelectedSpecialties.remove(specialty); // 👈 إزالة إذا كانت موجودة
+    } else {
+      newSelectedSpecialties.add(specialty); // 👈 إضافة إذا لم تكن موجودة
+    }
+
+    emit(state.copyWith(selectedSpecialties: newSelectedSpecialties));
+  }
+
+  String? _location;
+
+  void locationFilter(String? location) {
+    _location = location;
+  }
+
+  void printData() {
+    print('priceRange: ${state.priceRange}\n');
+
+    print('selectedSpecialties: ${state.selectedSpecialties}\n');
+
+    print('location: $_location\n');
+  }
+
+  Future<void> searchDoctorsByFilters() async {
+
   }
 
   void restStates() => emit(const SearchStates());

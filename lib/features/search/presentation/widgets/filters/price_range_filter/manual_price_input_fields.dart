@@ -4,8 +4,8 @@ import 'package:medora/features/search/presentation/controller/cubit/search_cubi
     show SearchCubit;
 import 'package:medora/features/search/presentation/controller/states/search_states.dart'
     show SearchStates;
-import 'package:medora/features/search/presentation/widgets/price_range/price_input_field.dart'
-    show PriceInputField;
+import 'package:medora/features/search/presentation/widgets/filters/price_range_filter/price_input_field.dart' show PriceInputField;
+
 
 class ManualPriceInputFields extends StatelessWidget {
   const ManualPriceInputFields({super.key});
@@ -35,7 +35,7 @@ class ManualPriceInputFields extends StatelessWidget {
             label: 'Minimum',
             value: minPrice,
             isMinPrice: true,
-            onValueChanged: cubit.updateMinPrice,
+            onValueChanged: cubit.updateMinPriceField,
           ),
         );
       },
@@ -52,7 +52,7 @@ class ManualPriceInputFields extends StatelessWidget {
             label: 'Maximum',
             value: maxPrice,
             isMinPrice: false,
-            onValueChanged: cubit.updateMaxPrice,
+            onValueChanged: cubit.updateMaxPriceField,
           ),
         );
       },

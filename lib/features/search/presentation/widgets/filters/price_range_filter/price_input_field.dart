@@ -65,7 +65,9 @@ class _PriceInputFieldState extends State<PriceInputField> {
     return TextFormField(
       controller: _controller,
       focusNode: _focusNode,
-      style: textTheme.styleInputField,
+      style: textTheme.styleInputField.copyWith(
+        color: AppColors.white,
+      ),
       keyboardType: TextInputType.number,
       textAlign: TextAlign.center,
       onEditingComplete: _submitValue,
@@ -77,27 +79,30 @@ class _PriceInputFieldState extends State<PriceInputField> {
           width: 30,
           height: 40,
           decoration: BoxDecoration(
-            color: AppColors.softBlue,
+            color:AppColors.white,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(8.r),
               bottomLeft: Radius.circular(8.r),
+
             ),
+            border: Border.all(color: AppColors.black12, width: 1.5),
           ),
           alignment: Alignment.center,
-          child: const Text('EGP', style: TextStyle(color: Colors.white)),
+          child: const Text('EGP', style: TextStyle(color: Colors.black)),
         ),
         hintText: widget.label,
         hintStyle: TextStyle(
           fontSize: 9.sp,
-          color: Colors.black54,
+         // color: Colors.black54,
+          color: AppColors.customWhite,
           fontWeight: FontWeight.w500,
         ),
         hintMaxLines: 1,
-        fillColor: AppColors.fieldFillColor,
+        fillColor: AppColors.black,
         filled: true,
-        border: _buildBorder(AppColors.fieldBorderColor),
-        enabledBorder: _buildBorder(AppColors.fieldBorderColor),
-        focusedBorder: _buildBorder(Colors.black26),
+        border: _buildBorder(AppColors.black12),
+        enabledBorder: _buildBorder(AppColors.black12),
+        focusedBorder: _buildBorder(Colors.black),
       ),
     );
   }

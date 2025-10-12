@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 
-
 import 'form_title.dart';
 
 class DoctorInfoField extends StatelessWidget {
@@ -14,15 +13,19 @@ class DoctorInfoField extends StatelessWidget {
   final String? hintText;
 
   final FormFieldValidator<String>? validator;
+  final bool isDense;
+  final void Function(String)? onChanged;
 
   const DoctorInfoField({
     super.key,
-      this.label,
+    this.label,
     this.controller,
     this.keyboardType = TextInputType.text,
     this.maxLines = 1,
     this.hintText,
     this.validator,
+    this.isDense = false,
+    this.onChanged,
   });
 
   @override
@@ -31,25 +34,26 @@ class DoctorInfoField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-       label != null ? FormTitle(label: label!):const SizedBox(),
+        label != null ? FormTitle(label: label!) : const SizedBox(),
         TextFormField(
-          style: textTheme.styleInputField
-            ,
+          style: textTheme.styleInputField,
+          onChanged: onChanged,
           controller: controller,
           keyboardType: keyboardType,
           maxLines: maxLines,
           validator: validator,
           decoration: InputDecoration(
-        //    isDense: true,
+            isDense: isDense,
+
             hintText: hintText,
             hintStyle: textTheme.hintFieldStyle,
-            fillColor:AppColors.fieldFillColor,
+            fillColor: AppColors.fieldFillColor,
             filled: true,
             border: _buildBorder(AppColors.fieldBorderColor),
             enabledBorder: _buildBorder(AppColors.fieldBorderColor),
             focusedBorder: _buildBorder(Colors.black26),
             errorBorder: _buildBorder(Colors.red),
-            errorStyle:  textTheme.styleInputFieldError,
+            errorStyle: textTheme.styleInputFieldError,
           ),
         ),
       ],

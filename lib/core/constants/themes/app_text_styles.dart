@@ -33,10 +33,11 @@ extension AppTextStyles on TextTheme {
     fontWeight: FontWeight.w500,
   );
 
-  TextStyle get smallBlack => TextStyle(
-    fontSize: 13.sp,
-    fontWeight: FontWeight.w500,
-    color: Colors.black,
+  TextStyle get smallBlack => const TextStyle(
+    color: AppColors.black,
+    height: 1.2,
+    fontWeight: FontWeight.w600,
+    fontSize: 10 ,
   );
 
   // Original: titleMedium (DoctorList info)
@@ -92,7 +93,12 @@ extension AppTextStyles on TextTheme {
     fontWeight: FontWeight.w600,
     letterSpacing: 0.5,
   );
-
+  TextStyle get caladeaWhite =>  GoogleFonts.caladea(
+  color: AppColors.white,
+  fontSize: 20.sp,
+  letterSpacing: 1.5,
+  fontWeight: FontWeight.w600,
+  );
   // Original: labelSmall (DoctorProfileFiled - hint)
   TextStyle get smallGreySemiBold => GoogleFonts.actor(
     fontSize: 12.sp,

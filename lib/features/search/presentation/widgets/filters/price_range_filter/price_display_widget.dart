@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medora/core/animations/custom_animation_transition.dart'
     show CustomAnimationTransition;
 import 'package:medora/core/constants/themes/app_colors.dart';
@@ -51,7 +52,9 @@ class PriceDisplayWidget extends StatelessWidget {
   }) {
     final textStyle = Theme.of(
       context,
-    ).textTheme.styleInputField.copyWith(fontSize: 20,color: Colors.black);
+    ).textTheme.latoSemiBoldDark.copyWith(
+      fontSize: 18.sp
+    );
     return BlocSelector<SearchCubit, SearchStates, RangeValues>(
       selector: (state) => state.priceRange,
       builder: (context, priceRange) {

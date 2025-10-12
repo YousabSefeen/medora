@@ -20,7 +20,7 @@ class FilterButton extends StatelessWidget {
             side: const BorderSide(color: AppColors.fieldBorderColor),
           ),
         ),
-        minimumSize: WidgetStateProperty.all(const Size(50, 50)),
+        minimumSize: WidgetStateProperty.all(const Size(50, 40)),
       ),
       onPressed: onPressed,
       child: const FaIcon(
