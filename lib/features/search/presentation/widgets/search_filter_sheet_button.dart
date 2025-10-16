@@ -14,7 +14,7 @@ import 'package:medora/features/search/presentation/controller/states/search_sta
 import 'package:medora/features/search/presentation/widgets/filter_sheet_content.dart'
     show FilterSheetContent;
 import 'package:medora/features/search/presentation/widgets/shared/criteria_filter_icon.dart'
-    show    CriteriaFilterIcon;
+    show CriteriaFilterIcon;
 
 class SearchFilterSheetButton extends StatelessWidget {
   const SearchFilterSheetButton({super.key});
@@ -49,8 +49,10 @@ class SearchFilterSheetButton extends StatelessWidget {
   }
 
   void _showFilterBottomSheet(BuildContext context) {
-    AppAlerts.showCustomBottomSheet(
-      shouldShowScrollbar: false,
+    AppAlerts.showLeftSheet(
+      onCancelPressed: () {
+        Navigator.of(context).pop();
+      },
       context: context,
       appBarBackgroundColor: AppColors.white,
       appBarTitle: 'Filter Search',

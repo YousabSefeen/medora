@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
-class CustomModalTypeBottomSheet extends WoltModalType {
-  CustomModalTypeBottomSheet()
+class CustomModalTypeLeftSheet extends WoltModalType {
+  CustomModalTypeLeftSheet()
     : super(
-        barrierDismissible: true,
-        dismissDirection: WoltModalDismissDirection.down,
-        transitionDuration: const Duration(milliseconds: 700),
-        reverseTransitionDuration: const Duration(milliseconds: 700),
-
-        shapeBorder: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
-        ),
+        barrierDismissible: false,
+        dismissDirection: WoltModalDismissDirection.none,
+        transitionDuration: const Duration(milliseconds: 600),
+        reverseTransitionDuration: const Duration(milliseconds: 600),
       );
 
   @override
@@ -50,7 +43,7 @@ class CustomModalTypeBottomSheet extends WoltModalType {
     Widget child,
   ) {
     final slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 1),
+      begin: const Offset(1, 0),
       end: Offset.zero,
     ).animate(CurvedAnimation(parent: animation, curve: Curves.easeInOut));
 
