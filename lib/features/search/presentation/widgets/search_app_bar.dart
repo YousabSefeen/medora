@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:medora/features/search/presentation/widgets/filter_button.dart' show FilterButton;
+import 'package:medora/features/search/presentation/widgets/search_filter_sheet_button.dart'
+    show SearchFilterSheetButton;
 
 
 import 'package:medora/features/search/presentation/widgets/search_text_field.dart';
@@ -44,7 +45,7 @@ class SearchAppBarSection extends StatelessWidget {
 
         Expanded(child: SearchTextField()),
         SizedBox(width: 12),
-        FilterButton(),
+        SearchFilterSheetButton(),
       ],
     );
   }
