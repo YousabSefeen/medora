@@ -8,7 +8,6 @@ class CustomModalTypeBottomSheet extends WoltModalType {
         dismissDirection: WoltModalDismissDirection.down,
         transitionDuration: const Duration(milliseconds: 700),
         reverseTransitionDuration: const Duration(milliseconds: 700),
-
         shapeBorder: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),

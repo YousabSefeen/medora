@@ -45,7 +45,7 @@ class CustomModalTypeLeftSheet extends WoltModalType {
     final slideAnimation = Tween<Offset>(
       begin: const Offset(1, 0),
       end: Offset.zero,
-    ).animate(CurvedAnimation(parent: animation, curve: Curves.easeInOut));
+    ).animate(CurvedAnimation(parent: animation, curve: Curves.easeInOutCubic));
 
     return SlideTransition(position: slideAnimation, child: child);
   }
