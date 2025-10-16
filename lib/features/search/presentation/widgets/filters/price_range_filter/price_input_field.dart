@@ -59,15 +59,20 @@ class _PriceInputFieldState extends State<PriceInputField> {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
     return TextFormField(
       controller: _controller,
       focusNode: _focusNode,
-      style: textTheme.styleInputField.copyWith(
-        color: AppColors.white,
-      ),
+      style: textTheme.styleInputField.copyWith(color: AppColors.black),
       keyboardType: TextInputType.number,
       textAlign: TextAlign.center,
       onEditingComplete: _submitValue,
@@ -75,169 +80,42 @@ class _PriceInputFieldState extends State<PriceInputField> {
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
         isDense: true,
-        prefixIcon: Container(
-          width: 30,
-          height: 40,
-          decoration: BoxDecoration(
-            color:AppColors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(8.r),
-              bottomLeft: Radius.circular(8.r),
-
-            ),
-            border: Border.all(color: AppColors.black12, width: 1.5),
-          ),
-          alignment: Alignment.center,
-          child: const Text('EGP', style: TextStyle(color: Colors.black)),
-        ),
+        prefixIcon: _displayEgyptianCurrencySymbol(),
         hintText: widget.label,
-        hintStyle: TextStyle(
-          fontSize: 9.sp,
-         // color: Colors.black54,
-          color: AppColors.customWhite,
-          fontWeight: FontWeight.w500,
-        ),
+        hintStyle: _buildHintStyle(),
         hintMaxLines: 1,
-        fillColor: AppColors.black,
-        filled: true,
-        border: _buildBorder(AppColors.black12),
-        enabledBorder: _buildBorder(AppColors.black12),
-        focusedBorder: _buildBorder(Colors.black),
-      ),
-    );
-  }
-
-  OutlineInputBorder _buildBorder(Color color) {
-    return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8.r),
-      borderSide: BorderSide(color: color, width: 1.2),
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    _focusNode.dispose();
-    super.dispose();
-  }
-}
-
-/*
-class PriceInputField extends StatefulWidget {
-  final String label;
-  final double initialValue;
-
-  final ValueChanged<double> onValueChanged;
-
-  const PriceInputField({
-    super.key,
-
-    required this.label,
-
-    required this.initialValue,
-    required this.onValueChanged,
-  });
-
-  @override
-  State<PriceInputField> createState() => _PriceInputFieldState();
-}
-
-class _PriceInputFieldState extends State<PriceInputField> {
-  late TextEditingController _controller;
-
-  final _focusNode = FocusNode();
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController(
-      text: widget.initialValue.round().toString(),
-    );
-
-    _focusNode.addListener(_handleFocusChange);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    _focusNode.dispose();
-    super.dispose();
-  }
-
-  void _handleFocusChange() {
-    if (!_focusNode.hasFocus) {
-      _submitValue();
-    }
-  }
-
-  void _submitValue() {
-    final value = double.tryParse(_controller.text);
-    if (value != null && value != widget.initialValue) {
-      widget.onValueChanged(value);
-    } else {
-      // إعادة تعيين القيمة الأصلية إذا كانت غير صالحة
-      _controller.text = widget.initialValue.round().toString();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
-    return TextFormField(
-      controller: _controller,
-      focusNode: _focusNode,
-
-      style: textTheme.styleInputField,
-      keyboardType: TextInputType.number,
-
-      textAlign: TextAlign.center,
-      onEditingComplete: _submitValue,
-      onFieldSubmitted: (_) => _submitValue(),
-      textInputAction: TextInputAction.send,
-      decoration: InputDecoration(
-        contentPadding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
-        isDense: true,
-
-        prefixIcon: Container(
-          width: 30,
-          height: 40,
-
-          decoration: BoxDecoration(
-            color: AppColors.softBlue,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(8.r),
-              bottomLeft: Radius.circular(8.r),
-            ),
-          ),
-          alignment: Alignment.center,
-
-          child: const Text('EGP', style: TextStyle(color: Colors.white)),
-        ),
-        hintText: widget.label,
-
-        hintStyle: TextStyle(
-          fontSize: 9.sp,
-          color: Colors.black54,
-          fontWeight: FontWeight.w500,
-        ),
-
-        hintMaxLines: 1,
-
         fillColor: AppColors.fieldFillColor,
         filled: true,
         border: _buildBorder(AppColors.fieldBorderColor),
         enabledBorder: _buildBorder(AppColors.fieldBorderColor),
-        focusedBorder: _buildBorder(Colors.black26),
+        focusedBorder: _buildBorder(AppColors.fieldBorderColor),
       ),
     );
   }
 
-  OutlineInputBorder _buildBorder(Color color) {
-    return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8.r),
-      borderSide: BorderSide(color: color, width: 1.2),
-    );
-  }
+  TextStyle _buildHintStyle() => TextStyle(
+    fontSize: 10.sp,
+    color: Colors.grey.shade600,
+    fontWeight: FontWeight.w500,
+  );
+
+  Container _displayEgyptianCurrencySymbol() => Container(
+    width: 30,
+    height: 40,
+    decoration: BoxDecoration(
+      color: Colors.black,
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(8.r),
+        bottomLeft: Radius.circular(8.r),
+      ),
+      border: Border.all(color: AppColors.black12, width: 1.5),
+    ),
+    alignment: Alignment.center,
+    child: const Text('EGP', style: TextStyle(color: Colors.white)),
+  );
+
+  OutlineInputBorder _buildBorder(Color color) => OutlineInputBorder(
+    borderRadius: BorderRadius.circular(8.r),
+    borderSide: BorderSide(color: color, width: 1.2),
+  );
 }
-*/

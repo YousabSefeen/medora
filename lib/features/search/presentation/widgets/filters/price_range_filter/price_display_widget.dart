@@ -53,7 +53,10 @@ class PriceDisplayWidget extends StatelessWidget {
     final textStyle = Theme.of(
       context,
     ).textTheme.latoSemiBoldDark.copyWith(
-      fontSize: 18.sp
+      fontSize: 18.sp,
+      color: Colors.black,
+      fontWeight: FontWeight.w900,
+      shadows: []
     );
     return BlocSelector<SearchCubit, SearchStates, RangeValues>(
       selector: (state) => state.priceRange,

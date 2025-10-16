@@ -18,6 +18,7 @@ class AppColors {
   //old
   //static const Color softBlue =   Color(0xff7C93C3);
   static const Color darkBlue = Color(0xff001F3F);
+  static const Color lightBlue = Color(0xff0BA6DF);
   static const Color coolBlue = Color(0xff001F3F);
   static const Color customLightBlue =   Color(0xff9BBEC8);
   static const  Color customDarkBlue =   Color(0xff164863);

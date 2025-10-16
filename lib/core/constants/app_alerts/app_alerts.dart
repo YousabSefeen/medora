@@ -149,7 +149,11 @@ class AppAlerts {
         isTopBarLayerAlwaysVisible: true,
         trailingNavBarWidget: IconButton(
           padding: const EdgeInsets.all(20),
-          icon: Icon(Icons.close, color: appBarTitleColor),
+          icon: FaIcon(
+            FontAwesomeIcons.xmark,
+            color: appBarTitleColor,
+            size: 25.sp,
+          ),
           onPressed: Navigator.of(modalSheetContext).pop,
         ),
 

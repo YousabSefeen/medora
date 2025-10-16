@@ -94,7 +94,7 @@ extension AppTextStyles on TextTheme {
     letterSpacing: 0.5,
   );
   TextStyle get caladeaWhite =>  GoogleFonts.caladea(
-  color: AppColors.white,
+  color: AppColors.black,
   fontSize: 20.sp,
   letterSpacing: 1.5,
   fontWeight: FontWeight.w600,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
@@ -38,12 +39,16 @@ class SpecialtyItemContent extends StatelessWidget {
 
   ShapeDecoration _buildDecoration() => ShapeDecoration(
       color: AppColors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r),
+      side: const BorderSide(color: AppColors.fieldBorderColor, width: 1.2),
+      ),
     );
 
   Widget _buildSpecialtyText(BuildContext context) => Text(
       specialty,
-      style:  Theme.of(context).textTheme.smallBlack,
+      style:  Theme.of(context).textTheme.smallBlack.copyWith(
+        color: AppColors.black,
+      ),
       textAlign: TextAlign.center,
       overflow: TextOverflow.visible,
     );

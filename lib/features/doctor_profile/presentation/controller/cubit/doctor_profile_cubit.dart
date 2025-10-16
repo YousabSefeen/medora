@@ -157,16 +157,16 @@ class DoctorProfileCubit extends Cubit<DoctorProfileState>
       DoctorModel(
         doctorId: FirebaseAuth.instance.currentUser!.uid,
         imageUrl:AppStrings.images[0],
-        name: controllers.nameController.text.toLowerCase(),
+        name: controllers.nameController.text.trim().toLowerCase(),
         specialties: state.confirmedSpecialties,
-        bio: controllers.bioController.text,
-        location: controllers.locationController.text,
+        bio: controllers.bioController.text.trim().toLowerCase(),
+        location: controllers.locationController.text.trim().toLowerCase(),
         doctorAvailability: DoctorAvailabilityModel(
           workingDays: state.confirmedDays,
           availableFrom: state.workHoursSelected[AppStrings.from],
           availableTo: state.workHoursSelected[AppStrings.to],
         ),
-        fees: int.parse(controllers.feesController.text),
+        fees: int.parse(controllers.feesController.text.trim()),
       ),
     );
 

@@ -18,9 +18,11 @@ class SearchCubit extends Cubit<SearchStates> {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
 
     _debounce = Timer(const Duration(seconds: 1), () {
-      if (query.isNotEmpty) {
+      if (query.isNotEmpty&& !state.isSearchingByCriteria) {
         _searchDoctorsByName(doctorName: query);
-      } else {
+      } else if(query.isNotEmpty&& state.isSearchingByCriteria){
+        searchDoctorsByCriteria();
+      }else {
         // When the search field is cleared, clear the results.
         emit(state.copyWith(searchResults: []));
       }
@@ -28,8 +30,11 @@ class SearchCubit extends Cubit<SearchStates> {
   }
 
   Future<void> _searchDoctorsByName({required String doctorName}) async {
+    print(
+      '//////////////////         _searchDoctorsByName            /////////////////',
+    );
     emit(state.copyWith(searchResultsState: LazyRequestState.loading));
-    final lowercasedDoctorName = doctorName.toLowerCase();
+    final lowercasedDoctorName = doctorName.trim().toLowerCase();
 
     final response = await searchRepository.searchDoctorsByName(
       doctorName: lowercasedDoctorName,
@@ -133,22 +138,80 @@ class SearchCubit extends Cubit<SearchStates> {
     emit(state.copyWith(selectedSpecialties: newSelectedSpecialties));
   }
 
-  String? _location;
-
-  void locationFilter(String? location) {
-    _location = location;
+  void doctorLocationFilter(String? location) {
+    emit(state.copyWith(doctorLocation: location));
   }
+
+  String? get getDoctorLocation => state.doctorLocation;
+
+  void doctorNameFilter(String doctorName) =>
+      emit(state.copyWith(doctorName: doctorName));
 
   void printData() {
-    print('priceRange: ${state.priceRange}\n');
-
-    print('selectedSpecialties: ${state.selectedSpecialties}\n');
-
-    print('location: $_location\n');
+    print('isSpecialties: ${state.selectedSpecialties.isEmpty}\n');
   }
 
-  Future<void> searchDoctorsByFilters() async {
+  Future<void> searchDoctorsByCriteria() async {
+    print('SearchCubit.searchDoctorsByCriteria *************************');
+    emit(
+      state.copyWith(
+        isSearchingByCriteria: true,
 
+
+      ),
+    );
+   if(state.doctorName==null) return;
+    emit(
+      state.copyWith(
+
+        searchResultsState: LazyRequestState.loading,
+
+      ),
+    );
+    final lowercasedDoctorName = state.doctorName!.trim().toLowerCase();
+    final lowercasedDoctorLocation = state.doctorLocation?.trim().toLowerCase();
+
+    final response = await searchRepository.searchDoctorsByCriteria(
+      doctorName: lowercasedDoctorName,
+      priceRange: state.priceRange,
+      specialties: state.selectedSpecialties,
+      location: lowercasedDoctorLocation,
+    );
+    response.fold(
+      (failure) {
+        print('SpecialtyDoctorsCubit.getDoctorsBySpecialty failure: $failure');
+        emit(
+          state.copyWith(
+            searchResultsState: LazyRequestState.error,
+            searchResultsErrorMsg: failure.toString(),
+          ),
+        );
+      },
+      (doctorList) {
+        print('SearchCubit.searchDoctorsByName  $doctorList');
+        emit(
+          state.copyWith(
+            searchResults: doctorList,
+            searchResultsState: LazyRequestState.loaded,
+          ),
+        );
+      },
+    );
+  }
+
+  void resetFilters() {
+    emit(
+      state.copyWith(
+        isSearchingByCriteria: false,
+        priceRange: const RangeValues(100, 500),
+        selectedSpecialties: [],
+        doctorLocation: '',
+
+      ),
+    );
+   if(state.doctorName!=null){
+     _searchDoctorsByName(doctorName: state.doctorName!);
+   }
   }
 
   void restStates() => emit(const SearchStates());

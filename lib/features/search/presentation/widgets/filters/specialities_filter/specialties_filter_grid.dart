@@ -36,8 +36,8 @@ class _SpecialtiesFilterGridState extends State<SpecialtiesFilterGrid> {
           mainAxisMargin: 1,
           trackBorderColor: WidgetStateProperty.all(AppColors.white),
           //  trackColor: WidgetStateProperty.all(Color(0xff708993)),
-          trackColor: WidgetStateProperty.all(Colors.black12),
-          thumbColor: WidgetStateProperty.all(AppColors.white),
+          trackColor: WidgetStateProperty.all(Colors.black26),
+          thumbColor: WidgetStateProperty.all(AppColors.lightBlue),
         ),
         child: Scrollbar(
           controller: gridScrollController,

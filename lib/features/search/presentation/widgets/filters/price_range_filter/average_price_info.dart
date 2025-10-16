@@ -23,7 +23,8 @@ class AveragePriceInfo extends StatelessWidget {
             TextSpan(
               text: 'Average consultation: 300-500 EGP',
               style: textTheme.largeWhiteSemiBold.copyWith(
-                color: Colors.white70,
+                color: Colors.black87,
+
                 fontSize: 12,fontWeight: FontWeight.w400,
 
               ),

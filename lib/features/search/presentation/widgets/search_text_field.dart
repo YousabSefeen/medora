@@ -50,6 +50,8 @@ class SearchTextField extends StatelessWidget {
   }
 
   void _onSearchQueryChanged(BuildContext context, String query) {
+
+    context.read<SearchCubit>().doctorNameFilter(query);
     context.read<SearchCubit>().onSearchQueryChanged(query);
   }
 }

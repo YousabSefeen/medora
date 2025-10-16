@@ -51,7 +51,7 @@ class DoctorInfoField extends StatelessWidget {
             filled: true,
             border: _buildBorder(AppColors.fieldBorderColor),
             enabledBorder: _buildBorder(AppColors.fieldBorderColor),
-            focusedBorder: _buildBorder(Colors.black26),
+            focusedBorder: _buildBorder(AppColors.fieldBorderColor),
             errorBorder: _buildBorder(Colors.red),
             errorStyle: textTheme.styleInputFieldError,
           ),
