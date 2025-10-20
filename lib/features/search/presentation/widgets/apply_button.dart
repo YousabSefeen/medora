@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
+import 'package:medora/core/enum/search_type.dart' show SearchType;
 
 
 import 'package:medora/features/search/presentation/controller/cubit/search_cubit.dart';
@@ -15,19 +16,13 @@ class ApplyButton extends StatelessWidget {
     return FilterActionButton(
       text: 'Apply',
       backgroundColor:AppColors.softBlue,
-      onPressed: () {
-        Navigator.of(context).pop();
-
-        Future.delayed(
-          const Duration(milliseconds: 500),
-          () => !context.mounted
-              ? null
-              : context.read<SearchCubit>().searchDoctorsByCriteria(),
-        );
-      },
+      onPressed: () => _navigateBackWithCriteriaSearch(context),
     );
 
   }
 
-
+  void _navigateBackWithCriteriaSearch(BuildContext context) {
+    Navigator.of(context).pop();
+    context.read<SearchCubit>().updateSearchType(SearchType.byCriteria);
+  }
 }

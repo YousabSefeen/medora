@@ -34,7 +34,7 @@ class _LocationFilterFieldState extends State<LocationFilterField> {
   Widget build(BuildContext context) {
     return BlocListener<SearchCubit, SearchStates>(
       listener: (context, state) =>
-          locationController.text = state.doctorLocation??'',
+          locationController.text = state.draftDoctorLocation??'',
 
       child: DoctorInfoField(
         isDense: true,

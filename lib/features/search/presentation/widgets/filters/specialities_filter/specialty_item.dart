@@ -27,5 +27,5 @@ class SpecialtyItem extends StatelessWidget {
   }
 
   bool _specialtySelectionSelector(SearchStates state) =>
-      state.selectedSpecialties.contains(specialty);
+      state.draftSelectedSpecialties.contains(specialty);
 }

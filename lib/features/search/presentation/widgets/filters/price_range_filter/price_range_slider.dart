@@ -11,7 +11,7 @@ class PriceRangeSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocSelector<SearchCubit, SearchStates, RangeValues>(
-      selector: (state) => state.priceRange,
+      selector: (state) => state.draftPriceRange,
       builder: (context, priceRangeSlider) => RangeSlider(
         values: priceRangeSlider,
         min: 50,

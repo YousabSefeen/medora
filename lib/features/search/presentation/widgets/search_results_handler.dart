@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:medora/core/constants/common_widgets/sliver_loading%20_list.dart' show SliverLoadingList;
-
+import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder;
+import 'package:medora/core/constants/common_widgets/sliver_loading%20_list.dart'
+    show SliverLoadingList;
 import 'package:medora/core/enum/lazy_request_state.dart';
 import 'package:medora/features/doctor_list/presentation/widgets/doctor_list_view.dart';
+import 'package:medora/features/search/presentation/controller/cubit/search_cubit.dart'
+    show SearchCubit;
 import 'package:medora/features/search/presentation/controller/states/search_states.dart';
+import 'package:medora/features/search/presentation/widgets/no_matching_doctors_widget.dart';
 import 'package:medora/features/search/presentation/widgets/search_welcome_widget.dart';
 
 class SearchResultsHandler extends StatelessWidget {
-  final SearchStates searchState;
-
-  const SearchResultsHandler({super.key, required this.searchState});
+  const SearchResultsHandler({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return _buildSearchResults(searchState);
+    return BlocBuilder<SearchCubit, SearchStates>(
+      builder: (context, searchState) => _buildSearchResults(searchState),
+    );
   }
 
   Widget _buildSearchResults(SearchStates state) {
@@ -23,7 +27,9 @@ class SearchResultsHandler extends StatelessWidget {
       case LazyRequestState.loading:
         return const SliverLoadingList(height: 150);
       case LazyRequestState.loaded:
-        return DoctorListView(doctorList: state.searchResults);
+        return state.searchResults.isEmpty
+            ? const NoMatchingDoctorsWidget()
+            : DoctorListView(doctorList: state.searchResults);
       case LazyRequestState.error:
         return _buildErrorState(state);
     }
@@ -34,7 +40,7 @@ class SearchResultsHandler extends StatelessWidget {
       child: Center(
         child: Text(
           'Error loading search results', // TODO: Use actual error message
-          style:  TextStyle(fontSize: 16, color: Colors.red),
+          style: TextStyle(fontSize: 16, color: Colors.red),
         ),
       ),
     );

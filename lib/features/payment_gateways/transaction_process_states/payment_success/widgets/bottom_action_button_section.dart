@@ -5,7 +5,7 @@ import 'package:medora/core/constants/app_routes/app_router.dart' show AppRouter
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart' show AppointmentCubit;
-import 'package:medora/features/doctor_list/presentation/screen/doctor_list_view_screen.dart' show DoctorListViewScreen;
+
 import 'package:medora/features/home/presentation/screens/bottom_nav_screen.dart';
 
 class BottomActionButtonSection extends StatelessWidget {

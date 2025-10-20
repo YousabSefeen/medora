@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:medora/features/search/presentation/widgets/search_filter_sheet_button.dart'
     show SearchFilterSheetButton;
@@ -13,12 +14,13 @@ class SearchAppBarSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        padding: const EdgeInsets.fromLTRB(5, 0, 5, 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          spacing:10,
           children: [
             _buildTitle(),
-            const SizedBox(height: 16),
+
             _buildSearchRow(context),
           ],
         ),
@@ -27,12 +29,12 @@ class SearchAppBarSection extends StatelessWidget {
   }
 
   Widget _buildTitle() {
-    return const Text(
+    return   Text(
       'Let\'s Find Your\nDoctor',
-      style: TextStyle(
+      style: GoogleFonts.caladea(
         fontSize: 22,
-        fontWeight: FontWeight.w900,
-        height: 1.2,
+        fontWeight: FontWeight.w700,
+        height:1.4,
         letterSpacing: 1,
         wordSpacing: 5,
       ),

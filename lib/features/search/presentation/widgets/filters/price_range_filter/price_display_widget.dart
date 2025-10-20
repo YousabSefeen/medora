@@ -59,7 +59,7 @@ class PriceDisplayWidget extends StatelessWidget {
       shadows: []
     );
     return BlocSelector<SearchCubit, SearchStates, RangeValues>(
-      selector: (state) => state.priceRange,
+      selector: (state) => state.draftPriceRange,
       builder: (context, priceRange) {
         final priceValue = priceSelector(priceRange);
         return Row(

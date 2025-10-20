@@ -30,21 +30,11 @@ class SearchRepository extends SearchRepositoryBase {
           .limit(10)
           .get();
       return _parseSnapshot(snapshot);
-      final List<DoctorModel> doctorList = snapshot.docs.map((doc) {
-        final doctorData = doc.data();
-
-        return DoctorModel.fromJson({'doctorId': doc.id, ...doctorData});
-      }).toList();
-      return right(doctorList);
-
     } catch (e) {
-      print('SearchRepository.searchDoctorsByName $e');
-
       return left(ServerFailure(catchError: e));
     }
   }
 
-  ///xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxء
   @override
   Future<Either<Failure, List<DoctorModel>>> searchDoctorsByCriteria({
     required String doctorName,
@@ -68,8 +58,6 @@ class SearchRepository extends SearchRepositoryBase {
     }
   }
 
-
-
   Future<Query<Map<String, dynamic>>> _buildQuery({
     required String doctorName,
     required RangeValues priceRange,
@@ -77,7 +65,7 @@ class SearchRepository extends SearchRepositoryBase {
     String? location,
   }) async {
     // 1. Basic construction (always required * Doctor Name && Price Range*)
-    var query =  _firestore
+    var query = _firestore
         .collection('doctors')
         .where('name', isGreaterThanOrEqualTo: doctorName)
         .where('name', isLessThanOrEqualTo: '$doctorName\uf8ff')
@@ -129,70 +117,6 @@ class SearchRepository extends SearchRepositoryBase {
     return DoctorModel.fromJson({'doctorId': doc.id, ...doctorData});
   }
 
-  void _logError(String methodName, Object error) => print('SearchRepository.$methodName: $error');
-/*
-  Future<Query<Map<String, dynamic>>> _buildQuery(
-    String doctorName,
-    RangeValues priceRange,
-    List<String>? specialties,
-    String? location,
-  ) async {
-    final String startAt = doctorName ;
-    final String endAt = '$doctorName\uf8ff';
-    final String locationStartAt = location!;
-    final String locationEndAt = '$locationStartAt\uf8ff';
-
-    var query = _firestore
-        .collection('doctors')
-        .where('name', isGreaterThanOrEqualTo: startAt)
-        .where('name', isLessThanOrEqualTo: endAt)
-        .where('fees', isGreaterThanOrEqualTo: priceRange.start)
-        .where('fees', isLessThanOrEqualTo: priceRange.end)
-        .where('location', isGreaterThanOrEqualTo: locationStartAt)
-        .where('location', isLessThanOrEqualTo: locationEndAt).where('specialties', arrayContainsAny: specialties);
-
-
-
-    return query;
-  }
-*/
+  void _logError(String methodName, Object error) =>
+      print('SearchRepository.$methodName: $error');
 }
-
-
-
-/*
-  @override
-  Future<Either<Failure, List<DoctorModel>>> searchDoctorsByCriteria({
-    required String doctorName,
-    required RangeValues priceRange,
-    List<String>? specialties,
-    String? location,
-  }) async {
-    try {
-      print('startAt $doctorName');
-      final String startAt = 'Yousab doctor';
-      final String endAt = '$doctorName\uf8ff';
-
-        QuerySnapshot<Map<String, dynamic>>  snapshot  = await FirebaseFirestore.instance
-            .collection('doctors')
-            .where('name', isGreaterThanOrEqualTo: startAt)
-            .where('name', isLessThanOrEqualTo: endAt)
-            .where('fees', isGreaterThanOrEqualTo: priceRange.start)
-            .where('fees', isLessThanOrEqualTo: priceRange.end)
-            .limit(10)
-            .get();
-
-
-      final List<DoctorModel> doctorList = snapshot.docs.map((doc) {
-        final doctorData = doc.data();
-
-        return DoctorModel.fromJson({'doctorId': doc.id, ...doctorData});
-      }).toList();
-      return right(doctorList);
-    } catch (e) {
-      print('SearchRepository.searchDoctorsByName $e');
-
-      return left(ServerFailure(catchError: e));
-    }
-  }
- */

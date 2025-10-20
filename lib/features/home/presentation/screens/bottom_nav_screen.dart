@@ -2,15 +2,22 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder, ReadContext;
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
-import 'package:medora/features/home/presentation/constants/bottom_nav_constants.dart' show BottomNavConstants;
-import 'package:medora/features/home/presentation/controller/cubits/bottom_nav_cubit.dart' show BottomNavCubit;
-import 'package:medora/features/home/presentation/controller/states/bottom_nav_state.dart' show BottomNavState;
-import 'package:medora/features/home/presentation/widgets/bottom_nav_search_button.dart' show BottomNavSearchButton;
-import 'package:medora/features/home/presentation/widgets/bottom_nav_tab.dart' show BottomNavTab;
-import 'package:medora/features/home/presentation/widgets/home_app_bar.dart' show HomeAppBar;
-import 'package:medora/features/search/presentation/screens/search_screen.dart' show SearchScreen;
-
+import 'package:medora/features/home/presentation/constants/bottom_nav_constants.dart'
+    show BottomNavConstants;
+import 'package:medora/features/home/presentation/controller/cubits/bottom_nav_cubit.dart'
+    show BottomNavCubit;
+import 'package:medora/features/home/presentation/controller/states/bottom_nav_state.dart'
+    show BottomNavState;
+import 'package:medora/features/home/presentation/widgets/bottom_nav_search_button.dart'
+    show BottomNavSearchButton;
+import 'package:medora/features/home/presentation/widgets/bottom_nav_tab.dart'
+    show BottomNavTab;
+import 'package:medora/features/home/presentation/widgets/home_app_bar.dart'
+    show HomeAppBar;
+import 'package:medora/features/search/presentation/screens/search_screen.dart'
+    show SearchScreen;
 
 class BottomNavScreen extends StatefulWidget {
   const BottomNavScreen({super.key});
@@ -19,7 +26,8 @@ class BottomNavScreen extends StatefulWidget {
   State<BottomNavScreen> createState() => _BottomNavScreenState();
 }
 
-class _BottomNavScreenState extends State<BottomNavScreen> with TickerProviderStateMixin {
+class _BottomNavScreenState extends State<BottomNavScreen>
+    with TickerProviderStateMixin {
   late AnimationController _hideBottomBarAnimationController;
   late AnimationController _borderRadiusAnimationController;
 
@@ -76,13 +84,15 @@ class _BottomNavScreenState extends State<BottomNavScreen> with TickerProviderSt
           backgroundColor: AppColors.white,
           appBar: AppBar(
             backgroundColor: AppColors.white,
-            title:  state.index==0? const HomeAppBar():  Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Text( BottomNavConstants.appBarTitles[state.index]),
-            ),
+            title: state.index == 0
+                ? const HomeAppBar()
+                : Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Text(BottomNavConstants.appBarTitles[state.index]),
+                  ),
           ),
           body: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 20),
+            padding: EdgeInsets.symmetric(horizontal: 15.w),
             child: SafeArea(
               child: NotificationListener<ScrollNotification>(
                 onNotification: _handleScrollNotification,
@@ -90,8 +100,9 @@ class _BottomNavScreenState extends State<BottomNavScreen> with TickerProviderSt
               ),
             ),
           ),
-          floatingActionButton:
-              BottomNavSearchButton(isFabHidden: state.isFabHidden),
+          floatingActionButton: BottomNavSearchButton(
+            isFabHidden: state.isFabHidden,
+          ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: _buildAnimatedNavigationBar(state),
@@ -109,7 +120,6 @@ class _BottomNavScreenState extends State<BottomNavScreen> with TickerProviderSt
 
   Widget _buildAnimatedNavigationBar(BottomNavState state) =>
       AnimatedBottomNavigationBar.builder(
-
         itemCount: BottomNavConstants.iconList.length,
 
         tabBuilder: (int index, bool isActive) => BottomNavTab(
@@ -123,7 +133,6 @@ class _BottomNavScreenState extends State<BottomNavScreen> with TickerProviderSt
         onTap: (index) => context.read<BottomNavCubit>().changeTabIndex(index),
         hideAnimationController: _hideBottomBarAnimationController,
         gapLocation: GapLocation.center,
-
 
         notchSmoothness: NotchSmoothness.defaultEdge,
         leftCornerRadius: 32,

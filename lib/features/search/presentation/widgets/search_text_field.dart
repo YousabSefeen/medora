@@ -1,12 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/features/search/presentation/controller/cubit/search_cubit.dart';
 
-class SearchTextField extends StatelessWidget {
+class SearchTextField extends StatefulWidget {
   const SearchTextField({super.key});
+
+  @override
+  State<SearchTextField> createState() => _SearchTextFieldState();
+}
+
+class _SearchTextFieldState extends State<SearchTextField> {
+  late final SearchCubit _searchCubit;
+  late TextEditingController _searchController;
+
+  @override
+  void initState() {
+    _searchCubit = context.read<SearchCubit>();
+    _searchController = TextEditingController(
+      text: _searchCubit.state.doctorName,
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +38,8 @@ class SearchTextField extends StatelessWidget {
 
     return TextFormField(
       style: textTheme.styleInputField,
-      onChanged: (query) => _onSearchQueryChanged(context, query),
+      controller: _searchController,
+      onChanged: (query) => _updateDoctorName(query),
       decoration: InputDecoration(
         prefixIcon: _buildSearchIcon(),
         contentPadding: const EdgeInsets.symmetric(vertical: 12),
@@ -31,27 +56,20 @@ class SearchTextField extends StatelessWidget {
     );
   }
 
-  Widget _buildSearchIcon() {
-    return const Padding(
-      padding: EdgeInsets.all(12),
-      child: FaIcon(
-        FontAwesomeIcons.magnifyingGlass,
-        color: Colors.grey,
-        size: 15,
-      ),
-    );
-  }
+  Widget _buildSearchIcon() => Padding(
+    padding: EdgeInsets.all(12.sp),
+    child: FaIcon(
+      FontAwesomeIcons.magnifyingGlass,
+      color: Colors.grey,
+      size: 15.sp,
+    ),
+  );
 
-  OutlineInputBorder _buildBorder(Color color) {
-    return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(18),
-      borderSide: BorderSide(color: color),
-    );
-  }
+  OutlineInputBorder _buildBorder(Color color) => OutlineInputBorder(
+    borderRadius: BorderRadius.circular(18.r),
+    borderSide: BorderSide(color: color),
+  );
 
-  void _onSearchQueryChanged(BuildContext context, String query) {
-
-    context.read<SearchCubit>().doctorNameFilter(query);
-    context.read<SearchCubit>().onSearchQueryChanged(query);
-  }
+  void _updateDoctorName(String query) =>
+      _searchCubit.updateDoctorName(doctorName: query);
 }

@@ -7,6 +7,7 @@ import 'package:medora/core/constants/app_alerts/app_alerts.dart'
 import 'package:medora/core/constants/app_routes/app_router.dart'
     show AppRouter;
 import 'package:medora/core/constants/themes/app_colors.dart';
+import 'package:medora/core/enum/search_type.dart' show SearchType;
 import 'package:medora/features/search/presentation/controller/cubit/search_cubit.dart'
     show SearchCubit;
 import 'package:medora/features/search/presentation/controller/states/search_states.dart'
@@ -23,10 +24,10 @@ class SearchFilterSheetButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return KeyboardVisibilityBuilder(
       builder: (context, isKeyboardVisible) =>
-          BlocSelector<SearchCubit, SearchStates, bool>(
-            selector: (state) => state.isSearchingByCriteria,
-            builder: (context, isSearchingByCriteria) => CriteriaFilterIcon(
-              isSearchingByCriteria: isSearchingByCriteria,
+          BlocSelector<SearchCubit, SearchStates, SearchType>(
+            selector: (state) => state.searchType,
+            builder: (context, searchType) => CriteriaFilterIcon(
+              isSearchingByCriteria: searchType==SearchType.byCriteria,
               onPressed: () {
                 if (isKeyboardVisible) {
                   _dismissKeyboardThenShowFilterBottomSheet(context);
@@ -49,10 +50,10 @@ class SearchFilterSheetButton extends StatelessWidget {
   }
 
   void _showFilterBottomSheet(BuildContext context) {
+    
+    context.read<SearchCubit>().synchronizeDraftFiltersWithConfirmed();
     AppAlerts.showLeftSheet(
-      onCancelPressed: () {
-        Navigator.of(context).pop();
-      },
+      onCancelPressed: () => Navigator.of(context).pop(),
       context: context,
       appBarBackgroundColor: AppColors.white,
       appBarTitle: 'Filter Search',

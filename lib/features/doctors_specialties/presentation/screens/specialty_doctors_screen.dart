@@ -6,7 +6,8 @@ import 'package:medora/core/services/server_locator.dart' show serviceLocator;
 import 'package:medora/features/doctor_list/presentation/widgets/doctor_list_view.dart' show DoctorListView;
 import 'package:medora/features/doctors_specialties/presentation/controller/cubit/specialty_doctors_cubit.dart' show SpecialtyDoctorsCubit;
 import 'package:medora/features/doctors_specialties/presentation/controller/states/specialty_doctors_states.dart' show SpecialtyDoctorsStates;
-import 'package:medora/features/doctors_specialties/presentation/widgets/empty_doctors_list.dart' show EmptyDoctorsList;
+import 'package:medora/features/doctors_specialties/presentation/widgets/empty_specialty_doctors_widget.dart'
+    show EmptySpecialtyDoctorsWidget;
 
 
 import '../../../../core/constants/common_widgets/sliver_loading _list.dart' show SliverLoadingList;
@@ -67,7 +68,7 @@ class _SpecialtyDoctorsScreenState extends State<SpecialtyDoctorsScreen> {
                       return const SliverLoadingList(height: 150);
                     case RequestState.loaded:
                       return state.specialtyDoctorsList.isEmpty
-                          ? EmptyDoctorsList(specialtyName: widget.specialtyName)
+                          ? EmptySpecialtyDoctorsWidget(specialtyName: widget.specialtyName)
                           : DoctorListView(doctorList: state.specialtyDoctorsList);
                     case RequestState.error:
                       return Center(

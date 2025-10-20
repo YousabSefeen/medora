@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:medora/generated/assets.dart' show Assets;
 
-class EmptyDoctorsList extends StatelessWidget {
+class EmptySpecialtyDoctorsWidget extends StatelessWidget {
   final String specialtyName;
 
-  const EmptyDoctorsList({super.key, required this.specialtyName});
+  const EmptySpecialtyDoctorsWidget({super.key, required this.specialtyName});
 
   @override
   Widget build(BuildContext context) {

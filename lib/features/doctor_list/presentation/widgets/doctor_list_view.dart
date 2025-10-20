@@ -20,27 +20,7 @@ class DoctorListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(vertical: 10),
-      sliver: doctorList.isEmpty
-          ? SliverFillRemaining(
-              hasScrollBody: false,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                spacing: 20.h,
-                children: [
-                  Icon(Icons.search_off, size: 100.sp),
-                  Text(
-                    'No doctors found matching your search.',
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      color: Colors.grey.shade600,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 50.h)
-                ],
-              ),
-            )
-          : SliverList.builder(
+      sliver:   SliverList.builder(
               itemCount: doctorList.length,
         itemBuilder: (context, index) {
           final DoctorModel doctor = doctorList[index];

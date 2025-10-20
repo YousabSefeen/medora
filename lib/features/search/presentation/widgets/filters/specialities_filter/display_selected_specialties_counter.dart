@@ -15,7 +15,7 @@ class DisplaySelectedSpecialtiesCounter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocSelector<SearchCubit, SearchStates, List<String>>(
-      selector: (state) => state.selectedSpecialties,
+      selector: (state) => state.draftSelectedSpecialties,
       builder: (context, selectedSpecialties) {
         final selectedSpecialtiesLength = selectedSpecialties.length;
         return CustomAnimationTransition(

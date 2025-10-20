@@ -27,7 +27,7 @@ class ManualPriceInputFields extends StatelessWidget {
 
   Widget _buildMinPriceField(SearchCubit cubit) {
     return BlocSelector<SearchCubit, SearchStates, double>(
-      selector: (state) => state.priceRange.start,
+      selector: (state) => state.draftPriceRange.start,
       builder: (context, minPrice) {
         return SizedBox(
           height: 40,
@@ -44,7 +44,7 @@ class ManualPriceInputFields extends StatelessWidget {
 
   Widget _buildMaxPriceField(SearchCubit cubit) {
     return BlocSelector<SearchCubit, SearchStates, double>(
-      selector: (state) => state.priceRange.end,
+      selector: (state) => state.draftPriceRange.end,
       builder: (context, maxPrice) {
         return SizedBox(
           height: 40,
