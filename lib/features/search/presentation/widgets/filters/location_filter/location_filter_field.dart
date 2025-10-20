@@ -41,7 +41,7 @@ class _LocationFilterFieldState extends State<LocationFilterField> {
         controller: locationController,
 
         onChanged: (location) =>
-            context.read<SearchCubit>().doctorLocationFilter(location),
+            context.read<SearchCubit>().updateDoctorLocation(location),
       ),
     );
   }

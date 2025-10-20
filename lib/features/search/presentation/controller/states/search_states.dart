@@ -46,25 +46,25 @@ class SearchStates extends Equatable {
     RangeValues? draftPriceRange,
     List<String>? draftSelectedSpecialties,
     String? draftDoctorLocation,
+
     RangeValues? confirmedPriceRange,
     List<String>? confirmedSelectedSpecialties,
     String? confirmedDoctorLocation,
   }) {
     return SearchStates(
-      searchType:
-      searchType ?? this.searchType,
+      searchType: searchType ?? this.searchType,
       searchResults: searchResults ?? this.searchResults,
       searchResultsState: searchResultsState ?? this.searchResultsState,
       searchResultsErrorMsg:
           searchResultsErrorMsg ?? this.searchResultsErrorMsg,
+
       doctorName: doctorName ?? this.doctorName,
 
       draftPriceRange: draftPriceRange ?? this.draftPriceRange,
-
       draftSelectedSpecialties:
           draftSelectedSpecialties ?? this.draftSelectedSpecialties,
-
       draftDoctorLocation: draftDoctorLocation ?? this.draftDoctorLocation,
+
       confirmedPriceRange: confirmedPriceRange ?? this.confirmedPriceRange,
       confirmedSelectedSpecialties:
           confirmedSelectedSpecialties ?? this.confirmedSelectedSpecialties,
@@ -82,10 +82,9 @@ class SearchStates extends Equatable {
     doctorName,
 
     draftPriceRange,
-
     draftSelectedSpecialties,
-
     draftDoctorLocation,
+
     confirmedPriceRange,
     confirmedSelectedSpecialties,
     confirmedDoctorLocation,

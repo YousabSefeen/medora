@@ -27,12 +27,12 @@ class SearchFilterSheetButton extends StatelessWidget {
           BlocSelector<SearchCubit, SearchStates, SearchType>(
             selector: (state) => state.searchType,
             builder: (context, searchType) => CriteriaFilterIcon(
-              isSearchingByCriteria: searchType==SearchType.byCriteria,
+              isSearchingByCriteria: searchType == SearchType.byCriteria,
               onPressed: () {
                 if (isKeyboardVisible) {
                   _dismissKeyboardThenShowFilterBottomSheet(context);
                 } else {
-                  _showFilterBottomSheet(context);
+                  _showFilterSheet(context);
                 }
               },
             ),
@@ -43,22 +43,27 @@ class SearchFilterSheetButton extends StatelessWidget {
   void _dismissKeyboardThenShowFilterBottomSheet(BuildContext context) {
     AppRouter.dismissKeyboard();
 
-    Future.delayed(const Duration(milliseconds: 500), () {
+    Future.delayed(const Duration(milliseconds: 300), () {
       if (!context.mounted) return;
-      _showFilterBottomSheet(context);
+      _showFilterSheet(context);
     });
+
   }
 
-  void _showFilterBottomSheet(BuildContext context) {
-    
-    context.read<SearchCubit>().synchronizeDraftFiltersWithConfirmed();
-    AppAlerts.showLeftSheet(
-      onCancelPressed: () => Navigator.of(context).pop(),
-      context: context,
-      appBarBackgroundColor: AppColors.white,
-      appBarTitle: 'Filter Search',
-      appBarTitleColor: AppColors.black,
-      body: const FilterSheetContent(),
-    );
+  void _showFilterSheet(BuildContext context) {
+    _synchronizeFilters(context);
+    _showSheet(context);
   }
+
+  void _synchronizeFilters(BuildContext context) =>
+      context.read<SearchCubit>().synchronizeDraftFiltersWithConfirmed();
+
+  void _showSheet(BuildContext context) => AppAlerts.showLeftSheet(
+    onCancelPressed: () => Navigator.of(context).pop(),
+    context: context,
+    appBarBackgroundColor: AppColors.white,
+    appBarTitle: 'Filter Search',
+    appBarTitleColor: AppColors.black,
+    body: const FilterSheetContent(),
+  );
 }
