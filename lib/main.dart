@@ -17,7 +17,8 @@ import 'package:medora/features/auth/presentation/controller/cubit/login_cubit.d
     show LoginCubit;
 import 'package:medora/features/home/presentation/controller/cubits/bottom_nav_cubit.dart'
     show BottomNavCubit;
-import 'package:medora/features/home/presentation/screens/bottom_nav_screen.dart' show BottomNavScreen;
+import 'package:medora/features/home/presentation/screens/bottom_nav_screen.dart'
+    show BottomNavScreen;
 import 'package:medora/features/payment_gateways/paymob/presentation/controller/cubit/paymob_payment_cubit.dart'
     show PaymobPaymentCubit;
 import 'package:medora/features/payment_gateways/stripe/presentation/View/Screens/stripe_payment_screen.dart'
@@ -64,7 +65,9 @@ void main() async {
         BlocProvider(create: (_) => serviceLocator<LoginCubit>()),
         BlocProvider(create: (_) => serviceLocator<RegisterCubit>()),
         BlocProvider(create: (_) => serviceLocator<DoctorProfileCubit>()),
-        BlocProvider(create: (_) => serviceLocator<DoctorListCubit>()),
+        BlocProvider(
+          create: (_) => serviceLocator<DoctorListCubit>()..getDoctorList(),
+        ),
         BlocProvider(create: (_) => serviceLocator<AppointmentCubit>()),
         BlocProvider(create: (_) => serviceLocator<AppSettingsCubit>()),
 
@@ -109,7 +112,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   static final GlobalKey<NavigatorState> navigatorKey =
-  GlobalKey<NavigatorState>();
+      GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +132,7 @@ class MyApp extends StatelessWidget {
         builder: (context, child) {
           return BlocListener<AppSettingsCubit, AppSettingsStates>(
             listenWhen: (previous, current) =>
-            previous.internetState != current.internetState,
+                previous.internetState != current.internetState,
             listener: (context, state) {
               if (state.internetState == InternetState.disconnected) {
                 ScaffoldMessenger.of(context).clearSnackBars();
@@ -157,7 +160,7 @@ class MyApp extends StatelessWidget {
           );
         },
 
-        home: BottomNavScreen(), // أو شاشتك الرئيسية
+        home: const BottomNavScreen(), // أو شاشتك الرئيسية
         //     home: CustomSlider(), // أو شاشتك الرئيسية
       ),
     );
@@ -183,13 +186,18 @@ class _CustomSliderState extends State<CustomSlider> {
 
           children: [
             Text('CustomSlider'),
-            Slider(min: 50, max: 100, onChanged: (value) {
-              print('_CustomSliderState.build value $value');
+            Slider(
+              min: 50,
+              max: 100,
+              onChanged: (value) {
+                print('_CustomSliderState.build value $value');
 
-              setState(() {
-                _value = value;
-              });
-            }, value: _value),
+                setState(() {
+                  _value = value;
+                });
+              },
+              value: _value,
+            ),
           ],
         ),
       ),
@@ -254,7 +262,7 @@ class TwoScreen extends StatelessWidget {
                   AppRouter.pop(
                     context,
                     returnValue:
-                    'AppRouterNames.paymobPayment AppRouterNames.paymobPayment AppRouterNames.paymobPayment AppRouterNames.paymobPaymentXXXXXXXXXX',
+                        'AppRouterNames.paymobPayment AppRouterNames.paymobPayment AppRouterNames.paymobPayment AppRouterNames.paymobPaymentXXXXXXXXXX',
                   );
                 },
                 child: Text('Check'),

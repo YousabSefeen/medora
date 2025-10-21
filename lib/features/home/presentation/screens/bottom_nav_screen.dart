@@ -40,7 +40,7 @@ class _BottomNavScreenState extends State<BottomNavScreen>
 
   void _initAnimationControllers() {
     _hideBottomBarAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 500),
       vsync: this,
     );
     _borderRadiusAnimationController = AnimationController(

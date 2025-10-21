@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:medora/core/animations/custom_animation_route.dart' show CustomAnimationRoute;
 import 'package:medora/features/appointments/presentation/screens/appointment_cancellation_screen.dart' show AppointmentCancellationScreen;
 import 'package:medora/features/appointments/presentation/screens/patient_details_screen.dart' show PatientDetailsScreen;
-import 'package:medora/features/doctor_list/presentation/screen/doctor_list_view_screen.dart' show DoctorListViewScreen;
+import 'package:medora/features/doctor_list/presentation/screen/popular_doctors_section.dart'
+    show PopularDoctorsSection;
 import 'package:medora/features/home/presentation/screens/bottom_nav_screen.dart' show BottomNavScreen;
 import 'package:medora/features/payment_gateways/paypal/presentation/views/screens/paypal_payment_screen.dart' show PaypalPaymentScreen;
 

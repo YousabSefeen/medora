@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medora/core/constants/themes/app_colors.dart';
 
 class BottomNavTab extends StatelessWidget {
   const BottomNavTab({
@@ -16,26 +17,15 @@ class BottomNavTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
+      padding: isActive
+          ? const EdgeInsets.symmetric(vertical: 5)
+          : EdgeInsets.zero,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         spacing: 2,
         children: [
-          !isActive
-              ? CircleAvatar(
-                  backgroundColor: Colors.black26,
-                  radius: 15.r,
-                  child: Icon(
-                    iconData,
-                    color: Colors.white,
-                    size: 15.sp,
-                  ))
-              : Icon(
-                  iconData,
-                  color: Colors.white,
-                  size: 18.sp,
-                ),
+          Icon(iconData, color: AppColors.white, size: 22.sp),
           !isActive
               ? const SizedBox.shrink()
               : Expanded(
@@ -46,7 +36,7 @@ class BottomNavTab extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 13.sp,
-                        color: Colors.white,
+                        color: AppColors.white,
                         fontWeight: FontWeight.w700,
                       ),
                     ),

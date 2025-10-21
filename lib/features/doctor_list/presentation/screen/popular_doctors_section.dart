@@ -6,28 +6,12 @@ import 'package:medora/features/doctor_list/presentation/widgets/doctor_list_vie
 import '../../../../core/constants/common_widgets/sliver_loading _list.dart' show SliverLoadingList;
 import '../controller/cubit/doctor_list_cubit.dart';
 import '../controller/states/doctor_list_state.dart';
-import '../widgets/custom_drawer.dart';
 
-class DoctorListViewScreen extends StatefulWidget {
-  const DoctorListViewScreen({super.key});
-
-  @override
-  State<DoctorListViewScreen> createState() => _DoctorListViewScreenState();
-}
-
-class _DoctorListViewScreenState extends State<DoctorListViewScreen> {
-  @override
-  void initState() {
-    super.initState();
-
-    _loadDoctors();
-  }
-
-  void _loadDoctors() => context.read<DoctorListCubit>().getDoctorList();
+class PopularDoctorsSection extends StatelessWidget {
+  const PopularDoctorsSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    print('_DoctorListViewScreenState.build');
     return BlocBuilder<DoctorListCubit, DoctorListState>(
       buildWhen: (previous, current) =>
       previous.doctorList != current.doctorList,
