@@ -15,6 +15,7 @@ import 'package:medora/core/app_settings/controller/cubit/app_settings_cubit.dar
 import 'package:medora/core/enum/internet_state.dart' show InternetState;
 import 'package:medora/features/auth/presentation/controller/cubit/login_cubit.dart'
     show LoginCubit;
+import 'package:medora/features/favorites/presentation/controller/cubit/favorites_cubit.dart' show FavoritesCubit;
 import 'package:medora/features/home/presentation/controller/cubits/bottom_nav_cubit.dart'
     show BottomNavCubit;
 import 'package:medora/features/home/presentation/screens/bottom_nav_screen.dart'
@@ -72,6 +73,7 @@ void main() async {
         BlocProvider(create: (_) => serviceLocator<AppSettingsCubit>()),
 
         BlocProvider(create: (_) => serviceLocator<SearchCubit>()),
+        BlocProvider(create: (_) => serviceLocator<FavoritesCubit>()),
 
         //Payment Gateways
         BlocProvider(create: (_) => serviceLocator<PaymobPaymentCubit>()),

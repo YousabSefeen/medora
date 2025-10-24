@@ -6,6 +6,8 @@ import 'package:medora/core/payment_gateway_manager/stripe_payment/stripe_servic
 import 'package:medora/core/services/api_services.dart' show ApiServices;
 import 'package:medora/features/doctors_specialties/data/repository/specialty_doctors_repository.dart' show SpecialtyDoctorsRepository;
 import 'package:medora/features/doctors_specialties/presentation/controller/cubit/specialty_doctors_cubit.dart' show SpecialtyDoctorsCubit;
+import 'package:medora/features/favorites/data/repository/favorites_repository.dart' show FavoritesRepository;
+import 'package:medora/features/favorites/presentation/controller/cubit/favorites_cubit.dart' show FavoritesCubit;
 import 'package:medora/features/home/presentation/controller/cubits/bottom_nav_cubit.dart' show BottomNavCubit;
 import 'package:medora/features/payment_gateways/paymob/data/repository/paymob_repository.dart' show PaymobRepository;
 import 'package:medora/features/payment_gateways/paymob/presentation/controller/cubit/paymob_payment_cubit.dart' show PaymobPaymentCubit;
@@ -47,6 +49,7 @@ class ServiceLocator {
     serviceLocator.registerLazySingleton<AppointmentRepository>(() => AppointmentRepository());
     serviceLocator.registerLazySingleton<SpecialtyDoctorsRepository>(() => SpecialtyDoctorsRepository());
     serviceLocator.registerLazySingleton<SearchRepository>(() => SearchRepository());
+    serviceLocator.registerLazySingleton<FavoritesRepository>(() => FavoritesRepository());
 
 
 
@@ -89,6 +92,10 @@ class ServiceLocator {
 
     serviceLocator.registerFactory<SearchCubit>(
           () => SearchCubit(searchRepository: serviceLocator()),
+    );
+
+    serviceLocator.registerFactory<FavoritesCubit>(
+          () => FavoritesCubit(favoritesRepository: serviceLocator()),
     );
   }
 

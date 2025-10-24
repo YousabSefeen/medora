@@ -4,17 +4,19 @@ import 'package:medora/core/enum/animation_type.dart' show AnimationType;
 class CustomAnimationTransition extends StatelessWidget {
   final Widget child;
   final AnimationType animationType;
+  final Duration? duration;
 
   const CustomAnimationTransition({
     super.key,
     required this.child,
     required this.animationType,
+    this.duration,
   });
 
   @override
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 600),
+      duration: duration ?? const Duration(milliseconds: 600),
 
       transitionBuilder: (Widget child, Animation<double> animation) {
         switch (animationType) {

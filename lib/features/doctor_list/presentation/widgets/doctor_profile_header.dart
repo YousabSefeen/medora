@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/extensions/string_extensions.dart';
+import 'package:medora/features/favorites/presentation/widgets/toggle_favorite_button.dart'
+    show ToggleFavoriteButton;
 
 import '../../../../core/constants/common_widgets/custom_shimmer.dart';
 import '../../../../generated/assets.dart';
@@ -23,8 +25,10 @@ class DoctorProfileHeader extends StatelessWidget {
         children: [
           _doctorImage(),
           _doctorInfo(context),
+
+          ToggleFavoriteButton(doctorId: doctorInfo.doctorId!),
         ],
-      )
+      ),
     );
   }
 
@@ -51,30 +55,34 @@ class DoctorProfileHeader extends StatelessWidget {
   }
 
   Expanded _doctorInfo(BuildContext context) => Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 5),
-            Text(
-              doctorInfo.name.capitalizeFirstLetter(),
-              style: Theme.of(context).textTheme.mediumBlack.copyWith(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.8,
-              ),
-            ),
-            Text(doctorInfo.bio,
-                style: Theme.of(context)
-                    .listTileTheme
-                    .subtitleTextStyle!
-                    .copyWith(
-                        fontSize: 14.sp,
-                        height: 1.3,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black38),
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis),
-          ],
-        ),
-      );
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 5),
+        _buildDoctorName(context),
+        _buildDoctorBio(context),
+      ],
+    ),
+  );
+
+  Text _buildDoctorName(BuildContext context) => Text(
+    doctorInfo.name.capitalizeFirstLetter(),
+    style: Theme.of(context).textTheme.mediumBlack.copyWith(
+      fontSize: 18.sp,
+      fontWeight: FontWeight.w700,
+      letterSpacing: 0.8,
+    ),
+  );
+
+  Text _buildDoctorBio(BuildContext context) => Text(
+    doctorInfo.bio,
+    style: Theme.of(context).listTileTheme.subtitleTextStyle!.copyWith(
+      fontSize: 14.sp,
+      height: 1.3,
+      fontWeight: FontWeight.w500,
+      color: Colors.black38,
+    ),
+    maxLines: 3,
+    overflow: TextOverflow.ellipsis,
+  );
 }

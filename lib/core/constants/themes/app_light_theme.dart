@@ -24,6 +24,8 @@ class AppLightTheme {
         letterSpacing: 1,
       ),
     ),
+
+
     iconTheme: IconThemeData(color: AppColors.softBlue, size: 22.sp),
 
     textSelectionTheme: TextSelectionThemeData(
