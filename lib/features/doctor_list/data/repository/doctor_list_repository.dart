@@ -12,16 +12,6 @@ class DoctorListRepository extends DoctorListRepositoryBase {
       final QuerySnapshot<Map<String, dynamic>> snapshot =
           await FirebaseFirestore.instance.collection('doctors').get();
 
-      // final List<DoctorModel> doctorList =
-      //     snapshot.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> doc) {
-      //   final combinedData = {
-      //     'doctorId': doc.id,
-      //     'doctorModel': doc.data(),
-      //   };
-      //
-      //   return DoctorModel.fromJson(combinedData);
-      //
-      //     }).toList();
       final List<DoctorModel> doctorList = snapshot.docs.map((doc) {
         try {
           final doctorData = doc.data();

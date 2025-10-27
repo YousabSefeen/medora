@@ -3,20 +3,23 @@ import 'package:cloud_firestore/cloud_firestore.dart'
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:medora/core/error/failure.dart';
+import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
+    show DoctorModel;
 
 import 'favorites_repository_base.dart';
 
 class FavoritesRepository extends FavoritesRepositoryBase {
   final FirebaseFirestore _firestore;
+  final String _userId;
 
-  FavoritesRepository({FirebaseFirestore? firestore})
-    : _firestore = firestore ?? FirebaseFirestore.instance;
+  FavoritesRepository({String? userId, FirebaseFirestore? firestore})
+    : _userId = userId ?? FirebaseAuth.instance.currentUser!.uid,
+      _firestore = firestore ?? FirebaseFirestore.instance;
 
   @override
   Future<Either<Failure, void>> addDoctorToFavorites(String doctorId) async {
     try {
-      final _userId = FirebaseAuth.instance.currentUser!.uid;
-      await FirebaseFirestore.instance
+      await _firestore
           .collection('users')
           .doc(_userId)
           .collection('favorites')
@@ -34,8 +37,7 @@ class FavoritesRepository extends FavoritesRepositoryBase {
     String doctorId,
   ) async {
     try {
-      final _userId = FirebaseAuth.instance.currentUser!.uid;
-      await FirebaseFirestore.instance
+      await _firestore
           .collection('users')
           .doc(_userId)
           .collection('favorites')
@@ -49,44 +51,40 @@ class FavoritesRepository extends FavoritesRepositoryBase {
   }
 
   @override
-  Future<Either<Failure, List<String>>> getFavorites() async {
+  Future<Either<Failure, List<DoctorModel>>> getAllFavorites() async {
     try {
-      final _userId = FirebaseAuth.instance.currentUser!.uid;
-      final doctorId = 'E4Avs8iXKmMxNM7OaIhkHjmebvi1';
-      final favoritesSnapshot = await FirebaseFirestore.instance
+      final favoritesSnapshot = await _firestore
           .collection('users')
           .doc(_userId)
           .collection('favorites')
           .orderBy('addedAt', descending: true)
           .get();
 
+      if (favoritesSnapshot.docs.isEmpty) {
+        return right([]);
+      } else {
+        final favoriteDoctorIds = favoritesSnapshot.docs
+            .map((d) => d.id)
+            .toList();
 
-      final favoriteDoctorIds = favoritesSnapshot.docs
-          .map((d) => d.id)
-          .toList();
+        ///
 
+        final favoriteDoctors = await _firestore
+            .collection('doctors')
+            .where(FieldPath.documentId, whereIn: favoriteDoctorIds)
+            .get();
 
-       bool isDoctorFavorite = favoriteDoctorIds.contains(doctorId);
+        final List<DoctorModel> doctorList = favoriteDoctors.docs.map((doc) {
+          final doctorData = doc.data();
 
-      ///
+          return DoctorModel.fromJson({
+            'doctorId': doc.id,
+            ...doctorData, // Spread Operator to integrate fields
+          });
+        }).toList();
 
-      final favoriteDoctors = await FirebaseFirestore.instance
-          .collection('doctors')
-          .where(FieldPath.documentId, whereIn: favoriteDoctorIds)
-          .get();
-      print('Success ${favoriteDoctors.docs.length}');
-
-      final doc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(_userId)
-          .collection('favorites')
-          .doc(doctorId)
-          .get();
-
-      final isFavorite = doc.exists;
-      print('isFavorite $isFavorite');
-      print('Success ${favoriteDoctors.docs.length}');
-      return right([]);
+        return right(doctorList);
+      }
     } catch (e) {
       print('Error removeDoctorFromFavorites:  ${e.toString()}');
       return Left(ServerFailure(catchError: e));
@@ -94,23 +92,19 @@ class FavoritesRepository extends FavoritesRepositoryBase {
   }
 
   @override
-  Future<Either<Failure, Set<String> >> isDoctorFavorite(String doctorId) async{
-    try{
-      final _userId = FirebaseAuth.instance.currentUser!.uid;
-      final favoritesSnapshot = await FirebaseFirestore.instance
+  Future<Either<Failure, Set<String>>> isDoctorFavorite(String doctorId) async {
+    try {
+      final favoritesSnapshot = await _firestore
           .collection('users')
           .doc(_userId)
           .collection('favorites')
           .orderBy('addedAt', descending: true)
           .get();
 
-
-      final favoriteDoctorIds = favoritesSnapshot.docs
-          .map((d) => d.id)
-          .toSet();
+      final favoriteDoctorIds = favoritesSnapshot.docs.map((d) => d.id).toSet();
 
       return right(favoriteDoctorIds);
-    }catch(e){
+    } catch (e) {
       print('Error isDoctorFavorite:  ${e.toString()}');
       return Left(ServerFailure(catchError: e));
     }

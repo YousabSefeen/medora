@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart' show Cubit;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
+import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
+    show DoctorModel;
 import 'package:medora/features/favorites/data/repository/favorites_repository.dart'
     show FavoritesRepository;
 import 'package:medora/features/favorites/presentation/controller/states/favorites_states.dart'
@@ -81,5 +83,26 @@ class FavoritesCubit extends Cubit<FavoritesStates> {
         ),
       );
     }
+  }
+
+  Future<void> getAllFavorites() async {
+    final response = await favoritesRepository.getAllFavorites();
+
+    response.fold(
+      (failure) => emit(
+        state.copyWith(
+          favoritesListState: LazyRequestState.error,
+          favoritesListError: failure.toString(),
+        ),
+      ),
+      (doctors) {
+        emit(
+          state.copyWith(
+            favoritesListState: LazyRequestState.loaded,
+            favoritesList: doctors,
+          ),
+        );
+      },
+    );
   }
 }
