@@ -38,12 +38,18 @@ class FavoritesCubit extends Cubit<FavoritesStates> {
 
   Future<void> toggleFavorite({
     required bool isFavorite,
-    required String doctorId,
+    required DoctorModel doctorInfo,
   }) async {
     final previousFavorites = _saveCurrentState();
-
-    _performOptimisticUpdate(isFavorite: isFavorite, doctorId: doctorId);
-    await _executeBackendOperation(isFavorite: isFavorite, doctorId: doctorId);
+    _updateAllFavorites(isFavorite: isFavorite, doctorInfo: doctorInfo);
+    _performOptimisticUpdate(
+      isFavorite: isFavorite,
+      doctorId: doctorInfo.doctorId!,
+    );
+    await _executeBackendOperation(
+      isFavorite: isFavorite,
+      doctorId: doctorInfo.doctorId!,
+    );
   }
 
   Set<String> _saveCurrentState() => Set<String>.from(state.favoriteDoctors);
@@ -85,6 +91,28 @@ class FavoritesCubit extends Cubit<FavoritesStates> {
     }
   }
 
+  void _updateAllFavorites({
+    required bool isFavorite,
+    required DoctorModel doctorInfo,
+  }) {
+    if (_isFavoritesLoadedBefore == false) return;
+    final updatedFavoritesList = List<DoctorModel>.from(state.favoritesList);
+
+    final index = updatedFavoritesList.indexWhere(
+      (doctor) => doctor.doctorId == doctorInfo.doctorId,
+    );
+
+    if (index != -1 && isFavorite) {
+      updatedFavoritesList.removeAt(index);
+    } else {
+      updatedFavoritesList.insert(0, doctorInfo);
+    }
+
+    emit(state.copyWith(favoritesList: updatedFavoritesList));
+  }
+
+    bool _isFavoritesLoadedBefore = false;
+
   Future<void> getAllFavorites() async {
     final response = await favoritesRepository.getAllFavorites();
 
@@ -104,5 +132,6 @@ class FavoritesCubit extends Cubit<FavoritesStates> {
         );
       },
     );
+    _isFavoritesLoadedBefore = true;
   }
 }

@@ -26,7 +26,7 @@ class DoctorProfileHeader extends StatelessWidget {
           _doctorImage(),
           _doctorInfo(context),
 
-          ToggleFavoriteButton(doctorId: doctorInfo.doctorId!),
+          ToggleFavoriteButton( doctorInfo : doctorInfo),
         ],
       ),
     );

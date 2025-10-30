@@ -24,8 +24,14 @@ class _FavoritesDoctorsListState extends State<FavoritesDoctorsList> {
     super.initState();
   }
 
-  Future<void> _getAllFavoritesDoctors() async =>
+  static bool _isFavoritesLoadedBefore = false;
+
+  Future<void> _getAllFavoritesDoctors() async {
+    if (!_isFavoritesLoadedBefore) {
       await context.read<FavoritesCubit>().getAllFavorites();
+    }
+    _isFavoritesLoadedBefore = true;
+  }
 
   @override
   Widget build(BuildContext context) {

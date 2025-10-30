@@ -6,15 +6,16 @@ import 'package:medora/core/constants/app_alerts/app_alerts.dart';
 import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/enum/animation_type.dart' show AnimationType;
 import 'package:medora/core/enum/lazy_request_state.dart';
+import 'package:medora/features/doctor_profile/data/models/doctor_model.dart' show DoctorModel;
 import 'package:medora/features/favorites/presentation/controller/cubit/favorites_cubit.dart'
     show FavoritesCubit;
 import 'package:medora/features/favorites/presentation/controller/states/favorites_states.dart'
     show FavoritesStates;
 
 class ToggleFavoriteButton extends StatefulWidget {
-  final String doctorId;
+  final DoctorModel doctorInfo;
 
-  const ToggleFavoriteButton({super.key, required this.doctorId});
+  const ToggleFavoriteButton({super.key, required this.doctorInfo});
 
   @override
   State<ToggleFavoriteButton> createState() => _ToggleFavoriteButtonState();
@@ -23,7 +24,7 @@ class ToggleFavoriteButton extends StatefulWidget {
 class _ToggleFavoriteButtonState extends State<ToggleFavoriteButton> {
   @override
   void initState() {
-    context.read<FavoritesCubit>().isDoctorFavorite(doctorId: widget.doctorId);
+    context.read<FavoritesCubit>().isDoctorFavorite(doctorId: widget.doctorInfo.doctorId!);
 
     super.initState();
   }
@@ -38,7 +39,7 @@ class _ToggleFavoriteButtonState extends State<ToggleFavoriteButton> {
       buildWhen: (previous, current) =>
           current.favoriteDoctors != previous.favoriteDoctors,
       builder: (context, state) {
-        final isFav = state.favoriteDoctors.contains(widget.doctorId);
+        final isFav = state.favoriteDoctors.contains( widget.doctorInfo.doctorId);
         switch (state.requestState) {
           case LazyRequestState.lazy:
           case LazyRequestState.loading:
@@ -80,7 +81,7 @@ class _ToggleFavoriteButtonState extends State<ToggleFavoriteButton> {
       onPressed: () async {
         await context.read<FavoritesCubit>().toggleFavorite(
           isFavorite: isFav,
-          doctorId: widget.doctorId,
+          doctorInfo:  widget.doctorInfo ,
         );
       },
     ),
