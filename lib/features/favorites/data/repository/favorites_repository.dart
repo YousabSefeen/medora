@@ -6,7 +6,7 @@ import 'package:medora/core/error/failure.dart';
 import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
     show DoctorModel;
 
-import 'favorites_repository_base.dart';
+import '../../domain/favorites_repository_base/favorites_repository_base.dart';
 
 class FavoritesRepository extends FavoritesRepositoryBase {
   final FirebaseFirestore _firestore;
@@ -154,7 +154,7 @@ class FavoritesRepository extends FavoritesRepositoryBase {
   }
 
   @override
-  Future<Either<Failure, Set<String>>> isDoctorFavorite(String doctorId) async {
+  Future<Either<Failure, Set<String>>> getDoctorFavoriteStatus(String doctorId) async {
     try {
       final favoritesSnapshot = await _firestore
           .collection('users')

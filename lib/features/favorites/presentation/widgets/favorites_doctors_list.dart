@@ -7,8 +7,10 @@ import 'package:medora/features/doctor_list/presentation/widgets/doctor_list_vie
     show DoctorListView;
 import 'package:medora/features/favorites/presentation/controller/cubit/favorites_cubit.dart'
     show FavoritesCubit;
+import 'package:medora/features/favorites/presentation/controller/cubit/favorites_cubit_new.dart' show FavoritesCubitNew;
 import 'package:medora/features/favorites/presentation/controller/states/favorites_states.dart'
     show FavoritesStates;
+import 'package:medora/features/favorites/presentation/controller/states/favorites_states_new.dart' show FavoritesStatesNew;
 
 class FavoritesDoctorsList extends StatefulWidget {
   const FavoritesDoctorsList({super.key});
@@ -28,14 +30,14 @@ class _FavoritesDoctorsListState extends State<FavoritesDoctorsList> {
 
   Future<void> _getAllFavoritesDoctors() async {
     if (!_isFavoritesLoadedBefore) {
-      await context.read<FavoritesCubit>().getAllFavorites();
+      await context.read<FavoritesCubitNew>().getFavorites();
     }
     _isFavoritesLoadedBefore = true;
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FavoritesCubit, FavoritesStates>(
+    return BlocBuilder<FavoritesCubitNew, FavoritesStatesNew>(
       builder: (context, state) {
         switch (state.favoritesListState) {
           case LazyRequestState.lazy:

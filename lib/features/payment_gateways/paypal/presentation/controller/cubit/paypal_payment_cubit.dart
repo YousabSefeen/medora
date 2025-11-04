@@ -178,7 +178,7 @@ import 'package:flutter_task/core/enum/lazy_request_state.dart' show LazyRequest
 import 'package:flutter_task/core/enum/web_view_status.dart' show WebViewStatus;
 import 'package:flutter_task/core/payment_gateway_manager/paypal_payment/paypal_keys.dart' show PaypalKeys;
 import 'package:flutter_task/core/payment_gateway_manager/paypal_payment/paypal_services.dart';
-import 'package:flutter_task/features/payment_gateways/paypal/data/repository/paypal_repository.dart' show PaypalRepository;
+import 'package:flutter_task/features/payment_gateways/paypal/data/favorites_repository_base/paypal_repository.dart' show PaypalRepository;
 import 'package:flutter_task/features/payment_gateways/paypal/presentation/controller/states/paypal_payment_states.dart' show PaypalPaymentState;
 
 import 'package:webview_flutter/webview_flutter.dart';

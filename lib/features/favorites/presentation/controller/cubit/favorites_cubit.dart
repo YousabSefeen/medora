@@ -15,7 +15,7 @@ class FavoritesCubit extends Cubit<FavoritesStates> {
 
   Future<void> isDoctorFavorite({required String doctorId}) async {
     emit(state.copyWith(requestState: LazyRequestState.loading));
-    final result = await favoritesRepository.isDoctorFavorite(doctorId);
+    final result = await favoritesRepository.getDoctorFavoriteStatus(doctorId);
 
     result.fold(
       (failure) => emit(state.copyWith(requestState: LazyRequestState.error)),
