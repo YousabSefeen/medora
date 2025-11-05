@@ -17,17 +17,16 @@ import 'package:medora/features/favorites/data/repository/favorites_repository.d
     show FavoritesRepository;
 import 'package:medora/features/favorites/domain/favorites_repository_base/favorites_repository_base.dart'
     show FavoritesRepositoryBase;
-import 'package:medora/features/favorites/domain/use_cases/get_doctor_favorite_status_use_case.dart'
-    show GetDoctorFavoriteStatusUseCase;
-import 'package:medora/features/favorites/domain/use_cases/get_favorites_list_use_case.dart'
-    show GetFavoritesListUseCase;
+import 'package:medora/features/favorites/domain/use_cases/is_doctor_favorite_use_case.dart'
+    show IsDoctorFavoriteUseCase;
+import 'package:medora/features/favorites/domain/use_cases/get_favorites_doctors_use_case.dart'
+    show GetFavoritesDoctorsUseCase;
 import 'package:medora/features/favorites/domain/use_cases/toggle_favorite_use_case.dart'
     show ToggleFavoriteUseCase;
-import 'package:medora/features/favorites/presentation/controller/cubit/favorite_toggle_cubit.dart'
-    show FavoriteToggleCubit;
+
 import 'package:medora/features/favorites/presentation/controller/cubit/favorites_cubit.dart'
     show FavoritesCubit;
-import 'package:medora/features/favorites/presentation/controller/cubit/favorites_cubit_new.dart';
+import 'package:medora/features/favorites/presentation/controller/cubit/favorites_cubit.dart';
 import 'package:medora/features/home/presentation/controller/cubits/bottom_nav_cubit.dart'
     show BottomNavCubit;
 import 'package:medora/features/payment_gateways/paymob/data/repository/paymob_repository.dart'
@@ -91,12 +90,12 @@ class ServiceLocator {
 
     ///favorites
     serviceLocator.registerLazySingleton(
-      () => GetDoctorFavoriteStatusUseCase(
+      () => IsDoctorFavoriteUseCase(
         favoritesRepositoryBase: serviceLocator(),
       ),
     );
     serviceLocator.registerLazySingleton(
-      () => GetFavoritesListUseCase(favoritesRepositoryBase: serviceLocator()),
+      () => GetFavoritesDoctorsUseCase(favoritesRepositoryBase: serviceLocator()),
     );
     serviceLocator.registerLazySingleton(
       () => ToggleFavoriteUseCase(favoritesRepositoryBase: serviceLocator()),
@@ -105,15 +104,13 @@ class ServiceLocator {
     //Todo Bloc
 
     serviceLocator.registerFactory(
-      () => FavoritesCubitNew(
-        getDoctorFavoriteStatusUseCase: serviceLocator(),
-        getFavoritesListUseCase: serviceLocator(),
+      () => FavoritesCubit(
+        isDoctorFavoriteUseCase: serviceLocator(),
+        getFavoritesDoctorsUseCase: serviceLocator(),
         toggleFavoriteUseCase: serviceLocator(),
       ),
     );
-    serviceLocator.registerFactory(
-      () => FavoriteToggleCubit(toggleFavoriteUseCase: serviceLocator()),
-    );
+
   }
 
   void _registerRepositories() {
@@ -173,9 +170,7 @@ class ServiceLocator {
       () => SearchCubit(searchRepository: serviceLocator()),
     );
 
-    serviceLocator.registerFactory<FavoritesCubit>(
-      () => FavoritesCubit(favoritesRepository: serviceLocator()),
-    );
+
   }
 
   void _registerAppSettings() {

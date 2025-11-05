@@ -4,6 +4,7 @@ import 'package:medora/core/base_use_case/base_use_case.dart' show BaseUseCase;
 import 'package:medora/core/error/failure.dart';
 import 'package:medora/features/favorites/domain/favorites_repository_base/favorites_repository_base.dart'
     show FavoritesRepositoryBase;
+import 'package:medora/features/favorites/domain/value_objects/toggle_favorite_parameters.dart' show ToggleFavoriteParameters;
 
 class ToggleFavoriteUseCase
     extends BaseUseCase<void, ToggleFavoriteParameters> {
@@ -27,15 +28,4 @@ class ToggleFavoriteUseCase
   }
 }
 
-class ToggleFavoriteParameters extends Equatable {
-  final bool isCurrentlyFavorite;
-  final String doctorId;
 
-  const ToggleFavoriteParameters({
-    required this.isCurrentlyFavorite,
-    required this.doctorId,
-  });
-
-  @override
-  List<Object> get props => [isCurrentlyFavorite, doctorId];
-}

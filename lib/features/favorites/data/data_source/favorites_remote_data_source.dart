@@ -5,9 +5,9 @@ import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
     show DoctorModel;
 
 abstract class FavoritesRemoteDataSourceBase {
-  Future<Set<String>> getDoctorFavoriteStatus(String doctorId);
+  Future<bool> isDoctorFavorite(String doctorId);
 
-  Future<List<DoctorModel>> getAllFavorites();
+  Future<List<DoctorModel>> getFavoritesDoctors();
 
   Future<void> addDoctorToFavorites(String doctorId);
 
@@ -33,7 +33,7 @@ class FavoritesRemoteDataSource extends FavoritesRemoteDataSourceBase {
   }
 
   @override
-  Future<List<DoctorModel>> getAllFavorites() async {
+  Future<List<DoctorModel>> getFavoritesDoctors() async {
     final favoritesSnapshot = await _firestore
         .collection('users')
         .doc(_userId)
@@ -75,16 +75,15 @@ class FavoritesRemoteDataSource extends FavoritesRemoteDataSourceBase {
   }
 
   @override
-  Future<Set<String>> getDoctorFavoriteStatus(String doctorId) async {
-    final favoritesSnapshot = await _firestore
+  Future<bool> isDoctorFavorite(String doctorId) async {
+    final doc = await FirebaseFirestore.instance
         .collection('users')
         .doc(_userId)
         .collection('favorites')
+        .doc(doctorId)
         .get();
 
-    final favoriteDoctorIds = favoritesSnapshot.docs.map((d) => d.id).toSet();
-
-    return favoriteDoctorIds;
+    return doc.exists;
   }
 
   @override

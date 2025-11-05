@@ -1,43 +1,46 @@
 import 'package:equatable/equatable.dart';
-import 'package:medora/core/enum/lazy_request_state.dart';
+import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
     show DoctorModel;
 
 class FavoritesStates extends Equatable {
   final LazyRequestState favoritesListState;
   final String favoritesListError;
-  final List<DoctorModel> favoritesList;
+  final List<DoctorModel> favoritesDoctorsList;
+  final Set<String> favoriteDoctorsSet;
 
-  final Set<String> favoriteDoctors;
-  final String updateFavoritesError;
+  final LazyRequestState toggleFavoriteState;
+  final String toggleFavoriteError;
   final LazyRequestState requestState;
 
   const FavoritesStates({
     this.favoritesListState = LazyRequestState.loading,
     this.favoritesListError = '',
-    this.favoritesList = const [],
-
-    this.favoriteDoctors = const {},
-    this.updateFavoritesError = '',
+    this.favoritesDoctorsList = const [],
+    this.favoriteDoctorsSet = const {},
+    this.toggleFavoriteState = LazyRequestState.loading,
+    this.toggleFavoriteError = '',
     this.requestState = LazyRequestState.lazy,
   });
 
   FavoritesStates copyWith({
     LazyRequestState? favoritesListState,
     String? favoritesListError,
-    List<DoctorModel>? favoritesList,
+    List<DoctorModel>? favoritesDoctorsList,
+    Set<String>? favoriteDoctorsSet,
 
-    Set<String>? favoriteDoctors,
-    String? updateFavoritesError,
+    LazyRequestState? toggleFavoriteState,
+    String? toggleFavoriteError,
     LazyRequestState? requestState,
   }) {
     return FavoritesStates(
       favoritesListState: favoritesListState ?? this.favoritesListState,
       favoritesListError: favoritesListError ?? this.favoritesListError,
-      favoritesList: favoritesList ?? this.favoritesList,
+      favoritesDoctorsList: favoritesDoctorsList ?? this.favoritesDoctorsList,
+      favoriteDoctorsSet: favoriteDoctorsSet ?? this.favoriteDoctorsSet,
 
-      favoriteDoctors: favoriteDoctors ?? this.favoriteDoctors,
-      updateFavoritesError: updateFavoritesError ?? this.updateFavoritesError,
+      toggleFavoriteState: toggleFavoriteState ?? this.toggleFavoriteState,
+      toggleFavoriteError: toggleFavoriteError ?? this.toggleFavoriteError,
       requestState: requestState ?? this.requestState,
     );
   }
@@ -46,10 +49,10 @@ class FavoritesStates extends Equatable {
   List<Object?> get props => [
     favoritesListState,
     favoritesListError,
-    favoritesList,
-
-    favoriteDoctors,
-    updateFavoritesError,
+    favoritesDoctorsList,
+    favoriteDoctorsSet,
+    toggleFavoriteState,
+    toggleFavoriteError,
     requestState,
   ];
 }

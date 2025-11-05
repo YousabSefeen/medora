@@ -5,5 +5,5 @@ import '../../../doctor_profile/data/models/doctor_model.dart';
 import '../models/doctor_list_model.dart';
 
 abstract class DoctorListRepositoryBase {
-  Future<Either<Failure, List<DoctorModel>>> getDoctorList();
+  Future<Either<Failure, List<DoctorModel>>> getDoctorsList();
 }

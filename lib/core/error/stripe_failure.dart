@@ -1,6 +1,6 @@
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:medora/core/constants/app_strings/app_strings.dart' show AppStrings;
-
+import 'package:medora/core/constants/app_strings/app_strings.dart'
+    show AppStrings;
 
 class StripeFailure {
   final Object catchError;
@@ -15,10 +15,8 @@ class StripeFailure {
         return AppStrings.paymentCancelledError;
       }
 
-
       return 'Payment failed with error: ${stripeError.error.localizedMessage}';
     }
-
 
     return 'An unexpected error occurred: ${catchError.toString()}';
   }

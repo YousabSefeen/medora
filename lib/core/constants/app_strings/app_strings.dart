@@ -1,11 +1,9 @@
-
-
-import 'package:medora/core/enum/payment_gateways_types.dart' show PaymentGatewaysTypes;
+import 'package:medora/core/enum/payment_gateways_types.dart'
+    show PaymentGatewaysTypes;
 
 import '../../../generated/assets.dart';
 
 class AppStrings {
-
   static List<String> images = [
     //boy
     'https://as1.ftcdn.net/v2/jpg/02/95/51/80/1000_F_295518052_aO5d9CqRhPnjlNDTRDjKLZHNftqfsxzI.jpg',
@@ -27,9 +25,10 @@ class AppStrings {
   static const String email = 'Email';
   static const String password = 'Password';
   static const String register = 'Register';
-  static const String registerNow ='$register now';
-  static const String emailAlreadyInUseError ='This email address is already in use. If it’s your account, try logging in.';
-  static const String unknownError ='Unknown error occurred.';
+  static const String registerNow = '$register now';
+  static const String emailAlreadyInUseError =
+      'This email address is already in use. If it’s your account, try logging in.';
+  static const String unknownError = 'Unknown error occurred.';
   static const String doctorProfileTitle = 'Doctor Profile';
 
   // Labels
@@ -44,10 +43,13 @@ class AppStrings {
   static const String specialtiesHint = ' $defaultHint specialties';
   static const String workHoursHint = ' $defaultHint hours';
   static const String workingDaysDialogTitle = 'Select your working days';
-  static const String specialtyHintMessage = 'Choose your primary specialty, and you can add other related specialties.';
+  static const String specialtyHintMessage =
+      'Choose your primary specialty, and you can add other related specialties.';
 
- static const String doctorSpecialtyHintSearchField = 'Search for a medical specialty...';
-  static  const String specialtyLimitMessage = 'You can select a maximum of 3 specialties.';
+  static const String doctorSpecialtyHintSearchField =
+      'Search for a medical specialty...';
+  static const String specialtyLimitMessage =
+      'You can select a maximum of 3 specialties.';
   static const List<String> weekDays = [
     'Saturday',
     'Sunday',
@@ -92,13 +94,12 @@ class AppStrings {
     'Geriatrics',
     'Infectious Diseases',
     'Emergency Medicine',
-    'Internal Medicine'
+    'Internal Medicine',
   ];
-static const String  confirm='Confirm';
-static const String  workHours='Work Hours';
-static const String  from='FROM';
-static const String  to='TO';
-
+  static const String confirm = 'Confirm';
+  static const String workHours = 'Work Hours';
+  static const String from = 'FROM';
+  static const String to = 'TO';
 
   static const String availableFrom = 'Available From';
 
@@ -128,6 +129,7 @@ static const String  to='TO';
   static const String feeInvalidMessage = 'Fee must be a valid integer number';
 
   // Button text
+  static const String reloadFavorites = 'Reload Favorites';
   static const String saveButtonText = 'Save';
 
   static const String dR = 'Dr. ';
@@ -138,7 +140,8 @@ static const String  to='TO';
     '"Working Days"',
     ' section\n to view the doctor\'s availability.',
   ];
-  static   List<String> specialtyNotFoundMessage ({String? searchTerm}) => [
+
+  static List<String> specialtyNotFoundMessage({String? searchTerm}) => [
     'Sorry, we couldn\'t find any results for ',
     '"$searchTerm"',
     ' Please check your spelling, or try searching for a different specialty.',
@@ -146,59 +149,58 @@ static const String  to='TO';
 
   static const String imageNotFound =
       'Incorrect image URLs or changes in the image file\'s location';
-  static const String noAppointmentsAvailableToday = 'There are no appointments available today. Please choose another day.';
+  static const String noAppointmentsAvailableToday =
+      'There are no appointments available today. Please choose another day.';
 
-  static const String noBookingsMessage = 'You have no bookings at the moment. Start by making a new appointment or check back later.';
+  static const String noBookingsMessage =
+      'You have no bookings at the moment. Start by making a new appointment or check back later.';
 
-  static const String oops='Oops! something is wrong!';
-  static const String tryAgain='TRY AGAIN';
+  static const String oops = 'Oops! something is wrong!';
+  static const String tryAgain = 'TRY AGAIN';
+  static const String tryAgainNormal = 'Try Again';
+
   //Error
   static const String errorDisplayTitle = 'An error occurred while displaying';
   static const String errorMessageLabel = 'Error Message: ';
   static const String pastDateBookingError =
       'Appointments cannot be scheduled for past dates. '
       'Please select today\'s date or a future date.';
+
+  static const String toggleFavoriteErrorMsg = 'Failed to update favorites';
+
   // static String noInternetConnection='No Internet Connection';
   // static const String kNoInternetBookingErrorMessage =
   //     'Booking an appointment requires an active internet connection to confirm and secure your reservation.\n'
   //     'Please check your connection and try again.';
 
-
   static const String noInternetConnectionErrorMsg =
       'Booking an appointment requires an active internet connection to confirm and secure your reservation.\n'
       'Please check your connection and try again.';
-static const String bookAppointment='Book Appointment';
-static const String next='Next';
-static const String payNow='Pay Now';
+  static const String bookAppointment = 'Book Appointment';
+  static const String next = 'Next';
+  static const String payNow = 'Pay Now';
 
+  //TODO Patient Screen
+  static const String patientDetails = 'Patient Details';
 
-//TODO Patient Screen
-static const String patientDetails='Patient Details';
+  static const String fullNameLabel = 'Full Name';
+  static const String male = 'Male';
+  static const String female = 'Female';
+  static const String fullNameHint = 'Please enter your name';
+  static const String ageLabel = 'Your Age';
+  static const String ageHint = 'Please enter your age';
+  static const String problemLabel = 'Write your problem';
+  static const String problemHint = 'Briefly describe your health concern...';
 
+  static const String _payment = 'Payment';
+  static const String paymobPayment = 'Paymob $_payment';
+  static const String paypalPayment = 'Paypal $_payment';
+  static const String stripePayment = 'Stripe $_payment';
 
+  static const String paymentMethod = 'Payment Method';
 
-
-static const String fullNameLabel='Full Name';
-static const String male='Male';
-static const String female='Female';
-static const String fullNameHint='Please enter your name';
-static const String ageLabel='Your Age';
-static const String ageHint='Please enter your age';
-static const String problemLabel='Write your problem';
-static const String problemHint='Briefly describe your health concern...';
-
-
-
-  static const String _payment='Payment';
-  static const String  paymobPayment ='Paymob $_payment';
-  static const String  paypalPayment ='Paypal $_payment';
-  static const String  stripePayment ='Stripe $_payment';
-
-
-
-  static const String paymentMethod='Payment Method';
-
-  static const  String searchEmptyMessage = 'Find doctors by name, specialty, or location.\n Use filters for more options.';
+  static const String searchEmptyMessage =
+      'Find doctors by name, specialty, or location.\n Use filters for more options.';
 
   static const String appointmentSuccessDialogTitle = 'Congratulations!';
   static const String appointmentSuccessDialogMessage =
@@ -206,7 +208,7 @@ static const String problemHint='Briefly describe your health concern...';
       'You will receive a notification and the doctor you selected will contact you';
 
   static const String viewAppointment = 'view Appointment';
-  static const String cancel='Cancel';
+  static const String cancel = 'Cancel';
   static const String cancelAppointment = '$cancel Appointment';
   static const String cancelAppointmentConfirmation =
       'Are you sure want to cancel your appointment';
@@ -237,10 +239,11 @@ static const String problemHint='Briefly describe your health concern...';
   // 'If you need further assistance, feel free to contact us';
   static const String reschedule = 'Reschedule';
   static const String editBookingAppointment = 'Edit Booking Appointment';
-  static const String rescheduleSuccessMessage = 'Appointment rescheduled successfully!';
+  static const String rescheduleSuccessMessage =
+      'Appointment rescheduled successfully!';
   static const String yourAppointment = 'Your appointment\nhas been updated!!';
   static const String done = 'Done';
-static const String confirmReschedule='Confirm Reschedule';
+  static const String confirmReschedule = 'Confirm Reschedule';
   static const List<String> appointmentsListTitles = [
     'Upcoming',
     'Completed',
@@ -278,39 +281,40 @@ static const String confirmReschedule='Confirm Reschedule';
       logo: Assets.imagesOnlineCard,
     ),
     PaymentMethod(
-      value:  PaymentGatewaysTypes.paymobMobileWallets,
-        name: mobileWallets,
-        subtitle: '',
-        logo: Assets.imagesMobileWalletsLogo,),
+      value: PaymentGatewaysTypes.paymobMobileWallets,
+      name: mobileWallets,
+      subtitle: '',
+      logo: Assets.imagesMobileWalletsLogo,
+    ),
     PaymentMethod(
-        value:  PaymentGatewaysTypes.stripe,
-        name: stripe,
-        subtitle: 'Visa - MasterCard - American Express',
-        logo: Assets.imagesStripe,),
+      value: PaymentGatewaysTypes.stripe,
+      name: stripe,
+      subtitle: 'Visa - MasterCard - American Express',
+      logo: Assets.imagesStripe,
+    ),
     PaymentMethod(
-        value:  PaymentGatewaysTypes.payPal,
-        name: payPal, subtitle: '', logo: Assets.imagesPayPal,
+      value: PaymentGatewaysTypes.payPal,
+      name: payPal,
+      subtitle: '',
+      logo: Assets.imagesPayPal,
     ),
   ];
-
-
-
 
   static String messageBack =
       'You have canceled the payment, and the transaction was not completed.';
 
   // Errors
-  static const  paymentCancelledError='Payment cancelled by user.';
-  static const  paymentCancelledMsg='Payment cancelled. Please try again';
+  static const paymentCancelledError = 'Payment cancelled by user.';
+  static const paymentCancelledMsg = 'Payment cancelled. Please try again';
 
-  static const String paymentFailedDescription="We couldn't process your payment. Please:\n"
+  static const String paymentFailedDescription =
+      "We couldn't process your payment. Please:\n"
       '• Check your payment details\n'
       '• Try another payment method\n'
       '• Ensure sufficient balance';
 
-  static const String  paymentFailedError='Payment failed. Please try again.';
+  static const String paymentFailedError = 'Payment failed. Please try again.';
 }
-
 
 class PaymentMethod {
   final PaymentGatewaysTypes value;
@@ -318,6 +322,10 @@ class PaymentMethod {
   final String subtitle;
   final String logo;
 
-  PaymentMethod(
-      {required this.value,required this.name, required this.subtitle, required this.logo});
+  PaymentMethod({
+    required this.value,
+    required this.name,
+    required this.subtitle,
+    required this.logo,
+  });
 }

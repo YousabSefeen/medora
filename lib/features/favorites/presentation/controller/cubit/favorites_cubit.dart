@@ -1,137 +1,187 @@
 import 'package:flutter_bloc/flutter_bloc.dart' show Cubit;
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medora/core/base_use_case/base_use_case.dart' show NoParameters;
+import 'package:medora/core/constants/app_duration/app_duration.dart'
+    show AppDurations;
+import 'package:medora/core/constants/app_strings/app_strings.dart'
+    show AppStrings;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
     show DoctorModel;
-import 'package:medora/features/favorites/data/repository/favorites_repository.dart'
-    show FavoritesRepository;
+import 'package:medora/features/favorites/domain/use_cases/get_favorites_doctors_use_case.dart'
+    show GetFavoritesDoctorsUseCase;
+import 'package:medora/features/favorites/domain/use_cases/is_doctor_favorite_use_case.dart'
+    show IsDoctorFavoriteUseCase;
+import 'package:medora/features/favorites/domain/use_cases/toggle_favorite_use_case.dart'
+    show ToggleFavoriteUseCase, ToggleFavoriteParameters;
+import 'package:medora/features/favorites/domain/value_objects/toggle_favorite_parameters.dart' show ToggleFavoriteParameters;
 import 'package:medora/features/favorites/presentation/controller/states/favorites_states.dart'
     show FavoritesStates;
 
+import '../../../../../core/error/failure.dart' show Failure;
+
 class FavoritesCubit extends Cubit<FavoritesStates> {
-  final FavoritesRepository favoritesRepository;
+  final IsDoctorFavoriteUseCase isDoctorFavoriteUseCase;
+  final GetFavoritesDoctorsUseCase getFavoritesDoctorsUseCase;
+  final ToggleFavoriteUseCase toggleFavoriteUseCase;
 
-  FavoritesCubit({required this.favoritesRepository})
-    : super(const FavoritesStates());
+  FavoritesCubit({
+    required this.isDoctorFavoriteUseCase,
+    required this.getFavoritesDoctorsUseCase,
+    required this.toggleFavoriteUseCase,
+  }) : super(const FavoritesStates());
 
-  Future<void> isDoctorFavorite({required String doctorId}) async {
-    emit(state.copyWith(requestState: LazyRequestState.loading));
-    final result = await favoritesRepository.getDoctorFavoriteStatus(doctorId);
+  Future<void> getFavoritesDoctors() async {
+    final result = await getFavoritesDoctorsUseCase(const NoParameters());
 
     result.fold(
-      (failure) => emit(state.copyWith(requestState: LazyRequestState.error)),
-      (favoriteDoctors) {
-        emit(
-          state.copyWith(
-            requestState: LazyRequestState.loaded,
-            favoriteDoctors: favoriteDoctors,
-          ),
-        );
-      },
+      (failure) => _handleFavoritesListError(failure),
+      (favoritesList) => _handleFavoritesListSuccess(favoritesList),
     );
   }
 
-  Future<void> _addDoctorToFavorites({required String doctorId}) async =>
-      await favoritesRepository.addDoctorToFavorites(doctorId);
+  void _handleFavoritesListError(Failure failure) => emit(
+    state.copyWith(
+      favoritesListState: LazyRequestState.error,
+      favoritesListError: failure.toString(),
+    ),
+  );
 
-  Future<void> _removeDoctorFromFavorites({required String doctorId}) async =>
-      await favoritesRepository.removeDoctorFromFavorites(doctorId);
+  void _handleFavoritesListSuccess(List<DoctorModel> favoritesList) => emit(
+    state.copyWith(
+      favoritesDoctorsList: favoritesList,
+      favoritesListState: LazyRequestState.loaded,
+    ),
+  );
+
+  Future<void> checkDoctorFavoriteStatus({required String doctorId}) async {
+    final result = await isDoctorFavoriteUseCase(doctorId);
+
+    result.fold(
+      (failure) => _handleFavoriteCheckError(failure),
+      (isFavorite) => _handleFavoriteCheckSuccess(doctorId, isFavorite),
+    );
+  }
 
   Future<void> toggleFavorite({
     required bool isFavorite,
     required DoctorModel doctorInfo,
   }) async {
-    final previousFavorites = _saveCurrentState();
-    _updateAllFavorites(isFavorite: isFavorite, doctorInfo: doctorInfo);
-    _performOptimisticUpdate(
-      isFavorite: isFavorite,
-      doctorId: doctorInfo.doctorId!,
+    _applyOptimisticUpdates(isFavorite, doctorInfo);
+
+    final result = await toggleFavoriteUseCase(
+      ToggleFavoriteParameters(
+        isCurrentlyFavorite: isFavorite,
+        doctorId: doctorInfo.doctorId!,
+      ),
     );
-    await _executeBackendOperation(
-      isFavorite: isFavorite,
-      doctorId: doctorInfo.doctorId!,
+
+    result.fold(
+      (failure) => _onToggleFailure(isFavorite, doctorInfo),
+      (success) => _onToggleSuccess(isFavorite, doctorInfo),
     );
   }
 
-  Set<String> _saveCurrentState() => Set<String>.from(state.favoriteDoctors);
+  void _onToggleFailure(bool isFavorite, DoctorModel doctorInfo) {
+    emit(
+      state.copyWith(
+        toggleFavoriteState: LazyRequestState.error,
+        toggleFavoriteError: AppStrings.toggleFavoriteErrorMsg,
+      ),
+    );
+    _rollbackWithDelay(isFavorite, doctorInfo);
+  }
 
-  //   Responsibility: Update the UI immediately
-  void _performOptimisticUpdate({
-    required bool isFavorite,
+  // ========== PRIVATE METHODS ========== //
+
+  void _applyOptimisticUpdates(bool isFavorite, DoctorModel doctorInfo) {
+    final updatedFavorites = _updateFavoriteDoctorsSet(
+      doctorId: doctorInfo.doctorId!,
+      shouldBeFavorite: !isFavorite,
+    );
+
+    final updatedList = _getUpdatedFavoritesList(
+      isFavorite: isFavorite,
+      doctorInfo: doctorInfo,
+    );
+
+    emit(
+      state.copyWith(
+        favoriteDoctorsSet: updatedFavorites,
+        favoritesDoctorsList: updatedList,
+      ),
+    );
+  }
+
+  Set<String> _updateFavoriteDoctorsSet({
     required String doctorId,
+    required bool shouldBeFavorite,
   }) {
-    final updatedFavorites = Set<String>.from(state.favoriteDoctors);
+    final updated = Set<String>.from(state.favoriteDoctorsSet);
 
-    if (isFavorite) {
-      updatedFavorites.remove(doctorId);
+    if (shouldBeFavorite) {
+      updated.add(doctorId);
     } else {
-      updatedFavorites.add(doctorId);
+      updated.remove(doctorId);
     }
 
-    emit(state.copyWith(favoriteDoctors: updatedFavorites));
+    return updated;
   }
 
-  //   Responsibility: Execute the process in the background
-  Future<void> _executeBackendOperation({
-    required bool isFavorite,
-    required String doctorId,
-  }) async {
-    try {
-      if (isFavorite) {
-        await _removeDoctorFromFavorites(doctorId: doctorId);
-      } else {
-        await _addDoctorToFavorites(doctorId: doctorId);
-      }
-    } catch (error) {
-      emit(
-        state.copyWith(
-          favoriteDoctors: _saveCurrentState(),
-          updateFavoritesError: 'Failed to update favorites',
-        ),
-      );
-    }
-  }
-
-  void _updateAllFavorites({
+  /// Get the updated favorites list
+  List<DoctorModel> _getUpdatedFavoritesList({
     required bool isFavorite,
     required DoctorModel doctorInfo,
   }) {
-    if (_isFavoritesLoadedBefore == false) return;
-    final updatedFavoritesList = List<DoctorModel>.from(state.favoritesList);
-
-    final index = updatedFavoritesList.indexWhere(
+    final updatedList = List<DoctorModel>.from(state.favoritesDoctorsList);
+    final index = updatedList.indexWhere(
       (doctor) => doctor.doctorId == doctorInfo.doctorId,
     );
 
-    if (index != -1 && isFavorite) {
-      updatedFavoritesList.removeAt(index);
+    if (isFavorite) {
+      if (index != -1) {
+        updatedList.removeAt(index);
+      }
     } else {
-      updatedFavoritesList.insert(0, doctorInfo);
+      if (index == -1) {
+        updatedList.insert(0, doctorInfo);
+      }
     }
 
-    emit(state.copyWith(favoritesList: updatedFavoritesList));
+    return updatedList;
   }
 
-    bool _isFavoritesLoadedBefore = false;
+  /// Rolling back updates after a delay period
+  void _rollbackWithDelay(bool originalState, DoctorModel doctorInfo) =>
+      Future.delayed(
+        AppDurations.milliseconds_500,
+        () => _applyOptimisticUpdates(!originalState, doctorInfo),
+      );
 
-  Future<void> getAllFavorites() async {
-    final response = await favoritesRepository.getAllFavorites();
+  /// Handling the successful switch to the favorites
+  void _onToggleSuccess(bool isFavorite, DoctorModel doctorInfo) =>
+      emit(state.copyWith(toggleFavoriteState: LazyRequestState.loaded));
 
-    response.fold(
-      (failure) => emit(
-        state.copyWith(
-          favoritesListState: LazyRequestState.error,
-          favoritesListError: failure.toString(),
-        ),
-      ),
-      (doctors) {
-        emit(
-          state.copyWith(
-            favoritesListState: LazyRequestState.loaded,
-            favoritesList: doctors,
-          ),
-        );
-      },
+  /// Handling favorites verification errors
+  void _handleFavoriteCheckError(Failure failure) => emit(
+    state.copyWith(
+      requestState: LazyRequestState.error,
+
+      /// error: failure.message,
+    ),
+  );
+
+  void _handleFavoriteCheckSuccess(String doctorId, bool isFavorite) {
+    final updatedFavorites = _updateFavoriteDoctorsSet(
+      doctorId: doctorId,
+      shouldBeFavorite: isFavorite,
     );
-    _isFavoritesLoadedBefore = true;
+
+    emit(
+      state.copyWith(
+        requestState: LazyRequestState.loaded,
+        favoriteDoctorsSet: updatedFavorites,
+      ),
+    );
   }
 }

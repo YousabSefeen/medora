@@ -107,7 +107,7 @@ class FavoritesRepository extends FavoritesRepositoryBase {
   //   }
   // }
   @override
-  Future<Either<Failure, List<DoctorModel>>> getAllFavorites() async {
+  Future<Either<Failure, List<DoctorModel>>> getFavoritesDoctors() async {
     try {
       final favoritesSnapshot = await _firestore
           .collection('users')
@@ -169,5 +169,11 @@ class FavoritesRepository extends FavoritesRepositoryBase {
       print('Error isDoctorFavorite:  ${e.toString()}');
       return Left(ServerFailure(catchError: e));
     }
+  }
+
+  @override
+  Future<Either<Failure, bool>> isDoctorFavorite(String doctorId) {
+    // TODO: implement isDoctorFavorite
+    throw UnimplementedError();
   }
 }

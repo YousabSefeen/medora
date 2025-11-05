@@ -7,7 +7,7 @@ import 'doctor_list_repository_base.dart';
 
 class DoctorListRepository extends DoctorListRepositoryBase {
   @override
-  Future<Either<Failure, List<DoctorModel>>> getDoctorList() async {
+  Future<Either<Failure, List<DoctorModel>>> getDoctorsList() async {
     try {
       final QuerySnapshot<Map<String, dynamic>> snapshot =
           await FirebaseFirestore.instance.collection('doctors').get();

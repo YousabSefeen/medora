@@ -4,13 +4,13 @@ import 'package:medora/core/error/failure.dart';
 import 'package:medora/features/favorites/domain/favorites_repository_base/favorites_repository_base.dart'
     show FavoritesRepositoryBase;
 
-class GetDoctorFavoriteStatusUseCase extends BaseUseCase<Set<String>, String> {
+class IsDoctorFavoriteUseCase extends BaseUseCase<bool, String> {
   final FavoritesRepositoryBase favoritesRepositoryBase;
 
-  GetDoctorFavoriteStatusUseCase({required this.favoritesRepositoryBase});
+  IsDoctorFavoriteUseCase({required this.favoritesRepositoryBase});
 
   @override
-  Future<Either<Failure, Set<String>>> call(String parameters) async {
-    return await favoritesRepositoryBase.getDoctorFavoriteStatus(parameters);
+  Future<Either<Failure, bool>> call(String doctorId) async {
+    return await favoritesRepositoryBase.isDoctorFavorite(doctorId);
   }
 }

@@ -3,15 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medora/core/animations/custom_animation_transition.dart'
     show CustomAnimationTransition;
 import 'package:medora/core/constants/app_alerts/app_alerts.dart';
+import 'package:medora/core/constants/app_duration/app_duration.dart'
+    show AppDurations;
 import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/enum/animation_type.dart' show AnimationType;
 import 'package:medora/core/enum/lazy_request_state.dart';
 import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
     show DoctorModel;
-import 'package:medora/features/favorites/presentation/controller/cubit/favorites_cubit_new.dart'
-    show FavoritesCubitNew;
-import 'package:medora/features/favorites/presentation/controller/states/favorites_states_new.dart'
-    show FavoritesStatesNew;
+import 'package:medora/features/favorites/presentation/controller/cubit/favorites_cubit.dart'
+    show FavoritesCubit;
+import 'package:medora/features/favorites/presentation/controller/states/favorites_states.dart'
+    show FavoritesStates;
 
 class ToggleFavoriteButton extends StatefulWidget {
   final DoctorModel doctorInfo;
@@ -25,7 +27,7 @@ class ToggleFavoriteButton extends StatefulWidget {
 class _ToggleFavoriteButtonState extends State<ToggleFavoriteButton> {
   @override
   void initState() {
-    context.read<FavoritesCubitNew>().getDoctorFavoriteStatus(
+    context.read<FavoritesCubit>().checkDoctorFavoriteStatus(
       doctorId: widget.doctorInfo.doctorId!,
     );
 
@@ -34,17 +36,15 @@ class _ToggleFavoriteButtonState extends State<ToggleFavoriteButton> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<FavoritesCubitNew, FavoritesStatesNew>(
+    return BlocConsumer<FavoritesCubit, FavoritesStates>(
       listener: _handleFavoriteUpdateErrors,
       listenWhen: (previous, current) =>
-          current.updateFavoritesError != previous.updateFavoritesError,
+          current.toggleFavoriteError != previous.toggleFavoriteError,
 
       buildWhen: (previous, current) =>
-          current.favoriteDoctors != previous.favoriteDoctors,
+          current.favoriteDoctorsSet != previous.favoriteDoctorsSet,
       builder: (context, state) {
-        final isFav = state.favoriteDoctors.contains(
-          widget.doctorInfo.doctorId,
-        );
+        bool isFav = _isFavoriteDoctor(state);
         switch (state.requestState) {
           case LazyRequestState.lazy:
           case LazyRequestState.loading:
@@ -57,14 +57,17 @@ class _ToggleFavoriteButtonState extends State<ToggleFavoriteButton> {
     );
   }
 
+  bool _isFavoriteDoctor(FavoritesStates state) =>
+      state.favoriteDoctorsSet.contains(widget.doctorInfo.doctorId);
+
   void _handleFavoriteUpdateErrors(
     BuildContext context,
-    FavoritesStatesNew state,
+    FavoritesStates state,
   ) {
-    if (state.updateFavoritesError.isNotEmpty) {
+    if (state.toggleFavoriteState == LazyRequestState.error) {
       AppAlerts.showTopSnackBarAlert(
         context: context,
-        msg: state.updateFavoritesError,
+        msg: state.toggleFavoriteError,
         backgroundColor: AppColors.red,
       );
     }
@@ -75,7 +78,7 @@ class _ToggleFavoriteButtonState extends State<ToggleFavoriteButton> {
     BuildContext context,
   ) => CustomAnimationTransition(
     animationType: AnimationType.fade,
-    duration: const Duration(milliseconds: 300),
+    duration: AppDurations.milliseconds_600,
     child: IconButton(
       key: ValueKey(isFav),
       icon: Icon(
@@ -83,9 +86,13 @@ class _ToggleFavoriteButtonState extends State<ToggleFavoriteButton> {
         color: isFav ? Colors.red : Colors.grey,
       ),
 
-      onPressed: () async => await context
-          .read<FavoritesCubitNew>()
-          .toggleFavorite(isFavorite: isFav, doctorInfo: widget.doctorInfo),
+      onPressed: () async => await _toggleFavorite(context, isFav),
     ),
   );
+
+  Future<void> _toggleFavorite(BuildContext context, bool isFav) async =>
+      await context.read<FavoritesCubit>().toggleFavorite(
+        isFavorite: isFav,
+        doctorInfo: widget.doctorInfo,
+      );
 }

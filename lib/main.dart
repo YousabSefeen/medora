@@ -15,9 +15,9 @@ import 'package:medora/core/app_settings/controller/cubit/app_settings_cubit.dar
 import 'package:medora/core/enum/internet_state.dart' show InternetState;
 import 'package:medora/features/auth/presentation/controller/cubit/login_cubit.dart'
     show LoginCubit;
-import 'package:medora/features/favorites/presentation/controller/cubit/favorite_toggle_cubit.dart' show FavoriteToggleCubit;
-import 'package:medora/features/favorites/presentation/controller/cubit/favorites_cubit.dart' show FavoritesCubit;
-import 'package:medora/features/favorites/presentation/controller/cubit/favorites_cubit_new.dart';
+import 'package:medora/features/favorites/presentation/controller/cubit/favorites_cubit.dart'
+    show FavoritesCubit;
+import 'package:medora/features/favorites/presentation/controller/cubit/favorites_cubit.dart';
 import 'package:medora/features/home/presentation/controller/cubits/bottom_nav_cubit.dart'
     show BottomNavCubit;
 import 'package:medora/features/home/presentation/screens/bottom_nav_screen.dart'
@@ -64,20 +64,20 @@ void main() async {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => serviceLocator<FavoritesCubitNew>()),
-        BlocProvider(create: (_) => serviceLocator<FavoriteToggleCubit>()),
+        BlocProvider(create: (_) => serviceLocator<FavoritesCubit>()),
+
         BlocProvider(create: (_) => serviceLocator<BottomNavCubit>()),
         BlocProvider(create: (_) => serviceLocator<LoginCubit>()),
         BlocProvider(create: (_) => serviceLocator<RegisterCubit>()),
         BlocProvider(create: (_) => serviceLocator<DoctorProfileCubit>()),
         BlocProvider(
-          create: (_) => serviceLocator<DoctorListCubit>()..getDoctorList(),
+          create: (_) => serviceLocator<DoctorListCubit>()..getDoctorsList(),
         ),
         BlocProvider(create: (_) => serviceLocator<AppointmentCubit>()),
         BlocProvider(create: (_) => serviceLocator<AppSettingsCubit>()),
 
         BlocProvider(create: (_) => serviceLocator<SearchCubit>()),
-        BlocProvider(create: (_) => serviceLocator<FavoritesCubit>()),
+
 
         //Payment Gateways
         BlocProvider(create: (_) => serviceLocator<PaymobPaymentCubit>()),
@@ -166,34 +166,32 @@ class MyApp extends StatelessWidget {
           );
         },
 
-         home: const BottomNavScreen(), // أو شاشتك الرئيسية
+        home: const BottomNavScreen(), // أو شاشتك الرئيسية
         //    home: FuckHome(), // أو شاشتك الرئيسية
       ),
     );
   }
 }
 
-
 class FuckHome extends StatelessWidget {
   const FuckHome({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-
-      appBar: AppBar(
-        title: Text('Fuck Home'),
-      ),
+    return Scaffold(
+      appBar: AppBar(title: Text('Fuck Home')),
       body: Center(
-        child: ElevatedButton(onPressed: (){
-          print('FuckHome.build');
-          context.read<FavoritesCubitNew>().getFavorites();
-        }, child: Text('OnPressed')),
+        child: ElevatedButton(
+          onPressed: () {
+            print('FuckHome.build');
+            context.read<FavoritesCubit>().getFavoritesDoctors();
+          },
+          child: Text('OnPressed'),
+        ),
       ),
     );
   }
 }
-
 
 class CustomSlider extends StatefulWidget {
   const CustomSlider({super.key});

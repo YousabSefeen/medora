@@ -14,9 +14,9 @@ class DoctorListCubit extends Cubit<DoctorListState> {
   DoctorListCubit({
     required this.doctorListRepository,
   }) : super(const DoctorListState());
-  Future getDoctorList() async {
+  Future getDoctorsList() async {
     final Either<Failure, List<DoctorModel>> response =
-        await doctorListRepository.getDoctorList();
+        await doctorListRepository.getDoctorsList();
 
     response.fold(
       (failure) => emit(
