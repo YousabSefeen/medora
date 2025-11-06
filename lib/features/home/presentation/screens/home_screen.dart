@@ -7,11 +7,14 @@ import 'package:medora/features/home/presentation/widgets/home_sliver_app_bar.da
     show HomeSliverAppBar;
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+    const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const CustomScrollView(
+      // اغلاق الكيبورد عند التمرير
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+      key:   PageStorageKey<String>('home_screen'),
       physics: BouncingScrollPhysics(),
       slivers: [
         HomeSliverAppBar(),

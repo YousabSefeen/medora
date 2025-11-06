@@ -27,7 +27,9 @@ class BottomNavScreen extends StatefulWidget {
 }
 
 class _BottomNavScreenState extends State<BottomNavScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
   late AnimationController _hideBottomBarAnimationController;
   late AnimationController _borderRadiusAnimationController;
 
@@ -77,6 +79,7 @@ class _BottomNavScreenState extends State<BottomNavScreen>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocBuilder<BottomNavCubit, BottomNavState>(
       builder: (context, state) {
         return Scaffold(
@@ -92,6 +95,7 @@ class _BottomNavScreenState extends State<BottomNavScreen>
                   ),
           ),
           body: Padding(
+            key: const PageStorageKey<String>('bottom_nav_screen'),
             padding: EdgeInsets.symmetric(horizontal: 15.w),
             child: SafeArea(
               child: NotificationListener<ScrollNotification>(
