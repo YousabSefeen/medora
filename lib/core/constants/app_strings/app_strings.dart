@@ -107,6 +107,10 @@ class AppStrings {
   static const String hintSelectTime = 'Select time';
   static const String requiredField = 'required field';
   static const String feesLabel = 'Fees';
+  static const String fee = 'Fee';
+  static const String waitingTime = 'Waiting time';
+  static const String min_15 = '15 min';
+  static const String egyptianCurrency = 'EGP';
 
   // Hint texts
   static const String nameHint = 'Enter your full name';
@@ -198,10 +202,11 @@ class AppStrings {
   static const String stripePayment = 'Stripe $_payment';
 
   static const String paymentMethod = 'Payment Method';
-
+  static const String noMatchingDoctorsFoundMessage =
+      'No doctors found matching your search.';
   static const String searchEmptyMessage =
       'Find doctors by name, specialty, or location.\n Use filters for more options.';
-
+  static const String searchHint = 'Search...';
   static const String appointmentSuccessDialogTitle = 'Congratulations!';
   static const String appointmentSuccessDialogMessage =
       'Appointment Successfully booked\n'

@@ -1,24 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medora/core/constants/app_routes/app_router.dart' show AppRouter;
-import 'package:medora/core/constants/app_routes/app_router_names.dart' show AppRouterNames;
-import 'package:medora/core/constants/app_strings/app_strings.dart' show AppStrings;
-import 'package:medora/core/constants/common_widgets/consultation_fee_and_wait_row.dart' show ConsultationFeeAndWaitRow;
-import 'package:medora/features/appointments/data/models/picked_doctor_info_model.dart' show PickedDoctorInfoModel;
-import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart' show AppointmentCubit;
-import 'package:medora/features/appointments/presentation/controller/states/appointment_state.dart' show AppointmentState;
-import 'package:medora/features/appointments/presentation/widgets/custom_sliver_app_bar.dart' show CustomSliverAppBar;
-import 'package:medora/features/appointments/presentation/widgets/custom_widgets/adaptive_action_button.dart' show AdaptiveActionButton;
-import 'package:medora/features/appointments/presentation/widgets/doctor_appointment_booking_section.dart' show DoctorAppointmentBookingSection;
-import 'package:medora/features/appointments/presentation/widgets/doctor_info_header.dart' show DoctorInfoHeader;
-import 'package:medora/features/doctor_profile/data/models/doctor_model.dart' show DoctorModel;
-import 'package:medora/features/shared/models/doctor_schedule_model.dart' show DoctorScheduleModel;
-
+import 'package:medora/core/constants/app_routes/app_router.dart'
+    show AppRouter;
+import 'package:medora/core/constants/app_routes/app_router_names.dart'
+    show AppRouterNames;
+import 'package:medora/core/constants/app_strings/app_strings.dart'
+    show AppStrings;
+import 'package:medora/core/enum/doctor_info_variant.dart'
+    show DoctorInfoVariant;
+import 'package:medora/core/enum/navigation_source.dart' show NavigationSource;
+import 'package:medora/features/appointments/data/models/picked_doctor_info_model.dart'
+    show PickedDoctorInfoModel;
+import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart'
+    show AppointmentCubit;
+import 'package:medora/features/appointments/presentation/controller/states/appointment_state.dart'
+    show AppointmentState;
+import 'package:medora/features/appointments/presentation/widgets/custom_sliver_app_bar.dart'
+    show CustomSliverAppBar;
+import 'package:medora/features/appointments/presentation/widgets/custom_widgets/adaptive_action_button.dart'
+    show AdaptiveActionButton;
+import 'package:medora/features/appointments/presentation/widgets/doctor_appointment_booking_section.dart'
+    show DoctorAppointmentBookingSection;
+import 'package:medora/features/appointments/presentation/widgets/doctor_info_header.dart'
+    show DoctorInfoHeader;
+import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
+    show DoctorModel;
+import 'package:medora/features/shared/models/doctor_schedule_model.dart'
+    show DoctorScheduleModel;
+import 'package:medora/features/shared/widgets/doctor_info_footer.dart'
+    show DoctorInfoFooter;
 
 class CreateAppointmentScreen extends StatefulWidget {
   final DoctorModel doctor;
+  final NavigationSource navigationSource;
 
-  const CreateAppointmentScreen({super.key, required this.doctor});
+  const CreateAppointmentScreen({
+    super.key,
+    required this.doctor,
+    this.navigationSource = NavigationSource.direct,
+  });
 
   @override
   State<CreateAppointmentScreen> createState() =>
@@ -41,75 +61,67 @@ class _CreateAppointmentScreenState extends State<CreateAppointmentScreen> {
     super.dispose();
   }
 
-  void _initializeAppointmentCubit() {
-    context.read<AppointmentCubit>().resetStates();
-  }
+  void _initializeAppointmentCubit() =>
+      context.read<AppointmentCubit>().resetStates();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
-      body: SafeArea(
-        child: _buildScrollView(),
-      ),
+      body: SafeArea(child: _buildScrollView()),
     );
   }
 
   Widget _buildScrollView() => Scrollbar(
-        controller: _scrollController,
-        child: CustomScrollView(
-          controller: _scrollController,
-          slivers: [
-            _buildAppBar(),
-            _buildContent(),
-          ],
-        ),
-      );
+    controller: _scrollController,
+    child: CustomScrollView(
+      controller: _scrollController,
+      slivers: [_buildAppBar(), _buildContent()],
+    ),
+  );
 
-  Widget _buildAppBar() => CustomSliverAppBar(
-        doctorName: widget.doctor.name,
-        doctorImage: widget.doctor.imageUrl,
-        specialties: widget.doctor.specialties,
-      );
+  Widget _buildAppBar() => CustomSliverAppBar(doctor: widget.doctor, navigationSource: widget.navigationSource);
 
-  Widget _buildContent() => SliverList(
-        delegate: SliverChildListDelegate([
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 5),
-                _buildDoctorInfo(),
-                _buildConsultationFee(),
-                _buildDivider(),
-                _buildBookingSection(),
-                _buildBookButton(),
-              ],
-            ),
-          ),
-        ]),
-      );
+  Widget _buildContent() => SliverFillRemaining(
+    hasScrollBody: false,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 5),
+          _buildDoctorInfoHeader(),
+          const SizedBox(height: 10),
+          _buildDoctorInfoFooter(),
+          _buildDivider(),
+          _buildBookingSection(),
+          _buildBookButton(),
+        ],
+      ),
+    ),
+  );
 
-  Widget _buildDoctorInfo() => DoctorInfoHeader(doctorInfo: widget.doctor);
+  DoctorInfoHeader _buildDoctorInfoHeader() =>
+      DoctorInfoHeader(doctorInfo: widget.doctor);
 
-  Widget _buildConsultationFee() => ConsultationFeeAndWaitRow(
-        fee: widget.doctor.fees.toString(),
-      );
+  DoctorInfoFooter _buildDoctorInfoFooter() => DoctorInfoFooter(
+    variant: DoctorInfoVariant.details,
+    fee: widget.doctor.fees,
+    location: widget.doctor.location,
+  );
 
-  Widget _buildDivider() => const Divider(
-        color: Colors.black12,
-        thickness: 1.7,
-      );
+  Divider _buildDivider() =>
+      const Divider(color: Colors.black12, thickness: 1.7);
 
-  Widget _buildBookingSection() => DoctorAppointmentBookingSection(
+  DoctorAppointmentBookingSection _buildBookingSection() =>
+      DoctorAppointmentBookingSection(
         doctorSchedule: DoctorScheduleModel(
           doctorId: widget.doctor.doctorId!,
           doctorAvailability: widget.doctor.doctorAvailability,
         ),
       );
 
-  Widget _buildBookButton() =>
+  BlocSelector _buildBookButton() =>
       BlocSelector<AppointmentCubit, AppointmentState, String?>(
         selector: (state) => state.selectedTimeSlot,
         builder: (context, selectedTimeSlot) {

@@ -1,25 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
+import 'package:medora/features/home/presentation/constants/home_constants.dart';
+import 'package:medora/features/home/presentation/widgets/expandable_search_bar.dart'
+    show ExpandableSearchBar;
+import 'package:medora/features/home/presentation/widgets/notification_icon_button.dart'
+    show NotificationIconButton;
+import 'package:medora/features/home/presentation/widgets/user_greeting_section.dart'
+    show UserGreetingSection;
 
 class HomeAppBar extends StatelessWidget {
   const HomeAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
+    return const Stack(
+      children: [
+        UserGreetingSection(),
 
-      contentPadding: EdgeInsets.zero,
-      leading: const Icon(Icons.person, color: Colors.black),
-      title: Text(
-        'Good Morning!',
-        style: Theme.of(context)
-            .listTileTheme
-            .titleTextStyle!
-            .copyWith(color: AppColors.softBlue),
-      ),
-      subtitle: const Text('Yousab Sefeen'),
-      tileColor: AppColors.white,
-      trailing: const Icon(Icons.notifications, color: Colors.black),
+        SizedBox(
+          height: HomeConstants.barContentHeight,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+
+            spacing: 10,
+            children: [ExpandableSearchBar(), NotificationIconButton()],
+          ),
+        ),
+      ],
     );
   }
 }

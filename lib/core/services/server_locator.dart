@@ -43,6 +43,7 @@ import 'package:medora/features/payment_gateways/stripe/presentation/controller/
     show StripePaymentCubit;
 import 'package:medora/features/search/data/repository/search_repository.dart'
     show SearchRepository;
+import 'package:medora/features/search/presentation/controller/cubit/home_doctor_search_cubit.dart' show HomeDoctorSearchCubit;
 import 'package:medora/features/search/presentation/controller/cubit/search_cubit.dart'
     show SearchCubit;
 
@@ -108,6 +109,11 @@ class ServiceLocator {
         isDoctorFavoriteUseCase: serviceLocator(),
         getFavoritesDoctorsUseCase: serviceLocator(),
         toggleFavoriteUseCase: serviceLocator(),
+      ),
+    );
+    serviceLocator.registerFactory(
+      () => HomeDoctorSearchCubit(
+      searchRepository: serviceLocator(),
       ),
     );
 

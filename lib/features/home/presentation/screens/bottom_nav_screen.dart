@@ -84,24 +84,21 @@ class _BottomNavScreenState extends State<BottomNavScreen>
       builder: (context, state) {
         return Scaffold(
           extendBody: true,
-          backgroundColor: AppColors.white,
-          appBar: AppBar(
-            backgroundColor: AppColors.white,
-            title: state.index == 0
-                ? const HomeAppBar()
-                : Padding(
+           backgroundColor: AppColors.customWhite,
+
+          appBar:state.index == 0
+              ?null: AppBar(
+            backgroundColor: AppColors.customWhite,
+            title: Padding(
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Text(BottomNavConstants.appBarTitles[state.index]),
                   ),
           ),
-          body: Padding(
+          body: SafeArea(
             key: const PageStorageKey<String>('bottom_nav_screen'),
-            padding: EdgeInsets.symmetric(horizontal: 15.w),
-            child: SafeArea(
-              child: NotificationListener<ScrollNotification>(
-                onNotification: _handleScrollNotification,
-                child: _buildBody(state.index),
-              ),
+            child: NotificationListener<ScrollNotification>(
+              onNotification: _handleScrollNotification,
+              child: _buildBody(state.index),
             ),
           ),
           floatingActionButton: BottomNavSearchButton(

@@ -43,9 +43,9 @@ extension AppTextStyles on TextTheme {
   // Original: titleMedium (DoctorList info)
   TextStyle get mediumPlaypenBold => GoogleFonts.playpenSans(
     fontSize: 14.sp,
-    height: 2,
+    height: 0,
     fontWeight: FontWeight.w700,
-    color: Colors.grey.shade600,
+    color: Colors.black,
   );
 
   // Original: bodySmall (AppointmentBookingScreen - CustomSliverAppBar)
@@ -139,6 +139,14 @@ extension AppTextStyles on TextTheme {
     letterSpacing: 0.5,
     height: 1.5,
     color: Colors.grey.shade600,
+  );
+
+  //سسسس
+  TextStyle get smallSoftBlueMedium  => TextStyle(
+    fontSize: 12.sp,
+    color: AppColors.softBlue,
+    height: 1.2,
+    fontWeight: FontWeight.w500,
   );
 
   TextStyle get styleInputField => TextStyle(

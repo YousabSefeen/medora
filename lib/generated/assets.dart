@@ -2,8 +2,7 @@
 class Assets {
   Assets._();
 
-  static const String imagesAiDoctor = 'assets/images/ai_doctor.jpg';
-  static const String imagesAskAi = 'assets/images/ask_ai.png';
+  static const String imagesAiDoctor = 'assets/images/ai_doctor.png';
   static const String imagesDentistry = 'assets/images/dentistry.png';
   static const String imagesDermatology = 'assets/images/dermatology.png';
   static const String imagesEmptyBack = 'assets/images/empty_back.png';
@@ -32,5 +31,6 @@ class Assets {
   static const String imagesUnnamedImage = 'assets/images/unnamed_image.png';
   static const String imagesUploadProfileIcons = 'assets/images/uploadProfileIcons.jpeg';
   static const String imagesXMarker = 'assets/images/x_marker.json';
+  static const String medora = '.env';
 
 }

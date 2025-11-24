@@ -7,6 +7,9 @@ import 'package:medora/core/constants/app_routes/app_router.dart' show AppRouter
 import 'package:medora/core/constants/app_routes/app_router_names.dart' show AppRouterNames;
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/features/auth/presentation/controller/cubit/login_cubit.dart' show LoginCubit;
+import 'package:medora/features/home/presentation/constants/home_constants.dart' show HomeConstants;
+import 'package:medora/features/home/presentation/widgets/home_screen_padding.dart'
+    show HomeScreenPadding;
 
 
 
@@ -17,8 +20,8 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Padding(
-      padding: const EdgeInsets.symmetric(vertical:20),
+    return  HomeScreenPadding(
+
       child: Column(
         spacing: 20,
         children: [

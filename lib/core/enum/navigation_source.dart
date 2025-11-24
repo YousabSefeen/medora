@@ -1,0 +1,5 @@
+//
+//
+//
+//
+enum NavigationSource { search, direct }

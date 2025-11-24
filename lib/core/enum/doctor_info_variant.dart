@@ -1,0 +1,6 @@
+//
+//
+//
+//
+//
+enum DoctorInfoVariant { card, details }

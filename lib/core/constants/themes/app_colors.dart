@@ -12,6 +12,7 @@ class AppColors {
   static const Color red =  Color(0xffF93827);
   static const Color darkRed =  Color(0xffCE1111);
   static const Color blue =  Color(0xff3A59D1);
+  static const Color blueAccent =  Colors.blueAccent;
 
   static const Color customBlue =  Color(0xff427D9D);
   static const Color softBlue =   Color(0xff5682B1);
@@ -44,6 +45,7 @@ class AppColors {
   static const Color customBlue2 = Color(0xff024CAA);
   static const Color blueShadowHeader = Color(0xff091057);
   static const Color colorDashLine = Color(0xff27445D);
+  static const Color searchCardColor = Color(0xffE2DFD0);
 
   static const List<Color> colorsLeftPosition = [
     white,

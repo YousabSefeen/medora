@@ -81,6 +81,9 @@ class _ToggleFavoriteButtonState extends State<ToggleFavoriteButton> {
     duration: AppDurations.milliseconds_600,
     child: IconButton(
       key: ValueKey(isFav),
+      padding: EdgeInsets.zero,
+      constraints: const BoxConstraints(),
+      iconSize: 24,
       icon: Icon(
         isFav ? Icons.favorite : Icons.favorite_border,
         color: isFav ? Colors.red : Colors.grey,

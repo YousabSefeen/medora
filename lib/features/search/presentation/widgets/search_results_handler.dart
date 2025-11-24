@@ -7,8 +7,8 @@ import 'package:medora/features/doctor_list/presentation/widgets/doctor_list_vie
 import 'package:medora/features/search/presentation/controller/cubit/search_cubit.dart'
     show SearchCubit;
 import 'package:medora/features/search/presentation/controller/states/search_states.dart';
-import 'package:medora/features/search/presentation/widgets/no_matching_doctors_widget.dart';
 import 'package:medora/features/search/presentation/widgets/search_welcome_widget.dart';
+import 'package:medora/features/shared/widgets/empty_search_list_results.dart';
 
 class SearchResultsHandler extends StatelessWidget {
   const SearchResultsHandler({super.key});
@@ -28,12 +28,18 @@ class SearchResultsHandler extends StatelessWidget {
         return const SliverLoadingList(height: 150);
       case LazyRequestState.loaded:
         return state.searchResults.isEmpty
-            ? const NoMatchingDoctorsWidget()
+            ? _buildEmptySearchResult()
             : DoctorListView(doctorList: state.searchResults);
       case LazyRequestState.error:
         return _buildErrorState(state);
     }
   }
+
+  SliverFillRemaining _buildEmptySearchResult() => const SliverFillRemaining(
+    hasScrollBody: false,
+
+    child: EmptySearchListResult(),
+  );
 
   Widget _buildErrorState(SearchStates state) {
     return const SliverToBoxAdapter(

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' show dotenv;
+import 'package:flutter_rating_bar/flutter_rating_bar.dart' show RatingBar;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -22,10 +23,12 @@ import 'package:medora/features/home/presentation/controller/cubits/bottom_nav_c
     show BottomNavCubit;
 import 'package:medora/features/home/presentation/screens/bottom_nav_screen.dart'
     show BottomNavScreen;
+import 'package:medora/features/home/presentation/widgets/home_app_bar.dart' show HomeAppBar;
 import 'package:medora/features/payment_gateways/paymob/presentation/controller/cubit/paymob_payment_cubit.dart'
     show PaymobPaymentCubit;
 import 'package:medora/features/payment_gateways/stripe/presentation/View/Screens/stripe_payment_screen.dart'
     show StripePaymentScreen;
+import 'package:medora/features/search/presentation/controller/cubit/home_doctor_search_cubit.dart' show HomeDoctorSearchCubit;
 import 'package:medora/features/search/presentation/controller/cubit/search_cubit.dart'
     show SearchCubit;
 import 'package:time_range/time_range.dart';
@@ -64,6 +67,7 @@ void main() async {
   runApp(
     MultiBlocProvider(
       providers: [
+        // BlocProvider(create: (_) => serviceLocator<HomeDoctorSearchCubit>()),
         BlocProvider(create: (_) => serviceLocator<FavoritesCubit>()),
 
         BlocProvider(create: (_) => serviceLocator<BottomNavCubit>()),
@@ -166,8 +170,8 @@ class MyApp extends StatelessWidget {
           );
         },
 
-        home: const BottomNavScreen(), // أو شاشتك الرئيسية
-        //    home: FuckHome(), // أو شاشتك الرئيسية
+           home: const BottomNavScreen(), // أو شاشتك الرئيسية
+          ///      home: FuckHome(), // أو شاشتك الرئيسية
       ),
     );
   }
@@ -181,12 +185,20 @@ class FuckHome extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text('Fuck Home')),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            print('FuckHome.build');
-            context.read<FavoritesCubit>().getFavoritesDoctors();
+        child:RatingBar.builder(
+          initialRating: 3,
+          minRating: 1,
+          direction: Axis.horizontal,
+          allowHalfRating: true,
+          itemCount: 5,
+          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+          itemBuilder: (context, _) => Icon(
+            Icons.star,
+            color: Colors.amber,
+          ),
+          onRatingUpdate: (rating) {
+            print(rating);
           },
-          child: Text('OnPressed'),
         ),
       ),
     );
