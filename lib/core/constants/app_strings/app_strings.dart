@@ -319,6 +319,10 @@ class AppStrings {
       '• Ensure sufficient balance';
 
   static const String paymentFailedError = 'Payment failed. Please try again.';
+
+  static const String specialties= 'Specialties';
+  static const String apply= 'Apply';
+  static const String reset= 'Reset';
 }
 
 class PaymentMethod {

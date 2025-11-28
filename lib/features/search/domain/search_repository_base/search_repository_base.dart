@@ -1,8 +1,11 @@
-import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
-import 'package:medora/features/doctor_profile/data/models/doctor_model.dart' show DoctorModel;
+import 'package:dartz/dartz.dart' show Either;
 
-import '../../../../core/error/failure.dart';
+
+import 'package:medora/features/doctor_profile/data/models/doctor_model.dart' show DoctorModel;
+import 'package:medora/features/search/domain/entities/search_filters.dart' show SearchFilters;
+
+import '../../../../core/error/failure.dart' show Failure;
+
 
 abstract class SearchRepositoryBase {
   Future<Either<Failure, List<DoctorModel>>> searchDoctorsByName({
@@ -10,9 +13,6 @@ abstract class SearchRepositoryBase {
   });
 
   Future<Either<Failure, List<DoctorModel>>> searchDoctorsByCriteria({
-    required String doctorName,
-    required RangeValues priceRange,
-    List<String>? specialties,
-    String? location,
+  required SearchFilters filters,
   });
 }

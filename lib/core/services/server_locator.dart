@@ -41,8 +41,12 @@ import 'package:medora/features/payment_gateways/stripe/data/repository/stripe_r
     show StripeRepository;
 import 'package:medora/features/payment_gateways/stripe/presentation/controller/cubit/stripe_payment_cubit.dart'
     show StripePaymentCubit;
+import 'package:medora/features/search/data/data_sources/search_remote_data_source.dart' show SearchRemoteDataSource;
 import 'package:medora/features/search/data/repository/search_repository.dart'
     show SearchRepository;
+import 'package:medora/features/search/domain/search_repository_base/search_repository_base.dart' show SearchRepositoryBase;
+import 'package:medora/features/search/domain/use_cases/search_doctors_by_criteria_use_case.dart' show SearchDoctorsByCriteriaUseCase;
+import 'package:medora/features/search/domain/use_cases/search_doctors_by_name_use_case.dart' show SearchDoctorsByNameUseCase;
 import 'package:medora/features/search/presentation/controller/cubit/home_doctor_search_cubit.dart' show HomeDoctorSearchCubit;
 import 'package:medora/features/search/presentation/controller/cubit/search_cubit.dart'
     show SearchCubit;
@@ -67,9 +71,48 @@ class ServiceLocator {
     _registerCubits();
     _registerAppSettings();
     favoritesInit();
+    setupSearchDependencies();
     print('ServiceLocator.initxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
   }
+  void setupSearchDependencies() {
+    // Data Sources
+    serviceLocator.registerLazySingleton<SearchRemoteDataSource>(
+          () => SearchRemoteDataSource(),
+    );
 
+
+    // Repositories
+    serviceLocator.registerLazySingleton<SearchRepositoryBase>(
+          () => SearchRepository(
+        dataSource: serviceLocator(),
+
+      ),
+    );
+
+    // Use Cases
+    serviceLocator.registerLazySingleton<SearchDoctorsByNameUseCase>(
+          () => SearchDoctorsByNameUseCase(searchRepositoryBase: serviceLocator()),
+    );
+    serviceLocator.registerLazySingleton<SearchDoctorsByCriteriaUseCase>(
+          () => SearchDoctorsByCriteriaUseCase(searchRepositoryBase: serviceLocator()),
+    );
+
+    // Cubit
+    serviceLocator.registerFactory<SearchCubit>(
+          () => SearchCubit(
+        searchByName: serviceLocator(),
+        searchByCriteria: serviceLocator(),
+      ),
+    );
+    //xxxxxxxxxxxxxxxxxxx
+    serviceLocator.registerFactory(
+          () => HomeDoctorSearchCubit(
+        searchRepository: serviceLocator(),
+      ),
+    );
+
+
+  }
   void favoritesInit() {
     /// RemoteDataSource/BaseHomeRepository/Use Case/ Bloc
 
@@ -111,15 +154,12 @@ class ServiceLocator {
         toggleFavoriteUseCase: serviceLocator(),
       ),
     );
-    serviceLocator.registerFactory(
-      () => HomeDoctorSearchCubit(
-      searchRepository: serviceLocator(),
-      ),
-    );
 
   }
 
   void _registerRepositories() {
+
+
     serviceLocator.registerLazySingleton<AuthRepository>(
       () => AuthRepository(),
     );
@@ -135,9 +175,7 @@ class ServiceLocator {
     serviceLocator.registerLazySingleton<SpecialtyDoctorsRepository>(
       () => SpecialtyDoctorsRepository(),
     );
-    serviceLocator.registerLazySingleton<SearchRepository>(
-      () => SearchRepository(),
-    );
+
     serviceLocator.registerLazySingleton<FavoritesRepository>(
       () => FavoritesRepository(),
     );
@@ -172,9 +210,6 @@ class ServiceLocator {
       () => SpecialtyDoctorsCubit(specialtyDoctorsRepository: serviceLocator()),
     );
 
-    serviceLocator.registerFactory<SearchCubit>(
-      () => SearchCubit(searchRepository: serviceLocator()),
-    );
 
 
   }

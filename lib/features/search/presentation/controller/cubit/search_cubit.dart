@@ -6,17 +6,27 @@ import 'package:flutter_bloc/flutter_bloc.dart' show Cubit;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 import 'package:medora/core/enum/search_type.dart' show SearchType;
 import 'package:medora/features/doctor_profile/data/models/doctor_model.dart';
-import 'package:medora/features/search/data/repository/search_repository.dart'
-    show SearchRepository;
+import 'package:medora/features/search/domain/entities/search_filters.dart'
+    show SearchFilters;
+import 'package:medora/features/search/domain/use_cases/search_doctors_by_criteria_use_case.dart'
+    show SearchDoctorsByCriteriaUseCase;
+import 'package:medora/features/search/domain/use_cases/search_doctors_by_name_use_case.dart'
+    show SearchDoctorsByNameUseCase;
 import 'package:medora/features/search/presentation/controller/states/search_states.dart'
     show SearchStates;
 
 import '../../../../../core/error/failure.dart' show Failure;
 
 class SearchCubit extends Cubit<SearchStates> {
-  final SearchRepository searchRepository;
+  final SearchDoctorsByNameUseCase _searchByName;
+  final SearchDoctorsByCriteriaUseCase _searchByCriteria;
 
-  SearchCubit({required this.searchRepository}) : super(const SearchStates());
+  SearchCubit({
+    required SearchDoctorsByNameUseCase searchByName,
+    required SearchDoctorsByCriteriaUseCase searchByCriteria,
+  }) : _searchByName = searchByName,
+       _searchByCriteria = searchByCriteria,
+       super(const SearchStates());
 
   Timer? _searchDebounceTimer;
 
@@ -53,9 +63,7 @@ class SearchCubit extends Cubit<SearchStates> {
 
   Future<void> _searchDoctorsByName() async {
     return _executeSearch(
-      searchRepository.searchDoctorsByName(
-        doctorName: _getNormalizedDoctorName(),
-      ),
+      _searchByName.call(_getNormalizedDoctorName()),
     );
   }
 
@@ -63,14 +71,17 @@ class SearchCubit extends Cubit<SearchStates> {
     _applyFiltersToSearch();
 
     return _executeSearch(
-      searchRepository.searchDoctorsByCriteria(
-        doctorName: _getNormalizedDoctorName(),
-        priceRange: state.draftPriceRange,
-        specialties: state.draftSelectedSpecialties,
-        location: _getNormalizedLocation(),
-      ),
+      _searchByCriteria.call(_buildSearchFilters()),
     );
   }
+
+  SearchFilters _buildSearchFilters() => SearchFilters(
+    doctorName: state.doctorName!,
+
+    priceRange: state.draftPriceRange,
+    specialties: state.draftSelectedSpecialties,
+    location: _getNormalizedLocation(),
+  );
 
   Future<void> _executeSearch(
     Future<Either<Failure, List<DoctorModel>>> searchFuture,

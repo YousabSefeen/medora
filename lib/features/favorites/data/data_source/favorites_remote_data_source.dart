@@ -76,7 +76,7 @@ class FavoritesRemoteDataSource extends FavoritesRemoteDataSourceBase {
 
   @override
   Future<bool> isDoctorFavorite(String doctorId) async {
-    final doc = await FirebaseFirestore.instance
+    final doc = await _firestore
         .collection('users')
         .doc(_userId)
         .collection('favorites')

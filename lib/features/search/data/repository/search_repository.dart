@@ -1,35 +1,37 @@
-import 'package:cloud_firestore/cloud_firestore.dart'
-    show FirebaseFirestore, QuerySnapshot, QueryDocumentSnapshot, Query;
-import 'package:dartz/dartz.dart';
-import 'package:flutter/src/material/slider_theme.dart';
+import 'package:dartz/dartz.dart' show Either, right, left;
 import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
     show DoctorModel;
-import 'package:medora/features/search/data/repository/search_repository_base.dart'
+import 'package:medora/features/search/data/data_sources/search_remote_data_source.dart'
+    show SearchRemoteDataSource;
+import 'package:medora/features/search/domain/entities/search_filters.dart'
+    show SearchFilters;
+import 'package:medora/features/search/domain/search_repository_base/search_repository_base.dart'
     show SearchRepositoryBase;
+import 'package:medora/features/search/domain/value_objects/search_filters/location_filter.dart'
+    show LocationFilter;
+import 'package:medora/features/search/domain/value_objects/search_filters/name_filter.dart';
+import 'package:medora/features/search/domain/value_objects/search_filters/price_range_filter.dart';
+import 'package:medora/features/search/domain/value_objects/search_filters/specialty_filter.dart'
+    show SpecialtyFilter;
 
-import '../../../../core/error/failure.dart' show Failure, ServerFailure;
+import '../../../../core/error/failure.dart' show ServerFailure, Failure;
 
 class SearchRepository extends SearchRepositoryBase {
-  final FirebaseFirestore _firestore;
+  final SearchRemoteDataSource _dataSource;
 
-  SearchRepository({FirebaseFirestore? firestore})
-    : _firestore = firestore ?? FirebaseFirestore.instance;
+  SearchRepository({required SearchRemoteDataSource dataSource})
+    : _dataSource = dataSource;
 
   @override
   Future<Either<Failure, List<DoctorModel>>> searchDoctorsByName({
     required String doctorName,
   }) async {
     try {
-      final String startAt = doctorName;
-      final String endAt = '$doctorName\uf8ff';
+      final filters = [NameFilter(doctorName)];
 
-      final snapshot = await _firestore
-          .collection('doctors')
-          .where('name', isGreaterThanOrEqualTo: startAt)
-          .where('name', isLessThanOrEqualTo: endAt)
-          .limit(10)
-          .get();
-      return _parseSnapshot(snapshot);
+      final doctorsList = await _dataSource.searchDoctors(filters);
+
+      return right(doctorsList);
     } catch (e) {
       return left(ServerFailure(catchError: e));
     }
@@ -37,86 +39,22 @@ class SearchRepository extends SearchRepositoryBase {
 
   @override
   Future<Either<Failure, List<DoctorModel>>> searchDoctorsByCriteria({
-    required String doctorName,
-    required RangeValues priceRange,
-    List<String>? specialties,
-    String? location,
+    required SearchFilters filters,
   }) async {
     try {
-      final query = await _buildQuery(
-        doctorName: doctorName,
-        priceRange: priceRange,
-        specialties: specialties,
-        location: location,
-      );
-      final snapshot = await query.limit(10).get();
+      final searchFilters = [
+        NameFilter(filters.doctorName),
+        PriceRangeFilter(filters.priceRange),
+        if (filters.specialties.isNotEmpty)
+          SpecialtyFilter(filters.specialties),
+        if (filters.location != null && filters.location!.isNotEmpty)
+          LocationFilter(filters.location!),
+      ];
 
-      return _parseSnapshot(snapshot);
+      final List doctorsList = await _dataSource.searchDoctors(searchFilters);
+      return right(doctorsList as List<DoctorModel>);
     } catch (e) {
-      _logError('searchDoctorsByCriteria', e);
-      return Left(ServerFailure(catchError: e));
+      return left(ServerFailure(catchError: e));
     }
   }
-
-  Future<Query<Map<String, dynamic>>> _buildQuery({
-    required String doctorName,
-    required RangeValues priceRange,
-    List<String>? specialties,
-    String? location,
-  }) async {
-    // 1. Basic construction (always required * Doctor Name && Price Range*)
-    var query = _firestore
-        .collection('doctors')
-        .where('name', isGreaterThanOrEqualTo: doctorName)
-        .where('name', isLessThanOrEqualTo: '$doctorName\uf8ff')
-        .where('fees', isGreaterThanOrEqualTo: priceRange.start)
-        .where('fees', isLessThanOrEqualTo: priceRange.end);
-
-    // 2. Conditional application of optional filters (specialties && location)
-    query = _applyOptionalFilters(query, specialties, location);
-
-    return query;
-  }
-
-  Query<Map<String, dynamic>> _applyOptionalFilters(
-    Query<Map<String, dynamic>> query,
-    List<String>? specialties,
-    String? location,
-  ) {
-    // Apply the specialties filter if it exists
-    if (specialties != null && specialties.isNotEmpty) {
-      final limitedSpecialties = specialties.take(10).toList();
-
-      query = query.where('specialties', arrayContainsAny: limitedSpecialties);
-    }
-    // Apply the location filter if it exists
-    if (location != null && location.isNotEmpty) {
-      query = query
-          .where('location', isGreaterThanOrEqualTo: location)
-          .where('location', isLessThanOrEqualTo: '$location\uf8ff');
-    }
-    return query;
-  }
-
-  Either<Failure, List<DoctorModel>> _parseSnapshot(
-    QuerySnapshot<Map<String, dynamic>> snapshot,
-  ) {
-    try {
-      final doctorList = snapshot.docs.map(_convertToDoctorModel).toList();
-      return Right(doctorList);
-    } catch (e) {
-      _logError('_parseSnapshot', e);
-      return Left(ServerFailure(catchError: e));
-    }
-  }
-
-  DoctorModel _convertToDoctorModel(
-    QueryDocumentSnapshot<Map<String, dynamic>> doc,
-  ) {
-    final doctorData = doc.data();
-    return DoctorModel.fromJson({'doctorId': doc.id, ...doctorData});
-  }
-
-  void _logError(String methodName, Object error) =>
-      print('SearchRepository.$methodName: $error');
 }
