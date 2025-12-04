@@ -22,7 +22,10 @@ class HomeAppBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
 
             spacing: 10,
-            children: [ExpandableSearchBar(), NotificationIconButton()],
+            children: [
+              Flexible(child: ExpandableSearchBar()),
+              NotificationIconButton(),
+            ],
           ),
         ),
       ],

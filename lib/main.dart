@@ -2,9 +2,8 @@ import 'dart:async';
 import 'dart:developer' as developer;
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:device_preview/device_preview.dart' show DevicePreview;
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart' show kIsWeb, kReleaseMode;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,8 +29,8 @@ import 'package:medora/features/payment_gateways/paymob/presentation/controller/
     show PaymobPaymentCubit;
 import 'package:medora/features/payment_gateways/stripe/presentation/View/Screens/stripe_payment_screen.dart'
     show StripePaymentScreen;
-import 'package:medora/features/search/presentation/controller/cubit/home_doctor_search_cubit.dart' show HomeDoctorSearchCubit;
-import 'package:medora/features/search/presentation/controller/cubit/search_cubit.dart' show SearchCubit;
+import 'package:medora/features/search/presentation/controller/cubit/home_doctor_search_cubit.dart'
+    show HomeDoctorSearchCubit;
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:time_range/time_range.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
@@ -85,30 +84,29 @@ void main() async {
   Stripe.publishableKey = StripeKeys.publishableKey;
 
   runApp(
-      MultiBlocProvider(
-              providers: [
-                 BlocProvider(create: (_) => serviceLocator<HomeDoctorSearchCubit>()),
-                BlocProvider(create: (_) => serviceLocator<FavoritesCubit>()),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => serviceLocator<HomeDoctorSearchCubit>()),
+        BlocProvider(create: (_) => serviceLocator<FavoritesCubit>()),
 
-                BlocProvider(create: (_) => serviceLocator<BottomNavCubit>()),
-                BlocProvider(create: (_) => serviceLocator<LoginCubit>()),
-                BlocProvider(create: (_) => serviceLocator<RegisterCubit>()),
-                BlocProvider(create: (_) => serviceLocator<DoctorProfileCubit>()),
-                BlocProvider(
-      create: (_) => serviceLocator<DoctorListCubit>()..getDoctorsList(),
-                ),
-                BlocProvider(create: (_) => serviceLocator<AppointmentCubit>()),
-                BlocProvider(create: (_) => serviceLocator<AppSettingsCubit>()),
+        BlocProvider(create: (_) => serviceLocator<BottomNavCubit>()),
+        BlocProvider(create: (_) => serviceLocator<LoginCubit>()),
+        BlocProvider(create: (_) => serviceLocator<RegisterCubit>()),
+        BlocProvider(create: (_) => serviceLocator<DoctorProfileCubit>()),
+        BlocProvider(
+          create: (_) => serviceLocator<DoctorListCubit>()..getDoctorsList(),
+        ),
+        BlocProvider(create: (_) => serviceLocator<AppointmentCubit>()),
+        BlocProvider(create: (_) => serviceLocator<AppSettingsCubit>()),
 
-      // BlocProvider(create: (_) => serviceLocator<SearchCubit>()),
+        // BlocProvider(create: (_) => serviceLocator<SearchCubit>()),
 
-                //Payment Gateways
-                BlocProvider(create: (_) => serviceLocator<PaymobPaymentCubit>()),
-              ],
-              child: const MyApp(),
-            ),
+        //Payment Gateways
+        BlocProvider(create: (_) => serviceLocator<PaymobPaymentCubit>()),
+      ],
+      child: const MyApp(),
+    ),
   );
-
 }
 
 class MyApp extends StatelessWidget {
