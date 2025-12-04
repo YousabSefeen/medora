@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart' show Either, right, left;
 import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
     show DoctorModel;
 import 'package:medora/features/search/data/data_sources/search_remote_data_source.dart'
-    show SearchRemoteDataSource;
+    show SearchRemoteDataSourceBase;
 import 'package:medora/features/search/domain/entities/search_filters.dart'
     show SearchFilters;
 import 'package:medora/features/search/domain/search_repository_base/search_repository_base.dart'
@@ -16,10 +16,10 @@ import 'package:medora/features/search/domain/value_objects/search_filters/speci
 
 import '../../../../core/error/failure.dart' show ServerFailure, Failure;
 
-class SearchRepository extends SearchRepositoryBase {
-  final SearchRemoteDataSource _dataSource;
+class SearchRepositoryImpl extends SearchRepositoryBase {
+  final SearchRemoteDataSourceBase _dataSource;
 
-  SearchRepository({required SearchRemoteDataSource dataSource})
+  SearchRepositoryImpl({required SearchRemoteDataSourceBase dataSource})
     : _dataSource = dataSource;
 
   @override

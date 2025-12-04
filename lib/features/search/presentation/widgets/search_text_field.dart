@@ -5,6 +5,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/features/search/presentation/controller/cubit/search_cubit.dart';
+import 'package:medora/features/search/presentation/widgets/clear_search_button.dart'
+    show ClearSearchButton;
 
 class SearchTextField extends StatefulWidget {
   const SearchTextField({super.key});
@@ -42,11 +44,15 @@ class _SearchTextFieldState extends State<SearchTextField> {
       onChanged: (query) => _updateDoctorName(query),
       decoration: InputDecoration(
         prefixIcon: _buildSearchIcon(),
+        prefixIconConstraints: const BoxConstraints(),
+        suffixIconConstraints: const BoxConstraints(),
         contentPadding: const EdgeInsets.symmetric(vertical: 12),
         hintText: 'Find the right doctor for you',
         hintStyle: textTheme.hintFieldStyle,
         fillColor: AppColors.fieldFillColor,
         filled: true,
+
+        suffixIcon: ClearSearchButton(onPressed: _clearSearch),
         border: _buildBorder(AppColors.fieldBorderColor),
         enabledBorder: _buildBorder(AppColors.fieldBorderColor),
         focusedBorder: _buildBorder(Colors.black26),
@@ -54,6 +60,11 @@ class _SearchTextFieldState extends State<SearchTextField> {
         errorStyle: textTheme.styleInputFieldError,
       ),
     );
+  }
+
+  void _clearSearch() {
+    _searchCubit.clearSearch();
+    _searchController.clear();
   }
 
   Widget _buildSearchIcon() => Padding(

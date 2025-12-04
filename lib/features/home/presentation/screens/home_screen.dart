@@ -14,7 +14,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
-      // اغلاق الكيبورد عند التمرير
+      // Keyboard locks when scrolling
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       key: const PageStorageKey<String>('home_screen'),
 

@@ -72,7 +72,51 @@ class SearchStates extends Equatable {
           confirmedDoctorLocation ?? this.confirmedDoctorLocation,
     );
   }
+  Map<String, dynamic> toJson() {
+    return {
+      'searchType': searchType.index,
+      'searchResults': searchResults.map((doctor) => doctor.toJson()).toList(),
+      'searchResultsState': searchResultsState.index,
+      'searchResultsErrorMsg': searchResultsErrorMsg,
+      'doctorName': doctorName,
+      'draftPriceRange': {'start': draftPriceRange.start, 'end': draftPriceRange.end},
+      'draftSelectedSpecialties': draftSelectedSpecialties,
+      'draftDoctorLocation': draftDoctorLocation,
+      'confirmedPriceRange': confirmedPriceRange != null
+          ? {'start': confirmedPriceRange!.start, 'end': confirmedPriceRange!.end}
+          : null,
+      'confirmedSelectedSpecialties': confirmedSelectedSpecialties,
+      'confirmedDoctorLocation': confirmedDoctorLocation,
+    };
+  }
 
+  factory SearchStates.fromJson(Map<String, dynamic> json) {
+    return SearchStates(
+      searchType: SearchType.values[json['searchType'] ?? 0],
+      searchResults: (json['searchResults'] as List?)
+          ?.map((doctorJson) => DoctorModel.fromJson(doctorJson))
+          .toList() ?? const [],
+      searchResultsState: LazyRequestState.values[json['searchResultsState'] ?? 0],
+      searchResultsErrorMsg: json['searchResultsErrorMsg'] ?? '',
+      doctorName: json['doctorName'],
+      draftPriceRange: RangeValues(
+        (json['draftPriceRange']?['start'] ?? 100).toDouble(),
+        (json['draftPriceRange']?['end'] ?? 500).toDouble(),
+      ),
+      draftSelectedSpecialties: List<String>.from(json['draftSelectedSpecialties'] ?? []),
+      draftDoctorLocation: json['draftDoctorLocation'],
+      confirmedPriceRange: json['confirmedPriceRange'] != null
+          ? RangeValues(
+        (json['confirmedPriceRange']?['start'] ?? 100).toDouble(),
+        (json['confirmedPriceRange']?['end'] ?? 500).toDouble(),
+      )
+          : null,
+      confirmedSelectedSpecialties: json['confirmedSelectedSpecialties'] != null
+          ? List<String>.from(json['confirmedSelectedSpecialties'])
+          : null,
+      confirmedDoctorLocation: json['confirmedDoctorLocation'],
+    );
+  }
   @override
   List<Object?> get props => [
     searchType,

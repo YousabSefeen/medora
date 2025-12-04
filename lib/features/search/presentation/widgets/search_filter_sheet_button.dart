@@ -6,6 +6,7 @@ import 'package:medora/core/constants/app_alerts/app_alerts.dart'
     show AppAlerts;
 import 'package:medora/core/constants/app_routes/app_router.dart'
     show AppRouter;
+import 'package:medora/core/constants/app_strings/app_strings.dart';
 import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/enum/search_type.dart' show SearchType;
 import 'package:medora/features/search/presentation/controller/cubit/search_cubit.dart'
@@ -47,7 +48,6 @@ class SearchFilterSheetButton extends StatelessWidget {
       if (!context.mounted) return;
       _showFilterSheet(context);
     });
-
   }
 
   void _showFilterSheet(BuildContext context) {
@@ -62,8 +62,12 @@ class SearchFilterSheetButton extends StatelessWidget {
     onCancelPressed: () => Navigator.of(context).pop(),
     context: context,
     appBarBackgroundColor: AppColors.white,
-    appBarTitle: 'Filter Search',
+    appBarTitle: AppStrings.filterSearch,
     appBarTitleColor: AppColors.black,
-    body: const FilterSheetContent(),
+    body: BlocProvider.value(
+      value: context.read<SearchCubit>(),
+
+      child: const FilterSheetContent(),
+    ),
   );
 }

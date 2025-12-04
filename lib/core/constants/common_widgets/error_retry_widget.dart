@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
+import 'package:medora/core/constants/themes/app_text_styles.dart';
 
 class ErrorRetryWidget extends StatelessWidget {
   final String errorMessage;
@@ -12,7 +14,7 @@ class ErrorRetryWidget extends StatelessWidget {
   const ErrorRetryWidget({
     super.key,
     required this.errorMessage,
-    this.retryButtonText,
+    this.retryButtonText = AppStrings.tryAgainNormal,
     required this.onRetry,
   });
 
@@ -30,32 +32,30 @@ class ErrorRetryWidget extends StatelessWidget {
     child: Column(
       mainAxisSize: MainAxisSize.min,
       spacing: 20,
-      children: [_buildErrorMessageRow(), _buildRetryButton(context)],
+      children: [_buildErrorMessageRow(context), _buildRetryButton(context)],
     ),
   );
 
-  Row _buildErrorMessageRow() => Row(
+  Row _buildErrorMessageRow(BuildContext context) => Row(
     crossAxisAlignment: CrossAxisAlignment.start,
-    children: [_buildErrorIcon(), _buildErrorMessageText()],
+    children: [_buildErrorIcon(), _buildErrorMessageText(context)],
   );
 
   FaIcon _buildErrorIcon() =>
       const FaIcon(FontAwesomeIcons.xmark, size: 30, color: AppColors.red);
 
-  Expanded _buildErrorMessageText() => Expanded(
+  Expanded _buildErrorMessageText(BuildContext context) => Expanded(
     child: Text(
       errorMessage,
-      style: _errorMessageTextStyle(),
+      style: _errorMessageTextStyle(context),
       textAlign: TextAlign.center,
+      maxLines: 3,
+      overflow: TextOverflow.ellipsis,
     ),
   );
 
-  TextStyle _errorMessageTextStyle() => const TextStyle(
-    fontSize: 20,
-    color: Colors.black,
-    fontWeight: FontWeight.w400,
-    height: 1.5,
-  );
+  TextStyle _errorMessageTextStyle(BuildContext context) =>
+      Theme.of(context).textTheme.hintFieldStyle.copyWith(fontSize: 14.sp);
 
   SizedBox _buildRetryButton(BuildContext context) => SizedBox(
     width: MediaQuery.sizeOf(context).width * 0.5,
@@ -74,6 +74,5 @@ class ErrorRetryWidget extends StatelessWidget {
 
   Icon _buildRetryIcon() => const Icon(Icons.refresh, color: Colors.white);
 
-  Text _buildRetryButtonText() =>
-      Text(retryButtonText ?? AppStrings.tryAgainNormal);
+  Text _buildRetryButtonText() => Text(retryButtonText!);
 }

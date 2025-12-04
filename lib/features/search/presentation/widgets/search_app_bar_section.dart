@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-
+import 'package:medora/core/constants/app_strings/app_strings.dart'
+    show AppStrings;
+import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/features/search/presentation/widgets/search_filter_sheet_button.dart'
     show SearchFilterSheetButton;
-
-
 import 'package:medora/features/search/presentation/widgets/search_text_field.dart';
 
 class SearchAppBarSection extends StatelessWidget {
@@ -14,45 +13,28 @@ class SearchAppBarSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(5, 0, 5, 10),
+        padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          spacing:10,
-          children: [
-            _buildTitle(),
-
-            _buildSearchRow(context),
-          ],
+          spacing: 10,
+          children: [_buildTitle(context), _buildSearchRow(context)],
         ),
       ),
     );
   }
 
-  Widget _buildTitle() {
-    return   Text(
-      'Let\'s Find Your\nDoctor',
-      style: GoogleFonts.caladea(
-        fontSize: 22,
-        fontWeight: FontWeight.w700,
-        height:1.4,
-        letterSpacing: 1,
-        wordSpacing: 5,
-      ),
-    );
-  }
+  Widget _buildTitle(BuildContext context) => Text(
+    AppStrings.searchScreenTitle,
+    style: Theme.of(context).textTheme.searchScreenTitle,
+  );
 
   Widget _buildSearchRow(BuildContext context) {
     return const Row(
       children: [
-
         Expanded(child: SearchTextField()),
         SizedBox(width: 12),
         SearchFilterSheetButton(),
       ],
     );
   }
-
-
 }
-
-

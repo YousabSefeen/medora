@@ -149,6 +149,14 @@ extension AppTextStyles on TextTheme {
     fontWeight: FontWeight.w500,
   );
 
+  TextStyle get searchScreenTitle  => GoogleFonts.caladea(
+    fontSize: 22.sp,
+    fontWeight: FontWeight.w700,
+    height:1.4,
+    letterSpacing: 1,
+    wordSpacing: 5,
+  );
+
   TextStyle get styleInputField => TextStyle(
     color: Colors.black,
     fontSize: 16.sp,

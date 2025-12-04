@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart'
-    show ReadContext, BlocSelector, BlocProvider;
+import 'package:flutter_bloc/flutter_bloc.dart' show ReadContext, BlocSelector;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart' show TypeAheadField;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart'
@@ -12,7 +11,6 @@ import 'package:medora/core/constants/app_strings/app_strings.dart';
 import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/enum/navigation_source.dart' show NavigationSource;
-import 'package:medora/core/services/server_locator.dart' show serviceLocator;
 import 'package:medora/features/appointments/presentation/screens/create_appointment_screen.dart'
     show CreateAppointmentScreen;
 import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
@@ -35,41 +33,48 @@ class DoctorSearchField extends StatelessWidget {
     if (!isExpanded) {
       return const SizedBox.shrink();
     }
-    return BlocProvider<HomeDoctorSearchCubit>(
-      create: (context) =>
-          HomeDoctorSearchCubit(searchRepository: serviceLocator()),
-      child:
-          BlocSelector<HomeDoctorSearchCubit, HomeDoctorSearchStates, String?>(
-            selector: (HomeDoctorSearchStates state) => state.doctorName,
+    return BlocSelector<HomeDoctorSearchCubit, HomeDoctorSearchStates, String?>(
+      selector: (HomeDoctorSearchStates state) => state.doctorName,
 
-            builder: (BuildContext context, String? doctorName) {
-              final bool isFelledEmpty = doctorName == null || doctorName == '';
+      builder: (BuildContext context, String? doctorName) {
+        final bool isFelledEmpty = doctorName == null || doctorName == '';
 
-              return TypeAheadField<DoctorModel>(
-                hideOnEmpty: isFelledEmpty,
-                hideOnUnfocus: false,
-                hideWithKeyboard: false,
-                hideOnLoading: false,
-                hideOnSelect: false,
-                hideOnError: false,
-                constraints: const BoxConstraints(),
-                debounceDuration: AppDurations.milliseconds_700,
-                decorationBuilder: (BuildContext context, Widget? widget) =>
-                    _buildDecorationBuilder(isFelledEmpty, widget),
-                emptyBuilder: _buildEmptyBuilder,
+        return TypeAheadField<DoctorModel>(
+          hideOnEmpty: isFelledEmpty,
+          hideOnUnfocus: false,
+          hideWithKeyboard: false,
+          animationDuration: const Duration(milliseconds: 200),
+          hideOnSelect: false,
 
-                suggestionsCallback: (pattern) =>
-                    _performInstantSearch(pattern, context),
-                builder: _buildSearchTextField,
+          constraints: const BoxConstraints(),
+          debounceDuration: AppDurations.milliseconds_700,
+          decorationBuilder: (BuildContext context, Widget? widget) =>
+              _buildDecorationBuilder(isFelledEmpty, widget),
+          emptyBuilder: _buildEmptyBuilder,
 
-                itemBuilder: _buildSuggestionItem,
+          suggestionsCallback: (pattern) =>
+              _performInstantSearch(pattern, context),
+          builder:
+              (
+                BuildContext context,
+                TextEditingController controller,
+                FocusNode focusNode,
+              ) {
+                return _buildSearchTextField(
+                  doctorName,
+                  context,
+                  controller,
+                  focusNode,
+                );
+              },
 
-                itemSeparatorBuilder: _itemSeparatorBuilder,
-                onSelected: (doctor) => _handleDoctorSelection(doctor, context),
-                loadingBuilder: _buildLoadingIndicator,
-              );
-            },
-          ),
+          itemBuilder: _buildSuggestionItem,
+
+          itemSeparatorBuilder: _itemSeparatorBuilder,
+          onSelected: (doctor) => _handleDoctorSelection(doctor, context),
+          loadingBuilder: _buildLoadingIndicator,
+        );
+      },
     );
   }
 
@@ -112,20 +117,24 @@ class DoctorSearchField extends StatelessWidget {
     String searchPattern,
     BuildContext context,
   ) async {
-    print('DoctorSearchField._performInstantSearch');
     final cubit = context.read<HomeDoctorSearchCubit>();
     final doctorsList = await cubit.searchDoctorsInstant(searchPattern);
 
     return doctorsList;
   }
 
-  Widget _buildSearchTextField(
+  TextFormField _buildSearchTextField(
+    String? doctorName,
     BuildContext context,
     TextEditingController controller,
     FocusNode focusNode,
   ) {
+    controller.text = doctorName ?? '';
+
     final TextTheme textTheme = Theme.of(context).textTheme;
+
     return TextFormField(
+      autofocus: true,
       controller: controller,
       focusNode: focusNode,
       readOnly: !isExpanded,
@@ -200,14 +209,6 @@ class DoctorSearchField extends StatelessWidget {
         ),
       );
 
-  Widget _buildLoadingIndicator(BuildContext context) => const Padding(
-    padding: EdgeInsets.all(0.0),
-    child: Row(
-      children: [
-        CircularProgressIndicator(),
-        SizedBox(width: 16),
-        Text('Searching in progress...'),
-      ],
-    ),
-  );
+  Widget _buildLoadingIndicator(BuildContext context) =>
+      const LinearProgressIndicator(color: Colors.amber);
 }

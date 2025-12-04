@@ -320,9 +320,12 @@ class AppStrings {
 
   static const String paymentFailedError = 'Payment failed. Please try again.';
 
-  static const String specialties= 'Specialties';
-  static const String apply= 'Apply';
-  static const String reset= 'Reset';
+  static const String specialties = 'Specialties';
+  static const String apply = 'Apply';
+  static const String reset = 'Reset';
+  static const String searchScreenTitle = 'Let\'s Find Your\nDoctor';
+
+  static const String filterSearch = 'Filter Search';
 }
 
 class PaymentMethod {

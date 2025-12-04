@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:dartz/dartz.dart' show Either;
 import 'package:flutter/material.dart' show RangeValues;
-import 'package:flutter_bloc/flutter_bloc.dart' show Cubit;
+import 'package:hydrated_bloc/hydrated_bloc.dart' show HydratedCubit;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 import 'package:medora/core/enum/search_type.dart' show SearchType;
 import 'package:medora/features/doctor_profile/data/models/doctor_model.dart';
@@ -17,7 +17,7 @@ import 'package:medora/features/search/presentation/controller/states/search_sta
 
 import '../../../../../core/error/failure.dart' show Failure;
 
-class SearchCubit extends Cubit<SearchStates> {
+class SearchCubit extends HydratedCubit<SearchStates> {
   final SearchDoctorsByNameUseCase _searchByName;
   final SearchDoctorsByCriteriaUseCase _searchByCriteria;
 
@@ -28,6 +28,19 @@ class SearchCubit extends Cubit<SearchStates> {
        _searchByCriteria = searchByCriteria,
        super(const SearchStates());
 
+  @override
+  SearchStates? fromJson(Map<String, dynamic> json) =>
+      SearchStates.fromJson(json);
+
+  @override
+  Map<String, dynamic>? toJson(SearchStates state) => state.toJson();
+
+  @override
+  Future<void> close() {
+    _searchDebounceTimer?.cancel();
+    return super.close();
+  }
+
   Timer? _searchDebounceTimer;
 
   bool get _hasValidSearchQuery =>
@@ -37,6 +50,8 @@ class SearchCubit extends Cubit<SearchStates> {
     emit(state.copyWith(doctorName: doctorName));
     _executeDebouncedSearch();
   }
+
+  void clearSearch() => emit(state.copyWith(doctorName: '', searchResults: []));
 
   void _executeDebouncedSearch() {
     _searchDebounceTimer?.cancel();
@@ -62,17 +77,13 @@ class SearchCubit extends Cubit<SearchStates> {
   }
 
   Future<void> _searchDoctorsByName() async {
-    return _executeSearch(
-      _searchByName.call(_getNormalizedDoctorName()),
-    );
+    return _executeSearch(_searchByName.call(_getNormalizedDoctorName()));
   }
 
   Future<void> _searchDoctorsByMultipleCriteria() async {
     _applyFiltersToSearch();
 
-    return _executeSearch(
-      _searchByCriteria.call(_buildSearchFilters()),
-    );
+    return _executeSearch(_searchByCriteria.call(_buildSearchFilters()));
   }
 
   SearchFilters _buildSearchFilters() => SearchFilters(

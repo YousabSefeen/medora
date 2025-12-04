@@ -2,14 +2,17 @@ import 'dart:async';
 import 'dart:developer' as developer;
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:device_preview/device_preview.dart' show DevicePreview;
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart' show kIsWeb, kReleaseMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' show dotenv;
-import 'package:flutter_rating_bar/flutter_rating_bar.dart' show RatingBar;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart'
+    show HydratedBloc, HydratedStorage, HydratedStorageDirectory;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:medora/core/app_settings/controller/cubit/app_settings_cubit.dart'
     show AppSettingsCubit;
@@ -23,14 +26,13 @@ import 'package:medora/features/home/presentation/controller/cubits/bottom_nav_c
     show BottomNavCubit;
 import 'package:medora/features/home/presentation/screens/bottom_nav_screen.dart'
     show BottomNavScreen;
-import 'package:medora/features/home/presentation/widgets/home_app_bar.dart' show HomeAppBar;
 import 'package:medora/features/payment_gateways/paymob/presentation/controller/cubit/paymob_payment_cubit.dart'
     show PaymobPaymentCubit;
 import 'package:medora/features/payment_gateways/stripe/presentation/View/Screens/stripe_payment_screen.dart'
     show StripePaymentScreen;
 import 'package:medora/features/search/presentation/controller/cubit/home_doctor_search_cubit.dart' show HomeDoctorSearchCubit;
-import 'package:medora/features/search/presentation/controller/cubit/search_cubit.dart'
-    show SearchCubit;
+import 'package:medora/features/search/presentation/controller/cubit/search_cubit.dart' show SearchCubit;
+import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:time_range/time_range.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
@@ -58,6 +60,24 @@ void main() async {
 
   ServiceLocator().init();
 
+  if (!kIsWeb) {
+    final tempDir = await getTemporaryDirectory();
+
+    // يمكنك مسح الملفات القديمة عند بدء التشغيل
+    try {
+      if (tempDir.existsSync()) {
+        tempDir.deleteSync(recursive: true);
+      }
+    } catch (e) {
+      print('Error clearing temp: $e');
+    }
+  }
+
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: kIsWeb
+        ? HydratedStorageDirectory.web
+        : HydratedStorageDirectory((await getTemporaryDirectory()).path),
+  );
   await Future.wait([
     Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
     dotenv.load(fileName: '.env'),
@@ -65,57 +85,30 @@ void main() async {
   Stripe.publishableKey = StripeKeys.publishableKey;
 
   runApp(
-    MultiBlocProvider(
-      providers: [
-        // BlocProvider(create: (_) => serviceLocator<HomeDoctorSearchCubit>()),
-        BlocProvider(create: (_) => serviceLocator<FavoritesCubit>()),
+      MultiBlocProvider(
+              providers: [
+                 BlocProvider(create: (_) => serviceLocator<HomeDoctorSearchCubit>()),
+                BlocProvider(create: (_) => serviceLocator<FavoritesCubit>()),
 
-        BlocProvider(create: (_) => serviceLocator<BottomNavCubit>()),
-        BlocProvider(create: (_) => serviceLocator<LoginCubit>()),
-        BlocProvider(create: (_) => serviceLocator<RegisterCubit>()),
-        BlocProvider(create: (_) => serviceLocator<DoctorProfileCubit>()),
-        BlocProvider(
-          create: (_) => serviceLocator<DoctorListCubit>()..getDoctorsList(),
-        ),
-        BlocProvider(create: (_) => serviceLocator<AppointmentCubit>()),
-        BlocProvider(create: (_) => serviceLocator<AppSettingsCubit>()),
+                BlocProvider(create: (_) => serviceLocator<BottomNavCubit>()),
+                BlocProvider(create: (_) => serviceLocator<LoginCubit>()),
+                BlocProvider(create: (_) => serviceLocator<RegisterCubit>()),
+                BlocProvider(create: (_) => serviceLocator<DoctorProfileCubit>()),
+                BlocProvider(
+      create: (_) => serviceLocator<DoctorListCubit>()..getDoctorsList(),
+                ),
+                BlocProvider(create: (_) => serviceLocator<AppointmentCubit>()),
+                BlocProvider(create: (_) => serviceLocator<AppSettingsCubit>()),
 
-        BlocProvider(create: (_) => serviceLocator<SearchCubit>()),
+      // BlocProvider(create: (_) => serviceLocator<SearchCubit>()),
 
-
-        //Payment Gateways
-        BlocProvider(create: (_) => serviceLocator<PaymobPaymentCubit>()),
-      ],
-      child: MyApp(),
-    ),
+                //Payment Gateways
+                BlocProvider(create: (_) => serviceLocator<PaymobPaymentCubit>()),
+              ],
+              child: const MyApp(),
+            ),
   );
 
-  /*
-  runApp(
-    DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) =>  MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (_) => serviceLocator<BottomNavCubit>()),
-          BlocProvider(create: (_) => serviceLocator<LoginCubit>()),
-          BlocProvider(create: (_) => serviceLocator<RegisterCubit>()),
-          BlocProvider(create: (_) => serviceLocator<DoctorProfileCubit>()),
-          BlocProvider(create: (_) => serviceLocator<DoctorListCubit>()),
-          BlocProvider(create: (_) => serviceLocator<AppointmentCubit>()),
-          BlocProvider(create: (_) => serviceLocator<AppSettingsCubit>()),
-
-          BlocProvider(create: (_) => serviceLocator<SearchCubit>()),
-
-          //Payment Gateways
-          BlocProvider(create: (_) => serviceLocator<PaymobPaymentCubit>()),
-
-
-        ],
-        child: MyApp(),
-      ),
-    ),
-  );
-   */
 }
 
 class MyApp extends StatelessWidget {
@@ -170,8 +163,8 @@ class MyApp extends StatelessWidget {
           );
         },
 
-           home: const BottomNavScreen(), // أو شاشتك الرئيسية
-          ///      home: FuckHome(), // أو شاشتك الرئيسية
+        home: const BottomNavScreen(), // أو شاشتك الرئيسية
+        //     home: FuckHome(), // أو شاشتك الرئيسية
       ),
     );
   }
@@ -185,7 +178,15 @@ class FuckHome extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text('Fuck Home')),
       body: Center(
-        child:RatingBar.builder(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.of(
+              MyApp.navigatorKey.currentState!.context,
+            ).push(MaterialPageRoute(builder: (_) => NewPage()));
+          },
+          child: Text('data'),
+        ),
+        /*       child:RatingBar.builder(
           initialRating: 3,
           minRating: 1,
           direction: Axis.horizontal,
@@ -199,7 +200,7 @@ class FuckHome extends StatelessWidget {
           onRatingUpdate: (rating) {
             print(rating);
           },
-        ),
+        ),*/
       ),
     );
   }

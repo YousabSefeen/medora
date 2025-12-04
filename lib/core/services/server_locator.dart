@@ -17,13 +17,12 @@ import 'package:medora/features/favorites/data/repository/favorites_repository.d
     show FavoritesRepository;
 import 'package:medora/features/favorites/domain/favorites_repository_base/favorites_repository_base.dart'
     show FavoritesRepositoryBase;
-import 'package:medora/features/favorites/domain/use_cases/is_doctor_favorite_use_case.dart'
-    show IsDoctorFavoriteUseCase;
 import 'package:medora/features/favorites/domain/use_cases/get_favorites_doctors_use_case.dart'
     show GetFavoritesDoctorsUseCase;
+import 'package:medora/features/favorites/domain/use_cases/is_doctor_favorite_use_case.dart'
+    show IsDoctorFavoriteUseCase;
 import 'package:medora/features/favorites/domain/use_cases/toggle_favorite_use_case.dart'
     show ToggleFavoriteUseCase;
-
 import 'package:medora/features/favorites/presentation/controller/cubit/favorites_cubit.dart'
     show FavoritesCubit;
 import 'package:medora/features/favorites/presentation/controller/cubit/favorites_cubit.dart';
@@ -41,15 +40,18 @@ import 'package:medora/features/payment_gateways/stripe/data/repository/stripe_r
     show StripeRepository;
 import 'package:medora/features/payment_gateways/stripe/presentation/controller/cubit/stripe_payment_cubit.dart'
     show StripePaymentCubit;
-import 'package:medora/features/search/data/data_sources/search_remote_data_source.dart' show SearchRemoteDataSource;
-import 'package:medora/features/search/data/repository/search_repository.dart'
-    show SearchRepository;
-import 'package:medora/features/search/domain/search_repository_base/search_repository_base.dart' show SearchRepositoryBase;
-import 'package:medora/features/search/domain/use_cases/search_doctors_by_criteria_use_case.dart' show SearchDoctorsByCriteriaUseCase;
-import 'package:medora/features/search/domain/use_cases/search_doctors_by_name_use_case.dart' show SearchDoctorsByNameUseCase;
-import 'package:medora/features/search/presentation/controller/cubit/home_doctor_search_cubit.dart' show HomeDoctorSearchCubit;
-import 'package:medora/features/search/presentation/controller/cubit/search_cubit.dart'
-    show SearchCubit;
+import 'package:medora/features/search/data/data_sources/search_remote_data_source.dart'
+    show SearchRemoteDataSource, SearchRemoteDataSourceBase;
+import 'package:medora/features/search/data/repository/search_repository_impl.dart'
+    show SearchRepositoryImpl;
+import 'package:medora/features/search/domain/search_repository_base/search_repository_base.dart'
+    show SearchRepositoryBase;
+import 'package:medora/features/search/domain/use_cases/search_doctors_by_criteria_use_case.dart'
+    show SearchDoctorsByCriteriaUseCase;
+import 'package:medora/features/search/domain/use_cases/search_doctors_by_name_use_case.dart'
+    show SearchDoctorsByNameUseCase;
+import 'package:medora/features/search/presentation/controller/cubit/home_doctor_search_cubit.dart'
+    show HomeDoctorSearchCubit;
 
 import '../../features/appointments/data/repository/appointment_repository.dart';
 import '../../features/appointments/presentation/controller/cubit/appointment_cubit.dart';
@@ -74,45 +76,44 @@ class ServiceLocator {
     setupSearchDependencies();
     print('ServiceLocator.initxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
   }
+
   void setupSearchDependencies() {
     // Data Sources
-    serviceLocator.registerLazySingleton<SearchRemoteDataSource>(
-          () => SearchRemoteDataSource(),
-    );
 
+    serviceLocator.registerLazySingleton<SearchRemoteDataSourceBase>(
+      () => SearchRemoteDataSource(),
+    );
 
     // Repositories
     serviceLocator.registerLazySingleton<SearchRepositoryBase>(
-          () => SearchRepository(
-        dataSource: serviceLocator(),
-
-      ),
+      () => SearchRepositoryImpl(dataSource: serviceLocator()),
     );
 
     // Use Cases
     serviceLocator.registerLazySingleton<SearchDoctorsByNameUseCase>(
-          () => SearchDoctorsByNameUseCase(searchRepositoryBase: serviceLocator()),
+      () => SearchDoctorsByNameUseCase(searchRepositoryBase: serviceLocator()),
     );
     serviceLocator.registerLazySingleton<SearchDoctorsByCriteriaUseCase>(
-          () => SearchDoctorsByCriteriaUseCase(searchRepositoryBase: serviceLocator()),
-    );
-
-    // Cubit
-    serviceLocator.registerFactory<SearchCubit>(
-          () => SearchCubit(
-        searchByName: serviceLocator(),
-        searchByCriteria: serviceLocator(),
+      () => SearchDoctorsByCriteriaUseCase(
+        searchRepositoryBase: serviceLocator(),
       ),
     );
-    //xxxxxxxxxxxxxxxxxxx
+
+    /// SearchCubit registration removed from serviceLocator to prevent state sharing issues.
+    /// Using direct BlocProvider creation in SearchScreen instead for proper screen-level state isolation.
+    /// This avoids Cubit disposal conflicts and ensures each screen has its own state instance.
+    // serviceLocator.registerLazySingleton<SearchCubit>(
+    //       () => SearchCubit(
+    //         searchByName: serviceLocator(),
+    //         searchByCriteria: serviceLocator(),
+    //       ),
+    //     );
+
     serviceLocator.registerFactory(
-          () => HomeDoctorSearchCubit(
-        searchRepository: serviceLocator(),
-      ),
+      () => HomeDoctorSearchCubit(searchByName: serviceLocator()),
     );
-
-
   }
+
   void favoritesInit() {
     /// RemoteDataSource/BaseHomeRepository/Use Case/ Bloc
 
@@ -134,12 +135,11 @@ class ServiceLocator {
 
     ///favorites
     serviceLocator.registerLazySingleton(
-      () => IsDoctorFavoriteUseCase(
-        favoritesRepositoryBase: serviceLocator(),
-      ),
+      () => IsDoctorFavoriteUseCase(favoritesRepositoryBase: serviceLocator()),
     );
     serviceLocator.registerLazySingleton(
-      () => GetFavoritesDoctorsUseCase(favoritesRepositoryBase: serviceLocator()),
+      () =>
+          GetFavoritesDoctorsUseCase(favoritesRepositoryBase: serviceLocator()),
     );
     serviceLocator.registerLazySingleton(
       () => ToggleFavoriteUseCase(favoritesRepositoryBase: serviceLocator()),
@@ -154,12 +154,9 @@ class ServiceLocator {
         toggleFavoriteUseCase: serviceLocator(),
       ),
     );
-
   }
 
   void _registerRepositories() {
-
-
     serviceLocator.registerLazySingleton<AuthRepository>(
       () => AuthRepository(),
     );
@@ -209,9 +206,6 @@ class ServiceLocator {
     serviceLocator.registerFactory<SpecialtyDoctorsCubit>(
       () => SpecialtyDoctorsCubit(specialtyDoctorsRepository: serviceLocator()),
     );
-
-
-
   }
 
   void _registerAppSettings() {
