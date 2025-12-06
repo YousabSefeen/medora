@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../../core/enum/request_state.dart';
 import '../../../../doctor_profile/data/models/doctor_model.dart';
-import '../../../data/models/doctor_list_model.dart';
+
 
 class DoctorListState extends Equatable {
   final List<DoctorModel> doctorList;
