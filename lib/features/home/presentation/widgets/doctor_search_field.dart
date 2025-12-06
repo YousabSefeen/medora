@@ -43,7 +43,6 @@ class DoctorSearchField extends StatelessWidget {
           hideOnEmpty: isFelledEmpty,
           hideOnUnfocus: false,
           hideWithKeyboard: false,
-          animationDuration: const Duration(milliseconds: 200),
           hideOnSelect: false,
 
           constraints: const BoxConstraints(),
@@ -81,22 +80,21 @@ class DoctorSearchField extends StatelessWidget {
   Container _buildDecorationBuilder(bool isFelledEmpty, Widget? widget) =>
       Container(
         decoration: BoxDecoration(
-          color: AppColors.searchCardColor,
+          color: AppColors.customWhite,
           borderRadius: BorderRadius.circular(12.r),
-          boxShadow: isFelledEmpty
-              ? []
-              : const [
-                  BoxShadow(
-                    color: Colors.blueAccent,
-
-                    spreadRadius: 0.5,
-                    blurRadius: 2,
-                    offset: Offset(1, 1),
-                  ),
-                ],
+          boxShadow: isFelledEmpty ? [] : _buildBoxShadow(),
         ),
         child: widget,
       );
+
+  List<BoxShadow> _buildBoxShadow() => const [
+    BoxShadow(
+      color: AppColors.softBlue,
+      spreadRadius: 1,
+      blurRadius: 2,
+      offset: Offset(0, 1),
+    ),
+  ];
 
   Widget _buildEmptyBuilder(BuildContext context) => Container(
     height: MediaQuery.sizeOf(context).height * 0.5,
