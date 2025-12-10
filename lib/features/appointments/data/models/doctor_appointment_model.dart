@@ -1,6 +1,6 @@
-
 import 'package:json_annotation/json_annotation.dart';
-import 'package:medora/features/appointments/data/models/appointment_model.dart' show AppointmentModel;
+import 'package:medora/features/appointments/data/models/appointment_model.dart'
+    show AppointmentModel;
 
 part 'doctor_appointment_model.g.dart';
 
@@ -10,8 +10,10 @@ class DoctorAppointmentModel {
 
   final AppointmentModel appointmentModel;
 
-  DoctorAppointmentModel(
-      {required this.appointmentId, required this.appointmentModel});
+  DoctorAppointmentModel({
+    required this.appointmentId,
+    required this.appointmentModel,
+  });
 
   factory DoctorAppointmentModel.fromJson(Map<String, dynamic> json) =>
       _$DoctorAppointmentModelFromJson(json);

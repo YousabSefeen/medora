@@ -7,14 +7,15 @@ class EphemeralKeyModel {
   bool? livemode;
   String? secret;
 
-  EphemeralKeyModel(
-      {this.id,
-      this.object,
-      this.associatedObjects,
-      this.created,
-      this.expires,
-      this.livemode,
-      this.secret});
+  EphemeralKeyModel({
+    this.id,
+    this.object,
+    this.associatedObjects,
+    this.created,
+    this.expires,
+    this.livemode,
+    this.secret,
+  });
 
   EphemeralKeyModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -36,8 +37,9 @@ class EphemeralKeyModel {
     data['id'] = this.id;
     data['object'] = this.object;
     if (this.associatedObjects != null) {
-      data['associated_objects'] =
-          this.associatedObjects!.map((v) => v.toJson()).toList();
+      data['associated_objects'] = this.associatedObjects!
+          .map((v) => v.toJson())
+          .toList();
     }
     data['created'] = this.created;
     data['expires'] = this.expires;

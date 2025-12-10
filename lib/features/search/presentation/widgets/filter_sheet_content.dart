@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:medora/core/constants/app_strings/app_strings.dart' show AppStrings;
+import 'package:medora/core/constants/app_strings/app_strings.dart'
+    show AppStrings;
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/features/search/presentation/widgets/apply_button.dart'
     show ApplyButton;
@@ -42,7 +43,7 @@ class FilterSheetContent extends StatelessWidget {
 
           SpecialtiesFilterGrid(),
 
-          FilterSectionTitle(title:AppStrings.locationLabel),
+          FilterSectionTitle(title: AppStrings.locationLabel),
 
           Padding(
             padding: EdgeInsets.only(right: 15, bottom: 30),

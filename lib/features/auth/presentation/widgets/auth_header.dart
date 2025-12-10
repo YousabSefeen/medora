@@ -13,9 +13,7 @@ class AuthHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 10,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,10 +32,11 @@ class AuthHeader extends StatelessWidget {
           Text(
             'MediLink',
             style: GoogleFonts.poppins(
-                fontSize: 36.sp,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                height: 2),
+              fontSize: 36.sp,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              height: 2,
+            ),
           ),
           FadeInUp(
             duration: AppDurations.milliseconds_1200,

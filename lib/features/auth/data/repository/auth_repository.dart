@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:medora/features/auth/data/models/user_model.dart' show UserModel;
+import 'package:medora/features/auth/data/models/user_model.dart'
+    show UserModel;
 
 import '../../../../core/error/failure.dart';
 import '../../../../core/utils/date_time_formatter.dart';
@@ -11,11 +11,15 @@ import 'base_auth_repository.dart';
 
 class AuthRepository extends BaseAuthRepository {
   @override
-  Future<Either<Failure, void>> login(
-      {required String email, required String password}) async {
+  Future<Either<Failure, void>> login({
+    required String email,
+    required String password,
+  }) async {
     try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
       return right(null);
     } catch (e) {
       return left(ServerFailure(catchError: e));
@@ -34,11 +38,12 @@ class AuthRepository extends BaseAuthRepository {
       final UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
       await _uploadUserData(
-          uid: userCredential.user!.uid,
-          name: name,
-          email: email,
-          phone: phone,
-          role: role);
+        uid: userCredential.user!.uid,
+        name: name,
+        email: email,
+        phone: phone,
+        role: role,
+      );
       return right(null);
     } catch (e) {
       return left(ServerFailure(catchError: e));
@@ -56,13 +61,15 @@ class AuthRepository extends BaseAuthRepository {
       await FirebaseFirestore.instance
           .collection('users')
           .doc(uid)
-          .set(UserModel(
-            name: name,
-            phone: phone,
-            email: email,
-            role: role,
-            createdAt: DateTimeFormatter.dateAndTimeNowS(),
-          ).toJson());
+          .set(
+            UserModel(
+              name: name,
+              phone: phone,
+              email: email,
+              role: role,
+              createdAt: DateTimeFormatter.dateAndTimeNowS(),
+            ).toJson(),
+          );
     } catch (e) {
       print('_saveUserDataToFirestore $e');
     }
@@ -82,6 +89,7 @@ class AuthRepository extends BaseAuthRepository {
     }
   }
 }
+
 /*
   Future  signInWithGoogle() async {
     // Trigger the authentication flow

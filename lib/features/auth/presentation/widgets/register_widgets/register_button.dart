@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medora/features/auth/presentation/widgets/register_widgets/register_error_snack_bar_content.dart' show RegisterErrorSnackBarContent;
+import 'package:medora/features/auth/presentation/widgets/register_widgets/register_error_snack_bar_content.dart'
+    show RegisterErrorSnackBarContent;
+
 import '../../../../../core/constants/app_alerts/app_alerts.dart';
 import '../../../../../core/constants/app_routes/app_router.dart';
 import '../../../../../core/constants/app_routes/app_router_names.dart';
@@ -67,9 +69,9 @@ class RegisterButton extends StatelessWidget {
   }
 
   void _resetRegisterStates(BuildContext context) => Future.microtask(() {
-        if (!context.mounted) return;
-        context.read<RegisterCubit>().resetStates();
-      });
+    if (!context.mounted) return;
+    context.read<RegisterCubit>().resetStates();
+  });
 
   void onRegisterPressed(BuildContext context) {
     FocusManager.instance.primaryFocus?.unfocus();

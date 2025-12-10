@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medora/features/doctor_profile/presentation/controller/cubit/doctor_profile_cubit.dart' show DoctorProfileCubit;
-import 'package:medora/features/doctor_profile/presentation/controller/states/doctor_profile_state.dart' show DoctorProfileState;
+import 'package:medora/features/doctor_profile/presentation/controller/cubit/doctor_profile_cubit.dart'
+    show DoctorProfileCubit;
+import 'package:medora/features/doctor_profile/presentation/controller/states/doctor_profile_state.dart'
+    show DoctorProfileState;
 
 import '../../../../core/constants/app_strings/app_strings.dart';
 import '../controller/form_controllers/doctor_fields_controllers.dart';
@@ -53,7 +55,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                 : AutovalidateMode.disabled,
             child: DoctorProfileBody(
               doctorFieldsControllers: doctorFieldsControllers,
-              doctorFieldsValidator:doctorFieldsValidator,
+              doctorFieldsValidator: doctorFieldsValidator,
             ),
           ),
         ),

@@ -14,7 +14,7 @@ import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/enum/navigation_source.dart' show NavigationSource;
 import 'package:medora/core/extensions/string_extensions.dart';
-import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
+import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
 
 class CustomSliverAppBar extends StatelessWidget {

@@ -37,7 +37,7 @@ extension AppTextStyles on TextTheme {
     color: AppColors.black,
     height: 1.2,
     fontWeight: FontWeight.w600,
-    fontSize: 10 ,
+    fontSize: 10,
   );
 
   // Original: titleMedium (DoctorList info)
@@ -62,8 +62,6 @@ extension AppTextStyles on TextTheme {
     fontWeight: FontWeight.w600,
   );
 
-
-
   // Original: titleSmall
   TextStyle get smallGreyMedium => TextStyle(
     fontSize: 14.sp,
@@ -86,12 +84,14 @@ extension AppTextStyles on TextTheme {
     fontWeight: FontWeight.w600,
     letterSpacing: 0.5,
   );
-  TextStyle get caladeaWhite =>  GoogleFonts.caladea(
-  color: AppColors.black,
-  fontSize: 20.sp,
-  letterSpacing: 1.5,
-  fontWeight: FontWeight.w600,
+
+  TextStyle get caladeaWhite => GoogleFonts.caladea(
+    color: AppColors.black,
+    fontSize: 20.sp,
+    letterSpacing: 1.5,
+    fontWeight: FontWeight.w600,
   );
+
   // Original: labelSmall (DoctorProfileFiled - hint)
   TextStyle get smallGreySemiBold => GoogleFonts.actor(
     fontSize: 12.sp,
@@ -135,17 +135,17 @@ extension AppTextStyles on TextTheme {
   );
 
   //سسسس
-  TextStyle get smallSoftBlueMedium  => TextStyle(
+  TextStyle get smallSoftBlueMedium => TextStyle(
     fontSize: 12.sp,
     color: AppColors.softBlue,
     height: 1.2,
     fontWeight: FontWeight.w500,
   );
 
-  TextStyle get searchScreenTitle  => GoogleFonts.caladea(
+  TextStyle get searchScreenTitle => GoogleFonts.caladea(
     fontSize: 22.sp,
     fontWeight: FontWeight.w700,
-    height:1.4,
+    height: 1.4,
     letterSpacing: 1,
     wordSpacing: 5,
   );

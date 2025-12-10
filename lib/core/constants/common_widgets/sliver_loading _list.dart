@@ -12,14 +12,11 @@ class SliverLoadingList extends StatelessWidget {
     final deviceSize = MediaQuery.sizeOf(context);
     return SliverList.builder(
       itemCount: 20,
-      itemBuilder: (context, index) =>CustomShimmer(
-        height: height,
-        width: deviceSize.width * 8,
-      ),
+      itemBuilder: (context, index) =>
+          CustomShimmer(height: height, width: deviceSize.width * 8),
     );
   }
 }
-
 
 /*
  return SingleChildScrollView(

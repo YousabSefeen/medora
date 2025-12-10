@@ -3,15 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/extensions/list_string_extension.dart';
+import 'package:medora/features/shared/data/models/doctor_model.dart'
+    show DoctorModel;
 
 import '../../../../../core/constants/app_strings/app_strings.dart';
-import '../../../../doctor_profile/data/models/doctor_model.dart';
-
-
-
 
 class BookedAppointmentHeader extends StatelessWidget {
   final DoctorModel doctorModel;
+
   const BookedAppointmentHeader({super.key, required this.doctorModel});
 
   @override
@@ -23,8 +22,6 @@ class BookedAppointmentHeader extends StatelessWidget {
       subtitle: _buildDoctorSpecialties(context),
     );
   }
-
-
 
   Widget _buildDoctorName(BuildContext context) {
     return Text(
@@ -40,13 +37,11 @@ class BookedAppointmentHeader extends StatelessWidget {
       doctorModel.specialties.buildJoin(),
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
-      style: Theme.of(context)
-          .listTileTheme
-          .subtitleTextStyle!
-          .copyWith(fontSize: 13.sp),
+      style: Theme.of(
+        context,
+      ).listTileTheme.subtitleTextStyle!.copyWith(fontSize: 13.sp),
     );
   }
-
 
   Widget _buildDoctorImage(String imageUrl) {
     return CircleAvatar(

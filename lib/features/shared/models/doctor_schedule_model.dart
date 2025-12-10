@@ -1,16 +1,9 @@
+import 'package:medora/features/shared/data/models/doctor_availability_model.dart'
+    show DoctorAvailabilityModel;
 
-
-
-
-
-
-
-import 'package:medora/features/shared/models/availability_model.dart' show DoctorAvailabilityModel;
-
-class DoctorScheduleModel{
-
+class DoctorScheduleModel {
   final String doctorId;
-  final DoctorAvailabilityModel  doctorAvailability;
+  final DoctorAvailabilityModel doctorAvailability;
 
   DoctorScheduleModel({
     required this.doctorId,

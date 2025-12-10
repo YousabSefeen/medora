@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 
-
 class FilterSectionTitle extends StatelessWidget {
   final String title;
+
   const FilterSectionTitle({super.key, required this.title});
 
   @override

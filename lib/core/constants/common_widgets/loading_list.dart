@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'package:medora/core/constants/common_widgets/custom_shimmer.dart' show CustomShimmer;
+import 'package:medora/core/constants/common_widgets/custom_shimmer.dart'
+    show CustomShimmer;
 
 class LoadingList extends StatelessWidget {
   final double height;
@@ -12,10 +12,8 @@ class LoadingList extends StatelessWidget {
     final deviceSize = MediaQuery.sizeOf(context);
     return ListView.builder(
       itemCount: 20,
-      itemBuilder: (context, index) => CustomShimmer(
-        height: height,
-        width: deviceSize.width * 8,
-      ),
+      itemBuilder: (context, index) =>
+          CustomShimmer(height: height, width: deviceSize.width * 8),
     );
   }
 }

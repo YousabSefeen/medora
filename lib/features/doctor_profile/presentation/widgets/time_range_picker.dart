@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
-import 'package:medora/features/doctor_profile/presentation/controller/cubit/doctor_profile_cubit.dart' show DoctorProfileCubit;
-
+import 'package:medora/features/doctor_profile/presentation/controller/cubit/doctor_profile_cubit.dart'
+    show DoctorProfileCubit;
 import 'package:time_range/time_range.dart';
 
 import '../../../../core/constants/themes/app_colors.dart';
@@ -29,6 +29,7 @@ class _TimeRangePickerState extends State<TimeRangePicker> {
     super.initState();
     _timeRange = _defaultTimeRange;
   }
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -57,22 +58,20 @@ class _TimeRangePickerState extends State<TimeRangePicker> {
             onRangeCompleted: (range) {
               setState(() => _timeRange = range);
               context.read<DoctorProfileCubit>().updateWorkHoursSelected(
-                    _timeRange != null,
-                    _timeRange?.start.format(context),
-                    _timeRange?.end.format(context),
-                  );
+                _timeRange != null,
+                _timeRange?.start.format(context),
+                _timeRange?.end.format(context),
+              );
             },
-            onFirstTimeSelected: (startHour) {
-            },
+            onFirstTimeSelected: (startHour) {},
           ),
-
         ],
       ),
     );
   }
 
   TextStyle _getActiveTextStyle(TextTheme textTheme) => textTheme.numbersStyle
-        .copyWith(color: Colors.white, fontWeight: FontWeight.w600);
+      .copyWith(color: Colors.white, fontWeight: FontWeight.w600);
 
   TextStyle _getLabelFieldStyle(TextTheme textTheme) => textTheme.mediumBlack
       .copyWith(fontSize: 13.sp, color: const Color(0xff3A59D1));

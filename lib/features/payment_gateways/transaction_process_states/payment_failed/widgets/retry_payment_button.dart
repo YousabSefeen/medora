@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medora/core/constants/app_routes/app_router.dart' show AppRouter;
-
-
+import 'package:medora/core/constants/app_routes/app_router.dart'
+    show AppRouter;
 
 class RetryPaymentButton extends StatelessWidget {
   const RetryPaymentButton({super.key});
@@ -18,16 +16,11 @@ class RetryPaymentButton extends StatelessWidget {
         backgroundColor: Colors.redAccent,
         foregroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
       child: Text(
         retryPayment,
-        style: GoogleFonts.poppins(
-          fontSize: 18,
-          fontWeight: FontWeight.w600,
-        ),
+        style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600),
       ),
     );
   }

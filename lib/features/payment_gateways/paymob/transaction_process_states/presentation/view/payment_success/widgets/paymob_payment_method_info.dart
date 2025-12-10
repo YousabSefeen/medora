@@ -3,11 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
-import 'package:medora/features/payment_gateways/paymob/transaction_process_states/data/models/paymob_transaction_data_result_model.dart' show PaymobTransactionDataModel;
+import 'package:medora/features/payment_gateways/paymob/transaction_process_states/data/models/paymob_transaction_data_result_model.dart'
+    show PaymobTransactionDataModel;
 
 import '../../../../../../../../../../../../generated/assets.dart';
 import '../../../../../../Presentation/Views/widgets/custom _image_widget.dart';
-
 
 class PaymobPaymentMethodInfo extends StatelessWidget {
   final PaymobTransactionDataModel transactionData;
@@ -22,9 +22,7 @@ class PaymobPaymentMethodInfo extends StatelessWidget {
       margin: EdgeInsets.zero,
       decoration: ShapeDecoration(
         color: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       ),
       child: Row(
         children: [
@@ -57,7 +55,7 @@ class PaymobPaymentMethodInfo extends StatelessWidget {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
@@ -72,8 +70,9 @@ class PaymobPaymentMethodInfo extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 2),
         decoration: BoxDecoration(
-            color: AppColors.softBlue,
-            borderRadius: BorderRadius.circular(2.r)),
+          color: AppColors.softBlue,
+          borderRadius: BorderRadius.circular(2.r),
+        ),
         child: FaIcon(
           FontAwesomeIcons.ccVisa,
           color: Colors.white,

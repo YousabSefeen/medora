@@ -1,5 +1,5 @@
-
-import 'package:medora/features/appointments/data/models/picked_doctor_info_model.dart' show PickedDoctorInfoModel;
+import 'package:medora/features/appointments/data/models/picked_doctor_info_model.dart'
+    show PickedDoctorInfoModel;
 
 class AppointmentSummaryData {
   final PickedDoctorInfoModel pickedDoctorInfo;

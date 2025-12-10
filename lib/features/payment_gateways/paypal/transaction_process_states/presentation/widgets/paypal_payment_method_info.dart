@@ -5,10 +5,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../../core/constants/themes/app_colors.dart';
 
-
-
 class PaypalPaymentMethodInfo extends StatelessWidget {
   final String userEmail;
+
   const PaypalPaymentMethodInfo({super.key, required this.userEmail});
 
   @override
@@ -19,17 +18,16 @@ class PaypalPaymentMethodInfo extends StatelessWidget {
       margin: EdgeInsets.zero,
       decoration: ShapeDecoration(
         color: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 2),
             decoration: BoxDecoration(
-                color: AppColors.softBlue,
-                borderRadius: BorderRadius.circular(2.r)),
+              color: AppColors.softBlue,
+              borderRadius: BorderRadius.circular(2.r),
+            ),
             child: FaIcon(
               FontAwesomeIcons.ccPaypal,
               color: Colors.white,
@@ -51,8 +49,8 @@ class PaypalPaymentMethodInfo extends StatelessWidget {
                     ),
                   ),
                 ),
-                  TextSpan(
-                  text:maskEmail(userEmail) ,
+                TextSpan(
+                  text: maskEmail(userEmail),
                   style: const TextStyle(
                     color: Colors.black54,
                     fontSize: 16,
@@ -63,11 +61,12 @@ class PaypalPaymentMethodInfo extends StatelessWidget {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
   }
+
   String maskEmail(String email) {
     List<String> parts = email.split('@'); // تقسيم البريد عند @
     String namePart = parts[0]; // الجزء الأول قبل @

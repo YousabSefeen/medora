@@ -9,8 +9,11 @@ class RegisterErrorSnackBarContent extends StatelessWidget {
   final String errorMessage;
   final String userEmail;
 
-  const RegisterErrorSnackBarContent(
-      {super.key, required this.errorMessage, required this.userEmail});
+  const RegisterErrorSnackBarContent({
+    super.key,
+    required this.errorMessage,
+    required this.userEmail,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +36,11 @@ class RegisterErrorSnackBarContent extends StatelessWidget {
         ElevatedButton(
           onPressed: () {
             ScaffoldMessenger.of(context).removeCurrentSnackBar();
-            AppRouter.pushNamedAndRemoveUntil(context, AppRouterNames.login,
-                arguments: userEmail);
+            AppRouter.pushNamedAndRemoveUntil(
+              context,
+              AppRouterNames.login,
+              arguments: userEmail,
+            );
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.black,

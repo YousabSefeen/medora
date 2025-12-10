@@ -1,6 +1,3 @@
-
-
-
 class TimeSlotsDataModel {
   final String? selectedSlot;
   final List<String> availableSlots;

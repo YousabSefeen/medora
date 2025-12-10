@@ -1,14 +1,13 @@
-
-
 import 'package:flutter/material.dart';
-import 'package:medora/features/appointments/presentation/widgets/booked_appointment_widgets/appointment_reschedule_button.dart' show AppointmentRescheduleButton;
+import 'package:medora/features/appointments/presentation/widgets/booked_appointment_widgets/appointment_reschedule_button.dart'
+    show AppointmentRescheduleButton;
 
 import '../../../data/models/client_appointments_model.dart';
 import 'cancel_button.dart';
 
-
 class BookedAppointmentActionsSection extends StatelessWidget {
   final ClientAppointmentsModel appointment;
+
   const BookedAppointmentActionsSection({super.key, required this.appointment});
 
   @override
@@ -18,7 +17,7 @@ class BookedAppointmentActionsSection extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-            CancelButton(appointment: appointment),
+          CancelButton(appointment: appointment),
           AppointmentRescheduleButton(appointment: appointment),
         ],
       ),

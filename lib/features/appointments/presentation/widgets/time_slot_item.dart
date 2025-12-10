@@ -23,10 +23,7 @@ class TimeSlotItem extends StatelessWidget {
       child: Container(
         alignment: Alignment.center,
         decoration: _itemDecoration(),
-        child: Text(
-          time,
-          style: _itemTextStyle(context),
-        ),
+        child: Text(time, style: _itemTextStyle(context)),
       ),
     );
   }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medora/core/constants/app_strings/app_strings.dart' show AppStrings;
+import 'package:medora/core/constants/app_strings/app_strings.dart'
+    show AppStrings;
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
@@ -11,8 +11,8 @@ import '../../animations/custom_modal_type_bottom_sheet.dart';
 class AppointmentCancellationSheet {
   static void showCancelAppointmentSheet({
     required BuildContext context,
-   required VoidCallback  onCancelPressed,
-   required VoidCallback  onConfirmPressed,
+    required VoidCallback onCancelPressed,
+    required VoidCallback onConfirmPressed,
   }) {
     WoltModalSheet.show(
       context: context,
@@ -26,15 +26,19 @@ class AppointmentCancellationSheet {
   }
 
   static WoltModalSheetPage _buildConfirmationPage(
-      BuildContext context,
-      VoidCallback? onCancelPressed,
-      VoidCallback? onConfirmPressed,
-      ) {
+    BuildContext context,
+    VoidCallback? onCancelPressed,
+    VoidCallback? onConfirmPressed,
+  ) {
     return WoltModalSheetPage(
       hasSabGradient: false,
       topBar: _buildSheetHeader(context),
       isTopBarLayerAlwaysVisible: true,
-      child: _buildConfirmationContent(context, onCancelPressed, onConfirmPressed),
+      child: _buildConfirmationContent(
+        context,
+        onCancelPressed,
+        onConfirmPressed,
+      ),
     );
   }
 
@@ -59,10 +63,10 @@ class AppointmentCancellationSheet {
   }
 
   static Widget _buildConfirmationContent(
-      BuildContext context,
-      VoidCallback? onCancelPressed,
-      VoidCallback? onConfirmPressed,
-      ) {
+    BuildContext context,
+    VoidCallback? onCancelPressed,
+    VoidCallback? onConfirmPressed,
+  ) {
     return Container(
       width: 200,
       color: Colors.white,
@@ -110,10 +114,10 @@ class AppointmentCancellationSheet {
   }
 
   static Widget _buildActionButtons(
-      BuildContext context,
-      VoidCallback? onCancelPressed,
-      VoidCallback? onConfirmPressed,
-      ) {
+    BuildContext context,
+    VoidCallback? onCancelPressed,
+    VoidCallback? onConfirmPressed,
+  ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -124,7 +128,10 @@ class AppointmentCancellationSheet {
     );
   }
 
-  static Widget _buildCancelButton(BuildContext context, VoidCallback? onPressed) {
+  static Widget _buildCancelButton(
+    BuildContext context,
+    VoidCallback? onPressed,
+  ) {
     return Expanded(
       child: SizedBox(
         height: 50.h,
@@ -137,7 +144,10 @@ class AppointmentCancellationSheet {
     );
   }
 
-  static Widget _buildConfirmButton(BuildContext context, VoidCallback? onPressed) {
+  static Widget _buildConfirmButton(
+    BuildContext context,
+    VoidCallback? onPressed,
+  ) {
     return Expanded(
       child: SizedBox(
         height: 50.h,

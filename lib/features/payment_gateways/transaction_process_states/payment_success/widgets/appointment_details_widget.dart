@@ -5,8 +5,11 @@ class AppointmentDetailsWidget extends StatelessWidget {
   final String label;
   final String value;
 
-  const AppointmentDetailsWidget(
-      {super.key, required this.label, required this.value});
+  const AppointmentDetailsWidget({
+    super.key,
+    required this.label,
+    required this.value,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +27,7 @@ class AppointmentDetailsWidget extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  label,
-                  style: latoSemiBoldDark,
-                ),
+                Text(label, style: latoSemiBoldDark),
                 Text(
                   ':   ',
                   style: latoSemiBoldDark.copyWith(
@@ -39,12 +39,7 @@ class AppointmentDetailsWidget extends StatelessWidget {
             ),
           ),
 
-          Expanded(
-            child: Text(
-              value,
-              style: caladeaMediumLight.copyWith(),
-            ),
-          ),
+          Expanded(child: Text(value, style: caladeaMediumLight.copyWith())),
           // Expanded(
           //   child: RichText(
           //

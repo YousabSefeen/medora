@@ -1,17 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart' show FirebaseFirestore;
 import 'package:dartz/dartz.dart';
-import 'package:medora/features/doctor_profile/data/models/doctor_model.dart' show DoctorModel;
-import 'package:medora/features/doctors_specialties/data/repository/specialty_doctors_repository_base.dart' show SpecialtyDoctorsRepositoryBase;
+import 'package:medora/features/doctors_specialties/data/repository/specialty_doctors_repository_base.dart'
+    show SpecialtyDoctorsRepositoryBase;
+import 'package:medora/features/shared/data/models/doctor_model.dart'
+    show DoctorModel;
 
 import '../../../../core/error/failure.dart' show Failure, ServerFailure;
 
-
 class SpecialtyDoctorsRepository extends SpecialtyDoctorsRepositoryBase {
   @override
-  Future<Either<Failure, List<DoctorModel>>> getDoctorsBySpecialty(
-      {required String specialtyName}) async {
-
-
+  Future<Either<Failure, List<DoctorModel>>> getDoctorsBySpecialty({
+    required String specialtyName,
+  }) async {
     try {
       final snapshot = await FirebaseFirestore.instance
           .collection('doctors')

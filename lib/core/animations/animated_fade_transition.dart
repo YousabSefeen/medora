@@ -5,10 +5,7 @@ import '../constants/app_duration/app_duration.dart';
 class AnimatedFadeTransition extends StatefulWidget {
   final Widget child;
 
-  const AnimatedFadeTransition({
-    required this.child,
-    super.key,
-  });
+  const AnimatedFadeTransition({required this.child, super.key});
 
   @override
   State<AnimatedFadeTransition> createState() => _AnimatedFadeTransitionState();
@@ -20,11 +17,9 @@ class _AnimatedFadeTransitionState extends State<AnimatedFadeTransition>
   late Animation<double> _fadeAnimation;
 
   void _initializeAnimation() {
-
     _controller = AnimationController(
       vsync: this,
       duration: AppDurations.milliseconds_1500,
-
     )..forward();
 
     _fadeAnimation = CurvedAnimation(
@@ -47,9 +42,6 @@ class _AnimatedFadeTransitionState extends State<AnimatedFadeTransition>
 
   @override
   Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _fadeAnimation,
-      child: widget.child,
-    );
+    return FadeTransition(opacity: _fadeAnimation, child: widget.child);
   }
 }

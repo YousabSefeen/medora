@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 
@@ -12,9 +11,7 @@ class AppAlertWidgets {
       backgroundColor: AppColors.red,
       margin: const EdgeInsets.all(7),
       padding: const EdgeInsets.all(8),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 5,
       dismissDirection: DismissDirection.horizontal,
       behavior: SnackBarBehavior.floating,
@@ -44,9 +41,7 @@ class AppAlertWidgets {
       backgroundColor: AppColors.red,
       margin: const EdgeInsets.all(7),
       padding: const EdgeInsets.all(8),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 20,
       dismissDirection: DismissDirection.horizontal,
       behavior: SnackBarBehavior.floating,
@@ -67,12 +62,12 @@ class AppAlertWidgets {
       ),
       child: Text(
         message,
-        style:TextStyle(
+        style: TextStyle(
           color: Colors.white,
           fontSize: 17.sp,
           fontWeight: FontWeight.w400,
 
-          height:1.5
+          height: 1.5,
         ),
         textAlign: TextAlign.center,
       ),
@@ -93,12 +88,11 @@ class AppAlertWidgets {
       ),
       child: Text(
         appBarTitle,
-        style: Theme.of(context).textTheme.dialogTitleStyle.copyWith(
-          color: appBarTitleColor,
-        ),
+        style: Theme.of(
+          context,
+        ).textTheme.dialogTitleStyle.copyWith(color: appBarTitleColor),
         textAlign: TextAlign.center,
       ),
     );
-
   }
 }

@@ -4,18 +4,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:image_picker/image_picker.dart';
-import 'package:medora/core/constants/app_strings/app_strings.dart' show AppStrings;
+import 'package:medora/core/constants/app_strings/app_strings.dart'
+    show AppStrings;
 
 import '../../../../core/constants/app_alerts/app_alerts.dart';
 import '../../../../generated/assets.dart';
 import 'developer_note_dialog.dart';
 
 class DoctorProfileImage extends StatefulWidget {
-  const DoctorProfileImage({
-    super.key,
-  });
+  const DoctorProfileImage({super.key});
 
   @override
   State<DoctorProfileImage> createState() => _DoctorProfileImageState();
@@ -36,12 +34,14 @@ class _DoctorProfileImageState extends State<DoctorProfileImage> {
 
     if (imageCapture != null) {
       AppAlerts.customDialog(
-          context: context, body: const DeveloperNoteDialog());
+        context: context,
+        body: const DeveloperNoteDialog(),
+      );
 
       setState(() {
         _image = File(imageCapture.path);
 
-        fakeImageUrl =  AppStrings.images[0];
+        fakeImageUrl = AppStrings.images[0];
       });
     } else {
       if (kDebugMode) {
@@ -61,7 +61,7 @@ class _DoctorProfileImageState extends State<DoctorProfileImage> {
               radius: 50.r,
               backgroundColor: Colors.grey.shade400,
               backgroundImage: fakeImageUrl == null
-                  ? const AssetImage( Assets.imagesUploadProfileIcons)
+                  ? const AssetImage(Assets.imagesUploadProfileIcons)
                   : NetworkImage(fakeImageUrl!),
             ),
           )

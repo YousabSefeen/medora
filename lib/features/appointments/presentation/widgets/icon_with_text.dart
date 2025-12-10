@@ -7,10 +7,11 @@ class IconWithText extends StatelessWidget {
   final String text;
 
   final TextStyle textStyle;
+
   const IconWithText({
     super.key,
     required this.icon,
-      this.iconColor,
+    this.iconColor,
     required this.text,
     required this.textStyle,
   });
@@ -22,8 +23,7 @@ class IconWithText extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Icon(icon, size: 18.sp, color: iconColor ?? textStyle.color),
-        Text(text, style: textStyle ,
-        ),
+        Text(text, style: textStyle),
       ],
     );
   }

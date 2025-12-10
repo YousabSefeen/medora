@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:medora/core/enum/search_bar_state.dart' show SearchBarState;
-import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
+import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
 
 class HomeDoctorSearchStates extends Equatable {
@@ -51,7 +51,5 @@ class HomeDoctorSearchStates extends Equatable {
   }
 
   @override
-  List<Object?> get props => [
-    searchBarState,
-    doctorName, searchResults];
+  List<Object?> get props => [searchBarState, doctorName, searchResults];
 }

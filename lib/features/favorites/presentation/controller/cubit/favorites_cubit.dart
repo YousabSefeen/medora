@@ -6,17 +6,18 @@ import 'package:medora/core/constants/app_duration/app_duration.dart'
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
-import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
-    show DoctorModel;
 import 'package:medora/features/favorites/domain/use_cases/get_favorites_doctors_use_case.dart'
     show GetFavoritesDoctorsUseCase;
 import 'package:medora/features/favorites/domain/use_cases/is_doctor_favorite_use_case.dart'
     show IsDoctorFavoriteUseCase;
 import 'package:medora/features/favorites/domain/use_cases/toggle_favorite_use_case.dart'
     show ToggleFavoriteUseCase, ToggleFavoriteParameters;
-import 'package:medora/features/favorites/domain/value_objects/toggle_favorite_parameters.dart' show ToggleFavoriteParameters;
+import 'package:medora/features/favorites/domain/value_objects/toggle_favorite_parameters.dart'
+    show ToggleFavoriteParameters;
 import 'package:medora/features/favorites/presentation/controller/states/favorites_states.dart'
     show FavoritesStates;
+import 'package:medora/features/shared/data/models/doctor_model.dart'
+    show DoctorModel;
 
 import '../../../../../core/error/failure.dart' show Failure;
 

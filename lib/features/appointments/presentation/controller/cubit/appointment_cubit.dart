@@ -1,14 +1,19 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medora/core/constants/app_strings/app_strings.dart' show AppStrings;
+import 'package:medora/core/constants/app_strings/app_strings.dart'
+    show AppStrings;
 import 'package:medora/core/enum/gender_type.dart' show GenderType;
-import 'package:medora/core/enum/payment_gateways_types.dart' show PaymentGatewaysTypes;
-import 'package:medora/features/appointments/data/models/book_appointment_model.dart' show BookAppointmentModel;
-import 'package:medora/features/appointments/data/models/picked_doctor_info_model.dart' show PickedDoctorInfoModel;
-import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_controllers.dart' show PatientFieldsControllers;
-import 'package:medora/features/appointments/presentation/controller/states/appointment_state.dart' show AppointmentState;
-
+import 'package:medora/core/enum/payment_gateways_types.dart'
+    show PaymentGatewaysTypes;
+import 'package:medora/features/appointments/data/models/book_appointment_model.dart'
+    show BookAppointmentModel;
+import 'package:medora/features/appointments/data/models/picked_doctor_info_model.dart'
+    show PickedDoctorInfoModel;
+import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_controllers.dart'
+    show PatientFieldsControllers;
+import 'package:medora/features/appointments/presentation/controller/states/appointment_state.dart'
+    show AppointmentState;
 
 import '../../../../../core/app_settings/controller/cubit/app_settings_cubit.dart';
 import '../../../../../core/enum/appointment_availability_status.dart';
@@ -26,26 +31,24 @@ class AppointmentCubit extends Cubit<AppointmentState> {
   final AppSettingsCubit appSettingsCubit;
   final AppointmentRepository appointmentRepository;
 
-
-
-
   AppointmentCubit({
     required this.appSettingsCubit,
     required this.appointmentRepository,
-
-
   }) : super(const AppointmentState());
 
   // Public APIs
   Future<void> fetchDoctorAppointments(String doctorId) async {
-    final response =
-        await appointmentRepository.fetchDoctorAppointments(doctorId: doctorId);
+    final response = await appointmentRepository.fetchDoctorAppointments(
+      doctorId: doctorId,
+    );
     response.fold(
       (failure) => _emitDoctorAppointmentsError(failure),
-      (appointments) => emit(state.copyWith(
-        doctorAppointmentState: RequestState.loaded,
-        doctorAppointmentModel: appointments,
-      )),
+      (appointments) => emit(
+        state.copyWith(
+          doctorAppointmentState: RequestState.loaded,
+          doctorAppointmentModel: appointments,
+        ),
+      ),
     );
   }
 
@@ -54,27 +57,25 @@ class AppointmentCubit extends Cubit<AppointmentState> {
 
     required DoctorScheduleModel doctorSchedule,
   }) async {
-
     _clearSelectedTimeSlot();
     final isAvailable = await _checkDoctorAvailability(
       selectedDate: selectedDate,
-      workingDays:doctorSchedule.doctorAvailability.workingDays,
+      workingDays: doctorSchedule.doctorAvailability.workingDays,
     );
 
     if (!isAvailable) return;
 
-
-
-    final formattedDate = DateTimeFormatter.convertSelectedDateToString(selectedDate);
+    final formattedDate = DateTimeFormatter.convertSelectedDateToString(
+      selectedDate,
+    );
     emit(state.copyWith(selectedDateFormatted: formattedDate));
-
 
     final allTimeSlots = TimeSlotHelper.generateHourlyTimeSlots(
       startTime: doctorSchedule.doctorAvailability.availableFrom!,
       endTime: doctorSchedule.doctorAvailability.availableTo!,
     );
 
-    await _loadReservedSlots( doctorSchedule.doctorId, formattedDate);
+    await _loadReservedSlots(doctorSchedule.doctorId, formattedDate);
 
     final availableSlots = TimeSlotHelper.filterAvailableTimeSlots(
       totalTimeSlots: allTimeSlots,
@@ -88,21 +89,18 @@ class AppointmentCubit extends Cubit<AppointmentState> {
     emit(state.copyWith(selectedTimeSlot: selectedSlot));
   }
 
-
-
-
-
   /// Reschedule Appointment Process
   Future<void> rescheduleAppointment({
     required String doctorId,
     required String appointmentId,
   }) async {
-
     if (_isInternetDisconnected()) {
-    emit(state.copyWith(
-      rescheduleAppointmentState: LazyRequestState.error,
-      rescheduleAppointmentError:AppStrings.noInternetConnectionErrorMsg,
-    ));
+      emit(
+        state.copyWith(
+          rescheduleAppointmentState: LazyRequestState.error,
+          rescheduleAppointmentError: AppStrings.noInternetConnectionErrorMsg,
+        ),
+      );
       return;
     }
 
@@ -110,54 +108,62 @@ class AppointmentCubit extends Cubit<AppointmentState> {
     final response = await appointmentRepository.rescheduleAppointment(
       doctorId: doctorId,
       appointmentId: appointmentId,
-      appointmentDate:state.selectedDateFormatted!,
+      appointmentDate: state.selectedDateFormatted!,
       appointmentTime: state.selectedTimeSlot!,
     );
 
     response.fold(
-      (failure) => emit(state.copyWith(
-        rescheduleAppointmentState: LazyRequestState.error,
-        rescheduleAppointmentError: failure.toString(),
-      )),
-      (_) async{
-        await  fetchClientAppointmentsWithDoctorDetails();
+      (failure) => emit(
+        state.copyWith(
+          rescheduleAppointmentState: LazyRequestState.error,
+          rescheduleAppointmentError: failure.toString(),
+        ),
+      ),
+      (_) async {
+        await fetchClientAppointmentsWithDoctorDetails();
 
-
-        emit(state.copyWith(
-          rescheduleAppointmentState: LazyRequestState.loaded,
-        ));
+        emit(
+          state.copyWith(rescheduleAppointmentState: LazyRequestState.loaded),
+        );
       },
     );
   }
 
   /// Cancel Appointment Process
-  Future<void> cancelAppointment(
-      {required String doctorId, required String appointmentId}) async {
+  Future<void> cancelAppointment({
+    required String doctorId,
+    required String appointmentId,
+  }) async {
     if (_isInternetDisconnected()) {
-
-      emit(state.copyWith(
-        cancelAppointmentState: LazyRequestState.error,
-        cancelAppointmentError:AppStrings.noInternetConnectionErrorMsg,
-      ));
+      emit(
+        state.copyWith(
+          cancelAppointmentState: LazyRequestState.error,
+          cancelAppointmentError: AppStrings.noInternetConnectionErrorMsg,
+        ),
+      );
       return;
     }
 
     emit(state.copyWith(cancelAppointmentState: LazyRequestState.loading));
 
     final response = await appointmentRepository.cancelAppointment(
-        doctorId: doctorId, appointmentId: appointmentId);
+      doctorId: doctorId,
+      appointmentId: appointmentId,
+    );
 
     response.fold(
-        (failure) => emit(state.copyWith(
-              cancelAppointmentState: LazyRequestState.error,
-              cancelAppointmentError: failure.toString(),
-            )), (_) async {
-      await fetchClientAppointmentsWithDoctorDetails();
+      (failure) => emit(
+        state.copyWith(
+          cancelAppointmentState: LazyRequestState.error,
+          cancelAppointmentError: failure.toString(),
+        ),
+      ),
+      (_) async {
+        await fetchClientAppointmentsWithDoctorDetails();
 
-      emit(state.copyWith(
-        cancelAppointmentState: LazyRequestState.loaded,
-      ));
-    });
+        emit(state.copyWith(cancelAppointmentState: LazyRequestState.loaded));
+      },
+    );
   }
 
   String get selectedTimeSlot {
@@ -193,9 +199,10 @@ class AppointmentCubit extends Cubit<AppointmentState> {
               appointment.appointmentStatus ==
                   AppointmentStatus.completed.name ||
               (appointment.appointmentStatus ==
-                  AppointmentStatus.confirmed.name &&
-                  appointDateFormatted(appointment.appointmentDate)
-                      .isBefore(now)),
+                      AppointmentStatus.confirmed.name &&
+                  appointDateFormatted(
+                    appointment.appointmentDate,
+                  ).isBefore(now)),
         )
         .toList();
   }
@@ -204,85 +211,94 @@ class AppointmentCubit extends Cubit<AppointmentState> {
     return state.getClientAppointmentsList
         .where(
           (appointment) =>
-              appointment.appointmentStatus ==
-                  AppointmentStatus.cancelled.name,
+              appointment.appointmentStatus == AppointmentStatus.cancelled.name,
         )
         .toList();
   }
 
   ///
   Future<void> fetchClientAppointmentsWithDoctorDetails() async {
-    final response =
-        await appointmentRepository.fetchClientAppointmentsWithDoctorDetails();
+    final response = await appointmentRepository
+        .fetchClientAppointmentsWithDoctorDetails();
     response.fold(
-      (failure) => emit(state.copyWith(
-        getClientAppointmentsListState: RequestState.error,
-        getClientAppointmentsListError: failure.toString(),
-      )),
+      (failure) => emit(
+        state.copyWith(
+          getClientAppointmentsListState: RequestState.error,
+          getClientAppointmentsListError: failure.toString(),
+        ),
+      ),
       (appointments) {
-
-        emit(state.copyWith(
-        getClientAppointmentsList: appointments,
-        getClientAppointmentsListState: RequestState.loaded,
-      ));
+        emit(
+          state.copyWith(
+            getClientAppointmentsList: appointments,
+            getClientAppointmentsListState: RequestState.loaded,
+          ),
+        );
       },
     );
   }
 
-
-
   void resetBookAppointmentState() {
-    emit(state.copyWith(
+    emit(
+      state.copyWith(
         bookAppointmentState: LazyRequestState.lazy,
         hasValidatedBefore: false,
         genderType: GenderType.init,
         bookAppointmentError: '',
-      ));
+      ),
+    );
     print('AppointmentCubit.resetBookAppointmentState');
   }
 
-  void resetStates() => emit( const AppointmentState());
+  void resetStates() => emit(const AppointmentState());
 
-  void resetRescheduleAppointmentState() => emit(state.copyWith(
-    rescheduleAppointmentState: LazyRequestState.lazy,
-    rescheduleAppointmentError: '',
-  ));
-  void resetCancelAppointmentState() => emit(state.copyWith(
-    cancelAppointmentState: LazyRequestState.lazy,
-    cancelAppointmentError: '',
-  ));
+  void resetRescheduleAppointmentState() => emit(
+    state.copyWith(
+      rescheduleAppointmentState: LazyRequestState.lazy,
+      rescheduleAppointmentError: '',
+    ),
+  );
+
+  void resetCancelAppointmentState() => emit(
+    state.copyWith(
+      cancelAppointmentState: LazyRequestState.lazy,
+      cancelAppointmentError: '',
+    ),
+  );
+
   // --- Private Helpers ---
 
   bool _isInternetDisconnected() =>
       appSettingsCubit.state.internetState == InternetState.disconnected;
 
-
-
   void _emitDoctorAppointmentsError(dynamic failure) {
-    emit(state.copyWith(
-      doctorAppointmentState: RequestState.error,
-      doctorAppointmentError: failure.toString(),
-    ));
+    emit(
+      state.copyWith(
+        doctorAppointmentState: RequestState.error,
+        doctorAppointmentError: failure.toString(),
+      ),
+    );
   }
 
   void _clearSelectedTimeSlot() => emit(state.copyWith(selectedTimeSlot: ''));
 
   Future<void> _loadReservedSlots(String doctorId, String date) async {
-    final response =
-        await appointmentRepository.fetchReservedTimeSlotsForDoctorOnDate(
-      doctorId: doctorId,
-      date: date,
-    );
+    final response = await appointmentRepository
+        .fetchReservedTimeSlotsForDoctorOnDate(doctorId: doctorId, date: date);
 
     response.fold(
-      (failure) => emit(state.copyWith(
-        reservedTimeSlotsState: RequestState.error,
-        reservedTimeSlotsError: failure.toString(),
-      )),
-      (slots) => emit(state.copyWith(
-        reservedTimeSlotsState: RequestState.loaded,
-        reservedTimeSlots: slots,
-      )),
+      (failure) => emit(
+        state.copyWith(
+          reservedTimeSlotsState: RequestState.error,
+          reservedTimeSlotsError: failure.toString(),
+        ),
+      ),
+      (slots) => emit(
+        state.copyWith(
+          reservedTimeSlotsState: RequestState.loaded,
+          reservedTimeSlots: slots,
+        ),
+      ),
     );
   }
 
@@ -291,9 +307,11 @@ class AppointmentCubit extends Cubit<AppointmentState> {
     required List<String> workingDays,
   }) async {
     if (TimeSlotHelper.isSelectedDateBeforeToday(selectedDate)) {
-      emit(state.copyWith(
-          appointmentAvailabilityStatus:
-              AppointmentAvailabilityStatus.pastDate));
+      emit(
+        state.copyWith(
+          appointmentAvailabilityStatus: AppointmentAvailabilityStatus.pastDate,
+        ),
+      );
       return false;
     }
 
@@ -310,31 +328,35 @@ class AppointmentCubit extends Cubit<AppointmentState> {
     return isWorking;
   }
 
-  Future<void> deleteAppointment(
-      {required String appointmentId, required String doctorId}) async {
+  Future<void> deleteAppointment({
+    required String appointmentId,
+    required String doctorId,
+  }) async {
     final response = await appointmentRepository.deleteAppointment(
       appointmentId: appointmentId,
       doctorId: doctorId,
     );
-    response.fold((failure) {
-      emit(state.copyWith(
-        deleteAppointment: LazyRequestState.error,
-        deleteAppointmentError: failure.toString(),
-      ));
-    }, (success) {
-      emit(state.copyWith(
-        deleteAppointment: LazyRequestState.loaded,
-      ));
-    });
+    response.fold(
+      (failure) {
+        emit(
+          state.copyWith(
+            deleteAppointment: LazyRequestState.error,
+            deleteAppointmentError: failure.toString(),
+          ),
+        );
+      },
+      (success) {
+        emit(state.copyWith(deleteAppointment: LazyRequestState.loaded));
+      },
+    );
   }
 
-//***************************************************************
+  //***************************************************************
 
-void  cachePickedDoctorInfo(PickedDoctorInfoModel pickedDoctorInfo)=> emit(state.copyWith(
-      pickedDoctorInfo: pickedDoctorInfo,
-    ));
+  void cachePickedDoctorInfo(PickedDoctorInfoModel pickedDoctorInfo) =>
+      emit(state.copyWith(pickedDoctorInfo: pickedDoctorInfo));
 
-  PickedDoctorInfoModel get pickedDoctorInfo=> state.pickedDoctorInfo!;
+  PickedDoctorInfoModel get pickedDoctorInfo => state.pickedDoctorInfo!;
 
   void onChangeSelectedGenderIndex(int index) {
     if (index == 0) {
@@ -348,10 +370,8 @@ void  cachePickedDoctorInfo(PickedDoctorInfoModel pickedDoctorInfo)=> emit(state
   PatientFieldsControllers? _cachedControllers;
 
   void handleSubmitAppointmentRequest({
-
     required PatientFieldsControllers controllers,
     required String phoneNumber,
-
   }) {
     _markFormAsValidatedOnce();
     if (_isFormValid(controllers)) {
@@ -369,7 +389,8 @@ void  cachePickedDoctorInfo(PickedDoctorInfoModel pickedDoctorInfo)=> emit(state
   }
 
   bool _isFormValid(PatientFieldsControllers controllers) {
-    final isFormFieldsValid = controllers.formKey.currentState?.validate() ?? false;
+    final isFormFieldsValid =
+        controllers.formKey.currentState?.validate() ?? false;
     final isGenderValid = controllers.genderController.validate();
     return isFormFieldsValid && isGenderValid;
   }
@@ -378,25 +399,17 @@ void  cachePickedDoctorInfo(PickedDoctorInfoModel pickedDoctorInfo)=> emit(state
     _cachedControllers = controllers;
   }
 
-
-
-
-  void _startBookingWorkflow({
-
-    required String phoneNumber,
-  }) =>
+  void _startBookingWorkflow({required String phoneNumber}) =>
       _bookAppointment(phoneNumber: phoneNumber);
 
-  Future<void> _bookAppointment({
-
-    required String phoneNumber,
-
-  }) async {
+  Future<void> _bookAppointment({required String phoneNumber}) async {
     if (_isInternetDisconnected()) {
-      emit(state.copyWith(
-        bookAppointmentState: LazyRequestState.error,
-        bookAppointmentError: AppStrings.noInternetConnectionErrorMsg,
-      ));
+      emit(
+        state.copyWith(
+          bookAppointmentState: LazyRequestState.error,
+          bookAppointmentError: AppStrings.noInternetConnectionErrorMsg,
+        ),
+      );
       return;
     }
 
@@ -408,37 +421,34 @@ void  cachePickedDoctorInfo(PickedDoctorInfoModel pickedDoctorInfo)=> emit(state
     );
 
     response.fold(
-          (failure) {
-            print('AppointmentCubit._bookAppointment  ${failure.toString()}');
-        emit(state.copyWith(
-        bookAppointmentState: LazyRequestState.error,
-        bookAppointmentError: failure.toString(),
-      ));
-          },
+      (failure) {
+        print('AppointmentCubit._bookAppointment  ${failure.toString()}');
+        emit(
+          state.copyWith(
+            bookAppointmentState: LazyRequestState.error,
+            bookAppointmentError: failure.toString(),
+          ),
+        );
+      },
       (_) {
-        emit(state.copyWith(
-          bookAppointmentState: LazyRequestState.loaded,
-        ));
+        emit(state.copyWith(bookAppointmentState: LazyRequestState.loaded));
       },
     );
   }
 
   BookAppointmentModel _createAppointmentModel() => BookAppointmentModel(
     patientName: _cachedControllers!.nameController.text.trim(),
-        patientGender: state.genderType.name,
-        patientAge: _cachedControllers!.ageController.text.trim(),
-        patientProblem: _cachedControllers!.problemController.text.trim(),
-        appointmentStatus: AppointmentStatus.confirmed.name,
+    patientGender: state.genderType.name,
+    patientAge: _cachedControllers!.ageController.text.trim(),
+    patientProblem: _cachedControllers!.problemController.text.trim(),
+    appointmentStatus: AppointmentStatus.confirmed.name,
     appointmentDate: state.selectedDateFormatted!,
     appointmentTime: state.selectedTimeSlot!,
   );
-// Payment Gateways
+
+  // Payment Gateways
   void onChangePaymentMethod(PaymentGatewaysTypes paymentMethod) =>
       emit(state.copyWith(selectedPaymentMethod: paymentMethod));
 
   PaymentGatewaysTypes get selectedPaymentMethod => state.selectedPaymentMethod;
-
-
-
-
 }

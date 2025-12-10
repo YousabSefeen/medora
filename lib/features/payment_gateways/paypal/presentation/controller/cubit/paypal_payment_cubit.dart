@@ -1,26 +1,27 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medora/core/constants/app_strings/app_strings.dart' show AppStrings;
+import 'package:medora/core/constants/app_strings/app_strings.dart'
+    show AppStrings;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 import 'package:medora/core/enum/web_view_status.dart' show WebViewStatus;
-import 'package:medora/core/payment_gateway_manager/paypal_payment/paypal_keys.dart' show PaypalKeys;
-import 'package:medora/core/payment_gateway_manager/paypal_payment/paypal_services.dart' show PaypalTransactionModel;
-import 'package:medora/features/payment_gateways/paypal/data/repository/paypal_repository.dart' show PaypalRepository;
-import 'package:medora/features/payment_gateways/paypal/presentation/controller/states/paypal_payment_states.dart' show PaypalPaymentState;
-import 'package:medora/features/payment_gateways/shared/web_view_navigator.dart' show WebViewNavigator;
-
+import 'package:medora/core/payment_gateway_manager/paypal_payment/paypal_keys.dart'
+    show PaypalKeys;
+import 'package:medora/core/payment_gateway_manager/paypal_payment/paypal_services.dart'
+    show PaypalTransactionModel;
+import 'package:medora/features/payment_gateways/paypal/data/repository/paypal_repository.dart'
+    show PaypalRepository;
+import 'package:medora/features/payment_gateways/paypal/presentation/controller/states/paypal_payment_states.dart'
+    show PaypalPaymentState;
+import 'package:medora/features/payment_gateways/shared/web_view_navigator.dart'
+    show WebViewNavigator;
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaypalPaymentCubit extends Cubit<PaypalPaymentState> {
   final PaypalRepository paypalRepository;
 
-
-  PaypalPaymentCubit({
-    required this.paypalRepository,
-
-  }) : super(const PaypalPaymentState());
+  PaypalPaymentCubit({required this.paypalRepository})
+    : super(const PaypalPaymentState());
 
   Future<void> createPaymentIntent() async {
-
     emit(state.copyWith(paymentIntentState: LazyRequestState.loading));
     final paypalTransactionModel = PaypalTransactionModel(
       intent: 'sale',
@@ -38,10 +39,10 @@ class PaypalPaymentCubit extends Cubit<PaypalPaymentState> {
                 'quantity': '1',
                 'price': 100.toStringAsFixed(2),
                 'currency': 'USD',
-              }
-            ]
-          }
-        }
+              },
+            ],
+          },
+        },
       ],
       returnUrl: PaypalKeys.successUrl,
       cancelUrl: PaypalKeys.cancelUrl,
@@ -53,17 +54,20 @@ class PaypalPaymentCubit extends Cubit<PaypalPaymentState> {
 
     responseEither.fold(
       (failure) {
-        emit(state.copyWith(
-          paymentIntentState: LazyRequestState.error,
-          paymentIntentErrorMsg: failure.toString(),
-        ));
+        emit(
+          state.copyWith(
+            paymentIntentState: LazyRequestState.error,
+            paymentIntentErrorMsg: failure.toString(),
+          ),
+        );
       },
       (paypalPaymentIntentResponse) {
-        emit(state.copyWith(
-          paymentIntentResponse: paypalPaymentIntentResponse,
-          paymentIntentState: LazyRequestState.loaded,
-
-        ));
+        emit(
+          state.copyWith(
+            paymentIntentResponse: paypalPaymentIntentResponse,
+            paymentIntentState: LazyRequestState.loaded,
+          ),
+        );
 
         printData();
       },
@@ -74,9 +78,11 @@ class PaypalPaymentCubit extends Cubit<PaypalPaymentState> {
     print('webViewStatus  ${state.webViewStatus.name}');
 
     print(
-        'approvalUrl  ${state.paymentIntentResponse?.paypalPaymentLinks.approvalUrl}');
+      'approvalUrl  ${state.paymentIntentResponse?.paypalPaymentLinks.approvalUrl}',
+    );
     print(
-        'executeUrl  ${state.paymentIntentResponse?.paypalPaymentLinks.executeUrl}');
+      'executeUrl  ${state.paymentIntentResponse?.paypalPaymentLinks.executeUrl}',
+    );
     print('accessToken ${state.paymentIntentResponse?.accessToken}');
   }
 
@@ -89,24 +95,22 @@ class PaypalPaymentCubit extends Cubit<PaypalPaymentState> {
 
     webViewNavigator
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setNavigationDelegate(NavigationDelegate(
-        onProgress: (progress) {
-          if(state.progressValue==100){
-            return;
-          }else{
-            emit(state.copyWith(progressValue: progress ));
-          }
-
-
-        },
-        onPageFinished: _handlePageFinished,
-
-      ))
-      ..loadRequest(Uri.parse(
-          state.paymentIntentResponse!.paypalPaymentLinks.approvalUrl));
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (progress) {
+            if (state.progressValue == 100) {
+              return;
+            } else {
+              emit(state.copyWith(progressValue: progress));
+            }
+          },
+          onPageFinished: _handlePageFinished,
+        ),
+      )
+      ..loadRequest(
+        Uri.parse(state.paymentIntentResponse!.paypalPaymentLinks.approvalUrl),
+      );
   }
-
-
 
   Future<void> _handlePageFinished(String url) async {
     print('PaypalWebViewCubit._handlePageFinished: $url');
@@ -133,7 +137,6 @@ class PaypalPaymentCubit extends Cubit<PaypalPaymentState> {
     await _executePaypalPayment(payerId: payerId);
   }
 
-
   void _processCancelledPayment() =>
       _emitWebViewError(AppStrings.paymentCancelledError);
 
@@ -143,34 +146,40 @@ class PaypalPaymentCubit extends Cubit<PaypalPaymentState> {
       executeUrl: state.paymentIntentResponse!.paypalPaymentLinks.executeUrl,
       accessToken: state.paymentIntentResponse!.accessToken,
     );
-    responseEither.fold((failure) => _emitWebViewError(failure.toString()),
-        (result) {
+    responseEither.fold((failure) => _emitWebViewError(failure.toString()), (
+      result,
+    ) {
       if (result['success']) {
-        emit(state.copyWith(
-          webViewStatus: WebViewStatus.success,
-          payerEmail: result['payerEmail'] as String?,
-        ));
+        emit(
+          state.copyWith(
+            webViewStatus: WebViewStatus.success,
+            payerEmail: result['payerEmail'] as String?,
+          ),
+        );
       } else {
         _emitWebViewError(
-            result['message'] ?? 'Payment not approved by PayPal.',
+          result['message'] ?? 'Payment not approved by PayPal.',
         );
       }
     });
   }
-  void resetStates()=> emit(state.copyWith(
-    paymentIntentState: LazyRequestState.lazy,
-    webViewStatus: WebViewStatus.init,
-    paymentIntentErrorMsg: '',
-    webViewErrorMessage: '',
-  ));
-  void _emitWebViewError(String errorMessage) => emit(state.copyWith(
-        webViewStatus: WebViewStatus.error,
-        webViewErrorMessage: errorMessage,
-      ));
+
+  void resetStates() => emit(
+    state.copyWith(
+      paymentIntentState: LazyRequestState.lazy,
+      webViewStatus: WebViewStatus.init,
+      paymentIntentErrorMsg: '',
+      webViewErrorMessage: '',
+    ),
+  );
+
+  void _emitWebViewError(String errorMessage) => emit(
+    state.copyWith(
+      webViewStatus: WebViewStatus.error,
+      webViewErrorMessage: errorMessage,
+    ),
+  );
 }
-
-
-
 
 /*
 import 'package:flutter_bloc/flutter_bloc.dart';

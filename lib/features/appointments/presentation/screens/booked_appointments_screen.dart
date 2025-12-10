@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medora/core/constants/common_widgets/loading_list.dart' show LoadingList;
-import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart' show AppointmentCubit;
+import 'package:medora/core/constants/common_widgets/loading_list.dart'
+    show LoadingList;
+import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart'
+    show AppointmentCubit;
 
 import '../../../../core/constants/common_widgets/custom_error_widget.dart';
 import '../../../../core/enum/request_state.dart';

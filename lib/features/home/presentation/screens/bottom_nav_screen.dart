@@ -2,7 +2,6 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder, ReadContext;
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/features/home/presentation/constants/bottom_nav_constants.dart'
     show BottomNavConstants;
@@ -14,8 +13,6 @@ import 'package:medora/features/home/presentation/widgets/bottom_nav_search_butt
     show BottomNavSearchButton;
 import 'package:medora/features/home/presentation/widgets/bottom_nav_tab.dart'
     show BottomNavTab;
-import 'package:medora/features/home/presentation/widgets/home_app_bar.dart'
-    show HomeAppBar;
 import 'package:medora/features/search/presentation/screens/search_screen.dart'
     show SearchScreen;
 
@@ -84,16 +81,17 @@ class _BottomNavScreenState extends State<BottomNavScreen>
       builder: (context, state) {
         return Scaffold(
           extendBody: true,
-           backgroundColor: AppColors.customWhite,
+          backgroundColor: AppColors.customWhite,
 
-          appBar:state.index == 0
-              ?null: AppBar(
-            backgroundColor: AppColors.customWhite,
-            title: Padding(
+          appBar: state.index == 0
+              ? null
+              : AppBar(
+                  backgroundColor: AppColors.customWhite,
+                  title: Padding(
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Text(BottomNavConstants.appBarTitles[state.index]),
                   ),
-          ),
+                ),
           body: SafeArea(
             key: const PageStorageKey<String>('bottom_nav_screen'),
             child: NotificationListener<ScrollNotification>(

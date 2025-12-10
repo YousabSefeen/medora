@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:medora/core/enum/navigation_source.dart' show NavigationSource;
-import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
+import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
-import 'package:medora/features/shared/presentation/widgets/doctor_basic_info.dart' show DoctorBasicInfo;
+import 'package:medora/features/shared/presentation/widgets/doctor_basic_info.dart'
+    show DoctorBasicInfo;
 import 'package:medora/features/shared/value_objects/doctor_card_config.dart'
     show DoctorCardConfig;
-
 
 class DoctorSearchCard extends StatelessWidget {
   final DoctorModel doctor;

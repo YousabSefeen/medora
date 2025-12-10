@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 
-
 class CustomHalfCircle extends StatelessWidget {
   final bool isLeftPosition;
 

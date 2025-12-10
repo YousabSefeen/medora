@@ -1,6 +1,1 @@
-enum LazyRequestState {
-  lazy,
-  loading,
-  loaded,
-  error,
-}
+enum LazyRequestState { lazy, loading, loaded, error }

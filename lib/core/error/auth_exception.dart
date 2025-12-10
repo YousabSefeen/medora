@@ -1,11 +1,7 @@
-
-
-
-
 class AuthException {
   static String getMsgFromErrorCode({required String errorCode}) {
     switch (errorCode) {
-    // Login Errors
+      // Login Errors
       case 'invalid-credential':
       case 'INVALID_LOGIN_CREDENTIALS':
         return 'Invalid login credentials. Please check your email and password.';
@@ -22,7 +18,7 @@ class AuthException {
       case 'too-many-requests':
         return 'Too many attempts. Please try again later.';
 
-    // Sign up Errors
+      // Sign up Errors
       case 'email-already-in-use':
         return 'This email address is already in use. If it’s your account, try logging in.';
 
@@ -35,7 +31,7 @@ class AuthException {
       case 'weak-password':
         return 'The password is too weak. Please use at least 6 characters.';
 
-    // General or Connectivity Errors
+      // General or Connectivity Errors
       case 'network-request-failed':
         return 'Network error. Please check your internet connection and try again.';
 

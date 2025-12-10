@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medora/core/animations/custom_animation_transition.dart'
     show CustomAnimationTransition;
-import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/enum/animation_type.dart' show AnimationType;
 import 'package:medora/features/search/presentation/controller/cubit/search_cubit.dart';
@@ -40,9 +39,9 @@ class PriceDisplayWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildPriceSeparator() =>const Text(
+  Widget _buildPriceSeparator() => const Text(
     '  -  ',
-    style:  TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
+    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
   );
 
   Widget _buildPriceItem({
@@ -50,13 +49,11 @@ class PriceDisplayWidget extends StatelessWidget {
 
     required Function(RangeValues) priceSelector,
   }) {
-    final textStyle = Theme.of(
-      context,
-    ).textTheme.latoSemiBoldDark.copyWith(
+    final textStyle = Theme.of(context).textTheme.latoSemiBoldDark.copyWith(
       fontSize: 18.sp,
       color: Colors.black,
       fontWeight: FontWeight.w900,
-      shadows: []
+      shadows: [],
     );
     return BlocSelector<SearchCubit, SearchStates, RangeValues>(
       selector: (state) => state.draftPriceRange,
@@ -74,9 +71,7 @@ class PriceDisplayWidget extends StatelessWidget {
   }
 
   Widget _buildCurrencySymbol(TextStyle textStyle) =>
-      Text('EGP ', style: textStyle.copyWith(
-
-      ));
+      Text('EGP ', style: textStyle.copyWith());
 
   Widget _buildAnimatedPriceValue(int price, TextStyle textStyle) {
     return CustomAnimationTransition(

@@ -8,10 +8,11 @@ class DetailsModel {
   final String shipping;
   final int shipping_discount;
 
-  DetailsModel(
-      {required this.subtotal,
-      required this.shipping,
-      required this.shipping_discount});
+  DetailsModel({
+    required this.subtotal,
+    required this.shipping,
+    required this.shipping_discount,
+  });
 
   factory DetailsModel.fromJson(Map<String, dynamic> json) =>
       _$DetailsModelFromJson(json);

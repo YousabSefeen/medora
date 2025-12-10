@@ -7,16 +7,17 @@ part of 'doctor_appointment_model.dart';
 // **************************************************************************
 
 DoctorAppointmentModel _$DoctorAppointmentModelFromJson(
-        Map<String, dynamic> json) =>
-    DoctorAppointmentModel(
-      appointmentId: json['appointmentId'] as String,
-      appointmentModel: AppointmentModel.fromJson(
-          json['appointmentModel'] as Map<String, dynamic>),
-    );
+  Map<String, dynamic> json,
+) => DoctorAppointmentModel(
+  appointmentId: json['appointmentId'] as String,
+  appointmentModel: AppointmentModel.fromJson(
+    json['appointmentModel'] as Map<String, dynamic>,
+  ),
+);
 
 Map<String, dynamic> _$DoctorAppointmentModelToJson(
-        DoctorAppointmentModel instance) =>
-    <String, dynamic>{
-      'appointmentId': instance.appointmentId,
-      'appointmentModel': instance.appointmentModel,
-    };
+  DoctorAppointmentModel instance,
+) => <String, dynamic>{
+  'appointmentId': instance.appointmentId,
+  'appointmentModel': instance.appointmentModel,
+};

@@ -25,7 +25,6 @@ class AppLightTheme {
       ),
     ),
 
-
     iconTheme: IconThemeData(color: AppColors.softBlue, size: 22.sp),
 
     textSelectionTheme: TextSelectionThemeData(
@@ -47,7 +46,6 @@ class AppLightTheme {
       radius: const Radius.circular(8),
       thickness: WidgetStateProperty.all(5),
     ),
-
 
     sliderTheme: SliderThemeData(
       valueIndicatorColor: AppColors.white,
@@ -79,14 +77,12 @@ class AppLightTheme {
       /// لون النطاق الفعال
       activeTrackColor: AppColors.greenLight,
 
-
       showValueIndicator: ShowValueIndicator.always,
 
       /// لون الدائرة
       thumbColor: AppColors.white,
       overlayColor: Colors.blue.shade100,
     ),
-
 
     drawerTheme: const DrawerThemeData(
       backgroundColor: Colors.white,

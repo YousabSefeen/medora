@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart';
 import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
-
-import '../../../doctor_profile/data/models/doctor_model.dart';
+import 'package:medora/features/shared/data/models/doctor_model.dart'
+    show DoctorModel;
 
 class DoctorInfoHeader extends StatelessWidget {
   final DoctorModel doctorInfo;
@@ -17,8 +17,16 @@ class DoctorInfoHeader extends StatelessWidget {
       spacing: 10,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _customRichText(context: context, title: 'Specialties: ', info: doctorInfo.specialties.join(', ')),
-        _customRichText(context: context, title: '${AppStrings.bioLabel}: ', info: doctorInfo.bio),
+        _customRichText(
+          context: context,
+          title: 'Specialties: ',
+          info: doctorInfo.specialties.join(', '),
+        ),
+        _customRichText(
+          context: context,
+          title: '${AppStrings.bioLabel}: ',
+          info: doctorInfo.bio,
+        ),
 
         _customRichText(
           context: context,
@@ -44,9 +52,12 @@ class DoctorInfoHeader extends StatelessWidget {
     return RichText(
       text: TextSpan(
         children: [
-          TextSpan(text: title, style: textTheme.mediumPlaypenBold.copyWith(
-            color: AppColors.softBlue
-          )),
+          TextSpan(
+            text: title,
+            style: textTheme.mediumPlaypenBold.copyWith(
+              color: AppColors.softBlue,
+            ),
+          ),
           TextSpan(
             text: info,
             style: TextStyle(

@@ -1,9 +1,8 @@
-
-
 import 'package:json_annotation/json_annotation.dart';
-import 'package:medora/features/payment_gateways/paymob/data/models/paymob_billing_data_model.dart' show PaymobBillingDataModel;
-import 'package:medora/features/payment_gateways/paymob/data/models/paymob_item_model.dart' show PaymobItemModel;
-
+import 'package:medora/features/payment_gateways/paymob/data/models/paymob_billing_data_model.dart'
+    show PaymobBillingDataModel;
+import 'package:medora/features/payment_gateways/paymob/data/models/paymob_item_model.dart'
+    show PaymobItemModel;
 
 part 'paymob_payment_intent_model.g.dart';
 

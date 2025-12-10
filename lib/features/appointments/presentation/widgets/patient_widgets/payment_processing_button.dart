@@ -2,15 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
-import 'package:medora/core/enum/payment_gateways_types.dart' show PaymentGatewaysTypes;
-import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart' show AppointmentCubit;
-import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_controllers.dart' show PatientFieldsControllers;
-import 'package:medora/features/appointments/presentation/controller/states/appointment_state.dart' show AppointmentState;
-import 'package:medora/features/appointments/presentation/controller/states/book_appointment_action_state.dart' show BookAppointmentActionState;
-import 'package:medora/features/appointments/presentation/widgets/payment_selection_sheet.dart' show PaymentSelectionSheet;
-import 'package:medora/features/payment_gateways/paymob/presentation/view/screens/paymob_payment_screen.dart' show PaymobPaymentScreen;
-import 'package:medora/features/payment_gateways/paypal/presentation/views/screens/paypal_payment_screen.dart' show PaypalPaymentScreen;
-import 'package:medora/features/payment_gateways/stripe/presentation/View/Screens/stripe_payment_screen.dart' show StripePaymentScreen;
+import 'package:medora/core/enum/payment_gateways_types.dart'
+    show PaymentGatewaysTypes;
+import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart'
+    show AppointmentCubit;
+import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_controllers.dart'
+    show PatientFieldsControllers;
+import 'package:medora/features/appointments/presentation/controller/states/appointment_state.dart'
+    show AppointmentState;
+import 'package:medora/features/appointments/presentation/controller/states/book_appointment_action_state.dart'
+    show BookAppointmentActionState;
+import 'package:medora/features/appointments/presentation/widgets/payment_selection_sheet.dart'
+    show PaymentSelectionSheet;
+import 'package:medora/features/payment_gateways/paymob/presentation/view/screens/paymob_payment_screen.dart'
+    show PaymobPaymentScreen;
+import 'package:medora/features/payment_gateways/paypal/presentation/views/screens/paypal_payment_screen.dart'
+    show PaypalPaymentScreen;
+import 'package:medora/features/payment_gateways/stripe/presentation/View/Screens/stripe_payment_screen.dart'
+    show StripePaymentScreen;
 
 import '../../../../../core/constants/app_alerts/app_alerts.dart';
 import '../../../../../core/constants/app_routes/app_router.dart';
@@ -31,8 +40,11 @@ class PaymentProcessingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<AppointmentCubit, AppointmentState,
-        BookAppointmentActionState>(
+    return BlocSelector<
+      AppointmentCubit,
+      AppointmentState,
+      BookAppointmentActionState
+    >(
       selector: (state) => BookAppointmentActionState(
         bookAppointmentState: state.bookAppointmentState,
         bookAppointmentErrorMessage: state.bookAppointmentError,
@@ -62,9 +74,7 @@ class PaymentProcessingButton extends StatelessWidget {
       appBarBackgroundColor: AppColors.white,
       appBarTitle: 'Payment Method',
       appBarTitleColor: AppColors.black,
-      body: PaymentSelectionSheet(
-        formControllers: formControllers,
-      ),
+      body: PaymentSelectionSheet(formControllers: formControllers),
     );
   }
 
@@ -75,7 +85,9 @@ class PaymentProcessingButton extends StatelessWidget {
   /// - Success state: Route to appropriate payment gateway
   /// - Error state: Show error message to user
   void _handleAppointmentStateChanges(
-      BuildContext context, BookAppointmentActionState state) {
+    BuildContext context,
+    BookAppointmentActionState state,
+  ) {
     Future.microtask(() {
       if (!context.mounted) return;
 
@@ -105,7 +117,9 @@ class PaymentProcessingButton extends StatelessWidget {
   /// 1. Dismiss loading dialog
   /// 2. Route to appropriate payment gateway based on selected method
   void _handleSuccessfulAppointment(
-      BuildContext context, BookAppointmentActionState state) {
+    BuildContext context,
+    BookAppointmentActionState state,
+  ) {
     // Dismiss loading dialog
     AppRouter.pop(context);
     // Route to appropriate payment gateway
@@ -119,7 +133,9 @@ class PaymentProcessingButton extends StatelessWidget {
   /// - Stripe: For international card payments
   /// - PayPal: For PayPal account payments
   void _navigateToPaymentGateway(
-      BuildContext context, PaymentGatewaysTypes paymentMethod) {
+    BuildContext context,
+    PaymentGatewaysTypes paymentMethod,
+  ) {
     switch (paymentMethod) {
       case PaymentGatewaysTypes.paymobMobileWallets:
       case PaymentGatewaysTypes.paymobCard:
@@ -142,7 +158,9 @@ class PaymentProcessingButton extends StatelessWidget {
   /// - Mobile Wallets (Mobile wallet payments)
   /// - Card Payment (Card payments)
   void _navigateToPaymobPayment(
-      BuildContext context, PaymentGatewaysTypes paymentMethod) {
+    BuildContext context,
+    PaymentGatewaysTypes paymentMethod,
+  ) {
     _resetAppointmentState(context);
     AppRouter.push(
       context,
@@ -242,13 +260,16 @@ class PaymentProcessingButton extends StatelessWidget {
   /// 1. Show error message to user
   /// 2. Reset booking state
   void _handleAppointmentError(
-      BuildContext context, BookAppointmentActionState state) {
+    BuildContext context,
+    BookAppointmentActionState state,
+  ) {
     Future.microtask(() {
       Future.delayed(const Duration(milliseconds: 300), () {
         if (!context.mounted) return;
-        AppAlerts.showCustomErrorDialog(context, state.bookAppointmentErrorMessage);
-
-
+        AppAlerts.showCustomErrorDialog(
+          context,
+          state.bookAppointmentErrorMessage,
+        );
       });
 
       if (context.mounted) {

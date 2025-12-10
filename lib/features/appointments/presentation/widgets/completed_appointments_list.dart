@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/app_strings/app_strings.dart';
-import '../../../../core/constants/app_strings/appointment_status_strings.dart';
 import '../../../../core/constants/common_widgets/content_unavailable_widget.dart';
 import '../../../../core/enum/appointment_status.dart';
 import '../controller/cubit/appointment_cubit.dart';
@@ -13,8 +12,9 @@ class CompletedAppointmentsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final completedAppointments =
-        context.read<AppointmentCubit>().completedAppointments;
+    final completedAppointments = context
+        .read<AppointmentCubit>()
+        .completedAppointments;
     return completedAppointments!.isEmpty
         ? const ContentUnavailableWidget(
             description: AppStrings.emptyCompletedAppointmentsMessage,

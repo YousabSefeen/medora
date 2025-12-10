@@ -1,8 +1,9 @@
 import 'package:equatable/equatable.dart';
-
 import 'package:medora/core/enum/gender_type.dart' show GenderType;
-import 'package:medora/core/enum/payment_gateways_types.dart' show PaymentGatewaysTypes;
-import 'package:medora/features/appointments/data/models/picked_doctor_info_model.dart' show PickedDoctorInfoModel;
+import 'package:medora/core/enum/payment_gateways_types.dart'
+    show PaymentGatewaysTypes;
+import 'package:medora/features/appointments/data/models/picked_doctor_info_model.dart'
+    show PickedDoctorInfoModel;
 
 import '../../../../../core/enum/appointment_availability_status.dart';
 import '../../../../../core/enum/lazy_request_state.dart';
@@ -10,7 +11,7 @@ import '../../../../../core/enum/request_state.dart';
 import '../../../data/models/client_appointments_model.dart';
 import '../../../data/models/doctor_appointment_model.dart';
 
-class AppointmentState extends Equatable{
+class AppointmentState extends Equatable {
   final List<DoctorAppointmentModel> doctorAppointmentModel;
   final RequestState doctorAppointmentState;
   final String doctorAppointmentError;
@@ -48,14 +49,13 @@ class AppointmentState extends Equatable{
   // Payment Gateways
   final PaymentGatewaysTypes selectedPaymentMethod;
 
-
-
   const AppointmentState({
     this.doctorAppointmentModel = const [],
     this.doctorAppointmentState = RequestState.loading,
     this.doctorAppointmentError = '',
     this.selectedDateFormatted,
-    this.appointmentAvailabilityStatus = AppointmentAvailabilityStatus.available,
+    this.appointmentAvailabilityStatus =
+        AppointmentAvailabilityStatus.available,
     this.reservedTimeSlots = const [],
     this.reservedTimeSlotsState = RequestState.loading,
     this.reservedTimeSlotsError = '',
@@ -76,7 +76,6 @@ class AppointmentState extends Equatable{
     this.hasValidatedBefore = false,
     this.genderType = GenderType.init,
     this.selectedPaymentMethod = PaymentGatewaysTypes.none,
-
   });
 
   AppointmentState copyWith({
@@ -106,7 +105,6 @@ class AppointmentState extends Equatable{
     GenderType? genderType,
     PaymentGatewaysTypes? selectedPaymentMethod,
     LazyRequestState? payRequestState,
-
   }) {
     return AppointmentState(
       doctorAppointmentModel:
@@ -115,7 +113,8 @@ class AppointmentState extends Equatable{
           doctorAppointmentState ?? this.doctorAppointmentState,
       doctorAppointmentError:
           doctorAppointmentError ?? this.doctorAppointmentError,
-      selectedDateFormatted:selectedDateFormatted??this.selectedDateFormatted,
+      selectedDateFormatted:
+          selectedDateFormatted ?? this.selectedDateFormatted,
       appointmentAvailabilityStatus:
           appointmentAvailabilityStatus ?? this.appointmentAvailabilityStatus,
       reservedTimeSlots: reservedTimeSlots ?? this.reservedTimeSlots,
@@ -150,37 +149,35 @@ class AppointmentState extends Equatable{
       genderType: genderType ?? this.genderType,
       selectedPaymentMethod:
           selectedPaymentMethod ?? this.selectedPaymentMethod,
-
     );
   }
 
   @override
   List<Object?> get props => [
-        doctorAppointmentModel,
-        doctorAppointmentState,
-        doctorAppointmentError,
+    doctorAppointmentModel,
+    doctorAppointmentState,
+    doctorAppointmentError,
     selectedDateFormatted,
-        appointmentAvailabilityStatus,
-        reservedTimeSlots,
-        reservedTimeSlotsState,
-        reservedTimeSlotsError,
-        availableDoctorTimeSlots,
-        pickedDoctorInfo,
-        selectedTimeSlot,
-        bookAppointmentState,
-        bookAppointmentError,
-        rescheduleAppointmentState,
-        rescheduleAppointmentError,
-        cancelAppointmentState,
-        cancelAppointmentError,
-        getClientAppointmentsList,
-        getClientAppointmentsListState,
-        getClientAppointmentsListError,
-        deleteAppointment,
-        deleteAppointmentError,
-        hasValidatedBefore,
-        genderType,
-        selectedPaymentMethod,
-
-      ];
+    appointmentAvailabilityStatus,
+    reservedTimeSlots,
+    reservedTimeSlotsState,
+    reservedTimeSlotsError,
+    availableDoctorTimeSlots,
+    pickedDoctorInfo,
+    selectedTimeSlot,
+    bookAppointmentState,
+    bookAppointmentError,
+    rescheduleAppointmentState,
+    rescheduleAppointmentError,
+    cancelAppointmentState,
+    cancelAppointmentError,
+    getClientAppointmentsList,
+    getClientAppointmentsListState,
+    getClientAppointmentsListError,
+    deleteAppointment,
+    deleteAppointmentError,
+    hasValidatedBefore,
+    genderType,
+    selectedPaymentMethod,
+  ];
 }

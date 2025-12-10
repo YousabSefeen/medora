@@ -27,7 +27,12 @@ class DateTimeFormatter {
     final format = DateFormat.jm(); // from intl package
     final parsed = format.parse(time);
     return DateTime(
-        date.year, date.month, date.day, parsed.hour, parsed.minute);
+      date.year,
+      date.month,
+      date.day,
+      parsed.hour,
+      parsed.minute,
+    );
   }
 
   static DateTime newParseTime(String time, DateTime date) {
@@ -45,12 +50,13 @@ class DateTimeFormatter {
 
     return formattedDate;
   }
-  static DateTime convertDateToString(String date) {
 
+  static DateTime convertDateToString(String date) {
     final formattedDate = DateFormat('dd/MM/yyyy').parse(date);
 
     return formattedDate;
   }
+
   static String convertDateToNameDay({required DateTime date}) =>
       DateFormat.EEEE('en_US').format(date);
 

@@ -10,7 +10,7 @@ class CustomPaymentSuccessMessage extends StatelessWidget {
       child: Text(
         'Booking Successfully!',
         textAlign: TextAlign.center,
-        style:  Theme.of(context).textTheme.robotoBoldStyle
+        style: Theme.of(context).textTheme.robotoBoldStyle,
       ),
     );
   }

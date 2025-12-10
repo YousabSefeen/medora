@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:medora/core/constants/app_strings/app_strings.dart' show AppStrings;
+import 'package:medora/core/constants/app_strings/app_strings.dart'
+    show AppStrings;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 import 'package:medora/core/enum/web_view_status.dart' show WebViewStatus;
-import 'package:medora/core/payment_gateway_manager/payment_helper/payment_navigation_helper.dart' show PaymentNavigationHelper;
-import 'package:medora/features/payment_gateways/shared/widgets/web_view_payment_body.dart' show WebViewPaymentBody;
-
+import 'package:medora/core/payment_gateway_manager/payment_helper/payment_navigation_helper.dart'
+    show PaymentNavigationHelper;
+import 'package:medora/features/payment_gateways/shared/widgets/web_view_payment_body.dart'
+    show WebViewPaymentBody;
 import 'package:webview_flutter/webview_flutter.dart';
 
 mixin WebViewPaymentScreenMixin<T extends StatefulWidget> on State<T> {
@@ -34,8 +36,6 @@ mixin WebViewPaymentScreenMixin<T extends StatefulWidget> on State<T> {
 
   void resetPaymentStates();
 
-
-
   bool shouldShowError(dynamic state) =>
       state.paymentIntentState == LazyRequestState.error ||
       state.webViewStatus == WebViewStatus.error;
@@ -50,15 +50,19 @@ mixin WebViewPaymentScreenMixin<T extends StatefulWidget> on State<T> {
       Navigator.pop(context, AppStrings.paymentFailedError);
     }
   }
-   void _popWithPaymentCancelledResult()=> PaymentNavigationHelper.popWithPaymentCancelledResult(context);
+
+  void _popWithPaymentCancelledResult() =>
+      PaymentNavigationHelper.popWithPaymentCancelledResult(context);
+
   Widget buildPaymentScreen(BuildContext context, dynamic state) {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) =>
-          !didPop ? _popWithPaymentCancelledResult( ) : null,
+          !didPop ? _popWithPaymentCancelledResult() : null,
       child: Scaffold(
         appBar: AppBar(
-          leading: BackButton(onPressed:()=> _popWithPaymentCancelledResult(),
+          leading: BackButton(
+            onPressed: () => _popWithPaymentCancelledResult(),
           ),
           title: Text(screenTitle),
         ),

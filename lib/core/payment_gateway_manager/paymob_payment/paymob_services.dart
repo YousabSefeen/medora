@@ -1,7 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:medora/core/enum/payment_gateways_types.dart' show PaymentGatewaysTypes;
-import 'package:medora/core/payment_gateway_manager/paymob_payment/paymob_dummy_data_service.dart' show PaymobDummyDataService;
-import 'package:medora/core/payment_gateway_manager/paymob_payment/paymob_keys.dart' show PaymobKeys;
+import 'package:medora/core/enum/payment_gateways_types.dart'
+    show PaymentGatewaysTypes;
+import 'package:medora/core/payment_gateway_manager/paymob_payment/paymob_dummy_data_service.dart'
+    show PaymobDummyDataService;
+import 'package:medora/core/payment_gateway_manager/paymob_payment/paymob_keys.dart'
+    show PaymobKeys;
 import 'package:medora/core/services/api_services.dart' show ApiServices;
 
 class PaymobServices {
@@ -9,8 +12,9 @@ class PaymobServices {
 
   PaymobServices({required this.apiServices});
 
-  final Options _defaultOptions =
-      Options(headers: {'Content-Type': 'application/json'});
+  final Options _defaultOptions = Options(
+    headers: {'Content-Type': 'application/json'},
+  );
 
   // *Required First method
   Future<String> _fetchAuthToken() async {
@@ -27,8 +31,10 @@ class PaymobServices {
     return token;
   }
 
-  Future<String> _fetchOrderId(
-      {required String token, required int totalPrice}) async {
+  Future<String> _fetchOrderId({
+    required String token,
+    required int totalPrice,
+  }) async {
     final Response response = await apiServices.post(
       url: PaymobKeys.orderCreationUrl,
       options: _defaultOptions,
@@ -36,7 +42,7 @@ class PaymobServices {
         'auth_token': token,
         'currency': 'EGP',
         'integrations': [PaymobKeys.integrationOnlineCardId],
-        'amount_cents': totalPrice*100,
+        'amount_cents': totalPrice * 100,
       },
     );
 
@@ -49,9 +55,8 @@ class PaymobServices {
     return orderId;
   }
 
-  Future _fetchPaymentRequest(
-      {
-        required PaymentGatewaysTypes selectedPaymentMethod,
+  Future _fetchPaymentRequest({
+    required PaymentGatewaysTypes selectedPaymentMethod,
     required String authToken,
     required int totalPrice,
     required String orderId,
@@ -63,8 +68,8 @@ class PaymobServices {
       'order_id': orderId,
       'integration_id':
           selectedPaymentMethod == PaymentGatewaysTypes.paymobMobileWallets
-              ? PaymobKeys.integrationMobileWalletId.toString()
-              : PaymobKeys.integrationOnlineCardId.toString(),
+          ? PaymobKeys.integrationMobileWalletId.toString()
+          : PaymobKeys.integrationOnlineCardId.toString(),
       'expiration': 3600,
 
       'currency': 'EGP',
@@ -87,13 +92,12 @@ class PaymobServices {
     return finalToken;
   }
 
-  Future _processMobileWalletPayment(
-      {required String phoneNumber, required String paymentToken}) async {
+  Future _processMobileWalletPayment({
+    required String phoneNumber,
+    required String paymentToken,
+  }) async {
     final paymentData = {
-      'source': {
-        'identifier': phoneNumber,
-        'subtype': 'WALLET',
-      },
+      'source': {'identifier': phoneNumber, 'subtype': 'WALLET'},
       'payment_token': paymentToken,
     };
 
@@ -107,15 +111,17 @@ class PaymobServices {
 
     if (redirectUrl == null) {
       throw Exception(
-          'Invalid response:Missing  Redirect URL in mobile wallets');
+        'Invalid response:Missing  Redirect URL in mobile wallets',
+      );
     }
 
     return redirectUrl;
   }
 
-  Future<String> _fitchPaymentToken(
-      {required PaymentGatewaysTypes selectedPaymentMethod,
-      required int totalPrice}) async {
+  Future<String> _fitchPaymentToken({
+    required PaymentGatewaysTypes selectedPaymentMethod,
+    required int totalPrice,
+  }) async {
     // تحويل المبلغ من ال (المبلغ بالسنتات) الي الجنية المصري بالضرب في 100
     final _totalPrice = totalPrice * 100;
     final String token = await _fetchAuthToken();
@@ -144,8 +150,8 @@ class PaymobServices {
     return paymentToken;
   }
 
-  Future<String> processMobileWalletPayment(
-      {required PaymentGatewaysTypes selectedPaymentMethod,
+  Future<String> processMobileWalletPayment({
+    required PaymentGatewaysTypes selectedPaymentMethod,
     required String phoneNumber,
     required int totalPrice,
   }) async {

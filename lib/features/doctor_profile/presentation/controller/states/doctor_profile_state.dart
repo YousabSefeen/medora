@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:medora/core/constants/app_strings/app_strings.dart' show AppStrings;
+import 'package:medora/core/constants/app_strings/app_strings.dart'
+    show AppStrings;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 
 class DoctorProfileState extends Equatable {
@@ -10,11 +11,11 @@ class DoctorProfileState extends Equatable {
   final List<String> filteredSpecialties;
   final String searchTerm;
 
-// Working days variables
+  // Working days variables
   final List<String> selectedDaysTempList;
   final List<String> confirmedDays;
 
-// Working hours variables
+  // Working hours variables
   final bool isWorkHoursExpanded;
 
   final Map<String, String> workHoursSelected;
@@ -22,7 +23,6 @@ class DoctorProfileState extends Equatable {
   // Form validation variables
   final bool hasValidatedBefore;
   final String? doctorProfileError;
-
 
   final LazyRequestState doctorProfileState;
 
@@ -91,17 +91,17 @@ class DoctorProfileState extends Equatable {
 
   @override
   List<Object?> get props => [
-        selectedSpecialtiesTempList,
-        confirmedSpecialties,
-        allSpecialties,
-        filteredSpecialties,
-        searchTerm,
-        selectedDaysTempList,
-        confirmedDays,
-        isWorkHoursExpanded,
-        workHoursSelected,
-        hasValidatedBefore,
-        doctorProfileError,
-        doctorProfileState,
-      ];
+    selectedSpecialtiesTempList,
+    confirmedSpecialties,
+    allSpecialties,
+    filteredSpecialties,
+    searchTerm,
+    selectedDaysTempList,
+    confirmedDays,
+    isWorkHoursExpanded,
+    workHoursSelected,
+    hasValidatedBefore,
+    doctorProfileError,
+    doctorProfileState,
+  ];
 }

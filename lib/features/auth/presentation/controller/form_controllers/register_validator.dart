@@ -1,9 +1,8 @@
-
-import 'package:medora/features/auth/presentation/controller/form_controllers/register_controllers.dart' show RegisterControllers;
+import 'package:medora/features/auth/presentation/controller/form_controllers/register_controllers.dart'
+    show RegisterControllers;
 
 class RegisterValidator {
-  static final RegisterValidator _instance =
-      RegisterValidator._internal();
+  static final RegisterValidator _instance = RegisterValidator._internal();
 
   factory RegisterValidator() => _instance;
 
@@ -16,8 +15,13 @@ class RegisterValidator {
     final password = c.passwordController.text;
     final confirmPassword = c.confirmPasswordController.text;
 
-    if ([userName, phone, email, password, confirmPassword]
-        .any((e) => e.isEmpty)) {
+    if ([
+      userName,
+      phone,
+      email,
+      password,
+      confirmPassword,
+    ].any((e) => e.isEmpty)) {
       return 'Please fill all fields';
     }
     if (userName.length < 3) {

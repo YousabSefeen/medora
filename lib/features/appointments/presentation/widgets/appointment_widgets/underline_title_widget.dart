@@ -32,12 +32,7 @@ class UnderlineTitleWidget extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(1000),
               ),
-              shadows: const [
-                BoxShadow(
-                  color: Colors.blue,
-                  blurRadius: 2,
-                )
-              ],
+              shadows: const [BoxShadow(color: Colors.blue, blurRadius: 2)],
             ),
           ),
         ],

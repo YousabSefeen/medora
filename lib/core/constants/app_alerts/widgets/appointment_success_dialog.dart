@@ -1,10 +1,10 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medora/core/constants/common_widgets/elevated_blue_button.dart' show ElevatedBlueButton;
+import 'package:medora/core/constants/common_widgets/elevated_blue_button.dart'
+    show ElevatedBlueButton;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
@@ -28,9 +28,8 @@ class AppointmentSuccessDialog {
   }) {
     WoltModalSheet.show(
       context: context,
-      modalTypeBuilder: (_) => MyCustomModalTypeDialog(
-        defaultMaxWidth: _modalWidthRatio,
-      ),
+      modalTypeBuilder: (_) =>
+          MyCustomModalTypeDialog(defaultMaxWidth: _modalWidthRatio),
       barrierDismissible: true,
       pageListBuilder: (_) => [
         _buildSuccessModalPage(
@@ -183,8 +182,8 @@ class AppointmentSuccessDialog {
       child: ElevatedButton(
         onPressed: onPressed,
         style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
-              backgroundColor: WidgetStatePropertyAll(AppColors.softBlue),
-            ),
+          backgroundColor: WidgetStatePropertyAll(AppColors.softBlue),
+        ),
         child: const Text(AppStrings.viewAppointment),
       ),
     );
@@ -194,10 +193,7 @@ class AppointmentSuccessDialog {
     return SizedBox(
       width: double.infinity,
       height: _buttonHeight,
-      child: ElevatedBlueButton(
-        text: AppStrings.cancel,
-        onPressed: onPressed,
-      ),
+      child: ElevatedBlueButton(text: AppStrings.cancel, onPressed: onPressed),
     );
   }
 }

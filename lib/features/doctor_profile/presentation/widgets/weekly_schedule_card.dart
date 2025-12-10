@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:medora/features/doctor_profile/presentation/widgets/section_title.dart' show SectionTitle;
-import 'package:medora/features/doctor_profile/presentation/widgets/work_hours_section.dart' show WorkHoursSection;
-import 'package:medora/features/doctor_profile/presentation/widgets/working_days_section.dart' show WorkingDaysSection;
+import 'package:medora/features/doctor_profile/presentation/widgets/section_title.dart'
+    show SectionTitle;
+import 'package:medora/features/doctor_profile/presentation/widgets/work_hours_section.dart'
+    show WorkHoursSection;
+import 'package:medora/features/doctor_profile/presentation/widgets/working_days_section.dart'
+    show WorkingDaysSection;
 
 import '../../../../core/constants/app_strings/app_strings.dart';
 import '../../../../core/constants/themes/app_colors.dart';
@@ -13,7 +16,6 @@ class WeeklyScheduleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

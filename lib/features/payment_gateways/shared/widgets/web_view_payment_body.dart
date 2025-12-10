@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 import 'package:medora/core/enum/web_view_status.dart' show WebViewStatus;
-
 import 'package:webview_flutter/webview_flutter.dart'
     show WebViewController, WebViewWidget;
 

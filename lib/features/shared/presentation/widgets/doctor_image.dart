@@ -41,8 +41,7 @@ class DoctorImage extends StatelessWidget {
     }
   }
 
-  Hero _buildImageWithHero() =>
-      Hero(tag: doctorId, child: _buildImage());
+  Hero _buildImageWithHero() => Hero(tag: doctorId, child: _buildImage());
 
   ClipRRect _buildImage() => ClipRRect(
     borderRadius: BorderRadius.circular(imageRadius),

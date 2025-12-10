@@ -9,16 +9,21 @@ class Assets {
   static const String imagesEmptyList = 'assets/images/empty_list.json';
   static const String imagesError = 'assets/images/error.png';
   static const String imagesErrorImage = 'assets/images/errorImage.png';
-  static const String imagesFamilyMedicine = 'assets/images/family_medicine.png';
-  static const String imagesGeneralPractice = 'assets/images/general_practice.png';
-  static const String imagesIosStyleLoading = 'assets/images/iosStyleLoading.json';
+  static const String imagesFamilyMedicine =
+      'assets/images/family_medicine.png';
+  static const String imagesGeneralPractice =
+      'assets/images/general_practice.png';
+  static const String imagesIosStyleLoading =
+      'assets/images/iosStyleLoading.json';
   static const String imagesLoading = 'assets/images/loading.gif';
   static const String imagesLoadingIOS = 'assets/images/loadingIOS.json';
   static const String imagesLocation = 'assets/images/location.json';
   static const String imagesMasterCard = 'assets/images/master_card.jpeg';
-  static const String imagesMobileWalletsLogo = 'assets/images/mobile_wallets_logo.png';
+  static const String imagesMobileWalletsLogo =
+      'assets/images/mobile_wallets_logo.png';
   static const String imagesNoInternet = 'assets/images/no_internet.jpeg';
-  static const String imagesObstetricsAndGynecology = 'assets/images/obstetrics_and_gynecology.png';
+  static const String imagesObstetricsAndGynecology =
+      'assets/images/obstetrics_and_gynecology.png';
   static const String imagesOnlineCard = 'assets/images/onlineCard.jpeg';
   static const String imagesOphthalmology = 'assets/images/ophthalmology.png';
   static const String imagesPayPal = 'assets/images/payPal.jpeg';
@@ -29,8 +34,8 @@ class Assets {
   static const String imagesSuccessIcon = 'assets/images/success_icon.json';
   static const String imagesUnnamed = 'assets/images/unnamed.png';
   static const String imagesUnnamedImage = 'assets/images/unnamed_image.png';
-  static const String imagesUploadProfileIcons = 'assets/images/uploadProfileIcons.jpeg';
+  static const String imagesUploadProfileIcons =
+      'assets/images/uploadProfileIcons.jpeg';
   static const String imagesXMarker = 'assets/images/x_marker.json';
   static const String medora = '.env';
-
 }

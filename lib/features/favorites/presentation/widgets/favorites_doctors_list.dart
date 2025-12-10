@@ -6,7 +6,7 @@ import 'package:medora/core/constants/common_widgets/error_retry_widget.dart'
 import 'package:medora/core/constants/common_widgets/sliver_loading%20_list.dart'
     show SliverLoadingList;
 import 'package:medora/core/enum/lazy_request_state.dart';
-import 'package:medora/features/doctor_list/presentation/widgets/doctor_list_view.dart'
+import 'package:medora/features/shared/presentation/widgets/doctor_list_view.dart'
     show DoctorListView;
 import 'package:medora/features/favorites/presentation/controller/cubit/favorites_cubit.dart'
     show FavoritesCubit;

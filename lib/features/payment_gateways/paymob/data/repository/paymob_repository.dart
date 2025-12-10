@@ -1,7 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:medora/core/enum/payment_gateways_types.dart' show PaymentGatewaysTypes;
-import 'package:medora/core/payment_gateway_manager/paymob_payment/paymob_services.dart' show PaymobServices;
-
+import 'package:medora/core/enum/payment_gateways_types.dart'
+    show PaymentGatewaysTypes;
+import 'package:medora/core/payment_gateway_manager/paymob_payment/paymob_services.dart'
+    show PaymobServices;
 
 import '../../../../../Core/Error/failure.dart';
 import 'base_paymob_repository.dart';
@@ -12,9 +13,9 @@ class PaymobRepository extends BasePaymobRepository {
   PaymobRepository({required this.paymobServices});
 
   @override
-  Future<Either<Failure, String>> processMobileWalletPayment(
-      {required PaymentGatewaysTypes selectedPaymentMethod,
-      required String phoneNumber,
+  Future<Either<Failure, String>> processMobileWalletPayment({
+    required PaymentGatewaysTypes selectedPaymentMethod,
+    required String phoneNumber,
     required int totalPrice,
   }) async {
     try {
@@ -31,8 +32,8 @@ class PaymobRepository extends BasePaymobRepository {
   }
 
   @override
-  Future<Either<Failure, String>> processVisaPayment(
-      {required PaymentGatewaysTypes selectedPaymentMethod,
+  Future<Either<Failure, String>> processVisaPayment({
+    required PaymentGatewaysTypes selectedPaymentMethod,
     required int totalPrice,
   }) async {
     try {

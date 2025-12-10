@@ -5,8 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../../../../core/constants/themes/app_colors.dart';
 
-
-
 class StripePaymentMethodInfo extends StatelessWidget {
   const StripePaymentMethodInfo({super.key});
 
@@ -18,17 +16,16 @@ class StripePaymentMethodInfo extends StatelessWidget {
       margin: EdgeInsets.zero,
       decoration: ShapeDecoration(
         color: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.r),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 2),
             decoration: BoxDecoration(
-                color: AppColors.softBlue,
-                borderRadius: BorderRadius.circular(2.r)),
+              color: AppColors.softBlue,
+              borderRadius: BorderRadius.circular(2.r),
+            ),
             child: FaIcon(
               FontAwesomeIcons.ccVisa,
               color: Colors.white,
@@ -62,7 +59,7 @@ class StripePaymentMethodInfo extends StatelessWidget {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

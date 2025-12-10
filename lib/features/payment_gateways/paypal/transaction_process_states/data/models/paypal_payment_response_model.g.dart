@@ -7,14 +7,14 @@ part of 'paypal_payment_response_model.dart';
 // **************************************************************************
 
 PaypalPaymentResponseModel _$PaypalPaymentResponseModelFromJson(
-        Map<dynamic, dynamic> json) =>
-    PaypalPaymentResponseModel(
-      error: json['error'] as bool?,
-      message: json['message'] as String,
-      data: json['data'] == null
-          ? null
-          : PaypalDataModel.fromJson(json['data'] as Map<String, dynamic>),
-    );
+  Map<dynamic, dynamic> json,
+) => PaypalPaymentResponseModel(
+  error: json['error'] as bool?,
+  message: json['message'] as String,
+  data: json['data'] == null
+      ? null
+      : PaypalDataModel.fromJson(json['data'] as Map<String, dynamic>),
+);
 
 PaypalDataModel _$PaypalDataModelFromJson(Map<String, dynamic> json) =>
     PaypalDataModel(
@@ -29,11 +29,12 @@ PaypalDataModel _$PaypalDataModelFromJson(Map<String, dynamic> json) =>
     );
 
 PayerModel _$PayerModelFromJson(Map<String, dynamic> json) => PayerModel(
-      paymentMethod: json['payment_method'] as String,
-      status: json['status'] as String,
-      payerInfo:
-          PayerInfoModel.fromJson(json['payer_info'] as Map<String, dynamic>),
-    );
+  paymentMethod: json['payment_method'] as String,
+  status: json['status'] as String,
+  payerInfo: PayerInfoModel.fromJson(
+    json['payer_info'] as Map<String, dynamic>,
+  ),
+);
 
 PayerInfoModel _$PayerInfoModelFromJson(Map<String, dynamic> json) =>
     PayerInfoModel(
@@ -42,17 +43,18 @@ PayerInfoModel _$PayerInfoModelFromJson(Map<String, dynamic> json) =>
       lastName: json['last_name'] as String,
       payerId: json['payer_id'] as String,
       shippingAddress: AddressModel.fromJson(
-          json['shipping_address'] as Map<String, dynamic>),
+        json['shipping_address'] as Map<String, dynamic>,
+      ),
     );
 
 AddressModel _$AddressModelFromJson(Map<String, dynamic> json) => AddressModel(
-      recipientName: json['recipient_name'] as String,
-      line1: json['line1'] as String,
-      city: json['city'] as String,
-      state: json['state'] as String,
-      postalCode: json['postal_code'] as String,
-      countryCode: json['country_code'] as String,
-    );
+  recipientName: json['recipient_name'] as String,
+  line1: json['line1'] as String,
+  city: json['city'] as String,
+  state: json['state'] as String,
+  postalCode: json['postal_code'] as String,
+  countryCode: json['country_code'] as String,
+);
 
 TransactionModel _$TransactionModelFromJson(Map<String, dynamic> json) =>
     TransactionModel(
@@ -63,11 +65,11 @@ TransactionModel _$TransactionModelFromJson(Map<String, dynamic> json) =>
     );
 
 AmountModel _$AmountModelFromJson(Map<String, dynamic> json) => AmountModel(
-      total: json['total'] as String,
-      currency: json['currency'] as String,
-    );
+  total: json['total'] as String,
+  currency: json['currency'] as String,
+);
 
 PayeeModel _$PayeeModelFromJson(Map<String, dynamic> json) => PayeeModel(
-      merchantId: json['merchant_id'] as String,
-      email: json['email'] as String,
-    );
+  merchantId: json['merchant_id'] as String,
+  email: json['email'] as String,
+);

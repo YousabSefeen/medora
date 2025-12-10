@@ -8,12 +8,12 @@ import 'package:medora/core/constants/app_duration/app_duration.dart'
 import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/enum/animation_type.dart' show AnimationType;
 import 'package:medora/core/enum/lazy_request_state.dart';
-import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
-    show DoctorModel;
 import 'package:medora/features/favorites/presentation/controller/cubit/favorites_cubit.dart'
     show FavoritesCubit;
 import 'package:medora/features/favorites/presentation/controller/states/favorites_states.dart'
     show FavoritesStates;
+import 'package:medora/features/shared/data/models/doctor_model.dart'
+    show DoctorModel;
 
 class ToggleFavoriteButton extends StatefulWidget {
   final DoctorModel doctorInfo;

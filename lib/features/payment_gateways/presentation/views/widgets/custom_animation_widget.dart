@@ -6,11 +6,12 @@ class CustomAnimationWidget extends StatelessWidget {
   final Widget child;
   final double endPosition;
 
-  const CustomAnimationWidget(
-      {super.key,
-      required this.child,
-      required this.endPosition,
-      required this.color});
+  const CustomAnimationWidget({
+    super.key,
+    required this.child,
+    required this.endPosition,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +27,7 @@ class CustomAnimationWidget extends StatelessWidget {
         duration: const Duration(milliseconds: 800),
         curve: Curves.easeInOut,
         builder: (context, scale, _) {
-          return Transform.scale(
-            scale: scale,
-            child: child,
-          );
+          return Transform.scale(scale: scale, child: child);
         },
       ),
     );

@@ -2,18 +2,21 @@ import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medora/core/constants/app_alerts/app_alerts.dart' show AppAlerts;
-import 'package:medora/core/constants/app_routes/app_router.dart' show AppRouter;
-import 'package:medora/core/constants/app_strings/app_strings.dart' show AppStrings;
+import 'package:medora/core/constants/app_alerts/app_alerts.dart'
+    show AppAlerts;
+import 'package:medora/core/constants/app_routes/app_router.dart'
+    show AppRouter;
+import 'package:medora/core/constants/app_strings/app_strings.dart'
+    show AppStrings;
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
-import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart' show AppointmentCubit;
-import 'package:medora/features/appointments/presentation/controller/states/appointment_state.dart' show AppointmentState;
+import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart'
+    show AppointmentCubit;
+import 'package:medora/features/appointments/presentation/controller/states/appointment_state.dart'
+    show AppointmentState;
 
-import '../../../../core/constants/app_alerts/no_internet_dialog.dart';
 import '../../data/models/client_appointments_model.dart';
 import '../widgets/custom_widgets/adaptive_action_button.dart';
 
@@ -48,10 +51,7 @@ class _AppointmentCancellationScreenState
           padding: const EdgeInsets.all(8.0),
           child: IconButton(
             onPressed: () => AppRouter.pop(context),
-            icon: const FaIcon(
-              FontAwesomeIcons.xmark,
-              color: Colors.black,
-            ),
+            icon: const FaIcon(FontAwesomeIcons.xmark, color: Colors.black),
           ),
         ),
       ],
@@ -93,11 +93,7 @@ class _AppointmentCancellationScreenState
       ),
       child: Text(
         AppStrings.cancellationFeedbackDescription,
-        style: TextStyle(
-          fontSize: 14,
-          color: Colors.grey[700],
-          height: 1.5,
-        ),
+        style: TextStyle(fontSize: 14, color: Colors.grey[700], height: 1.5),
         textAlign: TextAlign.start,
       ),
     );
@@ -118,41 +114,47 @@ class _AppointmentCancellationScreenState
   }
 
   Widget _buildContinueButton(ClientAppointmentsModel appointment) {
-    return BlocSelector<AppointmentCubit, AppointmentState,
-        dartz.Tuple2<LazyRequestState, String>>(
+    return BlocSelector<
+      AppointmentCubit,
+      AppointmentState,
+      dartz.Tuple2<LazyRequestState, String>
+    >(
       selector: (state) => dartz.Tuple2(
-          state.cancelAppointmentState, state.cancelAppointmentError),
+        state.cancelAppointmentState,
+        state.cancelAppointmentError,
+      ),
       builder: (context, values) {
-        _handleCancelAppointmentResponse(
-            context, values.value1, values.value2);
+        _handleCancelAppointmentResponse(context, values.value1, values.value2);
 
-        final isEnabled=_selectedCancellationReason != null;
-        final isLoading= values.value1 == LazyRequestState.loading;
-
+        final isEnabled = _selectedCancellationReason != null;
+        final isLoading = values.value1 == LazyRequestState.loading;
 
         return AdaptiveActionButton(
           title: AppStrings.confirmCancellation,
-          isEnabled:  isEnabled,
+          isEnabled: isEnabled,
           isLoading: isLoading,
-          onPressed:  () => _handleCancellationConfirmation(appointment),
+          onPressed: () => _handleCancellationConfirmation(appointment),
         );
-
       },
     );
   }
 
   void _handleCancellationConfirmation(ClientAppointmentsModel appointment) {
-
     // TODO: Implement cancellation logic
     if (_selectedCancellationReason != null) {
       // Process cancellation
-       context.read<AppointmentCubit>().cancelAppointment(doctorId: appointment.doctorId, appointmentId: appointment.appointmentId);
-
+      context.read<AppointmentCubit>().cancelAppointment(
+        doctorId: appointment.doctorId,
+        appointmentId: appointment.appointmentId,
+      );
     }
   }
 
-  void _handleCancelAppointmentResponse(BuildContext context,
-      LazyRequestState cancelAppointmentState, String cancelAppointmentError) {
+  void _handleCancelAppointmentResponse(
+    BuildContext context,
+    LazyRequestState cancelAppointmentState,
+    String cancelAppointmentError,
+  ) {
     switch (cancelAppointmentState) {
       case LazyRequestState.lazy:
       case LazyRequestState.loading:
@@ -191,11 +193,13 @@ class _AppointmentCancellationScreenState
       AppRouter.pop(context);
 
   void _handleCancelAppointmentError(
-      BuildContext context, String errorMessage) {
+    BuildContext context,
+    String errorMessage,
+  ) {
     Future.microtask(() {
       if (!context.mounted) return;
 
-     AppAlerts.showCustomErrorDialog(context, errorMessage);
+      AppAlerts.showCustomErrorDialog(context, errorMessage);
 
       _resetCancelAppointmentState(context);
     });

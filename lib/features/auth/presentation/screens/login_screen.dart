@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:medora/features/auth/presentation/controller/form_controllers/login_controllers.dart' show LoginControllers;
+import 'package:medora/features/auth/presentation/controller/form_controllers/login_controllers.dart'
+    show LoginControllers;
 
 import '../../../../core/constants/themes/app_colors.dart';
 import '../widgets/auth_screen_background.dart';
@@ -21,11 +22,10 @@ class _LoginScreenState extends State<LoginScreen> {
   // Retrieves the user email passed from the Register screen
   // when registration fails due to email already being in use.
   void _setEmailFromRegisterRoute() => Future.microtask(() {
-        if (!mounted) return;
-        registeredUserEmail =
-            ModalRoute.of(context)?.settings.arguments as String?;
-        loginControllers.emailController.text = registeredUserEmail ?? '';
-      });
+    if (!mounted) return;
+    registeredUserEmail = ModalRoute.of(context)?.settings.arguments as String?;
+    loginControllers.emailController.text = registeredUserEmail ?? '';
+  });
 
   @override
   void initState() {

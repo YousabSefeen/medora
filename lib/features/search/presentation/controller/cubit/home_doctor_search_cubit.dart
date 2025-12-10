@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:hydrated_bloc/hydrated_bloc.dart' show HydratedCubit;
-import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
-    show DoctorModel;
 import 'package:medora/features/search/domain/use_cases/search_doctors_by_name_use_case.dart'
     show SearchDoctorsByNameUseCase;
 import 'package:medora/features/search/presentation/controller/states/home_doctor_search_states.dart'
     show HomeDoctorSearchStates;
+import 'package:medora/features/shared/data/models/doctor_model.dart'
+    show DoctorModel;
 
 class HomeDoctorSearchCubit extends HydratedCubit<HomeDoctorSearchStates> {
   final SearchDoctorsByNameUseCase searchByName;

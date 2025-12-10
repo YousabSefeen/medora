@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:medora/core/constants/app_strings/app_strings.dart' show AppStrings;
-import 'package:medora/features/auth/presentation/controller/cubit/login_cubit.dart' show LoginCubit;
-import 'package:medora/features/auth/presentation/controller/states/login_state.dart' show LoginState;
+import 'package:medora/core/constants/app_strings/app_strings.dart'
+    show AppStrings;
+import 'package:medora/features/auth/presentation/controller/cubit/login_cubit.dart'
+    show LoginCubit;
+import 'package:medora/features/auth/presentation/controller/states/login_state.dart'
+    show LoginState;
 
 import '../../../../../core/constants/themes/app_colors.dart';
 import '../../controller/form_controllers/login_controllers.dart';
@@ -12,7 +15,7 @@ import '../custom_form_field.dart';
 class LoginFormFields extends StatelessWidget {
   final LoginControllers loginControllers;
 
-  const LoginFormFields({super.key, required this.loginControllers,});
+  const LoginFormFields({super.key, required this.loginControllers});
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +28,7 @@ class LoginFormFields extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(bottom: 15.0),
         child: Column(
-          children: [
-            _buildEmailField(),
-            _buildPasswordField(context),
-          ],
+          children: [_buildEmailField(), _buildPasswordField(context)],
         ),
       ),
     );
@@ -43,7 +43,9 @@ class LoginFormFields extends StatelessWidget {
     );
   }
 
-  BlocSelector<LoginCubit, LoginState, bool> _buildPasswordField(BuildContext context) {
+  BlocSelector<LoginCubit, LoginState, bool> _buildPasswordField(
+    BuildContext context,
+  ) {
     return BlocSelector<LoginCubit, LoginState, bool>(
       selector: (state) => state.isPasswordVisible,
       builder: (context, isLoginPasswordVisible) {

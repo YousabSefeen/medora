@@ -20,7 +20,9 @@ class DioFailure {
           return 'Bad Certificate.';
         case DioExceptionType.badResponse:
           return fromResponse(
-              dioError.response!.statusCode, dioError.response!.data);
+            dioError.response!.statusCode,
+            dioError.response!.data,
+          );
         case DioExceptionType.cancel:
           return 'Request to ApiServer was canceled';
         case DioExceptionType.connectionError:

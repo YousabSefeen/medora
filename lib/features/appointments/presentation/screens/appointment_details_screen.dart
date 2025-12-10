@@ -1,14 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/extensions/list_string_extension.dart';
-import 'package:medora/features/appointments/presentation/widgets/appointment_widgets/underline_title_widget.dart' show UnderlineTitleWidget;
-import 'package:medora/features/appointments/presentation/widgets/icon_with_text.dart' show IconWithText;
-import 'package:medora/features/doctor_profile/data/models/doctor_model.dart' show DoctorModel;
+import 'package:medora/features/appointments/presentation/widgets/appointment_widgets/underline_title_widget.dart'
+    show UnderlineTitleWidget;
+import 'package:medora/features/appointments/presentation/widgets/icon_with_text.dart'
+    show IconWithText;
+import 'package:medora/features/shared/data/models/doctor_model.dart'
+    show DoctorModel;
 
 import '../../../../generated/assets.dart';
 
@@ -35,9 +37,7 @@ class AppointmentDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Appointment Details'),
-      ),
+      appBar: AppBar(title: const Text('Appointment Details')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
         child: Column(
@@ -49,9 +49,7 @@ class AppointmentDetailsScreen extends StatelessWidget {
               elevation: 1,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.r),
-                side: const BorderSide(
-                  color: Colors.black26,
-                ),
+                side: const BorderSide(color: Colors.black26),
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,11 +65,10 @@ class AppointmentDetailsScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           image: DecorationImage(
-                              image: imageProvider, fit: BoxFit.cover),
-                          border: Border.all(
-                            color: Colors.black12,
-                            width: 2,
+                            image: imageProvider,
+                            fit: BoxFit.cover,
                           ),
+                          border: Border.all(color: Colors.black12, width: 2),
                         ),
                       ),
                       placeholder: (context, _) =>
@@ -83,7 +80,9 @@ class AppointmentDetailsScreen extends StatelessWidget {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 8.0),
+                        vertical: 15,
+                        horizontal: 8.0,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -92,7 +91,8 @@ class AppointmentDetailsScreen extends StatelessWidget {
                           Text(
                             'Dr.${doctorModel.name}',
                             style: TextStyle(
-                              fontWeight: FontWeight.w600, letterSpacing: 1,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 1,
                               fontSize: 17.sp,
                               color: AppColors.black,
                             ),
@@ -101,11 +101,13 @@ class AppointmentDetailsScreen extends StatelessWidget {
                           Text(
                             doctorModel.specialties.buildJoin(),
                             style: GoogleFonts.roboto(
-                                textStyle: TextStyle(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.grey.shade500,
-                                    letterSpacing: 1)),
+                              textStyle: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey.shade500,
+                                letterSpacing: 1,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -120,7 +122,9 @@ class AppointmentDetailsScreen extends StatelessWidget {
             _customRichText(title: 'Bio', des: ' : ${doctorModel.bio}'),
             const SizedBox(height: 20),
             _customRichText(
-                title: 'Location', des: ' : ${doctorModel.location}'),
+              title: 'Location',
+              des: ' : ${doctorModel.location}',
+            ),
             const SizedBox(height: 20),
             _customRichText(title: 'Fee', des: ' : ${doctorModel.fees} EGP'),
             const SizedBox(height: 30),
@@ -139,10 +143,10 @@ class AppointmentDetailsScreen extends StatelessWidget {
               child: _buildAppointmentCard(
                 date: appointmentDate,
                 time: appointmentTime,
-                style: Theme.of(context)
-                    .textTheme
-                    .dateTimeBlackStyle
-                    .copyWith(color: Colors.white, fontSize: 15.sp),
+                style: Theme.of(context).textTheme.dateTimeBlackStyle.copyWith(
+                  color: Colors.white,
+                  fontSize: 15.sp,
+                ),
                 backgroundColor: AppColors.green,
                 borderColor: AppColors.green,
               ),
@@ -175,11 +179,7 @@ class AppointmentDetailsScreen extends StatelessWidget {
             text: date,
             textStyle: style,
           ),
-          IconWithText(
-            icon: Icons.alarm,
-            text: time,
-            textStyle: style,
-          ),
+          IconWithText(icon: Icons.alarm, text: time, textStyle: style),
         ],
       ),
     );
@@ -190,10 +190,7 @@ class AppointmentDetailsScreen extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.black38, width: 2),
-        image: DecorationImage(
-          image: AssetImage(image),
-          fit: BoxFit.cover,
-        ),
+        image: DecorationImage(image: AssetImage(image), fit: BoxFit.cover),
       ),
     );
   }
@@ -210,22 +207,27 @@ class AppointmentDetailsScreen extends StatelessWidget {
               child: Text(
                 title,
                 style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.grey.shade900,
-                    letterSpacing: 1),
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey.shade900,
+                  letterSpacing: 1,
+                ),
               ),
-                ),
-                SizedBox(
-                  width: constraints.maxWidth * 0.6,
-                  child: Text(des, style: TextStyle(
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.w400,
+            ),
+            SizedBox(
+              width: constraints.maxWidth * 0.6,
+              child: Text(
+                des,
+                style: TextStyle(
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.w400,
 
-                      color: Colors.grey.shade700,
-                      letterSpacing: 1),),
+                  color: Colors.grey.shade700,
+                  letterSpacing: 1,
                 ),
-                /*  RichText(
+              ),
+            ),
+            /*  RichText(
               text: TextSpan(
                   text: title,
                   style: TextStyle(
@@ -245,12 +247,13 @@ class AppointmentDetailsScreen extends StatelessWidget {
                     )
                   ]),
             ),*/
-              ],
-            ),
-          ),
+          ],
+        ),
+      ),
     );
   }
 }
+
 /*
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';

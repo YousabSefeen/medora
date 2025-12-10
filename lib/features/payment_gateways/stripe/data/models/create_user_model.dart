@@ -21,10 +21,6 @@ class CreateUserModel {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      "name": name,
-      "email": email,
-      "phone": phone,
-    };
+    return {"name": name, "email": email, "phone": phone};
   }
 }

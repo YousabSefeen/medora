@@ -14,7 +14,9 @@ class CountryCodeWithFlag extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(8.r), bottomLeft: Radius.circular(8.r)),
+          topLeft: Radius.circular(8.r),
+          bottomLeft: Radius.circular(8.r),
+        ),
       ),
       child: Text(
         _generateCountryFlag() + ' +20',
@@ -32,10 +34,9 @@ class CountryCodeWithFlag extends StatelessWidget {
     String countryCode = 'eg';
 
     String flag = countryCode.toUpperCase().replaceAllMapped(
-          RegExp(r'[A-Z]'),
-          (match) =>
-              String.fromCharCode(match.group(0)!.codeUnitAt(0) + 127397),
-        );
+      RegExp(r'[A-Z]'),
+      (match) => String.fromCharCode(match.group(0)!.codeUnitAt(0) + 127397),
+    );
     return flag;
   }
 }

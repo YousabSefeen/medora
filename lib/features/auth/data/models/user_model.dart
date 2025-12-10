@@ -25,11 +25,5 @@ class UserModel extends Equatable {
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
 
   @override
-  List<Object?> get props => [
-        name,
-        phone,
-        email,
-        role,
-        createdAt,
-      ];
+  List<Object?> get props => [name, phone, email, role, createdAt];
 }

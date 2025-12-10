@@ -3,11 +3,13 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:medora/features/appointments/data/models/book_appointment_model.dart' show BookAppointmentModel;
+import 'package:medora/features/appointments/data/models/book_appointment_model.dart'
+    show BookAppointmentModel;
+import 'package:medora/features/shared/data/models/doctor_model.dart'
+    show DoctorModel;
 
 import '../../../../core/enum/appointment_status.dart';
 import '../../../../core/error/failure.dart' show Failure, ServerFailure;
-import '../../../doctor_profile/data/models/doctor_model.dart';
 import '../models/client_appointments_model.dart';
 import '../models/doctor_appointment_model.dart';
 import 'appointment_repository_base.dart';
@@ -17,17 +19,14 @@ class AppointmentRepository extends AppointmentRepositoryBase {
   final FirebaseAuth _auth;
 
   /// Constructor with dependency injection for better testability
-  AppointmentRepository({
-    FirebaseFirestore? firestore,
-    FirebaseAuth? auth,
-  })  : _firestore = firestore ?? FirebaseFirestore.instance,
-        _auth = auth ?? FirebaseAuth.instance;
+  AppointmentRepository({FirebaseFirestore? firestore, FirebaseAuth? auth})
+    : _firestore = firestore ?? FirebaseFirestore.instance,
+      _auth = auth ?? FirebaseAuth.instance;
 
   /// Fetches all appointments for a specific doctor
   @override
-  Future<Either<Failure, List<DoctorAppointmentModel>>> fetchDoctorAppointments({
-    required String doctorId,
-  }) async {
+  Future<Either<Failure, List<DoctorAppointmentModel>>>
+  fetchDoctorAppointments({required String doctorId}) async {
     try {
       final snapshot = await _firestore
           .collection('doctors')
@@ -35,7 +34,9 @@ class AppointmentRepository extends AppointmentRepositoryBase {
           .collection('appointments')
           .get();
 
-      final appointments = snapshot.docs.map(_convertToDoctorAppointment).toList();
+      final appointments = snapshot.docs
+          .map(_convertToDoctorAppointment)
+          .toList();
       return right(appointments);
     } catch (e) {
       _logError('fetchDoctorAppointments', e);
@@ -45,7 +46,8 @@ class AppointmentRepository extends AppointmentRepositoryBase {
 
   /// Converts Firestore document to DoctorAppointmentModel
   DoctorAppointmentModel _convertToDoctorAppointment(
-      QueryDocumentSnapshot<Map<String, dynamic>> doc) {
+    QueryDocumentSnapshot<Map<String, dynamic>> doc,
+  ) {
     return DoctorAppointmentModel.fromJson({
       'appointmentId': doc.id,
       'appointmentModel': doc.data(),
@@ -125,16 +127,12 @@ class AppointmentRepository extends AppointmentRepositoryBase {
     required String appointmentId,
     required BookAppointmentModel bookAppointmentModel,
   }) async {
-
     await _firestore
         .collection('doctors')
         .doc(doctorId)
         .collection('appointments')
         .doc(appointmentId)
-        .set({
-      'clientId': clientId,
-      ...bookAppointmentModel.toJson(),
-    });
+        .set({'clientId': clientId, ...bookAppointmentModel.toJson()});
   }
 
   /// Saves appointment in global appointments collection
@@ -161,7 +159,7 @@ class AppointmentRepository extends AppointmentRepositoryBase {
     final updates = {
       'appointmentDate': appointmentDate,
       'appointmentTime': appointmentTime,
-      'appointmentStatus':AppointmentStatus.confirmed.name,
+      'appointmentStatus': AppointmentStatus.confirmed.name,
     };
 
     return await _updateAppointment(
@@ -177,9 +175,7 @@ class AppointmentRepository extends AppointmentRepositoryBase {
     required String doctorId,
     required String appointmentId,
   }) async {
-    final updates = {
-      'appointmentStatus':AppointmentStatus.cancelled.name,
-    };
+    final updates = {'appointmentStatus': AppointmentStatus.cancelled.name};
 
     return await _updateAppointment(
       doctorId: doctorId,
@@ -209,9 +205,9 @@ class AppointmentRepository extends AppointmentRepositoryBase {
   }
 
   Future<void> _updateGlobalAppointment(
-      String appointmentId,
-      Map<String, dynamic> updates,
-      ) {
+    String appointmentId,
+    Map<String, dynamic> updates,
+  ) {
     return _firestore
         .collection('appointments')
         .doc(appointmentId)
@@ -219,10 +215,10 @@ class AppointmentRepository extends AppointmentRepositoryBase {
   }
 
   Future<void> _updateDoctorAppointment(
-      String doctorId,
-      String appointmentId,
-      Map<String, dynamic> updates,
-      ) {
+    String doctorId,
+    String appointmentId,
+    Map<String, dynamic> updates,
+  ) {
     return _firestore
         .collection('doctors')
         .doc(doctorId)
@@ -230,9 +226,10 @@ class AppointmentRepository extends AppointmentRepositoryBase {
         .doc(appointmentId)
         .update(updates);
   }
+
   //
   /// Reschedules an existing appointment
-/*  @override
+  /*  @override
   Future<Either<Failure, void>> rescheduleAppointment({
     required String doctorId,
     required String appointmentId,
@@ -294,6 +291,7 @@ class AppointmentRepository extends AppointmentRepositoryBase {
       return left(ServerFailure(catchError: e));
     }
   }*/
+
   /// Fetches client appointments with complete doctor details
   @override
   Future<Either<Failure, List<ClientAppointmentsModel>?>>
@@ -308,7 +306,10 @@ class AppointmentRepository extends AppointmentRepositoryBase {
 
       final models = appointments.map((appointment) {
         final doctorId = appointment['doctorId'] as String;
-        return _createClientAppointmentModel(appointment, doctorDataMap[doctorId]);
+        return _createClientAppointmentModel(
+          appointment,
+          doctorDataMap[doctorId],
+        );
       }).toList();
 
       return Right(models);
@@ -320,9 +321,9 @@ class AppointmentRepository extends AppointmentRepositoryBase {
 
   /// Creates ClientAppointmentsModel from raw data
   ClientAppointmentsModel _createClientAppointmentModel(
-      Map<String, dynamic> appointment,
-      DoctorModel? doctorModel,
-      ) {
+    Map<String, dynamic> appointment,
+    DoctorModel? doctorModel,
+  ) {
     return ClientAppointmentsModel.fromJson({
       ...appointment,
       'doctorModel': doctorModel?.toJson() ?? {},
@@ -331,7 +332,8 @@ class AppointmentRepository extends AppointmentRepositoryBase {
 
   /// Fetches appointments for specific client
   Future<List<Map<String, dynamic>>> _fetchAppointmentsByClientId(
-      String clientId) async {
+    String clientId,
+  ) async {
     final snapshot = await _firestore
         .collection('appointments')
         .where('clientId', isEqualTo: clientId)
@@ -370,7 +372,9 @@ class AppointmentRepository extends AppointmentRepositoryBase {
   }
 
   /// Extracts unique doctor IDs from appointments list
-  List<String> _extractUniqueDoctorIds(List<Map<String, dynamic>> appointments) {
+  List<String> _extractUniqueDoctorIds(
+    List<Map<String, dynamic>> appointments,
+  ) {
     return appointments
         .map((appointment) => appointment['doctorId'] as String)
         .toSet()
@@ -379,7 +383,8 @@ class AppointmentRepository extends AppointmentRepositoryBase {
 
   /// Fetches doctor data in bulk for given IDs
   Future<Map<String, DoctorModel>> _fetchDoctorsDataByIds(
-      List<String> doctorIds) async {
+    List<String> doctorIds,
+  ) async {
     if (doctorIds.isEmpty) return {};
 
     final snapshot = await _firestore
@@ -388,7 +393,7 @@ class AppointmentRepository extends AppointmentRepositoryBase {
         .get();
 
     return {
-      for (var doc in snapshot.docs) doc.id: DoctorModel.fromJson(doc.data())
+      for (var doc in snapshot.docs) doc.id: DoctorModel.fromJson(doc.data()),
     };
   }
 
@@ -396,6 +401,4 @@ class AppointmentRepository extends AppointmentRepositoryBase {
   void _logError(String methodName, dynamic error) {
     print('AppointmentRepository.$methodName ERROR: $error');
   }
-
-
 }

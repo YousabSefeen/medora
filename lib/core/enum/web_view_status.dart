@@ -1,8 +1,1 @@
-enum WebViewStatus {
-  init,
-  loading,
-  success,
-  error,
-  onHttpError,
-  finished,
-}
+enum WebViewStatus { init, loading, success, error, onHttpError, finished }

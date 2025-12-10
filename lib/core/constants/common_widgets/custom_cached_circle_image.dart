@@ -7,7 +7,11 @@ class CustomCachedCircleImage extends StatelessWidget {
   final double radius;
   final String imageUrl;
 
-  const CustomCachedCircleImage({required this.radius,required this.imageUrl, super.key});
+  const CustomCachedCircleImage({
+    required this.radius,
+    required this.imageUrl,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,30 +25,21 @@ class CustomCachedCircleImage extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
-            border: Border.all(
-              color: Colors.black12,
-              width: 2,
-            ),
+            border: Border.all(color: Colors.black12, width: 2),
           ),
         ),
-           placeholder: (context, _) => _buildContainer(Assets.imagesLoading),
-        errorWidget: (context, s, _) =>  _buildContainer(Assets.imagesError),
-
+        placeholder: (context, _) => _buildContainer(Assets.imagesLoading),
+        errorWidget: (context, s, _) => _buildContainer(Assets.imagesError),
       ),
     );
   }
 
   Container _buildContainer(String image) {
     return Container(
-
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(color: Colors.black38,width: 2),
-        image: DecorationImage(
-          image: AssetImage(image),
-          fit: BoxFit.cover,
-
-        ),
+        border: Border.all(color: Colors.black38, width: 2),
+        image: DecorationImage(image: AssetImage(image), fit: BoxFit.cover),
       ),
     );
   }

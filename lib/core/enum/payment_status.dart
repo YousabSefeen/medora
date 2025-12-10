@@ -1,7 +1,1 @@
-enum PaymentStates {
-  init,
-  loading,
-  success,
-  error,
-  cancel,
-}
+enum PaymentStates { init, loading, success, error, cancel }

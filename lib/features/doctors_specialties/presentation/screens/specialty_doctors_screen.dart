@@ -3,14 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart' show BlocProvider, BlocBuilder;
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/enum/request_state.dart' show RequestState;
 import 'package:medora/core/services/server_locator.dart' show serviceLocator;
-import 'package:medora/features/doctor_list/presentation/widgets/doctor_list_view.dart' show DoctorListView;
-import 'package:medora/features/doctors_specialties/presentation/controller/cubit/specialty_doctors_cubit.dart' show SpecialtyDoctorsCubit;
-import 'package:medora/features/doctors_specialties/presentation/controller/states/specialty_doctors_states.dart' show SpecialtyDoctorsStates;
+import 'package:medora/features/shared/presentation/widgets/doctor_list_view.dart'
+    show DoctorListView;
+import 'package:medora/features/doctors_specialties/presentation/controller/cubit/specialty_doctors_cubit.dart'
+    show SpecialtyDoctorsCubit;
+import 'package:medora/features/doctors_specialties/presentation/controller/states/specialty_doctors_states.dart'
+    show SpecialtyDoctorsStates;
 import 'package:medora/features/doctors_specialties/presentation/widgets/empty_specialty_doctors_widget.dart'
     show EmptySpecialtyDoctorsWidget;
 
-
-import '../../../../core/constants/common_widgets/sliver_loading _list.dart' show SliverLoadingList;
+import '../../../../core/constants/common_widgets/sliver_loading _list.dart'
+    show SliverLoadingList;
 
 class SpecialtyDoctorsScreen extends StatefulWidget {
   final String specialtyName;
@@ -28,7 +31,6 @@ class _SpecialtyDoctorsScreenState extends State<SpecialtyDoctorsScreen> {
   void initState() {
     super.initState();
     _scrollController = ScrollController();
-
   }
 
   @override
@@ -36,20 +38,18 @@ class _SpecialtyDoctorsScreenState extends State<SpecialtyDoctorsScreen> {
     _scrollController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.softBlue,
-        leading: const BackButton(
-          color: Colors.white,
-        ),
+        leading: const BackButton(color: Colors.white),
         title: Text(
           widget.specialtyName,
-          style: Theme.of(context)
-              .appBarTheme
-              .titleTextStyle!
-              .copyWith(color: Colors.white),
+          style: Theme.of(
+            context,
+          ).appBarTheme.titleTextStyle!.copyWith(color: Colors.white),
         ),
       ),
       body: CustomScrollView(
@@ -68,13 +68,20 @@ class _SpecialtyDoctorsScreenState extends State<SpecialtyDoctorsScreen> {
                       return const SliverLoadingList(height: 150);
                     case RequestState.loaded:
                       return state.specialtyDoctorsList.isEmpty
-                          ? EmptySpecialtyDoctorsWidget(specialtyName: widget.specialtyName)
-                          : DoctorListView(doctorList: state.specialtyDoctorsList);
+                          ? EmptySpecialtyDoctorsWidget(
+                              specialtyName: widget.specialtyName,
+                            )
+                          : DoctorListView(
+                              doctorList: state.specialtyDoctorsList,
+                            );
                     case RequestState.error:
                       return Center(
                         child: Text(
                           state.specialtyDoctorsError,
-                          style: const TextStyle(fontSize: 30, color: Colors.red),
+                          style: const TextStyle(
+                            fontSize: 30,
+                            color: Colors.red,
+                          ),
                         ),
                       );
                   }

@@ -1,13 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:medora/core/payment_gateway_manager/stripe_payment/stripe_keys.dart' show StripeKeys;
-import 'package:medora/features/payment_gateways/stripe/data/models/create_user_model.dart' show CreateUserModel;
-import 'package:medora/features/payment_gateways/stripe/data/models/payment_intent_model.dart' show PaymentIntentModel;
+import 'package:medora/core/payment_gateway_manager/stripe_payment/stripe_keys.dart'
+    show StripeKeys;
+import 'package:medora/features/payment_gateways/stripe/data/models/create_user_model.dart'
+    show CreateUserModel;
+import 'package:medora/features/payment_gateways/stripe/data/models/payment_intent_model.dart'
+    show PaymentIntentModel;
 
 import '../../../features/payment_gateways/stripe/data/models/ephemeral_key_model.dart';
 import '../../services/api_services.dart';
-
 
 class StripeServices {
   final ApiServices apiServices;
@@ -59,14 +61,14 @@ class StripeServices {
   }
 
   //TODO( Required Step 1) This function initializes the payment intent and retrieves the paymentIntentClientSecret,
-// which will be passed to the initPaymentSheet method for setting up the payment process.
+  // which will be passed to the initPaymentSheet method for setting up the payment process.
   Future<PaymentIntentModel> createPaymentIntent({
     required int totalPrice,
   }) async {
     final Response response = await apiServices.post(
       url: StripeKeys.paymentIntent,
       data: {
-        'amount': ((totalPrice/49.5)*100).toInt(),
+        'amount': ((totalPrice / 49.5) * 100).toInt(),
         'currency': 'USD',
         'customer': StripeKeys.customerId,
       },
@@ -106,9 +108,9 @@ class StripeServices {
     );
   }
 
-//TODO( Required Step 3) presentPaymentSheet from docs
+  //TODO( Required Step 3) presentPaymentSheet from docs
   // Displays the payment sheet to the user for completing the payment process.
-// This method also handles payment confirmation once the user selects or provides a payment method.
+  // This method also handles payment confirmation once the user selects or provides a payment method.
   Future presentPaymentSheet() async {
     try {
       await Stripe.instance.presentPaymentSheet();
@@ -125,11 +127,12 @@ class StripeServices {
         await createUserInStripeDashboard(createUserModel: createUserModel);*/
 
     final PaymentIntentModel responsePaymentIntent = await createPaymentIntent(
-      totalPrice: totalPrice ,
+      totalPrice: totalPrice,
     );
 
-    final EphemeralKeyModel ephemeralKey =
-        await getEphemeralKeys(customerId: StripeKeys.customerId);
+    final EphemeralKeyModel ephemeralKey = await getEphemeralKeys(
+      customerId: StripeKeys.customerId,
+    );
 
     await initPaymentSheet(
       paymentIntentClientSecret: responsePaymentIntent.clientSecret!,

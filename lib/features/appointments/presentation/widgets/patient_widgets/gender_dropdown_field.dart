@@ -4,8 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/enum/gender_type.dart' show GenderType;
-import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart' show AppointmentCubit;
-import 'package:medora/features/appointments/presentation/controller/states/appointment_state.dart' show AppointmentState;
+import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart'
+    show AppointmentCubit;
+import 'package:medora/features/appointments/presentation/controller/states/appointment_state.dart'
+    show AppointmentState;
 
 import '../../../../doctor_profile/presentation/widgets/form_title.dart';
 
@@ -35,8 +37,10 @@ class GenderDropdownField extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 5),
               child: Divider(color: Colors.white38, thickness: 2),
             ),
-            buttonPadding:
-                const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+            buttonPadding: const EdgeInsets.symmetric(
+              vertical: 15,
+              horizontal: 10,
+            ),
             actionWidget: Icon(
               Icons.arrow_drop_down_circle_sharp,
               color: Colors.black,
@@ -44,10 +48,15 @@ class GenderDropdownField extends StatelessWidget {
             ),
             buttonDecoration: _buildButtonDecoration(),
             listBackgroundDecoration: _buildListDecoration(),
-            listPadding:
-                const EdgeInsets.only(left: 10, right: 15, top: 15, bottom: 15),
-            listMargin:
-                EdgeInsets.only(left: MediaQuery.sizeOf(context).width * 0.5),
+            listPadding: const EdgeInsets.only(
+              left: 10,
+              right: 15,
+              top: 15,
+              bottom: 15,
+            ),
+            listMargin: EdgeInsets.only(
+              left: MediaQuery.sizeOf(context).width * 0.5,
+            ),
             selectedItemIcon: _buildSelectedIcon(),
             dropDownAnimationParameters: _buildAnimationParameters(),
             controller: controller,
@@ -57,9 +66,9 @@ class GenderDropdownField extends StatelessWidget {
             ),
             errorBorder: Border.all(color: Colors.red, width: 1.7),
             onChangeSelectedIndex: (int index) {
-              context
-                .read<AppointmentCubit>()
-                .onChangeSelectedGenderIndex(index);
+              context.read<AppointmentCubit>().onChangeSelectedGenderIndex(
+                index,
+              );
             },
           ),
         ),
@@ -67,12 +76,9 @@ class GenderDropdownField extends StatelessWidget {
     );
   }
 
-  String _getDisplayText(GenderType   genderType) {
-
-
+  String _getDisplayText(GenderType genderType) {
     String displayText = '';
     switch (genderType) {
-
       case GenderType.init:
         return 'Select Gender';
       case GenderType.male:
@@ -80,7 +86,6 @@ class GenderDropdownField extends StatelessWidget {
       case GenderType.female:
         return 'Female';
     }
-
   }
 
   List<Widget> _buildGenderItems(TextTheme textTheme) {
@@ -95,22 +100,22 @@ class GenderDropdownField extends StatelessWidget {
   }
 
   BoxDecoration _buildButtonDecoration() => BoxDecoration(
-        color: Colors.grey.shade100,
-        borderRadius: BorderRadius.circular(8.r),
-        border: Border.all(color: Colors.black12, width: 1.2),
-      );
+    color: Colors.grey.shade100,
+    borderRadius: BorderRadius.circular(8.r),
+    border: Border.all(color: Colors.black12, width: 1.2),
+  );
 
   BoxDecoration _buildListDecoration() => BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Colors.black87,
-        boxShadow: const [BoxShadow(color: Colors.white12, blurRadius: 4)],
-      );
+    borderRadius: BorderRadius.circular(10),
+    color: Colors.black87,
+    boxShadow: const [BoxShadow(color: Colors.white12, blurRadius: 4)],
+  );
 
   Widget _buildSelectedIcon() => CircleAvatar(
-        radius: 10.r,
-        backgroundColor: Colors.green,
-        child: Icon(Icons.done_rounded, color: Colors.white, size: 15.r),
-      );
+    radius: 10.r,
+    backgroundColor: Colors.green,
+    child: Icon(Icons.done_rounded, color: Colors.white, size: 15.r),
+  );
 
   SizingDropDownAnimationParameters _buildAnimationParameters() =>
       const SizingDropDownAnimationParameters(
@@ -122,8 +127,8 @@ class GenderDropdownField extends StatelessWidget {
 
   TextStyle _getTextStyle(GenderType genderType, TextTheme textTheme) {
     return genderType == GenderType.init
-        ?
-          textTheme.hintFieldStyle:textTheme.styleInputField;
+        ? textTheme.hintFieldStyle
+        : textTheme.styleInputField;
   }
 
   // void _handleSelectionChange(BuildContext context, int? index) {

@@ -36,9 +36,9 @@ class RegisterRoleSelector extends StatelessWidget {
                   child: _RoleOption(
                     title: 'Client',
                     isActive: userType == UserType.client,
-                    onTap: () => context
-                        .read<RegisterCubit>()
-                        .toggleUserType(UserType.client),
+                    onTap: () => context.read<RegisterCubit>().toggleUserType(
+                      UserType.client,
+                    ),
                   ),
                 ),
                 SizedBox(width: 20.w),
@@ -46,9 +46,9 @@ class RegisterRoleSelector extends StatelessWidget {
                   child: _RoleOption(
                     title: 'Doctor',
                     isActive: userType == UserType.doctor,
-                    onTap: () => context
-                        .read<RegisterCubit>()
-                        .toggleUserType(UserType.doctor),
+                    onTap: () => context.read<RegisterCubit>().toggleUserType(
+                      UserType.doctor,
+                    ),
                   ),
                 ),
               ],

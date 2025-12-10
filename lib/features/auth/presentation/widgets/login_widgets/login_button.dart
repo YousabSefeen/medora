@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medora/core/constants/app_strings/app_strings.dart' show AppStrings;
+import 'package:medora/core/constants/app_strings/app_strings.dart'
+    show AppStrings;
 
 import '../../../../../core/constants/app_alerts/app_alerts.dart';
 import '../../../../../core/constants/app_routes/app_router.dart';
@@ -19,18 +20,19 @@ class LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocSelector<LoginCubit, LoginState, LazyRequestState>(
-        selector: (state) => state.loginStatus,
-        builder: (context, loginStatus) {
-          _handleLoginState(context, loginStatus);
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30),
-            child: CustomButton(
-              isLoading: loginStatus == LazyRequestState.loading,
-              text: AppStrings.login,
-              onPressed: () => _onLoginPressed(context),
-            ),
-          );
-        });
+      selector: (state) => state.loginStatus,
+      builder: (context, loginStatus) {
+        _handleLoginState(context, loginStatus);
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 30),
+          child: CustomButton(
+            isLoading: loginStatus == LazyRequestState.loading,
+            text: AppStrings.login,
+            onPressed: () => _onLoginPressed(context),
+          ),
+        );
+      },
+    );
   }
 
   void _onLoginPressed(BuildContext context) {
@@ -70,7 +72,7 @@ class LoginButton extends StatelessWidget {
   }
 
   void _resetLoginStates(BuildContext context) => Future.microtask(() {
-        if (!context.mounted) return;
-        context.read<LoginCubit>().resetStates();
-      });
+    if (!context.mounted) return;
+    context.read<LoginCubit>().resetStates();
+  });
 }

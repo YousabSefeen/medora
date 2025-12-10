@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
-import 'package:medora/features/appointments/presentation/widgets/icon_with_text.dart' show IconWithText;
+import 'package:medora/features/appointments/presentation/widgets/icon_with_text.dart'
+    show IconWithText;
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 import '../../../features/appointments/data/models/appointment_reschedule.dart';
@@ -40,11 +40,8 @@ class AppointmentRescheduledDialog {
       topBarTitle: const SizedBox.shrink(),
       topBar: _buildSuccessHeader(context),
       navBarHeight: 170.h,
-      child: _buildAppointmentComparison(
-        context,
-        appointmentReschedule,
-      ),
-      stickyActionBar: _buildDoneButton( ),
+      child: _buildAppointmentComparison(context, appointmentReschedule),
+      stickyActionBar: _buildDoneButton(),
       isTopBarLayerAlwaysVisible: true,
     );
   }
@@ -53,14 +50,9 @@ class AppointmentRescheduledDialog {
     return Container(
       alignment: Alignment.center,
       width: double.infinity,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.white),
-      ),
+      decoration: BoxDecoration(border: Border.all(color: Colors.white)),
       child: Column(
-        children: [
-          _buildSuccessAnimation(),
-          _buildSuccessTitle(context),
-        ],
+        children: [_buildSuccessAnimation(), _buildSuccessTitle(context)],
       ),
     );
   }
@@ -88,7 +80,7 @@ class AppointmentRescheduledDialog {
     );
   }
 
-  static Widget _buildDoneButton( ) {
+  static Widget _buildDoneButton() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
       height: 45,
@@ -106,7 +98,7 @@ class AppointmentRescheduledDialog {
             ),
             child: const Text(AppStrings.done),
           );
-        }
+        },
       ),
     );
   }
@@ -155,7 +147,10 @@ class AppointmentRescheduledDialog {
   }
 
   static TextStyle _getNewAppointmentStyle(TextTheme textTheme) {
-    return textTheme.dateTimeBlackStyle.copyWith(color: Colors.white,  fontSize: 15.sp);
+    return textTheme.dateTimeBlackStyle.copyWith(
+      color: Colors.white,
+      fontSize: 15.sp,
+    );
   }
 
   static Widget _buildArrowIcon() {
@@ -188,11 +183,7 @@ class AppointmentRescheduledDialog {
             text: date,
             textStyle: style,
           ),
-          IconWithText(
-            icon: Icons.alarm,
-            text: time,
-            textStyle: style,
-          ),
+          IconWithText(icon: Icons.alarm, text: time, textStyle: style),
         ],
       ),
     );

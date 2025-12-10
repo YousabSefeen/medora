@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
-import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
+import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
 
 class FavoritesStates extends Equatable {

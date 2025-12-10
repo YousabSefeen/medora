@@ -23,25 +23,26 @@ class BookedAppointmentFooter extends StatelessWidget {
       child: Column(
         spacing: 5,
         children: [
-          BookedAppointmentInfoSection(appointment: appointment,appointmentStatus:appointmentStatus),
-          buildBookedAppointmentActionsSection(appointmentStatus,appointment),
+          BookedAppointmentInfoSection(
+            appointment: appointment,
+            appointmentStatus: appointmentStatus,
+          ),
+          buildBookedAppointmentActionsSection(appointmentStatus, appointment),
         ],
       ),
     );
   }
 
   Widget buildBookedAppointmentActionsSection(
-      AppointmentStatus appointmentStatus,
-  ClientAppointmentsModel appointment,
-
-      ) {
-
+    AppointmentStatus appointmentStatus,
+    ClientAppointmentsModel appointment,
+  ) {
     switch (appointmentStatus) {
       case AppointmentStatus.confirmed:
         return BookedAppointmentActionsSection(appointment: appointment);
 
       case AppointmentStatus.completed:
-        return   CompletedAppointmentActionsSection(appointment:appointment);
+        return CompletedAppointmentActionsSection(appointment: appointment);
       case AppointmentStatus.cancelled:
         return const SizedBox.shrink();
     }

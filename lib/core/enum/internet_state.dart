@@ -1,5 +1,1 @@
-enum InternetState {
-  none,
-  connected,
-  disconnected,
-}
+enum InternetState { none, connected, disconnected }

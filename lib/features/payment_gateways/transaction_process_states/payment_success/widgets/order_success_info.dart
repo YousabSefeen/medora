@@ -4,8 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../core/constants/themes/app_colors.dart';
 
-
-
 class OrderSuccessInfo extends StatelessWidget {
   final String title;
   final String sub;
@@ -32,26 +30,29 @@ class OrderSuccessInfo extends StatelessWidget {
             style: title == 'Total'
                 ? GoogleFonts.inter(
                     textStyle: TextStyle(
-                    fontSize: 17.sp,
-                    letterSpacing: 1.2,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.customWhite,
-                  ))
+                      fontSize: 17.sp,
+                      letterSpacing: 1.2,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.customWhite,
+                    ),
+                  )
                 : GoogleFonts.raleway(
                     textStyle: TextStyle(
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xff9AA6B2),
-                  )),
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xff9AA6B2),
+                    ),
+                  ),
           ),
           Text(
             sub,
             style: GoogleFonts.roboto(
-                textStyle: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-            )),
+              textStyle: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
+            ),
           ),
         ],
       ),

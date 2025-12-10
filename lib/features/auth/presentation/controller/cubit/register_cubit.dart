@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medora/features/auth/presentation/controller/form_controllers/register_controllers.dart' show RegisterControllers;
-
+import 'package:medora/features/auth/presentation/controller/form_controllers/register_controllers.dart'
+    show RegisterControllers;
 
 import '../../../../../core/enum/lazy_request_state.dart';
 import '../../../../../core/enum/user_type.dart';
@@ -14,19 +14,17 @@ class RegisterCubit extends Cubit<RegisterState> {
   final AuthRepository authRepository;
 
   RegisterCubit({required this.authRepository})
-      : super(RegisterState.initial());
+    : super(RegisterState.initial());
 
-  void togglePasswordVisibility() => emit(state.copyWith(
-        isPasswordVisible: !state.isPasswordVisible,
-      ));
+  void togglePasswordVisibility() =>
+      emit(state.copyWith(isPasswordVisible: !state.isPasswordVisible));
 
-  void toggleConfirmPasswordVisibility() => emit(state.copyWith(
-        isConfirmPasswordVisible: !state.isConfirmPasswordVisible,
-      ));
+  void toggleConfirmPasswordVisibility() => emit(
+    state.copyWith(isConfirmPasswordVisible: !state.isConfirmPasswordVisible),
+  );
 
-  void toggleUserType(UserType userType) => emit(state.copyWith(
-        userType: userType,
-      ));
+  void toggleUserType(UserType userType) =>
+      emit(state.copyWith(userType: userType));
 
   RegisterControllers? _cachedControllers;
 
@@ -50,13 +48,14 @@ class RegisterCubit extends Cubit<RegisterState> {
     );
 
     response.fold(
-        (failure) => emit(state.copyWith(
-              registerState: LazyRequestState.error,
-              error: failure.toString(),
-            )),
-        (success) => emit(state.copyWith(
-              registerState: LazyRequestState.loaded,
-            )));
+      (failure) => emit(
+        state.copyWith(
+          registerState: LazyRequestState.error,
+          error: failure.toString(),
+        ),
+      ),
+      (success) => emit(state.copyWith(registerState: LazyRequestState.loaded)),
+    );
   }
 
   void resetStates() => emit(RegisterState.initial());

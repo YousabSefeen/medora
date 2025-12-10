@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:medora/core/enum/navigation_source.dart' show NavigationSource;
-import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
-    show DoctorModel;
 import 'package:medora/features/favorites/presentation/widgets/toggle_favorite_button.dart'
     show ToggleFavoriteButton;
-import 'package:medora/features/shared/presentation/widgets/doctor_image.dart' show DoctorImage;
-import 'package:medora/features/shared/presentation/widgets/doctor_info_footer.dart' show DoctorInfoFooter;
-import 'package:medora/features/shared/presentation/widgets/doctor_name.dart' show DoctorName;
-import 'package:medora/features/shared/presentation/widgets/doctor_rating.dart' show DoctorRating;
-import 'package:medora/features/shared/presentation/widgets/doctor_specialties.dart' show DoctorSpecialties;
+import 'package:medora/features/shared/data/models/doctor_model.dart'
+    show DoctorModel;
+import 'package:medora/features/shared/presentation/widgets/doctor_image.dart'
+    show DoctorImage;
+import 'package:medora/features/shared/presentation/widgets/doctor_info_footer.dart'
+    show DoctorInfoFooter;
+import 'package:medora/features/shared/presentation/widgets/doctor_name.dart'
+    show DoctorName;
+import 'package:medora/features/shared/presentation/widgets/doctor_rating.dart'
+    show DoctorRating;
+import 'package:medora/features/shared/presentation/widgets/doctor_specialties.dart'
+    show DoctorSpecialties;
 import 'package:medora/features/shared/value_objects/doctor_card_config.dart'
     show DoctorCardConfig;
-
 
 class DoctorBasicInfo extends StatelessWidget {
   final NavigationSource navigationSource;

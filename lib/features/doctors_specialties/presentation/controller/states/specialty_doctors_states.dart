@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:medora/core/enum/request_state.dart' show RequestState;
-import 'package:medora/features/doctor_profile/data/models/doctor_model.dart' show DoctorModel;
-
+import 'package:medora/features/shared/data/models/doctor_model.dart'
+    show DoctorModel;
 
 class SpecialtyDoctorsStates extends Equatable {
   final List<DoctorModel> specialtyDoctorsList;
@@ -30,8 +30,8 @@ class SpecialtyDoctorsStates extends Equatable {
 
   @override
   List<Object?> get props => [
-        specialtyDoctorsList,
-        specialtyDoctorsState,
-        specialtyDoctorsError,
-      ];
+    specialtyDoctorsList,
+    specialtyDoctorsState,
+    specialtyDoctorsError,
+  ];
 }

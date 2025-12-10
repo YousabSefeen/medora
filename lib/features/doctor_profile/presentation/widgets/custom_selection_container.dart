@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
-import 'package:medora/features/doctor_profile/presentation/widgets/custom_field_container.dart' show CustomFieldContainer;
-
+import 'package:medora/features/doctor_profile/presentation/widgets/custom_field_container.dart'
+    show CustomFieldContainer;
 
 class CustomSelectionContainer extends StatelessWidget {
   final bool isSpecialtiesField;
@@ -68,46 +68,46 @@ class CustomSelectionContainer extends StatelessWidget {
     BuildContext context, {
     required bool isSpecialtiesField,
     required List<String> selectedItems,
-  }) =>
-      Wrap(
-        spacing: 8,
-        runSpacing: 8,
-        children: selectedItems
-            .map((item) => _buildGenericChip(
-                  context,
-                  isSpecialtiesField: isSpecialtiesField,
-                  label: item,
-                ))
-            .toList(),
-      );
+  }) => Wrap(
+    spacing: 8,
+    runSpacing: 8,
+    children: selectedItems
+        .map(
+          (item) => _buildGenericChip(
+            context,
+            isSpecialtiesField: isSpecialtiesField,
+            label: item,
+          ),
+        )
+        .toList(),
+  );
 
   Widget _buildGenericChip(
     BuildContext context, {
     required bool isSpecialtiesField,
     required String label,
-  }) =>
-      Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        decoration: isSpecialtiesField
-            ? _specialtyChipBoxDecoration()
-            : _dayChipBoxDecoration(),
-        child: Text(
-          label,
-          style: Theme.of(context).textTheme.mediumBlack.copyWith(
-                color: isSpecialtiesField ? Colors.black : Colors.white,
-                fontSize: 14.sp,
-              ),
-        ),
-      );
+  }) => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+    decoration: isSpecialtiesField
+        ? _specialtyChipBoxDecoration()
+        : _dayChipBoxDecoration(),
+    child: Text(
+      label,
+      style: Theme.of(context).textTheme.mediumBlack.copyWith(
+        color: isSpecialtiesField ? Colors.black : Colors.white,
+        fontSize: 14.sp,
+      ),
+    ),
+  );
 
   BoxDecoration _specialtyChipBoxDecoration() => BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8.r),
-        border: Border.all(color: AppColors.softBlue),
-      );
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(8.r),
+    border: Border.all(color: AppColors.softBlue),
+  );
 
   BoxDecoration _dayChipBoxDecoration() => BoxDecoration(
-        color: AppColors.green,
-        borderRadius: BorderRadius.circular(50.r),
-      );
+    color: AppColors.green,
+    borderRadius: BorderRadius.circular(50.r),
+  );
 }

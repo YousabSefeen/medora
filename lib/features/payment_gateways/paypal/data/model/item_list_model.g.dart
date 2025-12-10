@@ -14,6 +14,4 @@ ItemListModel _$ItemListModelFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$ItemListModelToJson(ItemListModel instance) =>
-    <String, dynamic>{
-      'items': instance.items.map((e) => e.toJson()).toList(),
-    };
+    <String, dynamic>{'items': instance.items.map((e) => e.toJson()).toList()};

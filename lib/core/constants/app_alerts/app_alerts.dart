@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:medora/core/animations/custom_modal_type_left_sheet.dart' show CustomModalTypeLeftSheet;
+import 'package:medora/core/animations/custom_modal_type_left_sheet.dart'
+    show CustomModalTypeLeftSheet;
 import 'package:medora/core/constants/app_alerts/no_internet_dialog.dart'
     show NoInternetDialog;
 import 'package:medora/core/constants/app_alerts/widgets/appointment_success_dialog.dart'
@@ -168,7 +169,8 @@ class AppAlerts {
       Navigator.of(context).pop();
     },
   );
-////
+
+  ////
   static void showLeftSheet({
     required BuildContext context,
     required Color appBarBackgroundColor,
@@ -176,15 +178,13 @@ class AppAlerts {
     required Color appBarTitleColor,
     required Widget body,
     Widget? stickyActionBar,
- required VoidCallback onCancelPressed,
-
+    required VoidCallback onCancelPressed,
   }) => WoltModalSheet.show(
     context: context,
     modalTypeBuilder: (_) => CustomModalTypeLeftSheet(),
 
     pageListBuilder: (modalSheetContext) => [
       WoltModalSheetPage(
-
         hasSabGradient: false,
         topBar: AppAlertWidgets.customSheetTopBar(
           context: context,
@@ -207,11 +207,12 @@ class AppAlerts {
         // إذا كنت ترغب في إضافة شريط التمرير هذا الجسم باستخدام مكون واجهة المستخدم ليتمكن من المرور في ورقة مشروطة ، يجب عليك ضبط مكون واجهة المستخدم بواسطة ال Scrollbar Widget
         // ليكون بهذا الشكل
         //   child: Scrollbar(child: body),
-        child:  body,
+        child: body,
       ),
     ],
-    onModalDismissedWithBarrierTap:onCancelPressed,
+    onModalDismissedWithBarrierTap: onCancelPressed,
   );
+
   //*********************
   static void showSpecialitiesBottomSheet({
     required BuildContext context,

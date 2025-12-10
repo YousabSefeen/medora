@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:medora/core/constants/app_strings/app_strings.dart' show AppStrings;
+import 'package:medora/core/constants/app_strings/app_strings.dart'
+    show AppStrings;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 
 class CustomErrorWidget extends StatelessWidget {
@@ -19,6 +20,7 @@ class CustomErrorWidget extends StatelessWidget {
   });
 
   final _radiusValue = 8.0;
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -73,9 +75,9 @@ class CustomErrorWidget extends StatelessWidget {
       child: FittedBox(
         child: Text(
           AppStrings.errorDisplayTitle,
-          style: Theme.of(context).textTheme.mediumBlack.copyWith(
-                color: iconColor,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.mediumBlack.copyWith(color: iconColor),
         ),
       ),
     );
@@ -98,20 +100,19 @@ class CustomErrorWidget extends StatelessWidget {
   TextSpan _buildErrorLabelTextSpan(BuildContext context) {
     return TextSpan(
       text: AppStrings.errorMessageLabel,
-      style: Theme.of(context)
-          .textTheme
-          .mediumBlack
-          .copyWith(fontSize: 14.sp, fontWeight: FontWeight.w700),
+      style: Theme.of(context).textTheme.mediumBlack.copyWith(
+        fontSize: 14.sp,
+        fontWeight: FontWeight.w700,
+      ),
     );
   }
 
   TextSpan _buildErrorMessageTextSpan(BuildContext context) {
     return TextSpan(
       text: errorMessage,
-      style: Theme.of(context).textTheme.hintFieldStyle.copyWith(
-            fontSize: 16.sp,
-            letterSpacing: 1.5,
-          ),
+      style: Theme.of(
+        context,
+      ).textTheme.hintFieldStyle.copyWith(fontSize: 16.sp, letterSpacing: 1.5),
     );
   }
 }

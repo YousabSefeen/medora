@@ -30,30 +30,31 @@ class BookedAppointmentInfoSection extends StatelessWidget {
   }
 
   Widget _buildDateInfo(TextStyle textStyle) => IconWithText(
-        icon: Icons.calendar_month,
-        text: appointment.appointmentDate,
-        textStyle: textStyle,
-      );
+    icon: Icons.calendar_month,
+    text: appointment.appointmentDate,
+    textStyle: textStyle,
+  );
 
   Widget _buildTimeInfo(TextStyle textStyle) => IconWithText(
-        icon: Icons.alarm,
-        text: appointment.appointmentTime,
-        textStyle: textStyle,
-      );
+    icon: Icons.alarm,
+    text: appointment.appointmentTime,
+    textStyle: textStyle,
+  );
 
   Widget _buildStatusInfo(
-          TextStyle textStyle, AppointmentStatus appointmentStatus) =>
-      IconWithText(
-        icon: Icons.circle_rounded,
-        iconColor: _getIconColor(appointmentStatus),
-        text: appointment.appointmentStatus.capitalizeFirstLetter(),
+    TextStyle textStyle,
+    AppointmentStatus appointmentStatus,
+  ) => IconWithText(
+    icon: Icons.circle_rounded,
+    iconColor: _getIconColor(appointmentStatus),
+    text: appointment.appointmentStatus.capitalizeFirstLetter(),
     //    textStyle: textStyle,
-        textStyle: textStyle.copyWith(
-          letterSpacing: 1,
-          fontWeight: FontWeight.w700,
-          color: _getIconColor(appointmentStatus),
-        ),
-      );
+    textStyle: textStyle.copyWith(
+      letterSpacing: 1,
+      fontWeight: FontWeight.w700,
+      color: _getIconColor(appointmentStatus),
+    ),
+  );
 
   _getIconColor(AppointmentStatus appointmentStatus) {
     switch (appointmentStatus) {

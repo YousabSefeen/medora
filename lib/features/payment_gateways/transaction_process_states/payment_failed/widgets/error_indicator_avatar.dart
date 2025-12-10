@@ -9,8 +9,9 @@ class ErrorIndicatorAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: Colors.redAccent, width: 5)),
+        shape: BoxShape.circle,
+        border: Border.all(color: Colors.redAccent, width: 5),
+      ),
       child: CircleAvatar(
         backgroundColor: Colors.white,
         radius: 29.r,

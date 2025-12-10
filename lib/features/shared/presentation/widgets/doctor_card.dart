@@ -1,19 +1,21 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:medora/core/constants/app_routes/app_router.dart' show AppRouter;
+import 'package:medora/core/constants/app_routes/app_router.dart'
+    show AppRouter;
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
-import 'package:medora/features/appointments/presentation/screens/create_appointment_screen.dart' show CreateAppointmentScreen;
-import 'package:medora/features/doctor_profile/data/models/doctor_model.dart' show DoctorModel;
-import 'package:medora/features/shared/presentation/widgets/doctor_basic_info.dart' show DoctorBasicInfo;
-import 'package:medora/features/shared/value_objects/doctor_card_config.dart' show DoctorCardConfig;
+import 'package:medora/features/appointments/presentation/screens/create_appointment_screen.dart'
+    show CreateAppointmentScreen;
+import 'package:medora/features/shared/data/models/doctor_model.dart'
+    show DoctorModel;
+import 'package:medora/features/shared/presentation/widgets/doctor_basic_info.dart'
+    show DoctorBasicInfo;
+import 'package:medora/features/shared/value_objects/doctor_card_config.dart'
+    show DoctorCardConfig;
 
 class DoctorCard extends StatelessWidget {
   final DoctorModel doctor;
 
-  const DoctorCard({super.key, required this.doctor });
+  const DoctorCard({super.key, required this.doctor});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,8 @@ class DoctorCard extends StatelessWidget {
         splashColor: Colors.grey,
         borderRadius: BorderRadius.circular(12.r),
         overlayColor: const WidgetStatePropertyAll(AppColors.softBlue),
-        onTap: ()=>AppRouter.push(context, CreateAppointmentScreen(doctor: doctor)),
+        onTap: () =>
+            AppRouter.push(context, CreateAppointmentScreen(doctor: doctor)),
         child: DoctorBasicInfo(
           doctor: doctor,
           config: const DoctorCardConfig(

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart'
     show FirebaseFirestore, Query, DocumentSnapshot, QuerySnapshot;
-import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
+import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
 import 'package:medora/features/shared/domain/entities/paginated_data_response.dart'
     show PaginatedDataResponse;

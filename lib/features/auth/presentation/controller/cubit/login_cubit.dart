@@ -11,10 +11,8 @@ class LoginCubit extends Cubit<LoginState> {
 
   LoginCubit({required this.authRepository}) : super(LoginState.initial());
 
-
-  void togglePasswordVisibility() => emit(
-        state.copyWith(isPasswordVisible: !state.isPasswordVisible),
-      );
+  void togglePasswordVisibility() =>
+      emit(state.copyWith(isPasswordVisible: !state.isPasswordVisible));
 
   LoginControllers? _cachedControllers;
 
@@ -35,13 +33,14 @@ class LoginCubit extends Cubit<LoginState> {
     );
 
     response.fold(
-      (failure) => emit(state.copyWith(
-        loginStatus: LazyRequestState.error,
-        loginError: failure.toString(),
-      )),
-      (success) async => emit(state.copyWith(
-        loginStatus: LazyRequestState.loaded,
-      )),
+      (failure) => emit(
+        state.copyWith(
+          loginStatus: LazyRequestState.error,
+          loginError: failure.toString(),
+        ),
+      ),
+      (success) async =>
+          emit(state.copyWith(loginStatus: LazyRequestState.loaded)),
     );
   }
 

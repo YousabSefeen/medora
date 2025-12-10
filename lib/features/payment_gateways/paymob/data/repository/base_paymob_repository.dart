@@ -1,10 +1,8 @@
-
-
 import 'package:dartz/dartz.dart';
-import 'package:medora/core/enum/payment_gateways_types.dart' show PaymentGatewaysTypes;
+import 'package:medora/core/enum/payment_gateways_types.dart'
+    show PaymentGatewaysTypes;
 
 import '../../../../../Core/Error/failure.dart';
-
 
 abstract class BasePaymobRepository {
   Future<Either<Failure, String>> processVisaPayment({
@@ -18,6 +16,3 @@ abstract class BasePaymobRepository {
     required int totalPrice,
   });
 }
-
-
-

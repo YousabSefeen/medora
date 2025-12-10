@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medora/core/constants/app_alerts/app_alerts.dart' show AppAlerts;
-import 'package:medora/core/constants/app_strings/app_strings.dart' show AppStrings;
+import 'package:medora/core/constants/app_alerts/app_alerts.dart'
+    show AppAlerts;
+import 'package:medora/core/constants/app_strings/app_strings.dart'
+    show AppStrings;
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
-import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart' show AppointmentCubit;
-import 'package:medora/features/shared/models/doctor_schedule_model.dart' show DoctorScheduleModel;
+import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart'
+    show AppointmentCubit;
+import 'package:medora/features/shared/models/doctor_schedule_model.dart'
+    show DoctorScheduleModel;
 
-import '../../../../../core/constants/app_alerts/no_internet_dialog.dart';
 import '../../../../../core/constants/app_routes/app_router.dart';
 import '../../../../../core/enum/lazy_request_state.dart';
 import '../../../data/models/appointment_reschedule.dart';
@@ -28,9 +30,9 @@ class AppointmentRescheduleButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: Theme.of(context).elevatedButtonTheme.style!.copyWith(
-            backgroundColor: WidgetStatePropertyAll(AppColors.softBlue),
-            overlayColor: const WidgetStatePropertyAll(Colors.white),
-          ),
+        backgroundColor: WidgetStatePropertyAll(AppColors.softBlue),
+        overlayColor: const WidgetStatePropertyAll(Colors.white),
+      ),
       onPressed: () => _showRescheduleBottomSheet(context),
       child: const Text(AppStrings.reschedule),
     );
@@ -42,51 +44,51 @@ class AppointmentRescheduleButton extends StatelessWidget {
         context: context,
         appBarBackgroundColor: AppColors.softBlue,
         appBarTitle: AppStrings.editBookingAppointment,
-         appBarTitleColor:AppColors.white ,
+        appBarTitleColor: AppColors.white,
         body: _buildRescheduleContent(),
       );
 
   /// Builds the content of reschedule bottom sheet
   Widget _buildRescheduleContent() => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-        child: Column(
-          spacing: 30,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildRescheduleTitle(),
-            _buildDoctorBookingSection(),
-            _buildRescheduleConfirmationButton(),
-          ],
-        ),
-      );
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+    child: Column(
+      spacing: 30,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildRescheduleTitle(),
+        _buildDoctorBookingSection(),
+        _buildRescheduleConfirmationButton(),
+      ],
+    ),
+  );
 
   /// Builds title widget for reschedule bottom sheet
   Widget _buildRescheduleTitle() => Text(
-        'When would you like to come?',
-        style: GoogleFonts.roboto(
-          color: Colors.black,
-          fontSize: 18.sp,
-          fontWeight: FontWeight.w700,
-          letterSpacing: 0.5,
-        ),
-        textAlign: TextAlign.start,
-      );
+    'When would you like to come?',
+    style: GoogleFonts.roboto(
+      color: Colors.black,
+      fontSize: 18.sp,
+      fontWeight: FontWeight.w700,
+      letterSpacing: 0.5,
+    ),
+    textAlign: TextAlign.start,
+  );
 
   /// Builds doctor booking section widget
   Widget _buildDoctorBookingSection() => DoctorAppointmentBookingSection(
-        doctorSchedule: DoctorScheduleModel(
-          doctorId: appointment.doctorId,
-          doctorAvailability: appointment.doctorModel.doctorAvailability,
-        ),
-      );
+    doctorSchedule: DoctorScheduleModel(
+      doctorId: appointment.doctorId,
+      doctorAvailability: appointment.doctorModel.doctorAvailability,
+    ),
+  );
 
   /// Builds confirmation button for rescheduling
   Widget _buildRescheduleConfirmationButton() => RescheduleConfirmationButton(
-        doctorId: appointment.doctorId,
-        appointmentId: appointment.appointmentId,
-        appointmentDate: appointment.appointmentDate,
-        appointmentTime: appointment.appointmentTime,
-      );
+    doctorId: appointment.doctorId,
+    appointmentId: appointment.appointmentId,
+    appointmentDate: appointment.appointmentDate,
+    appointmentTime: appointment.appointmentTime,
+  );
 }
 
 class RescheduleConfirmationButton extends StatelessWidget {
@@ -94,17 +96,22 @@ class RescheduleConfirmationButton extends StatelessWidget {
   final String appointmentId;
   final String appointmentDate;
   final String appointmentTime;
-  const RescheduleConfirmationButton(
-      {super.key,
-      required this.doctorId,
-      required this.appointmentId,
-      required this.appointmentDate,
-      required this.appointmentTime});
+
+  const RescheduleConfirmationButton({
+    super.key,
+    required this.doctorId,
+    required this.appointmentId,
+    required this.appointmentDate,
+    required this.appointmentTime,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<AppointmentCubit, AppointmentState,
-        AppointmentActionState>(
+    return BlocSelector<
+      AppointmentCubit,
+      AppointmentState,
+      AppointmentActionState
+    >(
       selector: (state) => AppointmentActionState(
         selectedDate: state.selectedDateFormatted,
         selectedTimeSlot: state.selectedTimeSlot,
@@ -120,7 +127,9 @@ class RescheduleConfirmationButton extends StatelessWidget {
 
   /// Builds the reschedule confirmation button with appropriate state
   Widget _buildRescheduleButton(
-      BuildContext context, AppointmentActionState appointmentData) {
+    BuildContext context,
+    AppointmentActionState appointmentData,
+  ) {
     final isEnabled = appointmentData.selectedTimeSlot != '';
     final isLoading = appointmentData.actionState == LazyRequestState.loading;
 
@@ -135,14 +144,17 @@ class RescheduleConfirmationButton extends StatelessWidget {
   /// Triggers the reschedule appointment process
   void _executeReschedule(BuildContext context) {
     print('RescheduleConfirmationButton._executeReschedule ${doctorId}');
-    context
-      .read<AppointmentCubit>().rescheduleAppointment(doctorId: doctorId, appointmentId: appointmentId);
+    context.read<AppointmentCubit>().rescheduleAppointment(
+      doctorId: doctorId,
+      appointmentId: appointmentId,
+    );
   }
-
 
   /// Handles different states of the reschedule process
   void _handleRescheduleResponse(
-      BuildContext context, AppointmentActionState appointmentData) {
+    BuildContext context,
+    AppointmentActionState appointmentData,
+  ) {
     switch (appointmentData.actionState) {
       case LazyRequestState.error:
         _showRescheduleError(context, appointmentData.actionError);
@@ -169,7 +181,9 @@ class RescheduleConfirmationButton extends StatelessWidget {
 
   /// Handles successful reschedule completion
   void _handleSuccessfulReschedule(
-      BuildContext context, AppointmentActionState appointmentData) {
+    BuildContext context,
+    AppointmentActionState appointmentData,
+  ) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!context.mounted) return;
 
@@ -178,13 +192,14 @@ class RescheduleConfirmationButton extends StatelessWidget {
       Future.delayed(const Duration(milliseconds: 500), () {
         if (!context.mounted) return;
         AppAlerts.showRescheduleSuccessDialog(
-            context: context,
-            appointmentReschedule: AppointmentRescheduleData(
-              oldAppointmentDate: appointmentDate,
-              oldAppointmentTime: appointmentTime,
-              newAppointmentDate: appointmentData.selectedDate!,
-              newAppointmentTime: appointmentData.selectedTimeSlot!,
-            ));
+          context: context,
+          appointmentReschedule: AppointmentRescheduleData(
+            oldAppointmentDate: appointmentDate,
+            oldAppointmentTime: appointmentTime,
+            newAppointmentDate: appointmentData.selectedDate!,
+            newAppointmentTime: appointmentData.selectedTimeSlot!,
+          ),
+        );
       });
 
       _resetRescheduleState(context);

@@ -1,15 +1,12 @@
-
 import 'package:equatable/equatable.dart';
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 import 'package:medora/core/enum/web_view_status.dart' show WebViewStatus;
-import 'package:medora/core/payment_gateway_manager/paypal_payment/paypal_services.dart' show PaypalPaymentIntentResponse;
-
+import 'package:medora/core/payment_gateway_manager/paypal_payment/paypal_services.dart'
+    show PaypalPaymentIntentResponse;
 
 class PaypalPaymentState extends Equatable {
-
-  final LazyRequestState  paymentIntentState;
+  final LazyRequestState paymentIntentState;
   final String? paymentIntentErrorMsg;
-
 
   final WebViewStatus webViewStatus;
   final int progressValue;
@@ -19,11 +16,10 @@ class PaypalPaymentState extends Equatable {
   final String? payerEmail; //  From executePayment Result
 
   const PaypalPaymentState({
-
     this.paymentIntentState = LazyRequestState.lazy,
-    this.paymentIntentErrorMsg='',
+    this.paymentIntentErrorMsg = '',
     this.webViewStatus = WebViewStatus.init,
-    this.progressValue=0,
+    this.progressValue = 0,
     this.webViewErrorMessage,
     this.paymentIntentResponse,
     this.paypalPayerId,
@@ -31,20 +27,19 @@ class PaypalPaymentState extends Equatable {
   });
 
   PaypalPaymentState copyWith({
-
     LazyRequestState? paymentIntentState,
     String? paymentIntentErrorMsg,
     WebViewStatus? webViewStatus,
-      int? progressValue,
+    int? progressValue,
     String? webViewErrorMessage,
     PaypalPaymentIntentResponse? paymentIntentResponse,
     String? paypalPayerId,
     String? payerEmail,
   }) {
     return PaypalPaymentState(
-
       paymentIntentState: paymentIntentState ?? this.paymentIntentState,
-      paymentIntentErrorMsg: paymentIntentErrorMsg?? this.paymentIntentErrorMsg,
+      paymentIntentErrorMsg:
+          paymentIntentErrorMsg ?? this.paymentIntentErrorMsg,
       webViewStatus: webViewStatus ?? this.webViewStatus,
       progressValue: progressValue ?? this.progressValue,
       webViewErrorMessage: webViewErrorMessage ?? this.webViewErrorMessage,
@@ -57,14 +52,13 @@ class PaypalPaymentState extends Equatable {
 
   @override
   List<Object?> get props => [
-
     paymentIntentState,
     paymentIntentErrorMsg,
     webViewStatus,
     progressValue,
-        webViewErrorMessage,
-        paymentIntentResponse,
-        paypalPayerId,
-        payerEmail,
+    webViewErrorMessage,
+    paymentIntentResponse,
+    paypalPayerId,
+    payerEmail,
   ];
 }

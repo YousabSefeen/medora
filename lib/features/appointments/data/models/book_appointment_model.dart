@@ -1,14 +1,9 @@
-
 import 'package:json_annotation/json_annotation.dart';
 
 part 'book_appointment_model.g.dart';
 
 @JsonSerializable()
-
-
 class BookAppointmentModel {
-
-
   final String patientName;
   final String patientGender;
   final String patientAge;
@@ -19,7 +14,6 @@ class BookAppointmentModel {
   final String appointmentTime;
 
   BookAppointmentModel({
-
     required this.patientName,
     required this.patientGender,
     required this.patientAge,

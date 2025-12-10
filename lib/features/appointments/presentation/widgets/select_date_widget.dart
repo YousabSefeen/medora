@@ -5,25 +5,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 
-
-import '../../../shared/models/availability_model.dart';
 import '../../../shared/models/doctor_schedule_model.dart';
 import '../controller/cubit/appointment_cubit.dart';
 
 class SelectDateWidget extends StatelessWidget {
   final DoctorScheduleModel doctorSchedule;
 
-  const SelectDateWidget({
-    super.key,  required this.doctorSchedule, });
+  const SelectDateWidget({super.key, required this.doctorSchedule});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildSectionTitle(context),
-        _buildDateTimeline(context),
-      ],
+      children: [_buildSectionTitle(context), _buildDateTimeline(context)],
     );
   }
 
@@ -53,9 +47,9 @@ class SelectDateWidget extends StatelessWidget {
 
   void _handleDateSelection(BuildContext context, DateTime selectedDate) {
     context.read<AppointmentCubit>().getAvailableDoctorTimeSlots(
-          selectedDate: selectedDate,
-       doctorSchedule: doctorSchedule
-        );
+      selectedDate: selectedDate,
+      doctorSchedule: doctorSchedule,
+    );
   }
 
   BoxDecoration _dateTimelineDecoration() {
@@ -130,9 +124,6 @@ class SelectDateWidget extends StatelessWidget {
   }
 
   EasyTimeLineProps _buildTimelineProps() {
-    return const EasyTimeLineProps(
-      backgroundColor: Colors.white,
-      vPadding: 3,
-    );
+    return const EasyTimeLineProps(backgroundColor: Colors.white, vPadding: 3);
   }
 }

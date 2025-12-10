@@ -6,15 +6,15 @@ import 'package:medora/core/constants/common_widgets/error_retry_widget.dart'
 import 'package:medora/core/constants/common_widgets/sliver_loading%20_list.dart'
     show SliverLoadingList;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
-import 'package:medora/features/doctor_list/presentation/widgets/doctor_list_view.dart'
+import 'package:medora/features/shared/presentation/widgets/doctor_list_view.dart'
     show DoctorListView;
 import 'package:medora/features/search/presentation/controller/cubit/search_cubit.dart'
     show SearchCubit;
 import 'package:medora/features/search/presentation/controller/states/search_states.dart';
 import 'package:medora/features/search/presentation/widgets/search_welcome_widget.dart'
     show SearchWelcomeWidget;
-import 'package:medora/features/shared/presentation/widgets/empty_search_list_results.dart' show EmptySearchListResult;
-
+import 'package:medora/features/shared/presentation/widgets/empty_search_list_results.dart'
+    show EmptySearchListResult;
 
 class SearchResultsHandler extends StatelessWidget {
   const SearchResultsHandler({super.key});

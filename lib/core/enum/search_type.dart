@@ -1,5 +1,1 @@
-enum SearchType {
-  byName,
-  byCriteria,
-
-}
+enum SearchType { byName, byCriteria }

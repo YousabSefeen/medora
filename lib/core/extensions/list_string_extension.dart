@@ -1,5 +1,3 @@
-
-
 extension ListStringExtension on List<String> {
   String buildJoin() {
     if (isEmpty) return '';

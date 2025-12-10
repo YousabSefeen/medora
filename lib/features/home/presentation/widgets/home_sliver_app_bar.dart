@@ -33,7 +33,11 @@ class HomeSliverAppBar extends StatelessWidget {
 
       flexibleSpace: FlexibleSpaceBar(
         background: Padding(
-          padding: EdgeInsets.only(top: 15.h + kToolbarHeight,right: 10,left: 10),
+          padding: EdgeInsets.only(
+            top: 15.h + kToolbarHeight,
+            right: 10,
+            left: 10,
+          ),
           child: Image.asset(Assets.imagesAiDoctor, fit: BoxFit.fill),
         ),
       ),

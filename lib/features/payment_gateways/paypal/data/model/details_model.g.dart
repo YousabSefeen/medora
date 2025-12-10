@@ -7,10 +7,10 @@ part of 'details_model.dart';
 // **************************************************************************
 
 DetailsModel _$DetailsModelFromJson(Map<String, dynamic> json) => DetailsModel(
-      subtotal: json['subtotal'] as String,
-      shipping: json['shipping'] as String,
-      shipping_discount: (json['shipping_discount'] as num).toInt(),
-    );
+  subtotal: json['subtotal'] as String,
+  shipping: json['shipping'] as String,
+  shipping_discount: (json['shipping_discount'] as num).toInt(),
+);
 
 Map<String, dynamic> _$DetailsModelToJson(DetailsModel instance) =>
     <String, dynamic>{

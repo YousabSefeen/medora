@@ -34,7 +34,7 @@ class PaymobTransactionDataModel {
   //isVoided: إذا كانت المعاملة ملغاة.
   final String? is_voided;
 
-//  isRefunded: إذا كانت المعاملة مستردة.
+  //  isRefunded: إذا كانت المعاملة مستردة.
   final String? is_refunded;
 
   // capturedAmount: المبلغ الذي تم استحواذه بالفعل.
@@ -61,12 +61,12 @@ class PaymobTransactionDataModel {
   final String? has_parent_transaction;
   final String? orderId;
 
-//createdAt: تاريخ ووقت إنشاء المعاملة.
+  //createdAt: تاريخ ووقت إنشاء المعاملة.
   final String? created_at;
 
   final String? merchant_commission;
   final String?
-      discount_details; // يمكن استخدام List<Map<String?, dynamic>> عند الحاجة
+  discount_details; // يمكن استخدام List<Map<String?, dynamic>> عند الحاجة
 
   final String? is_refund;
   final String? error_occured;
@@ -79,9 +79,9 @@ class PaymobTransactionDataModel {
   final String? dataMessage; //dataMessage 'data.message=Approved'
   final String? sourceType; //sourceType: نوع مصدر الدفع (مثل: بطاقة، بنك، إلخ).
   final String?
-      sourceDataPan; //sourceDataPan: رقم البطاقة المقصوص (آخر 4 أرقام).
+  sourceDataPan; //sourceDataPan: رقم البطاقة المقصوص (آخر 4 أرقام).
   final String?
-      sourceSubType; //sourceSubType: نوع البطاقة (مثل: MasterCard، Visa).
+  sourceSubType; //sourceSubType: نوع البطاقة (مثل: MasterCard، Visa).
 
   PaymobTransactionDataModel({
     required this.trnxId,

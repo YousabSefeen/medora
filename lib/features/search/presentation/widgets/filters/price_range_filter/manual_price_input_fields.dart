@@ -4,8 +4,8 @@ import 'package:medora/features/search/presentation/controller/cubit/search_cubi
     show SearchCubit;
 import 'package:medora/features/search/presentation/controller/states/search_states.dart'
     show SearchStates;
-import 'package:medora/features/search/presentation/widgets/filters/price_range_filter/price_input_field.dart' show PriceInputField;
-
+import 'package:medora/features/search/presentation/widgets/filters/price_range_filter/price_input_field.dart'
+    show PriceInputField;
 
 class ManualPriceInputFields extends StatelessWidget {
   const ManualPriceInputFields({super.key});

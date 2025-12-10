@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medora/core/app_settings/controller/states/app_settings_states.dart' show AppSettingsStates;
+import 'package:medora/core/app_settings/controller/states/app_settings_states.dart'
+    show AppSettingsStates;
 import 'package:medora/core/enum/internet_state.dart' show InternetState;
-
 
 class AppSettingsCubit extends Cubit<AppSettingsStates> {
   AppSettingsCubit() : super(AppSettingsStates.initial());
@@ -17,14 +17,14 @@ class AppSettingsCubit extends Cubit<AppSettingsStates> {
     _handleResult(result);
   }
 
-   /// Starts monitoring internet connection changes (only triggers once)
+  /// Starts monitoring internet connection changes (only triggers once)
   void startMonitoring() {
     // If a subscription is already active, do not create a new one
     if (_streamSubscription != null) return;
 
-    _streamSubscription = Connectivity()
-        .onConnectivityChanged
-        .listen(_handleResult);
+    _streamSubscription = Connectivity().onConnectivityChanged.listen(
+      _handleResult,
+    );
   }
 
   ///  Stops the subscription when needed (important for clean-up)

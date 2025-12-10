@@ -1,4 +1,1 @@
-enum SearchBarState {
-  collapsed,
-  expanded,
-}
+enum SearchBarState { collapsed, expanded }

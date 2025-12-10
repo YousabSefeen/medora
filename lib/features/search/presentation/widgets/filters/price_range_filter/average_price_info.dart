@@ -1,17 +1,14 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
-
 
 class AveragePriceInfo extends StatelessWidget {
   const AveragePriceInfo({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final textTheme=Theme.of(context).textTheme;
-    return  Padding(
+    final textTheme = Theme.of(context).textTheme;
+    return Padding(
       padding: const EdgeInsets.only(top: 10, bottom: 20),
       child: RichText(
         text: TextSpan(
@@ -25,10 +22,9 @@ class AveragePriceInfo extends StatelessWidget {
               style: textTheme.largeWhiteSemiBold.copyWith(
                 color: Colors.black87,
 
-                fontSize: 12,fontWeight: FontWeight.w400,
-
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
               ),
-
             ),
           ],
         ),

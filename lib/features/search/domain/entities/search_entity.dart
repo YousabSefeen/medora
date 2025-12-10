@@ -1,7 +1,6 @@
-
-
 import 'package:medora/core/enum/search_type.dart' show SearchType;
-import 'package:medora/features/search/domain/entities/search_filters.dart' show SearchFilters;
+import 'package:medora/features/search/domain/entities/search_filters.dart'
+    show SearchFilters;
 
 class SearchEntity {
   final String query;

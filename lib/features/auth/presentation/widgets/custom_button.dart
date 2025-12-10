@@ -9,11 +9,12 @@ class CustomButton extends StatelessWidget {
   final bool isLoading;
   final void Function() onPressed;
 
-  const CustomButton(
-      {super.key,
-      required this.text,
-      required this.isLoading,
-      required this.onPressed});
+  const CustomButton({
+    super.key,
+    required this.text,
+    required this.isLoading,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +28,12 @@ class CustomButton extends StatelessWidget {
           backgroundColor: const WidgetStatePropertyAll(Colors.white),
           foregroundColor: const WidgetStatePropertyAll(AppColors.darkBlue),
           overlayColor: WidgetStatePropertyAll(AppColors.grey),
-          shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25.r),
-            side: const BorderSide(color: Colors.black12),
-          )),
+          shape: WidgetStatePropertyAll(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25.r),
+              side: const BorderSide(color: Colors.black12),
+            ),
+          ),
         ),
         onPressed: onPressed,
         child: isLoading
@@ -39,7 +42,7 @@ class CustomButton extends StatelessWidget {
                 child: Text(
                   text,
                   style: GoogleFonts.poppins(
-                      fontSize: 18.sp,
+                    fontSize: 18.sp,
                     fontWeight: FontWeight.w700,
                   ),
                 ),

@@ -3,18 +3,18 @@ import 'package:intl/intl.dart';
 import 'date_time_formatter.dart';
 
 class TimeSlotHelper {
-
-
- static bool isSelectedDateBeforeToday(DateTime selectedDate) {
+  static bool isSelectedDateBeforeToday(DateTime selectedDate) {
     final now = DateTime.now();
     return selectedDate.isBefore(DateTime(now.year, now.month, now.day));
   }
+
   static bool doesDoctorWorkOnDate({
     required DateTime selectedDate,
     required List<String> doctorWorkingDays,
   }) {
-    final selectedDayName =
-        DateTimeFormatter.convertDateToNameDay(date: selectedDate);
+    final selectedDayName = DateTimeFormatter.convertDateToNameDay(
+      date: selectedDate,
+    );
 
     return doctorWorkingDays.contains(selectedDayName);
   }
@@ -39,8 +39,7 @@ class TimeSlotHelper {
   static List<String> filterAvailableTimeSlots({
     required List<String> totalTimeSlots,
     required List<String> reservedTimeSlots,
-  }) =>
-      totalTimeSlots
-          .where((slot) => !reservedTimeSlots.contains(slot))
-          .toList();
+  }) => totalTimeSlots
+      .where((slot) => !reservedTimeSlots.contains(slot))
+      .toList();
 }

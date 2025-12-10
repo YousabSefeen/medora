@@ -1,7 +1,8 @@
 import 'package:equatable/equatable.dart';
+import 'package:medora/features/shared/data/models/doctor_model.dart'
+    show DoctorModel;
 
 import '../../../../../core/enum/request_state.dart';
-import '../../../../doctor_profile/data/models/doctor_model.dart';
 
 class DoctorListState extends Equatable {
   final bool isLoadedBefore;

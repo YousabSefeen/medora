@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart'
     show FirebaseFirestore, Query, QueryDocumentSnapshot, QuerySnapshot;
-import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
-    show DoctorModel;
 import 'package:medora/features/search/domain/value_objects/search_filters/search_filter.dart'
     show SearchFilter;
+import 'package:medora/features/shared/data/models/doctor_model.dart'
+    show DoctorModel;
 
 abstract class SearchRemoteDataSourceBase {
   Future<List<DoctorModel>> searchDoctors(List<SearchFilter> filters);

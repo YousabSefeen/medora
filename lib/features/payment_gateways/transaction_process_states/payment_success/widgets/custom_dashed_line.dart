@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 import '../../../../../core/constants/themes/app_colors.dart';
 
 class CustomDashedLine extends StatelessWidget {
@@ -17,9 +16,7 @@ class CustomDashedLine extends StatelessWidget {
             width: 5,
             height: 2,
             decoration: BoxDecoration(
-              color: index.isEven
-                  ? AppColors.white
-                  : Colors.transparent,
+              color: index.isEven ? AppColors.white : Colors.transparent,
               borderRadius: BorderRadius.circular(50.r),
             ),
           ),

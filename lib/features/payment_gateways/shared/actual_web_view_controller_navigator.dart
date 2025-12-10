@@ -1,10 +1,5 @@
-
-
-
-
-
-
-import 'package:medora/features/payment_gateways/shared/web_view_navigator.dart' show WebViewNavigator;
+import 'package:medora/features/payment_gateways/shared/web_view_navigator.dart'
+    show WebViewNavigator;
 import 'package:webview_flutter/webview_flutter.dart';
 
 class ActualWebViewControllerNavigator implements WebViewNavigator {

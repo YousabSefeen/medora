@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medora/core/constants/app_strings/app_strings.dart' show AppStrings;
-import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart' show AppointmentCubit;
-import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_controllers.dart' show PatientFieldsControllers;
-import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_validator.dart' show PatientFieldsValidator;
-import 'package:medora/features/appointments/presentation/controller/states/appointment_state.dart' show AppointmentState;
-import 'package:medora/features/appointments/presentation/widgets/patient_widgets/payment_processing_button.dart' show PaymentProcessingButton;
-import 'package:medora/features/doctor_profile/presentation/widgets/doctor_info_field.dart' show DoctorInfoField;
+import 'package:medora/core/constants/app_strings/app_strings.dart'
+    show AppStrings;
+import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart'
+    show AppointmentCubit;
+import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_controllers.dart'
+    show PatientFieldsControllers;
+import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_validator.dart'
+    show PatientFieldsValidator;
+import 'package:medora/features/appointments/presentation/controller/states/appointment_state.dart'
+    show AppointmentState;
+import 'package:medora/features/appointments/presentation/widgets/patient_widgets/payment_processing_button.dart'
+    show PaymentProcessingButton;
+import 'package:medora/features/doctor_profile/presentation/widgets/doctor_info_field.dart'
+    show DoctorInfoField;
 
 import '../widgets/patient_widgets/gender_dropdown_field.dart';
+
 /// Screen for entering patient personal information before completing appointment booking
 ///
 /// This screen represents the second step in the appointment booking process where the user enters:
@@ -28,6 +36,7 @@ class PatientDetailsScreen extends StatefulWidget {
 class _PatientDetailsScreenState extends State<PatientDetailsScreen> {
   late final PatientFieldsControllers _formControllers;
   late final PatientFieldsValidator _formValidator;
+
   /// Initialize controllers and validators for form field management
   void _initializeControllers() {
     _formControllers = PatientFieldsControllers();
@@ -49,12 +58,11 @@ class _PatientDetailsScreenState extends State<PatientDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(AppStrings.patientDetails),
-      ),
+      appBar: AppBar(title: const Text(AppStrings.patientDetails)),
       body: _buildFormContent(),
     );
   }
+
   /// Build main form content with validation state management
   Widget _buildFormContent() {
     return SingleChildScrollView(
@@ -79,7 +87,9 @@ class _PatientDetailsScreenState extends State<PatientDetailsScreen> {
                   padding: const EdgeInsets.only(top: 30),
                   child: Align(
                     alignment: Alignment.bottomCenter,
-                    child: PaymentProcessingButton(formControllers: _formControllers),
+                    child: PaymentProcessingButton(
+                      formControllers: _formControllers,
+                    ),
                   ),
                 ),
               ],
@@ -91,29 +101,28 @@ class _PatientDetailsScreenState extends State<PatientDetailsScreen> {
   }
 
   Widget _buildNameField() => DoctorInfoField(
-        label: AppStrings.fullNameLabel,
-        hintText: AppStrings.fullNameHint,
-        controller: _formControllers.nameController,
-        validator: _formValidator.validateName,
-      );
+    label: AppStrings.fullNameLabel,
+    hintText: AppStrings.fullNameHint,
+    controller: _formControllers.nameController,
+    validator: _formValidator.validateName,
+  );
 
-  Widget _buildGenderField() => GenderDropdownField(
-        controller: _formControllers.genderController,
-      );
+  Widget _buildGenderField() =>
+      GenderDropdownField(controller: _formControllers.genderController);
 
   Widget _buildAgeField() => DoctorInfoField(
-        label: AppStrings.ageLabel,
-        hintText: AppStrings.ageHint,
-        controller: _formControllers.ageController,
-        keyboardType: TextInputType.number,
-        validator: _formValidator.validateAge,
-      );
+    label: AppStrings.ageLabel,
+    hintText: AppStrings.ageHint,
+    controller: _formControllers.ageController,
+    keyboardType: TextInputType.number,
+    validator: _formValidator.validateAge,
+  );
 
   Widget _buildProblemField() => DoctorInfoField(
-        label: AppStrings.problemLabel,
-        hintText: AppStrings.problemHint,
-        controller: _formControllers.problemController,
-        maxLines: 4,
-        validator: _formValidator.validateProblem,
-      );
+    label: AppStrings.problemLabel,
+    hintText: AppStrings.problemHint,
+    controller: _formControllers.problemController,
+    maxLines: 4,
+    validator: _formValidator.validateProblem,
+  );
 }

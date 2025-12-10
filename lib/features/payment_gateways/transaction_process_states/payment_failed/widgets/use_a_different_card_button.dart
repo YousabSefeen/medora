@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medora/core/constants/app_routes/app_router.dart' show AppRouter;
-
-
+import 'package:medora/core/constants/app_routes/app_router.dart'
+    show AppRouter;
 
 class UseADifferentCardButton extends StatelessWidget {
   const UseADifferentCardButton({super.key});

@@ -11,17 +11,13 @@ class CustomImageWidget extends StatelessWidget {
     return Container(
       height: 40,
       decoration: ShapeDecoration(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
-          color: Colors.white,
-          image: DecorationImage(fit: BoxFit.fill, image: AssetImage(image)),
-          shadows: const [
-            BoxShadow(
-              color: Colors.white,
-              blurRadius: 2,
-              spreadRadius: 4,
-            )
-          ]),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+        color: Colors.white,
+        image: DecorationImage(fit: BoxFit.fill, image: AssetImage(image)),
+        shadows: const [
+          BoxShadow(color: Colors.white, blurRadius: 2, spreadRadius: 4),
+        ],
+      ),
       width: MediaQuery.sizeOf(context).width * 0.15,
     );
   }

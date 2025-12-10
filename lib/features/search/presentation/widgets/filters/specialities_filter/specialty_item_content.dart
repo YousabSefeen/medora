@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/features/search/presentation/widgets/filters/specialities_filter/selection_badge.dart'
@@ -29,30 +28,30 @@ class SpecialtyItemContent extends StatelessWidget {
   }
 
   Widget _buildMainContent(BuildContext context) => GestureDetector(
-      onTap: onTap,
-      child: Container(
-        alignment: Alignment.center,
-        decoration: _buildDecoration(),
-        child: _buildSpecialtyText(context),
-      ),
-    );
+    onTap: onTap,
+    child: Container(
+      alignment: Alignment.center,
+      decoration: _buildDecoration(),
+      child: _buildSpecialtyText(context),
+    ),
+  );
 
   ShapeDecoration _buildDecoration() => ShapeDecoration(
-      color: AppColors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r),
+    color: AppColors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8.r),
       side: const BorderSide(color: AppColors.fieldBorderColor, width: 1.2),
-      ),
-    );
+    ),
+  );
 
   Widget _buildSpecialtyText(BuildContext context) => Text(
-      specialty,
-      style:  Theme.of(context).textTheme.smallBlack.copyWith(
-        color: AppColors.black,
-      ),
-      textAlign: TextAlign.center,
-      overflow: TextOverflow.visible,
-    );
-
+    specialty,
+    style: Theme.of(
+      context,
+    ).textTheme.smallBlack.copyWith(color: AppColors.black),
+    textAlign: TextAlign.center,
+    overflow: TextOverflow.visible,
+  );
 
   Widget _buildSelectionIndicator() =>
       const Positioned(top: 2, right: 2, child: SelectionBadge());

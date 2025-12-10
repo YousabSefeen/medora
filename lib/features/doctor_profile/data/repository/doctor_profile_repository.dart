@@ -1,15 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:medora/features/shared/data/models/doctor_model.dart'
+    show DoctorModel;
 
 import '../../../../core/error/failure.dart' show Failure, ServerFailure;
-import '../models/doctor_model.dart';
 import 'doctor_profile_repository_base.dart';
 
 class DoctorProfileRepository extends DoctorProfileRepositoryBase {
   @override
   Future<Either<Failure, void>> uploadDoctorProfile(
-      DoctorModel doctorProfile) async {
+    DoctorModel doctorProfile,
+  ) async {
     try {
       final uid = FirebaseAuth.instance.currentUser!.uid;
       await FirebaseFirestore.instance
@@ -28,6 +30,4 @@ class DoctorProfileRepository extends DoctorProfileRepositoryBase {
     final doctors =
         await FirebaseFirestore.instance.collection('doctors').get() as List;
   }
-
-
 }

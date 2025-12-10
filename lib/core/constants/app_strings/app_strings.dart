@@ -333,9 +333,7 @@ class AppStrings {
   static const String filterSearch = 'Filter Search';
   static const String reloadDoctors = 'Reload Doctors';
 
-  static const String noMoreDoctorsMsg='No more doctors to load...';
-
-
+  static const String noMoreDoctorsMsg = 'No more doctors to load...';
 }
 
 class PaymentMethod {

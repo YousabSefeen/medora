@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-
-import '../../../doctor_profile/data/models/doctor_model.dart';
+import 'package:medora/features/shared/data/models/doctor_model.dart'
+    show DoctorModel;
 
 part 'client_appointments_model.g.dart';
 
@@ -21,10 +21,10 @@ class ClientAppointmentsModel {
   final String appointmentStatus;
 
   final DoctorModel doctorModel;
-  ClientAppointmentsModel(
-      {
-        required this.appointmentId,
-        required this.clientId,
+
+  ClientAppointmentsModel({
+    required this.appointmentId,
+    required this.clientId,
     required this.doctorId,
     required this.patientName,
     required this.patientGender,

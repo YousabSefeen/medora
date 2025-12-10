@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../../core/base/disposable.dart';
 
 class DoctorFieldsControllers implements Disposable {
-
-
-  final  formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
 
   final bioController = TextEditingController();
@@ -13,8 +11,7 @@ class DoctorFieldsControllers implements Disposable {
   final feesController = TextEditingController();
 
   @override
-  void dispose(){
-
+  void dispose() {
     nameController.dispose();
 
     bioController.dispose();

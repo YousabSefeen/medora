@@ -9,11 +9,12 @@ class PaymobItemModel {
   final String description;
   final int quantity;
 
-  PaymobItemModel(
-      {required this.name,
-      required this.amount,
-      required this.description,
-      required this.quantity});
+  PaymobItemModel({
+    required this.name,
+    required this.amount,
+    required this.description,
+    required this.quantity,
+  });
 
   factory PaymobItemModel.fromJson(Map<String, dynamic> json) =>
       _$PaymobItemModelFromJson(json);

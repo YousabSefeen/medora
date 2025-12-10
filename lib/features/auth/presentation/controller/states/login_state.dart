@@ -24,17 +24,12 @@ class LoginState extends Equatable {
     bool? isPasswordVisible,
     LazyRequestState? loginStatus,
     String? loginError,
-  }) =>
-      LoginState(
-        isPasswordVisible: isPasswordVisible ?? this.isPasswordVisible,
-        loginStatus: loginStatus ?? this.loginStatus,
-        loginError: loginError ?? this.loginError,
-      );
+  }) => LoginState(
+    isPasswordVisible: isPasswordVisible ?? this.isPasswordVisible,
+    loginStatus: loginStatus ?? this.loginStatus,
+    loginError: loginError ?? this.loginError,
+  );
 
   @override
-  List<Object?> get props => [
-        isPasswordVisible,
-        loginStatus,
-        loginError,
-      ];
+  List<Object?> get props => [isPasswordVisible, loginStatus, loginError];
 }

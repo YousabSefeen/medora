@@ -58,12 +58,12 @@ class RegisterState extends Equatable {
 
   @override
   List<Object?> get props => [
-        isPasswordVisible,
-        isConfirmPasswordVisible,
-        userType,
-        registerState,
-        error,
-        isSendEmailVerification,
-        isAuthGoogle,
-      ];
+    isPasswordVisible,
+    isConfirmPasswordVisible,
+    userType,
+    registerState,
+    error,
+    isSendEmailVerification,
+    isAuthGoogle,
+  ];
 }

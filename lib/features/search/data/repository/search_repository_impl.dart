@@ -1,6 +1,4 @@
 import 'package:dartz/dartz.dart' show Either, right, left;
-import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
-    show DoctorModel;
 import 'package:medora/features/search/data/data_sources/search_remote_data_source.dart'
     show SearchRemoteDataSourceBase;
 import 'package:medora/features/search/domain/entities/search_filters.dart'
@@ -13,6 +11,8 @@ import 'package:medora/features/search/domain/value_objects/search_filters/name_
 import 'package:medora/features/search/domain/value_objects/search_filters/price_range_filter.dart';
 import 'package:medora/features/search/domain/value_objects/search_filters/specialty_filter.dart'
     show SpecialtyFilter;
+import 'package:medora/features/shared/data/models/doctor_model.dart'
+    show DoctorModel;
 
 import '../../../../core/error/failure.dart' show ServerFailure, Failure;
 

@@ -1,5 +1,3 @@
-
-
 import '../../../../../core/enum/lazy_request_state.dart';
 
 class AppointmentActionState {
@@ -10,7 +8,7 @@ class AppointmentActionState {
   final String actionError;
 
   AppointmentActionState({
-      this.selectedDate,
+    this.selectedDate,
     required this.selectedTimeSlot,
     required this.actionState,
     required this.actionError,

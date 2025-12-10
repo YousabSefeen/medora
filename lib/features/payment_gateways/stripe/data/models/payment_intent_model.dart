@@ -5,12 +5,13 @@ class PaymentIntentModel {
   final String? clientSecret;
   final String? paymentMethod;
 
-  PaymentIntentModel(
-      {required this.currency,
-      required this.amount,
-      this.clientSecret,
-      this.paymentMethod,
-      required this.customerId});
+  PaymentIntentModel({
+    required this.currency,
+    required this.amount,
+    this.clientSecret,
+    this.paymentMethod,
+    required this.customerId,
+  });
 
   factory PaymentIntentModel.fromJson(Map<String, dynamic> json) {
     return PaymentIntentModel(

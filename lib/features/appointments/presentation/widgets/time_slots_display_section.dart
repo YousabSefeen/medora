@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medora/features/appointments/presentation/widgets/time_slots_grid.dart' show TimeSlotsGrid;
+import 'package:medora/features/appointments/presentation/widgets/time_slots_grid.dart'
+    show TimeSlotsGrid;
 
 import '../../../../core/constants/app_strings/app_strings.dart';
 import '../../../../core/constants/common_widgets/content_unavailable_widget.dart';
@@ -53,4 +54,3 @@ class _TimeSlotsWithTitle extends StatelessWidget {
     );
   }
 }
-

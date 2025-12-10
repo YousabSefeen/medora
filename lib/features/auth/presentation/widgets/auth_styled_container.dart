@@ -14,18 +14,14 @@ class AuthStyledContainer extends StatelessWidget {
       decoration: ShapeDecoration(
         color: AppColors.darkBlue,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(25.r),
-              topRight: Radius.circular(25.r),
-            ),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(25.r),
+            topRight: Radius.circular(25.r),
           ),
+        ),
         shadows: const [
-          BoxShadow(
-            color: Colors.white,
-            blurRadius: 2,
-            spreadRadius: 4,
-          )
-        ]
+          BoxShadow(color: Colors.white, blurRadius: 2, spreadRadius: 4),
+        ],
       ),
       child: body,
     );

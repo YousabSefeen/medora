@@ -40,7 +40,7 @@ class DisplaySelectedSpecialtiesCounter extends StatelessWidget {
     int selectedSpecialtiesLength,
     BuildContext context,
   ) => Text(
-      '( $selectedSpecialtiesLength )',
-      style: Theme.of(context).textTheme.caladeaWhite,
-    );
+    '( $selectedSpecialtiesLength )',
+    style: Theme.of(context).textTheme.caladeaWhite,
+  );
 }

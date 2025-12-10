@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:medora/core/payment_gateway_manager/paypal_payment/paypal_keys.dart' show PaypalKeys;
+import 'package:medora/core/payment_gateway_manager/paypal_payment/paypal_keys.dart'
+    show PaypalKeys;
 import 'package:medora/core/services/api_services.dart' show ApiServices;
-
 
 class PaypalTransactionModel {
   final String intent;
@@ -25,14 +25,10 @@ class PaypalTransactionModel {
       'intent': intent,
       'payer': {'payment_method': 'paypal'},
       'transactions': transactions,
-      'redirect_urls': {
-        'return_url': returnUrl,
-        'cancel_url': cancelUrl,
-      },
+      'redirect_urls': {'return_url': returnUrl, 'cancel_url': cancelUrl},
     };
   }
 }
-
 
 class PaypalServices {
   final ApiServices apiServices;
@@ -45,13 +41,15 @@ class PaypalServices {
       ? 'https://api-m.sandbox.paypal.com'
       : 'https://api.paypal.com';
 
-  final Options _defaultOptions =
-      Options(headers: {'Content-Type': 'application/json'});
+  final Options _defaultOptions = Options(
+    headers: {'Content-Type': 'application/json'},
+  );
 
   Future<String> fetchAccessToken() async {
     try {
-      final String authToken = base64.encode(utf8
-          .encode('${PaypalKeys.clientId}:${PaypalKeys.secretKey}'));
+      final String authToken = base64.encode(
+        utf8.encode('${PaypalKeys.clientId}:${PaypalKeys.secretKey}'),
+      );
       final Response response = await apiServices.post(
         url: '$_baseUrl/v1/oauth2/token?grant_type=client_credentials',
         options: Options(
@@ -71,13 +69,16 @@ class PaypalServices {
     } on DioException catch (e) {
       if (e.response?.statusCode == 401) {
         throw Exception(
-            'PayPal credentials incorrect or unauthorized: ${e.response?.data}');
+          'PayPal credentials incorrect or unauthorized: ${e.response?.data}',
+        );
       }
       throw Exception(
-          'Failed to connect to PayPal API to fetch access token: ${e.message}');
+        'Failed to connect to PayPal API to fetch access token: ${e.message}',
+      );
     } catch (e) {
       throw Exception(
-          'An unknown error occurred while fetching PayPal access token: $e');
+        'An unknown error occurred while fetching PayPal access token: $e',
+      );
     }
   }
 
@@ -109,7 +110,8 @@ class PaypalServices {
 
         if (approvalUrl == null || executeUrl == null) {
           throw Exception(
-              'PayPal payment links (approval_url or execute) not found in response.');
+            'PayPal payment links (approval_url or execute) not found in response.',
+          );
         }
         //  PaypalKeys.executeUrl = executeUrl;
         return PaypalPaymentLinks(
@@ -118,11 +120,13 @@ class PaypalServices {
         );
       } else {
         throw Exception(
-            'No payment links found in PayPal create payment response.');
+          'No payment links found in PayPal create payment response.',
+        );
       }
     } on DioException catch (e) {
       throw Exception(
-          'Failed to create PayPal payment: ${e.response?.data ?? e.message}');
+        'Failed to create PayPal payment: ${e.response?.data ?? e.message}',
+      );
     } catch (e) {
       rethrow; // إعادة رمي أي استثناءات أخرى غير متعلقة بـ Dio
     }
@@ -134,9 +138,10 @@ class PaypalServices {
     required PaypalTransactionModel paypalTransaction,
   }) async {
     final String accessToken = await fetchAccessToken();
-    final PaypalPaymentLinks paymentResponseModel =
-        await createPaypalPayment(
-            paypalTransaction: paypalTransaction, accessToken: accessToken);
+    final PaypalPaymentLinks paymentResponseModel = await createPaypalPayment(
+      paypalTransaction: paypalTransaction,
+      accessToken: accessToken,
+    );
     paymentIntentResponse = PaypalPaymentIntentResponse(
       accessToken: accessToken,
       paypalPaymentLinks: paymentResponseModel,
@@ -151,34 +156,31 @@ class PaypalServices {
 
     required String accessToken,
   }) async {
-
-      final Response response = await apiServices.post(
-        url: executeUrl,
-        data: {'payer_id': payerId},
-        options: _defaultOptions.copyWith(
-          headers: {
-            'Authorization': 'Bearer $accessToken'
-          },
-        ),
-      );
-      final Map<String, dynamic> responseData = response.data;
-      print('PaypalServices.executePaypalPayment  $responseData');
-      final Map<String, dynamic> payerInfo = responseData['payer']['payer_info'];
-      final String? payerEmail = payerInfo['email'];
-      if (responseData['state'] == 'approved') {
-        return {
-          'success': true,
-          'message': 'Payment approved',
-          'data': responseData,
-          'payerEmail':payerEmail,
-        };
-      } else {
-        return {
-          'success': false,
-          'message': 'Payment not approved',
-          'data': responseData
-        };
-      }
+    final Response response = await apiServices.post(
+      url: executeUrl,
+      data: {'payer_id': payerId},
+      options: _defaultOptions.copyWith(
+        headers: {'Authorization': 'Bearer $accessToken'},
+      ),
+    );
+    final Map<String, dynamic> responseData = response.data;
+    print('PaypalServices.executePaypalPayment  $responseData');
+    final Map<String, dynamic> payerInfo = responseData['payer']['payer_info'];
+    final String? payerEmail = payerInfo['email'];
+    if (responseData['state'] == 'approved') {
+      return {
+        'success': true,
+        'message': 'Payment approved',
+        'data': responseData,
+        'payerEmail': payerEmail,
+      };
+    } else {
+      return {
+        'success': false,
+        'message': 'Payment not approved',
+        'data': responseData,
+      };
+    }
   }
 }
 
@@ -186,14 +188,15 @@ class PaypalPaymentIntentResponse {
   final String accessToken;
   final PaypalPaymentLinks paypalPaymentLinks;
 
-  PaypalPaymentIntentResponse(
-      {required this.accessToken, required this.paypalPaymentLinks});
+  PaypalPaymentIntentResponse({
+    required this.accessToken,
+    required this.paypalPaymentLinks,
+  });
 }
 
 class PaypalPaymentLinks {
   final String approvalUrl;
   final String executeUrl;
 
-  PaypalPaymentLinks(
-      {required this.approvalUrl, required this.executeUrl});
+  PaypalPaymentLinks({required this.approvalUrl, required this.executeUrl});
 }

@@ -1,12 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth;
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medora/core/constants/app_strings/app_strings.dart' show AppStrings;
+import 'package:medora/core/constants/app_strings/app_strings.dart'
+    show AppStrings;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
-import 'package:medora/features/doctor_profile/presentation/controller/i_doctor_profile_manager.dart' show IDoctorProfileManager;
-import 'package:medora/features/shared/models/availability_model.dart' show DoctorAvailabilityModel;
+import 'package:medora/features/doctor_profile/presentation/controller/i_doctor_profile_manager.dart'
+    show IDoctorProfileManager;
+import 'package:medora/features/shared/data/models/doctor_availability_model.dart'
+    show DoctorAvailabilityModel;
+import 'package:medora/features/shared/data/models/doctor_model.dart'
+    show DoctorModel;
 
-
-import '../../../data/models/doctor_model.dart';
 import '../../../data/repository/doctor_profile_repository.dart';
 import '../form_controllers/doctor_fields_controllers.dart';
 import '../states/doctor_profile_state.dart';
@@ -16,13 +19,14 @@ class DoctorProfileCubit extends Cubit<DoctorProfileState>
   final DoctorProfileRepository doctorRepository;
 
   DoctorProfileCubit({required this.doctorRepository})
-      : super(DoctorProfileState.initial());
+    : super(DoctorProfileState.initial());
 
   /// Medical specialties methods
   @override
   void toggleMedicalSpecialties(String specialty) {
-    final updatedMedicalSpecialties =
-        List<String>.from(state.selectedSpecialtiesTempList);
+    final updatedMedicalSpecialties = List<String>.from(
+      state.selectedSpecialtiesTempList,
+    );
 
     if (updatedMedicalSpecialties.contains(specialty)) {
       updatedMedicalSpecialties.remove(specialty);
@@ -31,7 +35,8 @@ class DoctorProfileCubit extends Cubit<DoctorProfileState>
     }
 
     emit(
-        state.copyWith(selectedSpecialtiesTempList: updatedMedicalSpecialties));
+      state.copyWith(selectedSpecialtiesTempList: updatedMedicalSpecialties),
+    );
   }
 
   final int _maxSpecialtiesLimit = 3;
@@ -41,16 +46,18 @@ class DoctorProfileCubit extends Cubit<DoctorProfileState>
       state.selectedSpecialtiesTempList.length < _maxSpecialtiesLimit;
 
   @override
-  void confirmMedicalSpecialtiesSelection() => emit(state.copyWith(
-    confirmedSpecialties: state.selectedSpecialtiesTempList,
-        filteredSpecialties: AppStrings.allMedicalSpecialties,
-        searchTerm: '',
-      ));
+  void confirmMedicalSpecialtiesSelection() => emit(
+    state.copyWith(
+      confirmedSpecialties: state.selectedSpecialtiesTempList,
+      filteredSpecialties: AppStrings.allMedicalSpecialties,
+      searchTerm: '',
+    ),
+  );
 
   @override
-  void syncTempSpecialtiesFromConfirmed() => emit(state.copyWith(
-        selectedSpecialtiesTempList: state.confirmedSpecialties,
-      ));
+  void syncTempSpecialtiesFromConfirmed() => emit(
+    state.copyWith(selectedSpecialtiesTempList: state.confirmedSpecialties),
+  );
 
   @override
   void searchSpecialty(String searchTerm) {
@@ -76,10 +83,9 @@ class DoctorProfileCubit extends Cubit<DoctorProfileState>
       ...finalResults,
     ];
 
-    emit(state.copyWith(
-      filteredSpecialties: combinedList,
-      searchTerm: searchTerm,
-    ));
+    emit(
+      state.copyWith(filteredSpecialties: combinedList, searchTerm: searchTerm),
+    );
   }
 
   @override
@@ -101,26 +107,26 @@ class DoctorProfileCubit extends Cubit<DoctorProfileState>
   }
 
   @override
-  void confirmWorkingDaysSelection() => emit(state.copyWith(
-        confirmedDays: state.selectedDaysTempList,
-      ));
+  void confirmWorkingDaysSelection() =>
+      emit(state.copyWith(confirmedDays: state.selectedDaysTempList));
 
   @override
-  void syncTempDaysFromConfirmed() => emit(state.copyWith(
-        selectedDaysTempList: state.confirmedDays,
-      ));
+  void syncTempDaysFromConfirmed() =>
+      emit(state.copyWith(selectedDaysTempList: state.confirmedDays));
 
   /// Working Hours methods
   @override
-  void toggleWorkHoursExpanded() => emit(
-        state.copyWith(isWorkHoursExpanded: !state.isWorkHoursExpanded),
-      );
+  void toggleWorkHoursExpanded() =>
+      emit(state.copyWith(isWorkHoursExpanded: !state.isWorkHoursExpanded));
 
   final Map<String, String> _workHoursSelected = {};
 
   @override
   void updateWorkHoursSelected(
-      bool isTimeRangeEmpty, String? from, String? to) {
+    bool isTimeRangeEmpty,
+    String? from,
+    String? to,
+  ) {
     if (!isTimeRangeEmpty) {
       _workHoursSelected.clear();
     } else {
@@ -129,14 +135,11 @@ class DoctorProfileCubit extends Cubit<DoctorProfileState>
     emit(state.copyWith(workHoursSelected: Map.from(_workHoursSelected)));
   }
 
-
-
   @override
   void validateInputsAndSubmitProfile(DoctorFieldsControllers controllers) {
     _markAsValidatedIfNeeded();
 
     if (_isFormValid(controllers)) {
-
       _submitProfile(controllers: controllers);
     }
   }
@@ -150,13 +153,13 @@ class DoctorProfileCubit extends Cubit<DoctorProfileState>
   bool _isFormValid(DoctorFieldsControllers controllers) =>
       controllers.formKey.currentState?.validate() ?? false;
 
-
-
-  Future<void> _submitProfile({required DoctorFieldsControllers controllers }) async {
+  Future<void> _submitProfile({
+    required DoctorFieldsControllers controllers,
+  }) async {
     final response = await doctorRepository.uploadDoctorProfile(
       DoctorModel(
         doctorId: FirebaseAuth.instance.currentUser!.uid,
-        imageUrl:AppStrings.images[0],
+        imageUrl: AppStrings.images[0],
         name: controllers.nameController.text.trim().toLowerCase(),
         specialties: state.confirmedSpecialties,
         bio: controllers.bioController.text.trim().toLowerCase(),
@@ -171,10 +174,12 @@ class DoctorProfileCubit extends Cubit<DoctorProfileState>
     );
 
     response.fold(
-      (failure) => emit(state.copyWith(
-        doctorProfileState: LazyRequestState.error,
-        doctorProfileError: failure.toString(),
-      )),
+      (failure) => emit(
+        state.copyWith(
+          doctorProfileState: LazyRequestState.error,
+          doctorProfileError: failure.toString(),
+        ),
+      ),
       (success) =>
           emit(state.copyWith(doctorProfileState: LazyRequestState.loaded)),
     );

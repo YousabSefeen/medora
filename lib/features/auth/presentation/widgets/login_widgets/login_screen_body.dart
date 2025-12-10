@@ -25,17 +25,13 @@ class LoginScreenBody extends StatelessWidget {
                       : 0,
                 ),
                 child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: constraints.maxHeight,
-                  ),
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
                   child: IntrinsicHeight(
                     child: Column(
                       children: [
                         SizedBox(
                           height: constraints.maxHeight * 0.4,
-                          child: const Center(
-                            child: AuthHeader(isLogin: true),
-                          ),
+                          child: const Center(child: AuthHeader(isLogin: true)),
                         ),
                         LoginFormSection(loginControllers: loginControllers),
                       ],

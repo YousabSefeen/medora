@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
-import 'package:medora/features/auth/presentation/widgets/auth_screen_background.dart' show AuthScreenBackground;
+import 'package:medora/features/auth/presentation/widgets/auth_screen_background.dart'
+    show AuthScreenBackground;
+
 import '../controller/form_controllers/register_controllers.dart';
 import '../widgets/register_widgets/register_screen_body.dart';
 

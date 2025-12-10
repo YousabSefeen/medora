@@ -3,8 +3,6 @@ import 'package:equatable/equatable.dart';
 
 import '../error/failure.dart' show Failure;
 
-
-
 abstract class BaseUseCase<T, Parameters> {
   Future<Either<Failure, T>> call(Parameters parameters);
 }

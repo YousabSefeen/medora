@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart' show RangeValues;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 import 'package:medora/core/enum/search_type.dart' show SearchType;
-import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
+import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
 
 class SearchStates extends Equatable {
@@ -72,6 +72,7 @@ class SearchStates extends Equatable {
           confirmedDoctorLocation ?? this.confirmedDoctorLocation,
     );
   }
+
   Map<String, dynamic> toJson() {
     return {
       'searchType': searchType.index,
@@ -79,11 +80,17 @@ class SearchStates extends Equatable {
       'searchResultsState': searchResultsState.index,
       'searchResultsErrorMsg': searchResultsErrorMsg,
       'doctorName': doctorName,
-      'draftPriceRange': {'start': draftPriceRange.start, 'end': draftPriceRange.end},
+      'draftPriceRange': {
+        'start': draftPriceRange.start,
+        'end': draftPriceRange.end,
+      },
       'draftSelectedSpecialties': draftSelectedSpecialties,
       'draftDoctorLocation': draftDoctorLocation,
       'confirmedPriceRange': confirmedPriceRange != null
-          ? {'start': confirmedPriceRange!.start, 'end': confirmedPriceRange!.end}
+          ? {
+              'start': confirmedPriceRange!.start,
+              'end': confirmedPriceRange!.end,
+            }
           : null,
       'confirmedSelectedSpecialties': confirmedSelectedSpecialties,
       'confirmedDoctorLocation': confirmedDoctorLocation,
@@ -93,23 +100,28 @@ class SearchStates extends Equatable {
   factory SearchStates.fromJson(Map<String, dynamic> json) {
     return SearchStates(
       searchType: SearchType.values[json['searchType'] ?? 0],
-      searchResults: (json['searchResults'] as List?)
-          ?.map((doctorJson) => DoctorModel.fromJson(doctorJson))
-          .toList() ?? const [],
-      searchResultsState: LazyRequestState.values[json['searchResultsState'] ?? 0],
+      searchResults:
+          (json['searchResults'] as List?)
+              ?.map((doctorJson) => DoctorModel.fromJson(doctorJson))
+              .toList() ??
+          const [],
+      searchResultsState:
+          LazyRequestState.values[json['searchResultsState'] ?? 0],
       searchResultsErrorMsg: json['searchResultsErrorMsg'] ?? '',
       doctorName: json['doctorName'],
       draftPriceRange: RangeValues(
         (json['draftPriceRange']?['start'] ?? 100).toDouble(),
         (json['draftPriceRange']?['end'] ?? 500).toDouble(),
       ),
-      draftSelectedSpecialties: List<String>.from(json['draftSelectedSpecialties'] ?? []),
+      draftSelectedSpecialties: List<String>.from(
+        json['draftSelectedSpecialties'] ?? [],
+      ),
       draftDoctorLocation: json['draftDoctorLocation'],
       confirmedPriceRange: json['confirmedPriceRange'] != null
           ? RangeValues(
-        (json['confirmedPriceRange']?['start'] ?? 100).toDouble(),
-        (json['confirmedPriceRange']?['end'] ?? 500).toDouble(),
-      )
+              (json['confirmedPriceRange']?['start'] ?? 100).toDouble(),
+              (json['confirmedPriceRange']?['end'] ?? 500).toDouble(),
+            )
           : null,
       confirmedSelectedSpecialties: json['confirmedSelectedSpecialties'] != null
           ? List<String>.from(json['confirmedSelectedSpecialties'])
@@ -117,6 +129,7 @@ class SearchStates extends Equatable {
       confirmedDoctorLocation: json['confirmedDoctorLocation'],
     );
   }
+
   @override
   List<Object?> get props => [
     searchType,

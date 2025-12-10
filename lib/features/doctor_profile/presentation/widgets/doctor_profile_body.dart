@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:medora/features/doctor_profile/presentation/controller/form_controllers/doctor_fields_validator.dart' show DoctorFieldsValidator;
-import 'package:medora/features/doctor_profile/presentation/widgets/medical_specialties_field.dart' show MedicalSpecialtiesField;
-import 'package:medora/features/doctor_profile/presentation/widgets/save_button.dart' show SaveButton;
-import 'package:medora/features/doctor_profile/presentation/widgets/weekly_schedule_card.dart' show WeeklyScheduleCard;
-
+import 'package:medora/features/doctor_profile/presentation/controller/form_controllers/doctor_fields_validator.dart'
+    show DoctorFieldsValidator;
+import 'package:medora/features/doctor_profile/presentation/widgets/medical_specialties_field.dart'
+    show MedicalSpecialtiesField;
+import 'package:medora/features/doctor_profile/presentation/widgets/save_button.dart'
+    show SaveButton;
+import 'package:medora/features/doctor_profile/presentation/widgets/weekly_schedule_card.dart'
+    show WeeklyScheduleCard;
 
 import '../../../../core/constants/app_strings/app_strings.dart';
 import '../controller/form_controllers/doctor_fields_controllers.dart';
@@ -29,10 +32,7 @@ class DoctorProfileBody extends StatelessWidget {
         'controller': doctorFieldsControllers.nameController,
         'validator': doctorFieldsValidator.validateName,
       },
-      {
-        'label': AppStrings.medicalSpecialtiesLabel,
-
-      },
+      {'label': AppStrings.medicalSpecialtiesLabel},
       {
         'label': AppStrings.bioLabel,
         'hint': AppStrings.bioHint,
@@ -63,14 +63,17 @@ class DoctorProfileBody extends StatelessWidget {
           child: DoctorProfileImage(),
         ),
 
-        ...fields.map((field) => field['label'] == AppStrings.medicalSpecialtiesLabel ? const MedicalSpecialtiesField():  DoctorInfoField(
-              label: field['label'],
-              hintText: field['hint'],
-              controller: field['controller'],
-              validator: field['validator'],
-              maxLines: field['maxLines'] ?? 1,
-              keyboardType: field['keyboardType'] ?? TextInputType.text,
-            ),
+        ...fields.map(
+          (field) => field['label'] == AppStrings.medicalSpecialtiesLabel
+              ? const MedicalSpecialtiesField()
+              : DoctorInfoField(
+                  label: field['label'],
+                  hintText: field['hint'],
+                  controller: field['controller'],
+                  validator: field['validator'],
+                  maxLines: field['maxLines'] ?? 1,
+                  keyboardType: field['keyboardType'] ?? TextInputType.text,
+                ),
         ),
         const SizedBox(height: 5),
         const WeeklyScheduleCard(),

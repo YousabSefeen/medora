@@ -42,10 +42,7 @@ class _SmoothEntranceWidgetState extends State<SmoothEntranceWidget>
       builder: (context, child) {
         return Transform.translate(
           offset: Offset(0, 50 * (1 - _animation.value)),
-          child: Opacity(
-            opacity: _animation.value,
-            child: child,
-          ),
+          child: Opacity(opacity: _animation.value, child: child),
         );
       },
       child: widget.child,

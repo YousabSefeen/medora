@@ -1,10 +1,8 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:medora/core/constants/app_alerts/widgets/try_again_button.dart' show TryAgainButton;
+import 'package:medora/core/constants/app_alerts/widgets/try_again_button.dart'
+    show TryAgainButton;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
@@ -12,7 +10,7 @@ import '../../animations/custom_modal_type_dialog.dart';
 import '../app_strings/app_strings.dart';
 import '../themes/app_colors.dart';
 
-class  ErrorDialogs {
+class ErrorDialogs {
   static void showErrorDialog({
     required BuildContext context,
     required String errorMessage,
@@ -32,8 +30,7 @@ class  ErrorDialogs {
           child: _buildErrorBody(context, errorMessage),
           stickyActionBar: const TryAgainButton(backgroundColor: AppColors.red),
           isTopBarLayerAlwaysVisible: true,
-
-        )
+        ),
       ],
       onModalDismissedWithBarrierTap: () => Navigator.of(context).pop(),
     );
@@ -50,40 +47,43 @@ class  ErrorDialogs {
           CircleAvatar(
             backgroundColor: Colors.white,
             radius: 25.r,
-            child: FaIcon(FontAwesomeIcons.xmark,
-                size: 40.sp, color: AppColors.red),
+            child: FaIcon(
+              FontAwesomeIcons.xmark,
+              size: 40.sp,
+              color: AppColors.red,
+            ),
           ),
           const SizedBox(height: 10),
           FittedBox(
             child: Text(
               AppStrings.oops,
-              style: Theme.of(context)
-                  .textTheme
-                  .dialogTitleStyle
-                  .copyWith(fontSize: 18.sp),
+              style: Theme.of(
+                context,
+              ).textTheme.dialogTitleStyle.copyWith(fontSize: 18.sp),
             ),
           ),
         ],
       ),
     );
   }
+
   static Widget _buildErrorBody(BuildContext context, String errorMessage) {
     return Container(
       margin: const EdgeInsets.only(top: 8, bottom: 100, left: 8, right: 8),
-      constraints:const BoxConstraints(
-        minHeight: 130,
-      ),
+      constraints: const BoxConstraints(minHeight: 130),
       child: RichText(
         text: TextSpan(
           text: 'Error Message: ',
-          style:TextStyle(
-              fontSize: 15.sp,
-              fontWeight: FontWeight.w600,
-              color: Colors.black
+          style: TextStyle(
+            fontSize: 15.sp,
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
           ),
           children: [
             TextSpan(
-              text: errorMessage==''? 'The error was not caught in the catch case': errorMessage,
+              text: errorMessage == ''
+                  ? 'The error was not caught in the catch case'
+                  : errorMessage,
               style: TextStyle(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w500,
@@ -96,6 +96,4 @@ class  ErrorDialogs {
       ),
     );
   }
-
-
 }

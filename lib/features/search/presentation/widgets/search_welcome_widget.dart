@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:medora/core/constants/app_strings/app_strings.dart' show AppStrings;
+import 'package:medora/core/constants/app_strings/app_strings.dart'
+    show AppStrings;
 import 'package:medora/generated/assets.dart' show Assets;
 
 class SearchWelcomeWidget extends StatelessWidget {
@@ -55,7 +55,7 @@ class _WelcomeMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return   Text(
+    return Text(
       AppStrings.searchEmptyMessage,
       textAlign: TextAlign.center,
       style: TextStyle(

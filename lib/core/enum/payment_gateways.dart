@@ -1,5 +1,1 @@
-enum PaymentGateways {
-  none,
-  card,
-  payPal,
-}
+enum PaymentGateways { none, card, payPal }

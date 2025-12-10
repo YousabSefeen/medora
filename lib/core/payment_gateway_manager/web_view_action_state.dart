@@ -1,4 +1,3 @@
-
 import 'package:medora/core/enum/web_view_status.dart' show WebViewStatus;
 
 class WebViewActionState {
@@ -12,18 +11,14 @@ class WebViewActionState {
     required this.dataResponse,
   });
 }
+
 class PaymentActionState {
-
-
-
   double progress;
   final WebViewStatus webViewStatus;
   final String? webViewErrorMessage;
   final dynamic dataResponse;
 
   PaymentActionState({
-
-
     required this.progress,
     required this.webViewStatus,
     required this.webViewErrorMessage,

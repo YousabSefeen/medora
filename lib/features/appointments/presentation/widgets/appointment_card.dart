@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../core/enum/appointment_status.dart';
 import '../../data/models/client_appointments_model.dart';
 import 'booked_appointment_widgets/booked_appointment_footer.dart';
@@ -29,7 +30,7 @@ class AppointmentCard extends StatelessWidget {
           _buildDivider(),
           BookedAppointmentFooter(
             appointment: appointment,
-         appointmentStatus: appointmentStatus,
+            appointmentStatus: appointmentStatus,
           ),
         ],
       ),
@@ -42,6 +43,4 @@ class AppointmentCard extends StatelessWidget {
       child: Divider(color: Colors.black12, height: 1.7),
     );
   }
-
-
 }

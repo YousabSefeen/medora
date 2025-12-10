@@ -5,7 +5,7 @@ class ApiServices {
 
   Future<Response> post({
     required String url,
-      Map<String, dynamic>? data,
+    Map<String, dynamic>? data,
     String? token,
     required Options options,
   }) async {

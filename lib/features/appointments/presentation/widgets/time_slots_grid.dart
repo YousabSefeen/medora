@@ -36,7 +36,8 @@ class TimeSlotsGrid extends StatelessWidget {
             return TimeSlotItem(
               time: time,
               isSelected: data.selectedSlot == time,
-              onTap: () => context.read<AppointmentCubit>().updateSelectedTimeSlot(time),
+              onTap: () =>
+                  context.read<AppointmentCubit>().updateSelectedTimeSlot(time),
             );
           },
         ),

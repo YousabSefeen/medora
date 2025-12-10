@@ -1,7 +1,5 @@
-
-import 'package:medora/features/doctor_profile/presentation/controller/form_controllers/doctor_fields_controllers.dart' show DoctorFieldsControllers;
-
-import '../../../../../core/constants/app_strings/app_strings.dart';
+import 'package:medora/features/doctor_profile/presentation/controller/form_controllers/doctor_fields_controllers.dart'
+    show DoctorFieldsControllers;
 
 // Following the Singleton Pattern
 class DoctorFieldsValidator {
@@ -32,6 +30,7 @@ class DoctorFieldsValidator {
       return null;
     }
   }
+
   //   Bio - required and at least 10 characters
   String? validateBio(String? value) {
     if (value == null || value.trim().isEmpty) {
@@ -68,7 +67,7 @@ class DoctorFieldsValidator {
     return null;
   }
 
-//    Working Days - both start and end times are required
+  //    Working Days - both start and end times are required
   String? validateWorkingDays(bool hasNoDaysSelected) {
     if (hasNoDaysSelected) {
       return 'Please select at least one working day.';
@@ -77,7 +76,7 @@ class DoctorFieldsValidator {
     }
   }
 
-//    Working Hours - both start and end times are required
+  //    Working Hours - both start and end times are required
   String? validateWorkingHours(Map<String, String> workHoursSelected) {
     if (workHoursSelected.isEmpty) {
       return 'Please select your available working hours.';
@@ -89,7 +88,6 @@ class DoctorFieldsValidator {
   // ✅ Optional: validate all fields together
   String? validateInputs(DoctorFieldsControllers? c) {
     return validateName(c?.nameController.text) ??
-
         validateBio(c?.bioController.text) ??
         validateLocation(c?.locationController.text) ??
         validateFees(c?.feesController.text);

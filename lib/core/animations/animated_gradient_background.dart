@@ -6,10 +6,7 @@ import '../constants/themes/app_colors.dart';
 class AnimatedGradientBackground extends StatefulWidget {
   final Widget? child;
 
-  const AnimatedGradientBackground({
-    super.key,
-    this.child,
-  });
+  const AnimatedGradientBackground({super.key, this.child});
 
   @override
   State<AnimatedGradientBackground> createState() =>
@@ -23,44 +20,70 @@ class _AnimatedGradientBackgroundState extends State<AnimatedGradientBackground>
   late Animation<Alignment> _endAlignmentAnimation;
 
   _initializeAnimatedGradient() {
-    _gradientAnimationController =
-        AnimationController(vsync: this, duration: AppDurations.seconds_10);
+    _gradientAnimationController = AnimationController(
+      vsync: this,
+      duration: AppDurations.seconds_10,
+    );
     _startAlignmentAnimation = TweenSequence<Alignment>([
       TweenSequenceItem(
-          tween: Tween<Alignment>(
-              begin: Alignment.topLeft, end: Alignment.topRight),
-          weight: 1),
+        tween: Tween<Alignment>(
+          begin: Alignment.topLeft,
+          end: Alignment.topRight,
+        ),
+        weight: 1,
+      ),
       TweenSequenceItem(
-          tween: Tween<Alignment>(
-              begin: Alignment.topRight, end: Alignment.bottomRight),
-          weight: 1),
+        tween: Tween<Alignment>(
+          begin: Alignment.topRight,
+          end: Alignment.bottomRight,
+        ),
+        weight: 1,
+      ),
       TweenSequenceItem(
-          tween: Tween<Alignment>(
-              begin: Alignment.bottomRight, end: Alignment.bottomLeft),
-          weight: 1),
+        tween: Tween<Alignment>(
+          begin: Alignment.bottomRight,
+          end: Alignment.bottomLeft,
+        ),
+        weight: 1,
+      ),
       TweenSequenceItem(
-          tween: Tween<Alignment>(
-              begin: Alignment.bottomLeft, end: Alignment.topLeft),
-          weight: 1)
+        tween: Tween<Alignment>(
+          begin: Alignment.bottomLeft,
+          end: Alignment.topLeft,
+        ),
+        weight: 1,
+      ),
     ]).animate(_gradientAnimationController);
 
     _endAlignmentAnimation = TweenSequence<Alignment>([
       TweenSequenceItem(
-          tween: Tween<Alignment>(
-              begin: Alignment.bottomRight, end: Alignment.bottomLeft),
-          weight: 1),
+        tween: Tween<Alignment>(
+          begin: Alignment.bottomRight,
+          end: Alignment.bottomLeft,
+        ),
+        weight: 1,
+      ),
       TweenSequenceItem(
-          tween: Tween<Alignment>(
-              begin: Alignment.bottomLeft, end: Alignment.topLeft),
-          weight: 1),
+        tween: Tween<Alignment>(
+          begin: Alignment.bottomLeft,
+          end: Alignment.topLeft,
+        ),
+        weight: 1,
+      ),
       TweenSequenceItem(
-          tween: Tween<Alignment>(
-              begin: Alignment.topLeft, end: Alignment.topRight),
-          weight: 1),
+        tween: Tween<Alignment>(
+          begin: Alignment.topLeft,
+          end: Alignment.topRight,
+        ),
+        weight: 1,
+      ),
       TweenSequenceItem(
-          tween: Tween<Alignment>(
-              begin: Alignment.topRight, end: Alignment.bottomRight),
-          weight: 1)
+        tween: Tween<Alignment>(
+          begin: Alignment.topRight,
+          end: Alignment.bottomRight,
+        ),
+        weight: 1,
+      ),
     ]).animate(_gradientAnimationController);
     _gradientAnimationController.repeat();
   }
@@ -80,7 +103,8 @@ class _AnimatedGradientBackgroundState extends State<AnimatedGradientBackground>
   @override
   Widget build(BuildContext context) {
     print(
-        '_AnimatedGradientBackgroundState extends State<AnimatedGradientBackground>');
+      '_AnimatedGradientBackgroundState extends State<AnimatedGradientBackground>',
+    );
     final deviceSize = MediaQuery.sizeOf(context);
     return AnimatedBuilder(
       animation: _gradientAnimationController,

@@ -1,9 +1,12 @@
 import 'package:dartz/dartz.dart';
-import 'package:medora/core/payment_gateway_manager/stripe_payment/stripe_services.dart' show StripeServices;
-import 'package:medora/features/payment_gateways/stripe/data/models/create_user_model.dart' show CreateUserModel;
-import 'package:medora/features/payment_gateways/stripe/data/repository/stripe_base_repo.dart' show StripeBaseRepo;
+import 'package:medora/core/payment_gateway_manager/stripe_payment/stripe_services.dart'
+    show StripeServices;
+import 'package:medora/features/payment_gateways/stripe/data/models/create_user_model.dart'
+    show CreateUserModel;
+import 'package:medora/features/payment_gateways/stripe/data/repository/stripe_base_repo.dart'
+    show StripeBaseRepo;
 
-import '../../../../../core/error/failure.dart' show Failure,ServerFailure;
+import '../../../../../core/error/failure.dart' show Failure, ServerFailure;
 
 class StripeRepository extends StripeBaseRepo {
   final StripeServices stripeServices;

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 
@@ -29,8 +28,9 @@ class DeveloperNoteDialog extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: AnimatedFadeTransition(
         child: AlertDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.r),
+          ),
           backgroundColor: Colors.white,
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -44,9 +44,10 @@ class DeveloperNoteDialog extends StatelessWidget {
                     child: Text(
                       developerNote,
                       style: TextStyle(
-                          fontSize: 16.sp,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500),
+                        fontSize: 16.sp,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),
@@ -56,8 +57,11 @@ class DeveloperNoteDialog extends StatelessWidget {
           actions: [
             ElevatedButton(
               style: ButtonStyle(
-                shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8))),
+                shape: WidgetStatePropertyAll(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
                 backgroundColor: WidgetStatePropertyAll(AppColors.green),
               ),
               onPressed: () => Navigator.of(context).pop(),
@@ -70,20 +74,22 @@ class DeveloperNoteDialog extends StatelessWidget {
   }
 
   Container _dialogHeader() => Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: AppColors.red,
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(12.r), topLeft: Radius.circular(12.r)),
-        ),
-        child: Text(
-          ' ملاحظة للمقيّم',
-          style: GoogleFonts.poppins(
-            fontSize: 20.sp,
-            color: Colors.white,
-            fontWeight: FontWeight.w700,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      );
+    width: double.infinity,
+    decoration: BoxDecoration(
+      color: AppColors.red,
+      borderRadius: BorderRadius.only(
+        topRight: Radius.circular(12.r),
+        topLeft: Radius.circular(12.r),
+      ),
+    ),
+    child: Text(
+      ' ملاحظة للمقيّم',
+      style: GoogleFonts.poppins(
+        fontSize: 20.sp,
+        color: Colors.white,
+        fontWeight: FontWeight.w700,
+      ),
+      textAlign: TextAlign.center,
+    ),
+  );
 }

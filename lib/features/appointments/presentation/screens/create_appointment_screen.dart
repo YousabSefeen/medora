@@ -23,12 +23,12 @@ import 'package:medora/features/appointments/presentation/widgets/doctor_appoint
     show DoctorAppointmentBookingSection;
 import 'package:medora/features/appointments/presentation/widgets/doctor_info_header.dart'
     show DoctorInfoHeader;
-import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
+import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
 import 'package:medora/features/shared/models/doctor_schedule_model.dart'
     show DoctorScheduleModel;
-import 'package:medora/features/shared/presentation/widgets/doctor_info_footer.dart' show DoctorInfoFooter;
-
+import 'package:medora/features/shared/presentation/widgets/doctor_info_footer.dart'
+    show DoctorInfoFooter;
 
 class CreateAppointmentScreen extends StatefulWidget {
   final DoctorModel doctor;
@@ -80,7 +80,10 @@ class _CreateAppointmentScreenState extends State<CreateAppointmentScreen> {
     ),
   );
 
-  Widget _buildAppBar() => CustomSliverAppBar(doctor: widget.doctor, navigationSource: widget.navigationSource);
+  Widget _buildAppBar() => CustomSliverAppBar(
+    doctor: widget.doctor,
+    navigationSource: widget.navigationSource,
+  );
 
   Widget _buildContent() => SliverFillRemaining(
     hasScrollBody: false,

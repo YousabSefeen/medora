@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:medora/features/auth/presentation/controller/cubit/register_cubit.dart' show RegisterCubit;
+import 'package:medora/features/auth/presentation/controller/cubit/register_cubit.dart'
+    show RegisterCubit;
 
 import '../../../../../core/constants/themes/app_colors.dart';
 import '../../controller/states/register_state.dart';
@@ -33,12 +34,24 @@ class RegisterFormFields extends StatelessWidget {
       ),
       child: Column(
         children: [
-          _buildTextField('User Name', FontAwesomeIcons.user,
-              userNameController, TextInputType.name),
-          _buildTextField('Phone Number', FontAwesomeIcons.phone,
-              phoneController, TextInputType.number),
-          _buildTextField('Email', FontAwesomeIcons.envelope, emailController,
-              TextInputType.emailAddress),
+          _buildTextField(
+            'User Name',
+            FontAwesomeIcons.user,
+            userNameController,
+            TextInputType.name,
+          ),
+          _buildTextField(
+            'Phone Number',
+            FontAwesomeIcons.phone,
+            phoneController,
+            TextInputType.number,
+          ),
+          _buildTextField(
+            'Email',
+            FontAwesomeIcons.envelope,
+            emailController,
+            TextInputType.emailAddress,
+          ),
           _buildPasswordField(context),
           _buildConfirmPasswordField(context),
         ],
@@ -46,8 +59,12 @@ class RegisterFormFields extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField(String title, IconData icon,
-      TextEditingController controller, TextInputType type) {
+  Widget _buildTextField(
+    String title,
+    IconData icon,
+    TextEditingController controller,
+    TextInputType type,
+  ) {
     return CustomFormField(
       title: title,
       icon: icon,

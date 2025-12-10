@@ -5,7 +5,6 @@ import 'package:flutter/material.dart' show RangeValues;
 import 'package:hydrated_bloc/hydrated_bloc.dart' show HydratedCubit;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 import 'package:medora/core/enum/search_type.dart' show SearchType;
-import 'package:medora/features/doctor_profile/data/models/doctor_model.dart';
 import 'package:medora/features/search/domain/entities/search_filters.dart'
     show SearchFilters;
 import 'package:medora/features/search/domain/use_cases/search_doctors_by_criteria_use_case.dart'
@@ -14,6 +13,8 @@ import 'package:medora/features/search/domain/use_cases/search_doctors_by_name_u
     show SearchDoctorsByNameUseCase;
 import 'package:medora/features/search/presentation/controller/states/search_states.dart'
     show SearchStates;
+import 'package:medora/features/shared/data/models/doctor_model.dart'
+    show DoctorModel;
 
 import '../../../../../core/error/failure.dart' show Failure;
 

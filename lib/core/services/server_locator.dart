@@ -7,7 +7,7 @@ import 'package:medora/core/payment_gateway_manager/stripe_payment/stripe_servic
     show StripeServices;
 import 'package:medora/core/services/api_services.dart' show ApiServices;
 import 'package:medora/features/doctor_list/data/data_source/doctors_list_remote_data_source.dart'
-    show DoctorsListRemoteDataSourceBase, DoctorsListRemoteDataSource;
+    show DoctorsListRemoteDataSource;
 import 'package:medora/features/doctor_list/domain/repository/doctor_list_repository_base.dart'
     show DoctorListRepositoryBase;
 import 'package:medora/features/doctor_list/domain/use_cases/get_doctors_list_use_case.dart'
@@ -86,7 +86,6 @@ class ServiceLocator {
 
   void setupDoctorsListDependencies() {
     // Data Sources
-
 
     serviceLocator.registerLazySingleton<DoctorsListRemoteDataSource>(
       () => DoctorsListRemoteDataSource(),
@@ -220,8 +219,6 @@ class ServiceLocator {
     serviceLocator.registerFactory<DoctorProfileCubit>(
       () => DoctorProfileCubit(doctorRepository: serviceLocator()),
     );
-
-
 
     serviceLocator.registerFactory<AppointmentCubit>(
       () => AppointmentCubit(

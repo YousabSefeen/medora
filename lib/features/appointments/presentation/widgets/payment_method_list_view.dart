@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medora/core/constants/app_strings/app_strings.dart' show AppStrings, PaymentMethod;
-import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart' show AppointmentCubit;
+import 'package:medora/core/constants/app_strings/app_strings.dart'
+    show AppStrings, PaymentMethod;
+import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart'
+    show AppointmentCubit;
 
 import '../../../../core/enum/payment_gateways_types.dart';
 import '../../../payment_gateways/presentation/views/widgets/payment_method_card.dart';
-
 
 class PaymentMethodListView extends StatelessWidget {
   final TextEditingController? phoneNumberController;
@@ -14,13 +15,11 @@ class PaymentMethodListView extends StatelessWidget {
   const PaymentMethodListView({
     super.key,
     this.phoneNumberController,
-   required this.selectedPaymentMethod,
+    required this.selectedPaymentMethod,
   });
 
   @override
   Widget build(BuildContext context) {
-
-
     return SizedBox(
       height: MediaQuery.sizeOf(context).height * 0.55,
       child: ListView.builder(
@@ -50,9 +49,9 @@ class PaymentMethodListView extends StatelessWidget {
       value: paymentMethod.value.name,
       groupValue: selectedMethodName,
       onChanged: (String? newValue) {
-        context
-            .read<AppointmentCubit>()
-            .onChangePaymentMethod(paymentMethod.value);
+        context.read<AppointmentCubit>().onChangePaymentMethod(
+          paymentMethod.value,
+        );
       },
       isSelected: isSelected,
       paymentMethod: paymentMethod,

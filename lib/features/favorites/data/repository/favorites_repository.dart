@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart'
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:medora/core/error/failure.dart';
-import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
+import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
 
 import '../../domain/favorites_repository_base/favorites_repository_base.dart';
@@ -51,61 +51,6 @@ class FavoritesRepository extends FavoritesRepositoryBase {
     }
   }
 
-  // @override
-  // Future<Either<Failure, List<DoctorModel>>> getAllFavorites() async {
-  //   try {
-  //     final favoritesSnapshot = await _firestore
-  //         .collection('users')
-  //         .doc(_userId)
-  //         .collection('favorites')
-  //         .orderBy('addedAt', descending: true)
-  //         .get();
-  //
-  //     if (favoritesSnapshot.docs.isEmpty) {
-  //       return right([]);
-  //     } else {
-  //       // حفظ الترتيب الصحيح في Map
-  //       final orderedDoctorIds = favoritesSnapshot.docs
-  //           .asMap() // إضافة index للحفاظ على الترتيب
-  //           .entries
-  //           .map((entry) => MapEntry(entry.value.id, entry.key))
-  //           .toList();
-  //
-  //       final favoriteDoctorIds = orderedDoctorIds.map((e) => e.key).toList();
-  //
-  //
-  //
-  //       final favoriteDoctors = await _firestore
-  //           .collection('doctors')
-  //           .where(FieldPath.documentId, whereIn: favoriteDoctorIds)
-  //           .get();
-  //
-  //       // إنشاء Map للبحث السريع
-  //       final doctorsMap = <String, DoctorModel>{};
-  //       for (var doc in favoriteDoctors.docs) {
-  //         doctorsMap[doc.id] = DoctorModel.fromJson({
-  //           'doctorId': doc.id,
-  //           ...doc.data(),
-  //         });
-  //       }
-  //
-  //       // إعادة الترتيب حسب الترتيب الأصلي
-  //       final List<DoctorModel> doctorList = [];
-  //       for (var doctorId in favoriteDoctorIds) {
-  //         final doctor = doctorsMap[doctorId];
-  //         if (doctor != null) {
-  //           doctorList.add(doctor);
-  //         }
-  //       }
-  //
-  //       print('doctorList[0].doctorId (after reordering): \n\n\n ${doctorList[0].doctorId} ');
-  //       return right(doctorList);
-  //     }
-  //   } catch (e) {
-  //     print('Error removeDoctorFromFavorites:  ${e.toString()}');
-  //     return Left(ServerFailure(catchError: e));
-  //   }
-  // }
   @override
   Future<Either<Failure, List<DoctorModel>>> getFavoritesDoctors() async {
     try {
@@ -154,7 +99,9 @@ class FavoritesRepository extends FavoritesRepositoryBase {
   }
 
   @override
-  Future<Either<Failure, Set<String>>> getDoctorFavoriteStatus(String doctorId) async {
+  Future<Either<Failure, Set<String>>> getDoctorFavoriteStatus(
+    String doctorId,
+  ) async {
     try {
       final favoritesSnapshot = await _firestore
           .collection('users')

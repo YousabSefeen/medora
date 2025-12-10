@@ -5,7 +5,7 @@ import 'package:medora/features/doctor_list/domain/use_cases/get_doctors_list_us
     show GetDoctorsListUseCase;
 import 'package:medora/features/doctor_list/presentation/controller/states/doctor_list_state.dart'
     show DoctorListState;
-import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
+import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
 import 'package:medora/features/shared/domain/entities/paginated_data_response.dart'
     show PaginatedDataResponse;

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart'
     show FirebaseFirestore, FieldValue, FieldPath;
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth;
-import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
+import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
 
 abstract class FavoritesRemoteDataSourceBase {

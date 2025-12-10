@@ -6,7 +6,6 @@ import 'package:medora/core/error/stripe_failure.dart' show StripeFailure;
 
 import 'auth_exception.dart' show AuthException;
 
-
 abstract class Failure {
   final Object catchError;
 
@@ -21,11 +20,10 @@ class ServerFailure extends Failure {
       final errorCode = (catchError as FirebaseAuthException).code;
       return AuthException.getMsgFromErrorCode(errorCode: errorCode);
     } else if (catchError is HttpException) {
-
       return 'Http HttpException';
-    } else if(catchError is StripeException){
+    } else if (catchError is StripeException) {
       return StripeFailure(catchError: catchError).errorMessage;
-    }else {
+    } else {
       return 'An unknown error occurred. Please try again later.${catchError.toString()}';
     }
   }
@@ -35,8 +33,6 @@ class ServerFailure extends Failure {
     return errorMessage;
   }
 }
-
-
 
 /// Old
 /*class AuthException {

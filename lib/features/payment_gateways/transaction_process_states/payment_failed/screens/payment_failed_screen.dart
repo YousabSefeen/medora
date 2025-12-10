@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../core/constants/common_widgets/pop_scope_for_payment_gateways.dart';
-
 import '../widgets/error_indicator_avatar.dart';
 import '../widgets/retry_payment_button.dart';
 import '../widgets/use_a_different_card_button.dart';
@@ -12,7 +11,11 @@ class PaymentFailedScreen extends StatelessWidget {
   final String paymentMethod;
   final String? errorMessage;
 
-  const PaymentFailedScreen({super.key,   this.errorMessage, required this.paymentMethod});
+  const PaymentFailedScreen({
+    super.key,
+    this.errorMessage,
+    required this.paymentMethod,
+  });
 
   final title = 'Oops! Invalid Card Number';
 
@@ -33,10 +36,11 @@ class PaymentFailedScreen extends StatelessWidget {
                   elevation: 4,
                   color: Colors.redAccent,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(
-                    bottom: Radius.circular(20.r),
-                    top: Radius.circular(15.r),
-                  )),
+                    borderRadius: BorderRadius.vertical(
+                      bottom: Radius.circular(20.r),
+                      top: Radius.circular(15.r),
+                    ),
+                  ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -56,13 +60,16 @@ class PaymentFailedScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.vertical(
-                              bottom: Radius.circular(20.r)),
+                            bottom: Radius.circular(20.r),
+                          ),
                         ),
                         child: Column(
                           children: [
                             SizedBox(height: 30.h),
                             paymentMethod == 'paymob'
-                                ?   _PaymobErrorMessage(errorMessage:errorMessage )
+                                ? _PaymobErrorMessage(
+                                    errorMessage: errorMessage,
+                                  )
                                 : _paymentErrorMessage(errorMessage!),
                             SizedBox(height: 25.h),
                             const RetryPaymentButton(),
@@ -71,7 +78,7 @@ class PaymentFailedScreen extends StatelessWidget {
                             SizedBox(height: 15.h),
                           ],
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -94,20 +101,20 @@ class PaymentFailedScreen extends StatelessWidget {
       child: Text(
         error,
         style: TextStyle(
-            fontSize: 15.sp,
-            fontWeight: FontWeight.w400,
-            color: Colors.black54,
-            height: 1.5),
+          fontSize: 15.sp,
+          fontWeight: FontWeight.w400,
+          color: Colors.black54,
+          height: 1.5,
+        ),
         textAlign: TextAlign.center,
-
       ),
     );
   }
 }
 
-
 class _PaymobErrorMessage extends StatelessWidget {
   final String? errorMessage;
+
   const _PaymobErrorMessage({super.key, required this.errorMessage});
 
   @override
@@ -117,31 +124,31 @@ class _PaymobErrorMessage extends StatelessWidget {
       child: RichText(
         textAlign: TextAlign.center,
         //  text:  _buildHighlightedText(invalidCardMessage ,),
-        text: _buildHighlightedText(
-          text:
-         errorMessage?? 'Null',
-        ),
+        text: _buildHighlightedText(text: errorMessage ?? 'Null'),
       ),
     );
   }
 
   TextSpan _buildHighlightedText({required String text}) {
     final TextStyle generalTextStyle = TextStyle(
-        fontSize: 15.sp,
-        fontWeight: FontWeight.w400,
-        color: Colors.black54,
-        height: 1.5);
+      fontSize: 15.sp,
+      fontWeight: FontWeight.w400,
+      color: Colors.black54,
+      height: 1.5,
+    );
     final TextStyle boldWordsTextStyle = GoogleFonts.roboto(
-        textStyle: TextStyle(
-            fontSize: 15.sp,
-            fontWeight: FontWeight.w900,
-            color: Colors.black,
-            letterSpacing: .5));
+      textStyle: TextStyle(
+        fontSize: 15.sp,
+        fontWeight: FontWeight.w900,
+        color: Colors.black,
+        letterSpacing: .5,
+      ),
+    );
     final List<String> boldWords = [
       'Card Number',
       'Number',
       'Expiration Date',
-      'CVV'
+      'CVV',
     ];
     List<TextSpan> spans = [];
     int lastIndex = 0;
@@ -149,30 +156,32 @@ class _PaymobErrorMessage extends StatelessWidget {
     for (final match in RegExp(boldWords.join("|")).allMatches(text)) {
       // إضافة النص العادي قبل الكلمة المحددة
       if (match.start > lastIndex) {
-        spans.add(TextSpan(
+        spans.add(
+          TextSpan(
             text: text.substring(lastIndex, match.start),
-            style: generalTextStyle));
+            style: generalTextStyle,
+          ),
+        );
       }
 
       // إضافة الكلمة بخط سميك
-      spans.add(TextSpan(
-        text: text.substring(match.start, match.end),
-        style: boldWordsTextStyle,
-      ));
+      spans.add(
+        TextSpan(
+          text: text.substring(match.start, match.end),
+          style: boldWordsTextStyle,
+        ),
+      );
 
       lastIndex = match.end;
     }
 
     // إضافة أي نص متبقي بعد آخر كلمة مميزة
     if (lastIndex < text.length) {
-      spans.add(TextSpan(
-        text: text.substring(lastIndex),
-        style: generalTextStyle,
-      ));
+      spans.add(
+        TextSpan(text: text.substring(lastIndex), style: generalTextStyle),
+      );
     }
 
-    return TextSpan(
-      children: spans,
-    );
+    return TextSpan(children: spans);
   }
 }

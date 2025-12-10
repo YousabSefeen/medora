@@ -1,8 +1,1 @@
-
-
-enum GenderType{
-
-  init,
-  male,
-  female,
-}
+enum GenderType { init, male, female }

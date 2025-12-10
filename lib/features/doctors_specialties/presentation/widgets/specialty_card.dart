@@ -49,9 +49,9 @@ class SpecialtyCard extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.smallGreyMedium.copyWith(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700,
-                    ),
+                  color: Colors.black,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ],
           ),

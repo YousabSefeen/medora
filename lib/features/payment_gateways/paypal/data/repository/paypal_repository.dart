@@ -1,9 +1,10 @@
 import 'package:dartz/dartz.dart';
-import 'package:medora/core/payment_gateway_manager/paypal_payment/paypal_services.dart' show PaypalServices, PaypalPaymentIntentResponse, PaypalTransactionModel;
-import 'package:medora/features/payment_gateways/paypal/data/repository/paypal_base_repository.dart' show PaypalBaseRepository;
+import 'package:medora/core/payment_gateway_manager/paypal_payment/paypal_services.dart'
+    show PaypalServices, PaypalPaymentIntentResponse, PaypalTransactionModel;
+import 'package:medora/features/payment_gateways/paypal/data/repository/paypal_base_repository.dart'
+    show PaypalBaseRepository;
 
-import '../../../../../core/error/failure.dart' ;
-
+import '../../../../../core/error/failure.dart';
 
 class PaypalRepository extends PaypalBaseRepository {
   final PaypalServices paypalServices;
@@ -16,7 +17,8 @@ class PaypalRepository extends PaypalBaseRepository {
   }) async {
     try {
       final paymentIntentResponse = await paypalServices.createPaymentIntent(
-          paypalTransaction: paypalTransactionModel);
+        paypalTransaction: paypalTransactionModel,
+      );
       return right(paymentIntentResponse);
     } catch (e) {
       return left(ServerFailure(catchError: e));
@@ -24,10 +26,11 @@ class PaypalRepository extends PaypalBaseRepository {
   }
 
   @override
-  Future<Either<Failure, Map<String, dynamic>>> executePaypalPayment(
-      {required String executeUrl,
-      required String payerId,
-      required String accessToken}) async {
+  Future<Either<Failure, Map<String, dynamic>>> executePaypalPayment({
+    required String executeUrl,
+    required String payerId,
+    required String accessToken,
+  }) async {
     try {
       final response = await paypalServices.executePaypalPayment(
         executeUrl: executeUrl,

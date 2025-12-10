@@ -121,10 +121,7 @@ class AmountModel {
   final String total;
   final String currency;
 
-  AmountModel({
-    required this.total,
-    required this.currency,
-  });
+  AmountModel({required this.total, required this.currency});
 
   factory AmountModel.fromJson(Map<String, dynamic> json) =>
       _$AmountModelFromJson(json);
@@ -135,10 +132,7 @@ class PayeeModel {
   final String merchantId;
   final String email;
 
-  PayeeModel({
-    required this.merchantId,
-    required this.email,
-  });
+  PayeeModel({required this.merchantId, required this.email});
 
   factory PayeeModel.fromJson(Map<String, dynamic> json) =>
       _$PayeeModelFromJson(json);

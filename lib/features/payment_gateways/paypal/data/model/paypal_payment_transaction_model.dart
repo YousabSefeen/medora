@@ -11,10 +11,11 @@ class PaypalPaymentTransactionModel {
   final AmountModel amount;
   final ItemListModel itemList;
 
-  PaypalPaymentTransactionModel(
-      {required this.description,
-      required this.amount,
-      required this.itemList});
+  PaypalPaymentTransactionModel({
+    required this.description,
+    required this.amount,
+    required this.itemList,
+  });
 
   factory PaypalPaymentTransactionModel.fromJson(Map<String, dynamic> json) =>
       _$PaypalPaymentTransactionModelFromJson(json);

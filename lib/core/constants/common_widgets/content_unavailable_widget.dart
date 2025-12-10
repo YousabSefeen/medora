@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:lottie/lottie.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 
@@ -18,8 +17,9 @@ class ContentUnavailableWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.sizeOf(context);
-    final height =
-        isExpandedHeight! ? deviceSize.height * 0.5 : deviceSize.height * 0.25;
+    final height = isExpandedHeight!
+        ? deviceSize.height * 0.5
+        : deviceSize.height * 0.25;
     final width = deviceSize.width * 0.8;
     return Center(
       child: SizedBox(
@@ -28,7 +28,7 @@ class ContentUnavailableWidget extends StatelessWidget {
         child: Column(
           children: [
             _buildLottieAnimation(),
-            _buildMessageText(context, description)
+            _buildMessageText(context, description),
           ],
         ),
       ),
@@ -36,13 +36,10 @@ class ContentUnavailableWidget extends StatelessWidget {
   }
 
   Widget _buildLottieAnimation() => Expanded(
-        child: Container(
-          child: Lottie.asset(
-            Assets.imagesEmptyList,
-            fit: BoxFit.cover,
-          ),
-        ),
-      );
+    child: Container(
+      child: Lottie.asset(Assets.imagesEmptyList, fit: BoxFit.cover),
+    ),
+  );
 
   Widget _buildMessageText(BuildContext context, String description) =>
       Expanded(

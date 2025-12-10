@@ -7,6 +7,7 @@ class CustomAnimatedExpansionTile extends StatelessWidget {
   final Widget child;
   final bool isExpanded;
   final void Function() onTap;
+
   const CustomAnimatedExpansionTile({
     super.key,
     required this.baseChild,
@@ -21,7 +22,7 @@ class CustomAnimatedExpansionTile extends StatelessWidget {
       children: [
         ListTile(
           contentPadding: const EdgeInsets.only(left: 5, right: 10),
-          title:  baseChild,
+          title: baseChild,
           trailing: AnimatedRotation(
             turns: isExpanded ? 1 : 0,
             duration: const Duration(milliseconds: 500),
@@ -33,8 +34,8 @@ class CustomAnimatedExpansionTile extends StatelessWidget {
         AnimatedCrossFade(
           firstChild: const SizedBox.shrink(),
           secondChild: child,
-          crossFadeState:
-          isExpanded ? CrossFadeState.showSecond
+          crossFadeState: isExpanded
+              ? CrossFadeState.showSecond
               : CrossFadeState.showFirst,
           duration: const Duration(milliseconds: 800),
 
