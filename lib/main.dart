@@ -15,6 +15,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart'
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:medora/core/app_settings/controller/cubit/app_settings_cubit.dart'
     show AppSettingsCubit;
+import 'package:medora/core/constants/app_strings/app_strings.dart';
 import 'package:medora/core/enum/internet_state.dart' show InternetState;
 import 'package:medora/features/auth/presentation/controller/cubit/login_cubit.dart'
     show LoginCubit;
@@ -94,7 +95,7 @@ void main() async {
         BlocProvider(create: (_) => serviceLocator<RegisterCubit>()),
         BlocProvider(create: (_) => serviceLocator<DoctorProfileCubit>()),
         BlocProvider(
-          create: (_) => serviceLocator<DoctorListCubit>()..getDoctorsList(),
+          create: (_) => serviceLocator<DoctorListCubit>(),
         ),
         BlocProvider(create: (_) => serviceLocator<AppointmentCubit>()),
         BlocProvider(create: (_) => serviceLocator<AppSettingsCubit>()),

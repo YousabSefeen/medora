@@ -62,14 +62,7 @@ extension AppTextStyles on TextTheme {
     fontWeight: FontWeight.w600,
   );
 
-  // Original: bodyLarge (AppointmentBookingScreen - doctorInfo)
-  TextStyle get mediumBlueBold => GoogleFonts.poppins(
-    fontSize: 18.sp,
-    letterSpacing: 1,
-    fontWeight: FontWeight.w600,
-    height: 1.6,
-    color: AppColors.softBlue,
-  );
+
 
   // Original: titleSmall
   TextStyle get smallGreyMedium => TextStyle(

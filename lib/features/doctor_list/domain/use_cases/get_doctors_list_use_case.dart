@@ -1,22 +1,23 @@
 import 'package:dartz/dartz.dart';
-import 'package:medora/core/base_use_case/base_use_case.dart'
-    show BaseUseCase, NoParameters;
+import 'package:medora/core/base_use_case/base_use_case.dart' show BaseUseCase;
 import 'package:medora/core/error/failure.dart';
 import 'package:medora/features/doctor_list/domain/repository/doctor_list_repository_base.dart'
     show DoctorListRepositoryBase;
-import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
-    show DoctorModel;
+import 'package:medora/features/shared/domain/entities/paginated_data_response.dart'
+    show PaginatedDataResponse;
+import 'package:medora/features/shared/domain/entities/pagination_parameters.dart'
+    show PaginationParameters;
 
 class GetDoctorsListUseCase
-    extends BaseUseCase<List<DoctorModel>, NoParameters> {
+    extends BaseUseCase<PaginatedDataResponse, PaginationParameters> {
   final DoctorListRepositoryBase doctorListRepositoryBase;
 
   GetDoctorsListUseCase({required this.doctorListRepositoryBase});
 
   @override
-  Future<Either<Failure, List<DoctorModel>>> call(
-    NoParameters parameters,
+  Future<Either<Failure, PaginatedDataResponse>> call(
+    PaginationParameters parameters,
   ) async {
-    return await doctorListRepositoryBase.getDoctorsList();
+    return await doctorListRepositoryBase.getDoctorsList(parameters);
   }
 }

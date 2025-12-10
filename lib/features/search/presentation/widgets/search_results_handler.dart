@@ -13,7 +13,8 @@ import 'package:medora/features/search/presentation/controller/cubit/search_cubi
 import 'package:medora/features/search/presentation/controller/states/search_states.dart';
 import 'package:medora/features/search/presentation/widgets/search_welcome_widget.dart'
     show SearchWelcomeWidget;
-import 'package:medora/features/shared/widgets/empty_search_list_results.dart';
+import 'package:medora/features/shared/presentation/widgets/empty_search_list_results.dart' show EmptySearchListResult;
+
 
 class SearchResultsHandler extends StatelessWidget {
   const SearchResultsHandler({super.key});

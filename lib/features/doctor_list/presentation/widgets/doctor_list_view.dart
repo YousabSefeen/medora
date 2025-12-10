@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medora/features/doctor_profile/data/models/doctor_model.dart' show DoctorModel;
-import 'package:medora/features/shared/widgets/doctor_card.dart'
-    show DoctorCard;
+import 'package:medora/features/shared/presentation/widgets/doctor_card.dart' show DoctorCard;
 
 
 class DoctorListView extends StatelessWidget {

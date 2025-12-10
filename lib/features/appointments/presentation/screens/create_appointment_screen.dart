@@ -27,8 +27,8 @@ import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
     show DoctorModel;
 import 'package:medora/features/shared/models/doctor_schedule_model.dart'
     show DoctorScheduleModel;
-import 'package:medora/features/shared/widgets/doctor_info_footer.dart'
-    show DoctorInfoFooter;
+import 'package:medora/features/shared/presentation/widgets/doctor_info_footer.dart' show DoctorInfoFooter;
+
 
 class CreateAppointmentScreen extends StatefulWidget {
   final DoctorModel doctor;

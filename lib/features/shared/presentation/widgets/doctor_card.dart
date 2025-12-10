@@ -7,9 +7,8 @@ import 'package:medora/core/constants/app_routes/app_router.dart' show AppRouter
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/features/appointments/presentation/screens/create_appointment_screen.dart' show CreateAppointmentScreen;
 import 'package:medora/features/doctor_profile/data/models/doctor_model.dart' show DoctorModel;
+import 'package:medora/features/shared/presentation/widgets/doctor_basic_info.dart' show DoctorBasicInfo;
 import 'package:medora/features/shared/value_objects/doctor_card_config.dart' show DoctorCardConfig;
-import 'package:medora/features/shared/widgets/doctor_basic_info.dart' show DoctorBasicInfo;
-
 
 class DoctorCard extends StatelessWidget {
   final DoctorModel doctor;

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:lottie/lottie.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
-import 'package:medora/features/shared/widgets/custom_rich_text.dart' show CustomRichText;
+import 'package:medora/features/shared/presentation/widgets/custom_rich_text.dart' show CustomRichText;
 
 import '../../../../core/constants/app_strings/app_strings.dart';
 import '../../../../core/enum/appointment_availability_status.dart';

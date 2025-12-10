@@ -1,10 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart'
-    show FirebaseFirestore, QuerySnapshot;
+    show FirebaseFirestore, Query, DocumentSnapshot, QuerySnapshot;
 import 'package:medora/features/doctor_profile/data/models/doctor_model.dart'
     show DoctorModel;
+import 'package:medora/features/shared/domain/entities/paginated_data_response.dart'
+    show PaginatedDataResponse;
+import 'package:medora/features/shared/domain/entities/pagination_parameters.dart'
+    show PaginationParameters;
 
 abstract class DoctorsListRemoteDataSourceBase {
-  Future<List<DoctorModel>> getDoctorsList();
+  Future<PaginatedDataResponse> getDoctorsList(PaginationParameters parameters);
 }
 
 class DoctorsListRemoteDataSource extends DoctorsListRemoteDataSourceBase {
@@ -14,19 +18,39 @@ class DoctorsListRemoteDataSource extends DoctorsListRemoteDataSourceBase {
     : _firestore = firestore ?? FirebaseFirestore.instance;
 
   @override
-  Future<List<DoctorModel>> getDoctorsList() async {
-    final QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
+  Future<PaginatedDataResponse> getDoctorsList(
+    PaginationParameters parameters,
+  ) async {
+    Query query = _firestore
         .collection('doctors')
-        .get();
+        .limit(parameters.limit)
+        .orderBy('createdAt', descending: true);
+
+    if (parameters.lastDocument != null) {
+      query = query.startAfterDocument(
+        parameters.lastDocument as DocumentSnapshot<Map<String, dynamic>>,
+      );
+    }
+
+    final QuerySnapshot<Object?> snapshot = await query.get();
+
+    DocumentSnapshot? lastDocument;
+    if (snapshot.docs.isNotEmpty) {
+      lastDocument = snapshot.docs.last;
+    }
 
     final List<DoctorModel> doctorList = snapshot.docs.map((doc) {
-      final doctorData = doc.data();
+      final doctorData = doc.data() as Map<String, dynamic>;
 
-      return DoctorModel.fromJson({
-        'doctorId': doc.id,
-        ...doctorData, // Spread Operator to integrate fields
-      });
+      return DoctorModel.fromJson({'doctorId': doc.id, ...doctorData});
     }).toList();
-    return doctorList;
+
+    return PaginatedDataResponse(
+      doctors: doctorList,
+      lastDocument: lastDocument,
+      hasMore:
+          snapshot.docs.length ==
+          parameters.limit, // To determine if there are other pages
+    );
   }
 }

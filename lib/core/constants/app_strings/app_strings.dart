@@ -64,6 +64,7 @@ class AppStrings {
     'Family Medicine',
     'Dentistry',
     'Dermatology',
+    'Cosmetic Medicine',
     'Pediatrics',
     'Ophthalmology',
     'Obstetrics and Gynecology',
@@ -150,7 +151,11 @@ class AppStrings {
     '"$searchTerm"',
     ' Please check your spelling, or try searching for a different specialty.',
   ];
+  static const String searchNoResultsPrefix =
+      'Sorry, we couldn\'t find any results for ';
 
+  static const String searchNoResultsSuffix =
+      '\n Please check your spelling, or try searching for a different specialty.';
   static const String imageNotFound =
       'Incorrect image URLs or changes in the image file\'s location';
   static const String noAppointmentsAvailableToday =
@@ -326,6 +331,11 @@ class AppStrings {
   static const String searchScreenTitle = 'Let\'s Find Your\nDoctor';
 
   static const String filterSearch = 'Filter Search';
+  static const String reloadDoctors = 'Reload Doctors';
+
+  static const String noMoreDoctorsMsg='No more doctors to load...';
+
+
 }
 
 class PaymentMethod {
