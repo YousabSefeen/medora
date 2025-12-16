@@ -1,12 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
-import 'package:medora/features/shared/data/models/doctor_model.dart'
-    show DoctorModel;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 
 class FavoritesStates extends Equatable {
   final LazyRequestState favoritesListState;
   final String favoritesListError;
-  final List<DoctorModel> favoritesDoctorsList;
+  final List<DoctorEntity> favoritesDoctorsList;
   final Set<String> favoriteDoctorsSet;
 
   final LazyRequestState toggleFavoriteState;
@@ -26,7 +25,7 @@ class FavoritesStates extends Equatable {
   FavoritesStates copyWith({
     LazyRequestState? favoritesListState,
     String? favoritesListError,
-    List<DoctorModel>? favoritesDoctorsList,
+    List<DoctorEntity>? favoritesDoctorsList,
     Set<String>? favoriteDoctorsSet,
 
     LazyRequestState? toggleFavoriteState,

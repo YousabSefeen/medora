@@ -1,14 +1,12 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
 part of 'paymob_transaction_data_result_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-PaymobTransactionDataModel _$PaymobTransactionDataResultModelFromJson(
+PaymobTransactionDataResultModel _$PaymobTransactionDataResultModelFromJson(
   Map<String, dynamic> json,
-) => PaymobTransactionDataModel(
+) => PaymobTransactionDataResultModel(
   trnxId: json['id'],
   totalPrice: (double.parse(json['amount_cents']) / 100).toString(),
   success: json['success'],

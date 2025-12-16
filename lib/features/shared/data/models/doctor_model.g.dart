@@ -1,8 +1,10 @@
-
+// GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'doctor_model.dart';
 
-
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
 
 DoctorModel _$DoctorModelFromJson(Map<String, dynamic> json) => DoctorModel(
   doctorId: json['doctorId'] as String?,
@@ -27,6 +29,6 @@ Map<String, dynamic> _$DoctorModelToJson(DoctorModel instance) =>
       'specialties': instance.specialties,
       'bio': instance.bio,
       'location': instance.location,
-      'doctorAvailability': instance.doctorAvailability,
+      'doctorAvailability': instance.doctorAvailability.toJson(),
       'fees': instance.fees,
     };

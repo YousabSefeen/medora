@@ -1,4 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart'
+    show ClientAppointmentsEntity;
 import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
 
@@ -40,4 +42,37 @@ class ClientAppointmentsModel {
       _$ClientAppointmentsModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$ClientAppointmentsModelToJson(this);
+
+  ClientAppointmentsEntity toEntity() {
+    return ClientAppointmentsEntity(
+      clientId: clientId,
+      doctorId: doctorId,
+      appointmentId: appointmentId,
+      patientName: patientName,
+      patientGender: patientGender,
+      patientAge: patientAge,
+      patientProblem: patientProblem,
+      appointmentDate: appointmentDate,
+      appointmentTime: appointmentTime,
+      appointmentStatus: appointmentStatus,
+      doctorEntity: doctorModel.toEntity(),
+    );
+  }
+
+  factory ClientAppointmentsModel.fromEntity(ClientAppointmentsEntity entity) {
+    return ClientAppointmentsModel(
+      clientId: entity.clientId,
+      doctorId: entity.doctorId,
+      appointmentId: entity.appointmentId,
+      patientName: entity.patientName,
+      patientGender: entity.patientGender,
+      patientAge: entity.patientAge,
+      patientProblem: entity.patientProblem,
+      appointmentDate: entity.appointmentDate,
+      appointmentTime: entity.appointmentTime,
+      appointmentStatus: entity.appointmentStatus,
+
+      doctorModel: DoctorModel.fromEntity(entity.doctorEntity),
+    );
+  }
 }

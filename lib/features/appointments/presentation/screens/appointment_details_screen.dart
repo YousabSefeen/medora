@@ -11,11 +11,12 @@ import 'package:medora/features/appointments/presentation/widgets/icon_with_text
     show IconWithText;
 import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 
 import '../../../../generated/assets.dart';
 
 class AppointmentDetailsScreen extends StatelessWidget {
-  final DoctorModel doctorModel;
+  final DoctorEntity doctorModel;
   final String appointmentDate;
   final String appointmentTime;
   final String patientName;
@@ -262,7 +263,7 @@ import 'package:flutter_task/core/constants/themes/app_colors.dart';
 import 'package:flutter_task/core/constants/themes/app_text_styles.dart';
 import 'package:flutter_task/features/appointments/presentation/widgets/appointment_widgets/underline_title_widget.dart';
 import 'package:flutter_task/features/appointments/presentation/widgets/icon_with_text.dart';
-import 'package:flutter_task/features/doctor_profile/data/models/doctor_model.dart';
+import 'package:flutter_task/features/doctor_profile/data/view_data/doctor_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/constants/common_widgets/consultation_fee_and_wait_row.dart';

@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:medora/core/enum/request_state.dart' show RequestState;
-import 'package:medora/features/shared/data/models/doctor_model.dart'
-    show DoctorModel;
+
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 
 class SpecialtyDoctorsStates extends Equatable {
-  final List<DoctorModel> specialtyDoctorsList;
+  final List<DoctorEntity> specialtyDoctorsList;
   final RequestState specialtyDoctorsState;
   final String specialtyDoctorsError;
 
@@ -15,7 +15,7 @@ class SpecialtyDoctorsStates extends Equatable {
   });
 
   SpecialtyDoctorsStates copyWith({
-    List<DoctorModel>? specialtyDoctorsList,
+    List<DoctorEntity>? specialtyDoctorsList,
     RequestState? specialtyDoctorsState,
     String? specialtyDoctorsError,
   }) {

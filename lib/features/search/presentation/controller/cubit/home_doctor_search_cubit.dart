@@ -7,6 +7,7 @@ import 'package:medora/features/search/presentation/controller/states/home_docto
     show HomeDoctorSearchStates;
 import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 
 class HomeDoctorSearchCubit extends HydratedCubit<HomeDoctorSearchStates> {
   final SearchDoctorsByNameUseCase searchByName;
@@ -24,7 +25,7 @@ class HomeDoctorSearchCubit extends HydratedCubit<HomeDoctorSearchStates> {
   void updateDoctorName({String? doctorName}) =>
       emit(state.copyWith(doctorName: doctorName));
 
-  Future<List<DoctorModel>> searchDoctorsInstant(String query) async {
+  Future<List<DoctorEntity>> searchDoctorsInstant(String query) async {
     updateDoctorName(doctorName: query);
 
     if (query.isEmpty && state.searchResults.isEmpty) {

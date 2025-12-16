@@ -6,6 +6,31 @@ import 'package:medora/core/payment_gateway_manager/paypal_payment/paypal_servic
 import 'package:medora/core/payment_gateway_manager/stripe_payment/stripe_services.dart'
     show StripeServices;
 import 'package:medora/core/services/api_services.dart' show ApiServices;
+import 'package:medora/features/appointments/data/data_source/appointment_remote_data_source.dart'
+    show AppointmentRemoteDataSource;
+import 'package:medora/features/appointments/data/data_source/appointment_remote_data_source_base.dart'
+    show AppointmentRemoteDataSourceBase;
+import 'package:medora/features/appointments/data/repository/appointment_repository_impl.dart'
+    show AppointmentRepositoryImpl;
+import 'package:medora/features/appointments/domain/repository/appointment_repository_base.dart'
+    show AppointmentRepositoryBase;
+import 'package:medora/features/appointments/domain/use_cases/book_appointment_use_case.dart'
+    show BookAppointmentUseCase;
+import 'package:medora/features/appointments/domain/use_cases/cancel_appointment_use_case.dart'
+    show CancelAppointmentUseCase;
+import 'package:medora/features/appointments/domain/use_cases/delete_appointment_use_case.dart'
+    show DeleteAppointmentUseCase;
+import 'package:medora/features/appointments/domain/use_cases/fetch_client_appointments_use_case.dart'
+    show FetchClientAppointmentsUseCase;
+import 'package:medora/features/appointments/domain/use_cases/fetch_doctor_appointments_use_case.dart'
+    show FetchDoctorAppointmentsUseCase;
+import 'package:medora/features/appointments/domain/use_cases/fetch_booked_time_slots_use_case.dart'
+    show FetchBookedTimeSlotsUseCase;
+import 'package:medora/features/appointments/domain/use_cases/reschedule_appointment_use_case.dart'
+    show RescheduleAppointmentUseCase;
+// import 'package:medora/features/appointments/data/data_source/appointment_remote_data_source.dart' show AppointmentRemoteDataSource;
+// import 'package:medora/features/appointments/data/data_source/appointment_remote_data_source_base.dart' show AppointmentRemoteDataSourceBase;
+// import 'package:medora/features/appointments/data/repository/appointment_repository_impl.dart';
 import 'package:medora/features/doctor_list/data/data_source/doctors_list_remote_data_source.dart'
     show DoctorsListRemoteDataSource;
 import 'package:medora/features/doctor_list/domain/repository/doctor_list_repository_base.dart'
@@ -17,10 +42,10 @@ import 'package:medora/features/doctors_specialties/data/repository/specialty_do
 import 'package:medora/features/doctors_specialties/presentation/controller/cubit/specialty_doctors_cubit.dart'
     show SpecialtyDoctorsCubit;
 import 'package:medora/features/favorites/data/data_source/favorites_remote_data_source.dart'
-    show FavoritesRemoteDataSourceBase, FavoritesRemoteDataSource;
+    show FavoritesRemoteDataSource;
+import 'package:medora/features/favorites/data/data_source/favorites_remote_data_source_base.dart'
+    show FavoritesRemoteDataSourceBase;
 import 'package:medora/features/favorites/data/favorites_repository_impl/favorites_repository_impl.dart';
-import 'package:medora/features/favorites/data/repository/favorites_repository.dart'
-    show FavoritesRepository;
 import 'package:medora/features/favorites/domain/favorites_repository_base/favorites_repository_base.dart'
     show FavoritesRepositoryBase;
 import 'package:medora/features/favorites/domain/use_cases/get_favorites_doctors_use_case.dart'
@@ -59,7 +84,6 @@ import 'package:medora/features/search/domain/use_cases/search_doctors_by_name_u
 import 'package:medora/features/search/presentation/controller/cubit/home_doctor_search_cubit.dart'
     show HomeDoctorSearchCubit;
 
-import '../../features/appointments/data/repository/appointment_repository.dart';
 import '../../features/appointments/presentation/controller/cubit/appointment_cubit.dart';
 import '../../features/auth/data/repository/auth_repository.dart';
 import '../../features/auth/presentation/controller/cubit/login_cubit.dart';
@@ -81,7 +105,72 @@ class ServiceLocator {
     _registerAppSettings();
     favoritesInit();
     setupSearchDependencies();
+    setupAppointmentsDependencies();
     print('ServiceLocator.initxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+  }
+
+  void setupAppointmentsDependencies() {
+    // Data Sources
+
+    serviceLocator.registerLazySingleton<AppointmentRemoteDataSourceBase>(
+      () => AppointmentRemoteDataSource(),
+    );
+
+    // Repositories
+
+    serviceLocator.registerLazySingleton<AppointmentRepositoryBase>(
+      () => AppointmentRepositoryImpl(remoteDataSource: serviceLocator()),
+    );
+
+    // Use Cases
+    serviceLocator.registerLazySingleton<BookAppointmentUseCase>(
+      () => BookAppointmentUseCase(appointmentRepositoryBase: serviceLocator()),
+    );
+    serviceLocator.registerLazySingleton<CancelAppointmentUseCase>(
+      () =>
+          CancelAppointmentUseCase(appointmentRepositoryBase: serviceLocator()),
+    );
+    serviceLocator.registerLazySingleton<DeleteAppointmentUseCase>(
+      () =>
+          DeleteAppointmentUseCase(appointmentRepositoryBase: serviceLocator()),
+    );
+    serviceLocator
+        .registerLazySingleton<FetchClientAppointmentsUseCase>(
+          () => FetchClientAppointmentsUseCase(
+            appointmentRepositoryBase: serviceLocator(),
+          ),
+        );
+    serviceLocator.registerLazySingleton<FetchDoctorAppointmentsUseCase>(
+      () => FetchDoctorAppointmentsUseCase(
+        appointmentRepositoryBase: serviceLocator(),
+      ),
+    );
+    serviceLocator
+        .registerLazySingleton<FetchBookedTimeSlotsUseCase>(
+          () => FetchBookedTimeSlotsUseCase(
+            appointmentRepositoryBase: serviceLocator(),
+          ),
+        );
+    serviceLocator.registerLazySingleton<RescheduleAppointmentUseCase>(
+      () => RescheduleAppointmentUseCase(
+        appointmentRepositoryBase: serviceLocator(),
+      ),
+    );
+    // Cubit
+    serviceLocator.registerFactory<AppointmentCubit>(
+      () => AppointmentCubit(
+        appSettingsCubit: serviceLocator(),
+
+        bookAppointmentUS: serviceLocator(),
+        cancelAppointmentUS: serviceLocator(),
+        deleteAppointmentUS: serviceLocator(),
+        fetchClientAppointmentsUseCase: serviceLocator(),
+        fetchDoctorAppointmentsUS: serviceLocator(),
+
+        fetchBookedTimeSlotsUseCase: serviceLocator(),
+        rescheduleAppointmentUseCase: serviceLocator(),
+      ),
+    );
   }
 
   void setupDoctorsListDependencies() {
@@ -193,16 +282,13 @@ class ServiceLocator {
       () => DoctorProfileRepository(),
     );
 
-    serviceLocator.registerLazySingleton<AppointmentRepository>(
-      () => AppointmentRepository(),
-    );
     serviceLocator.registerLazySingleton<SpecialtyDoctorsRepository>(
       () => SpecialtyDoctorsRepository(),
     );
 
-    serviceLocator.registerLazySingleton<FavoritesRepository>(
-      () => FavoritesRepository(),
-    );
+    // serviceLocator.registerLazySingleton<FavoritesRepository>(
+    //   () => FavoritesRepository(),
+    // );
   }
 
   void _registerCubits() {
@@ -220,12 +306,6 @@ class ServiceLocator {
       () => DoctorProfileCubit(doctorRepository: serviceLocator()),
     );
 
-    serviceLocator.registerFactory<AppointmentCubit>(
-      () => AppointmentCubit(
-        appSettingsCubit: serviceLocator(),
-        appointmentRepository: serviceLocator(),
-      ),
-    );
     serviceLocator.registerFactory<SpecialtyDoctorsCubit>(
       () => SpecialtyDoctorsCubit(specialtyDoctorsRepository: serviceLocator()),
     );

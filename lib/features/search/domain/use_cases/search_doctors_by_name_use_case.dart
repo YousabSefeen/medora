@@ -5,17 +5,18 @@ import 'package:medora/features/search/domain/search_repository_base/search_repo
     show SearchRepositoryBase;
 import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 
 class SearchDoctorsByNameUseCase
-    extends BaseUseCase<List<DoctorModel>, String> {
+    extends BaseUseCase<List<DoctorEntity>, String> {
   final SearchRepositoryBase searchRepositoryBase;
 
   SearchDoctorsByNameUseCase({required this.searchRepositoryBase});
 
   @override
-  Future<Either<Failure, List<DoctorModel>>> call(String parameters) async {
+  Future<Either<Failure, List<DoctorEntity>>> call(String params) async {
     return await searchRepositoryBase.searchDoctorsByName(
-      doctorName: parameters,
+      doctorName: params,
     );
   }
 }

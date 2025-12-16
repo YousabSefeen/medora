@@ -4,9 +4,10 @@ import 'package:medora/features/search/domain/value_objects/search_filters/searc
     show SearchFilter;
 import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 
 abstract class SearchRemoteDataSourceBase {
-  Future<List<DoctorModel>> searchDoctors(List<SearchFilter> filters);
+  Future<List<DoctorEntity>> searchDoctors(List<SearchFilter> filters);
 }
 
 class SearchRemoteDataSource extends SearchRemoteDataSourceBase {
@@ -16,7 +17,7 @@ class SearchRemoteDataSource extends SearchRemoteDataSourceBase {
     : _firestore = firestore ?? FirebaseFirestore.instance;
 
   @override
-  Future<List<DoctorModel>> searchDoctors(List<SearchFilter> filters) async {
+  Future<List<DoctorEntity>> searchDoctors(List<SearchFilter> filters) async {
     Query<Map<String, dynamic>> query = _firestore.collection('doctors');
 
     for (final filter in filters) {
@@ -25,7 +26,7 @@ class SearchRemoteDataSource extends SearchRemoteDataSourceBase {
 
     final snapshot = await query.limit(10).get();
     final doctorList = _parseSnapshot(snapshot);
-    return doctorList;
+    return  doctorList.map((doctor) => doctor.toEntity()).toList();
   }
 
   List<DoctorModel> _parseSnapshot(

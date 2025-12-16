@@ -1,11 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:medora/core/error/failure.dart';
-import 'package:medora/features/favorites/data/data_source/favorites_remote_data_source.dart'
-    show FavoritesRemoteDataSourceBase;
+import 'package:medora/features/favorites/data/data_source/favorites_remote_data_source_base.dart' show FavoritesRemoteDataSourceBase;
+
 import 'package:medora/features/favorites/domain/favorites_repository_base/favorites_repository_base.dart'
     show FavoritesRepositoryBase;
-import 'package:medora/features/shared/data/models/doctor_model.dart'
-    show DoctorModel;
+
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 
 class FavoritesRepositoryImpl extends FavoritesRepositoryBase {
   final FavoritesRemoteDataSourceBase favoritesRemoteDataSourceBase;
@@ -23,7 +23,7 @@ class FavoritesRepositoryImpl extends FavoritesRepositoryBase {
   }
 
   @override
-  Future<Either<Failure, List<DoctorModel>>> getFavoritesDoctors() async {
+  Future<Either<Failure, List<DoctorEntity>>> getFavoritesDoctors() async {
     try {
       final favorites = await favoritesRemoteDataSourceBase
           .getFavoritesDoctors();

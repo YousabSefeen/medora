@@ -28,6 +28,11 @@ class DoctorAvailabilityModel {
       availableTo: availableTo,
     );
   }
+  factory DoctorAvailabilityModel.fromEntity(DoctorAvailabilityEntity entity) {
+    return DoctorAvailabilityModel(
+      workingDays: entity.workingDays,
+      availableFrom: entity.availableFrom,
+      availableTo: entity.availableTo,
+    );
+  }
 }
-
-// **ملاحظة:** ملف availability_model.g.dart يبقى كما هو تماماً.

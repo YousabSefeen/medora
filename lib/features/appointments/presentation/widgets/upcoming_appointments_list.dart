@@ -32,7 +32,7 @@ class UpcomingAppointmentsList extends StatelessWidget {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (BuildContext context) => AppointmentDetailsScreen(
-                      doctorModel: upcomingAppointments[index].doctorModel,
+                      doctorModel: upcomingAppointments[index].doctorEntity,
                       appointmentDate:
                           upcomingAppointments[index].appointmentDate,
                       appointmentTime:

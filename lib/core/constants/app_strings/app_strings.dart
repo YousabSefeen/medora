@@ -334,6 +334,12 @@ class AppStrings {
   static const String reloadDoctors = 'Reload Doctors';
 
   static const String noMoreDoctorsMsg = 'No more doctors to load...';
+  static const String selectTime = 'Select Time';
+  static const String selectDate = 'Select Date';
+
+
+
+
 }
 
 class PaymentMethod {

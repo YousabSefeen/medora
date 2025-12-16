@@ -5,8 +5,8 @@ import 'package:medora/features/doctor_list/domain/use_cases/get_doctors_list_us
     show GetDoctorsListUseCase;
 import 'package:medora/features/doctor_list/presentation/controller/states/doctor_list_state.dart'
     show DoctorListState;
-import 'package:medora/features/shared/data/models/doctor_model.dart'
-    show DoctorModel;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart';
+
 import 'package:medora/features/shared/domain/entities/paginated_data_response.dart'
     show PaginatedDataResponse;
 import 'package:medora/features/shared/domain/entities/pagination_parameters.dart'
@@ -70,10 +70,10 @@ class DoctorListCubit extends Cubit<DoctorListState> {
     PaginatedDataResponse paginatedDataResponse,
     bool isInitial,
   ) {
-    final List<DoctorModel> newDoctors = paginatedDataResponse.doctors;
+    final List<DoctorEntity> newDoctors = paginatedDataResponse.doctors;
 
     //  Merging lists
-    final List<DoctorModel> updatedList = isInitial
+    final List<DoctorEntity> updatedList = isInitial
         ? newDoctors // If the load is initial, use the new menu
         : state.doctorList + newDoctors; // If more loads, add to current list
 

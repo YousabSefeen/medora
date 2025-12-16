@@ -7,7 +7,7 @@ import 'package:medora/core/enum/payment_gateways_types.dart'
     show PaymentGatewaysTypes;
 import 'package:medora/features/home/presentation/screens/bottom_nav_screen.dart';
 import 'package:medora/features/payment_gateways/paymob/transaction_process_states/data/models/paymob_transaction_data_result_model.dart'
-    show PaymobTransactionDataModel;
+    show PaymobTransactionDataResultModel;
 import 'package:medora/features/payment_gateways/transaction_process_states/payment_success/widgets/appointment_details_success_card.dart'
     show AppointmentDetailsSuccessCard;
 import 'package:medora/features/payment_gateways/transaction_process_states/payment_success/widgets/bottom_action_button_section.dart'
@@ -21,7 +21,7 @@ import 'package:medora/features/payment_gateways/transaction_process_states/paym
 
 class PaymentSuccessScreen extends StatelessWidget {
   final PaymentGatewaysTypes paymentMethod;
-  final PaymobTransactionDataModel? paymobResponseModel;
+  final PaymobTransactionDataResultModel? paymobResponseModel;
   final String? paypalPayerEmail;
 
   const PaymentSuccessScreen({

@@ -4,13 +4,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/features/payment_gateways/paymob/transaction_process_states/data/models/paymob_transaction_data_result_model.dart'
-    show PaymobTransactionDataModel;
+    show PaymobTransactionDataResultModel;
 
 import '../../../../../../../../../../../../generated/assets.dart';
 import '../../../../../../Presentation/Views/widgets/custom _image_widget.dart';
 
 class PaymobPaymentMethodInfo extends StatelessWidget {
-  final PaymobTransactionDataModel transactionData;
+  final PaymobTransactionDataResultModel transactionData;
 
   const PaymobPaymentMethodInfo({super.key, required this.transactionData});
 

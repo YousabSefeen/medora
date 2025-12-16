@@ -2,10 +2,11 @@ import 'package:equatable/equatable.dart';
 import 'package:medora/core/enum/search_bar_state.dart' show SearchBarState;
 import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 
 class HomeDoctorSearchStates extends Equatable {
   final SearchBarState searchBarState;
-  final List<DoctorModel> searchResults;
+  final List<DoctorEntity> searchResults;
 
   final String? doctorName;
 
@@ -18,7 +19,7 @@ class HomeDoctorSearchStates extends Equatable {
 
   HomeDoctorSearchStates copyWith({
     SearchBarState? searchBarState,
-    List<DoctorModel>? searchResults,
+    List<DoctorEntity>? searchResults,
 
     String? doctorName,
   }) {
@@ -33,8 +34,11 @@ class HomeDoctorSearchStates extends Equatable {
   Map<String, dynamic> toJson() {
     return {
       'searchBarState': searchBarState.index,
-      'searchResults': searchResults.map((doctor) => doctor.toJson()).toList(),
-
+      // 'searchResults': searchResults.map((doctor) => doctor.toJson()).toList(),
+      'searchResults': searchResults
+      // يجب عليك إضافة دالة fromEntity في DoctorModel لإنشاء Model من Entity
+          .map((entity) => DoctorModel.fromEntity(entity).toJson())
+          .toList(),
       'doctorName': doctorName,
     };
   }
@@ -43,9 +47,11 @@ class HomeDoctorSearchStates extends Equatable {
     return HomeDoctorSearchStates(
       searchBarState: SearchBarState.values[json['searchBarState'] ?? 0],
       searchResults:
-          (json['searchResults'] as List?)
-              ?.map((doctorJson) => DoctorModel.fromJson(doctorJson))
-              .toList() ??
+      (json['searchResults'] as List?)
+          ?.map((doctorJson) => DoctorModel.fromJson(doctorJson))
+      // **** هذا هو التحويل النهائي ****
+          .map((model) => model.toEntity())
+          .toList() ??
           const [],
     );
   }

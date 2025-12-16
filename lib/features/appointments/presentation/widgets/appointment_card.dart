@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart' show ClientAppointmentsEntity;
 
 import '../../../../core/enum/appointment_status.dart';
 import '../../data/models/client_appointments_model.dart';
@@ -7,7 +8,7 @@ import 'booked_appointment_widgets/booked_appointment_header.dart';
 
 class AppointmentCard extends StatelessWidget {
   final AppointmentStatus appointmentStatus;
-  final ClientAppointmentsModel appointment;
+  final ClientAppointmentsEntity appointment;
 
   const AppointmentCard({
     super.key,
@@ -26,7 +27,7 @@ class AppointmentCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          BookedAppointmentHeader(doctorModel: appointment.doctorModel),
+          BookedAppointmentHeader(doctorModel: appointment.doctorEntity),
           _buildDivider(),
           BookedAppointmentFooter(
             appointment: appointment,

@@ -1,4 +1,10 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
 part of 'doctor_availability_model.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
 
 DoctorAvailabilityModel _$DoctorAvailabilityModelFromJson(
   Map<String, dynamic> json,

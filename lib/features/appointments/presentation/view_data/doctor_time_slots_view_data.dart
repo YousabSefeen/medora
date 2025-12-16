@@ -1,8 +1,8 @@
-class TimeSlotsDataModel {
+class DoctorTimeSlotsViewData {
   final String? selectedSlot;
   final List<String> availableSlots;
 
-  const TimeSlotsDataModel({
+  const DoctorTimeSlotsViewData({
     required this.selectedSlot,
     required this.availableSlots,
   });

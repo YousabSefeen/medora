@@ -6,18 +6,19 @@ import 'package:medora/features/search/domain/search_repository_base/search_repo
     show SearchRepositoryBase;
 import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 
 import '../../../../core/error/failure.dart' show Failure;
 
 class SearchDoctorsByCriteriaUseCase
-    extends BaseUseCase<List<DoctorModel>, SearchFilters> {
+    extends BaseUseCase<List<DoctorEntity>, SearchFilters> {
   final SearchRepositoryBase searchRepositoryBase;
 
   SearchDoctorsByCriteriaUseCase({required this.searchRepositoryBase});
 
   @override
-  Future<Either<Failure, List<DoctorModel>>> call(
-    SearchFilters filters,
+  Future<Either<Failure, List<DoctorEntity>>> call(
+    SearchFilters params,
   ) async =>
-      await searchRepositoryBase.searchDoctorsByCriteria(filters: filters);
+      await searchRepositoryBase.searchDoctorsByCriteria(filters: params);
 }

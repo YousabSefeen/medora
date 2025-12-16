@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart' show ClientAppointmentsEntity;
 
 import '../../../../../core/enum/appointment_status.dart';
 import '../../../data/models/client_appointments_model.dart';
@@ -7,7 +8,7 @@ import 'booked_appointment_actions_section.dart';
 import 'booked_appointment_info_section.dart';
 
 class BookedAppointmentFooter extends StatelessWidget {
-  final ClientAppointmentsModel appointment;
+  final ClientAppointmentsEntity appointment;
   final AppointmentStatus appointmentStatus;
 
   const BookedAppointmentFooter({
@@ -35,7 +36,7 @@ class BookedAppointmentFooter extends StatelessWidget {
 
   Widget buildBookedAppointmentActionsSection(
     AppointmentStatus appointmentStatus,
-    ClientAppointmentsModel appointment,
+      ClientAppointmentsEntity appointment,
   ) {
     switch (appointmentStatus) {
       case AppointmentStatus.confirmed:

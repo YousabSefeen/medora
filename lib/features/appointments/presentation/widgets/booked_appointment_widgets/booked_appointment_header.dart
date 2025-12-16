@@ -5,11 +5,12 @@ import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/extensions/list_string_extension.dart';
 import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 
 import '../../../../../core/constants/app_strings/app_strings.dart';
 
 class BookedAppointmentHeader extends StatelessWidget {
-  final DoctorModel doctorModel;
+  final DoctorEntity doctorModel;
 
   const BookedAppointmentHeader({super.key, required this.doctorModel});
 

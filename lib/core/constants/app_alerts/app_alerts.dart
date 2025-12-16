@@ -12,11 +12,13 @@ import 'package:medora/core/constants/app_alerts/widgets/loading_dialog_body.dar
     show LoadingDialogBody;
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
+import 'package:medora/features/appointments/presentation/view_data/appointment_reschedule_view_data.dart' show AppointmentRescheduleViewData;
+
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
-import '../../../features/appointments/data/models/appointment_reschedule.dart';
+
 import '../../animations/custom_modal_type_bottom_sheet.dart';
 import 'appointment_canceled_success_dialog.dart';
 import 'appointment_cancellation_sheet.dart';
@@ -271,7 +273,7 @@ class AppAlerts {
 
   static void showRescheduleSuccessDialog({
     required BuildContext context,
-    required AppointmentRescheduleData appointmentReschedule,
+    required AppointmentRescheduleViewData appointmentReschedule,
   }) => AppointmentRescheduledDialog.show(
     context: context,
     appointmentReschedule: appointmentReschedule,

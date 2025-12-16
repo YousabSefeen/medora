@@ -9,12 +9,13 @@ import 'package:medora/core/constants/app_strings/app_strings.dart'
 import 'package:medora/core/enum/doctor_info_variant.dart'
     show DoctorInfoVariant;
 import 'package:medora/core/enum/navigation_source.dart' show NavigationSource;
-import 'package:medora/features/appointments/data/models/picked_doctor_info_model.dart'
-    show PickedDoctorInfoModel;
+
 import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart'
     show AppointmentCubit;
 import 'package:medora/features/appointments/presentation/controller/states/appointment_state.dart'
     show AppointmentState;
+import 'package:medora/features/appointments/presentation/view_data/selected_doctor_view_data.dart' show SelectedDoctorViewData;
+
 import 'package:medora/features/appointments/presentation/widgets/custom_sliver_app_bar.dart'
     show CustomSliverAppBar;
 import 'package:medora/features/appointments/presentation/widgets/custom_widgets/adaptive_action_button.dart'
@@ -23,15 +24,15 @@ import 'package:medora/features/appointments/presentation/widgets/doctor_appoint
     show DoctorAppointmentBookingSection;
 import 'package:medora/features/appointments/presentation/widgets/doctor_info_header.dart'
     show DoctorInfoHeader;
-import 'package:medora/features/shared/data/models/doctor_model.dart'
-    show DoctorModel;
+
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 import 'package:medora/features/shared/models/doctor_schedule_model.dart'
     show DoctorScheduleModel;
 import 'package:medora/features/shared/presentation/widgets/doctor_info_footer.dart'
     show DoctorInfoFooter;
 
 class CreateAppointmentScreen extends StatefulWidget {
-  final DoctorModel doctor;
+  final DoctorEntity doctor;
   final NavigationSource navigationSource;
 
   const CreateAppointmentScreen({
@@ -142,8 +143,8 @@ class _CreateAppointmentScreenState extends State<CreateAppointmentScreen> {
 
   void _navigateToPatientDetailsAfterCaching() {
     final cubit = context.read<AppointmentCubit>();
-    cubit.cachePickedDoctorInfo(
-      PickedDoctorInfoModel(
+    cubit.cacheSelectedDoctor(
+      SelectedDoctorViewData(
         doctorId: widget.doctor.doctorId!,
         doctorModel: widget.doctor,
       ),

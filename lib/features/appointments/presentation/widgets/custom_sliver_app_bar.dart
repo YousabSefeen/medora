@@ -16,9 +16,10 @@ import 'package:medora/core/enum/navigation_source.dart' show NavigationSource;
 import 'package:medora/core/extensions/string_extensions.dart';
 import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 
 class CustomSliverAppBar extends StatelessWidget {
-  final DoctorModel doctor;
+  final DoctorEntity doctor;
   final NavigationSource navigationSource;
 
   const CustomSliverAppBar({

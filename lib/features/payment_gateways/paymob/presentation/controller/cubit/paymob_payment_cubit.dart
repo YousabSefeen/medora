@@ -10,7 +10,7 @@ import 'package:medora/core/payment_gateway_manager/paymob_payment/paymob_keys.d
 import 'package:medora/features/payment_gateways/paymob/data/repository/paymob_repository.dart'
     show PaymobRepository;
 import 'package:medora/features/payment_gateways/paymob/transaction_process_states/data/models/paymob_transaction_data_result_model.dart'
-    show PaymobTransactionDataModel;
+    show PaymobTransactionDataResultModel;
 import 'package:medora/features/payment_gateways/shared/web_view_navigator.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -177,9 +177,9 @@ class PaymobPaymentCubit extends Cubit<PaymobPaymentState> {
 }
 
 class _PaymobResultParser {
-  static PaymobTransactionDataModel parse(String url) {
+  static PaymobTransactionDataResultModel parse(String url) {
     final uri = Uri.parse(url);
-    final result = PaymobTransactionDataModel.fromJson(uri.queryParameters);
+    final result = PaymobTransactionDataResultModel.fromJson(uri.queryParameters);
     return result;
   }
 }

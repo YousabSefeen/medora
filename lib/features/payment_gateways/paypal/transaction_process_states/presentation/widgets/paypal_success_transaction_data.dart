@@ -8,7 +8,7 @@
 // import '../../../../transaction_process_states/payment_success/widgets/custom_check_icon.dart';
 // import '../../../../transaction_process_states/payment_success/widgets/custom_payment_success_message.dart';
 // import '../../../../transaction_process_states/payment_success/widgets/order_success_info.dart';
-// import '../../data/models/paypal_payment_response_model.dart';
+// import '../../data/view_data/paypal_payment_response_model.dart';
 //
 // class PaypalSuccessTransactionData extends StatelessWidget {
 //   final PaypalPaymentResponseModel  paymentResponseModel;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/extensions/string_extensions.dart';
+import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart' show ClientAppointmentsEntity;
 
 import '../../../../../core/enum/appointment_status.dart';
 import '../../../data/models/client_appointments_model.dart';
@@ -8,7 +9,7 @@ import '../icon_with_text.dart';
 
 class BookedAppointmentInfoSection extends StatelessWidget {
   final AppointmentStatus appointmentStatus;
-  final ClientAppointmentsModel appointment;
+  final ClientAppointmentsEntity appointment;
 
   const BookedAppointmentInfoSection({
     super.key,

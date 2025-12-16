@@ -46,7 +46,7 @@ class DoctorsListRemoteDataSource extends DoctorsListRemoteDataSourceBase {
     }).toList();
 
     return PaginatedDataResponse(
-      doctors: doctorList,
+      doctors: doctorList.map((doctor) => doctor.toEntity()).toList(),
       lastDocument: lastDocument,
       hasMore:
           snapshot.docs.length ==

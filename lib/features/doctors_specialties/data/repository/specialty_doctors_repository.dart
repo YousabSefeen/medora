@@ -4,12 +4,13 @@ import 'package:medora/features/doctors_specialties/data/repository/specialty_do
     show SpecialtyDoctorsRepositoryBase;
 import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 
 import '../../../../core/error/failure.dart' show Failure, ServerFailure;
 
 class SpecialtyDoctorsRepository extends SpecialtyDoctorsRepositoryBase {
   @override
-  Future<Either<Failure, List<DoctorModel>>> getDoctorsBySpecialty({
+  Future<Either<Failure, List<DoctorEntity>>> getDoctorsBySpecialty({
     required String specialtyName,
   }) async {
     try {
@@ -26,7 +27,7 @@ class SpecialtyDoctorsRepository extends SpecialtyDoctorsRepositoryBase {
           ...doctorData, // Spread Operator to integrate fields
         });
       }).toList();
-      return right(doctorList);
+      return right(doctorList.map((doctor) => doctor.toEntity()).toList());
     } catch (e) {
       print('DoctorListRepository.getAllDoctorsError $e');
 

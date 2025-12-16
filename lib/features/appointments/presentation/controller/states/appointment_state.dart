@@ -2,17 +2,19 @@ import 'package:equatable/equatable.dart';
 import 'package:medora/core/enum/gender_type.dart' show GenderType;
 import 'package:medora/core/enum/payment_gateways_types.dart'
     show PaymentGatewaysTypes;
-import 'package:medora/features/appointments/data/models/picked_doctor_info_model.dart'
-    show PickedDoctorInfoModel;
+import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart'
+    show ClientAppointmentsEntity;
+import 'package:medora/features/appointments/domain/entities/doctor_appointment_entity.dart'
+    show DoctorAppointmentEntity;
+import 'package:medora/features/appointments/presentation/view_data/selected_doctor_view_data.dart' show SelectedDoctorViewData;
+
 
 import '../../../../../core/enum/appointment_availability_status.dart';
 import '../../../../../core/enum/lazy_request_state.dart';
 import '../../../../../core/enum/request_state.dart';
-import '../../../data/models/client_appointments_model.dart';
-import '../../../data/models/doctor_appointment_model.dart';
 
 class AppointmentState extends Equatable {
-  final List<DoctorAppointmentModel> doctorAppointmentModel;
+  final List<DoctorAppointmentEntity> doctorAppointmentModel;
   final RequestState doctorAppointmentState;
   final String doctorAppointmentError;
   final String? selectedDateFormatted;
@@ -24,7 +26,7 @@ class AppointmentState extends Equatable {
   final List<String> availableDoctorTimeSlots;
 
   final String? selectedTimeSlot;
-  final PickedDoctorInfoModel? pickedDoctorInfo;
+  final SelectedDoctorViewData? selectedDoctor;
 
   final LazyRequestState bookAppointmentState;
   final String bookAppointmentError;
@@ -33,7 +35,7 @@ class AppointmentState extends Equatable {
   final LazyRequestState cancelAppointmentState;
   final String cancelAppointmentError;
 
-  final List<ClientAppointmentsModel> getClientAppointmentsList;
+  final List<ClientAppointmentsEntity> getClientAppointmentsList;
   final RequestState getClientAppointmentsListState;
   final String getClientAppointmentsListError;
 
@@ -60,7 +62,7 @@ class AppointmentState extends Equatable {
     this.reservedTimeSlotsState = RequestState.loading,
     this.reservedTimeSlotsError = '',
     this.availableDoctorTimeSlots = const [],
-    this.pickedDoctorInfo,
+    this.selectedDoctor,
     this.selectedTimeSlot,
     this.bookAppointmentState = LazyRequestState.lazy,
     this.bookAppointmentError = '',
@@ -79,7 +81,7 @@ class AppointmentState extends Equatable {
   });
 
   AppointmentState copyWith({
-    List<DoctorAppointmentModel>? doctorAppointmentModel,
+    List<DoctorAppointmentEntity>? doctorAppointmentModel,
     RequestState? doctorAppointmentState,
     String? doctorAppointmentError,
     String? selectedDateFormatted,
@@ -88,7 +90,7 @@ class AppointmentState extends Equatable {
     RequestState? reservedTimeSlotsState,
     String? reservedTimeSlotsError,
     List<String>? availableDoctorTimeSlots,
-    PickedDoctorInfoModel? pickedDoctorInfo,
+    SelectedDoctorViewData? selectedDoctor,
     String? selectedTimeSlot,
     LazyRequestState? bookAppointmentState,
     String? bookAppointmentError,
@@ -96,7 +98,7 @@ class AppointmentState extends Equatable {
     String? rescheduleAppointmentError,
     LazyRequestState? cancelAppointmentState,
     String? cancelAppointmentError,
-    List<ClientAppointmentsModel>? getClientAppointmentsList,
+    List<ClientAppointmentsEntity>? getClientAppointmentsList,
     RequestState? getClientAppointmentsListState,
     String? getClientAppointmentsListError,
     LazyRequestState? deleteAppointment,
@@ -124,7 +126,7 @@ class AppointmentState extends Equatable {
           reservedTimeSlotsError ?? this.reservedTimeSlotsError,
       availableDoctorTimeSlots:
           availableDoctorTimeSlots ?? this.availableDoctorTimeSlots,
-      pickedDoctorInfo: pickedDoctorInfo ?? this.pickedDoctorInfo,
+      selectedDoctor: selectedDoctor ?? this.selectedDoctor,
       selectedTimeSlot: selectedTimeSlot ?? this.selectedTimeSlot,
       bookAppointmentState: bookAppointmentState ?? this.bookAppointmentState,
       bookAppointmentError: bookAppointmentError ?? this.bookAppointmentError,
@@ -163,7 +165,7 @@ class AppointmentState extends Equatable {
     reservedTimeSlotsState,
     reservedTimeSlotsError,
     availableDoctorTimeSlots,
-    pickedDoctorInfo,
+    selectedDoctor,
     selectedTimeSlot,
     bookAppointmentState,
     bookAppointmentError,

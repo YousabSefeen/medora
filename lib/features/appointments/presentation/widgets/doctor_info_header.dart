@@ -5,9 +5,10 @@ import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 
 class DoctorInfoHeader extends StatelessWidget {
-  final DoctorModel doctorInfo;
+  final DoctorEntity doctorInfo;
 
   const DoctorInfoHeader({super.key, required this.doctorInfo});
 

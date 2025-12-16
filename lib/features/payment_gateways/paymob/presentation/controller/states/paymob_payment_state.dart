@@ -2,14 +2,14 @@ import 'package:equatable/equatable.dart';
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 import 'package:medora/core/enum/web_view_status.dart' show WebViewStatus;
 import 'package:medora/features/payment_gateways/paymob/transaction_process_states/data/models/paymob_transaction_data_result_model.dart'
-    show PaymobTransactionDataModel;
+    show PaymobTransactionDataResultModel;
 
 class PaymobPaymentState extends Equatable {
   final LazyRequestState paymentIntentState;
   final String paymentIntentErrorMsg;
   final WebViewStatus webViewStatus;
   final int progressValue;
-  final PaymobTransactionDataModel? transactionResult;
+  final PaymobTransactionDataResultModel? transactionResult;
   final String webViewErrorMessage;
   final String paymobMobileWalletsRedirectUrl;
   final String paymobCardIframeUrl;
@@ -30,7 +30,7 @@ class PaymobPaymentState extends Equatable {
     String? paymentIntentErrorMsg,
     WebViewStatus? webViewStatus,
     int? progressValue,
-    PaymobTransactionDataModel? transactionResult,
+    PaymobTransactionDataResultModel? transactionResult,
     String? webViewErrorMessage,
     String? paymobMobileWalletsRedirectUrl,
     String? paymobCardIframeUrl,

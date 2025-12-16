@@ -7,7 +7,7 @@ import 'doctor_availability_model.dart';
 
 part 'doctor_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class DoctorModel extends Equatable {
   final String? doctorId;
   final String imageUrl;
@@ -52,7 +52,18 @@ class DoctorModel extends Equatable {
       fees: fees,
     );
   }
-
+  factory DoctorModel.fromEntity(DoctorEntity entity) {
+    return DoctorModel(
+      doctorId: entity.doctorId,
+      imageUrl: entity.imageUrl,
+      name: entity.name,
+      specialties: entity.specialties,
+      bio: entity.bio,
+      location: entity.location,
+      doctorAvailability: DoctorAvailabilityModel.fromEntity(entity.doctorAvailability),
+      fees: entity.fees,
+    );
+  }
   @override
   List<Object?> get props => [
     doctorId,

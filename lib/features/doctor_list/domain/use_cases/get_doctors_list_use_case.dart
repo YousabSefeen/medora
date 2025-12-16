@@ -16,8 +16,8 @@ class GetDoctorsListUseCase
 
   @override
   Future<Either<Failure, PaginatedDataResponse>> call(
-    PaginationParameters parameters,
+    PaginationParameters params,
   ) async {
-    return await doctorListRepositoryBase.getDoctorsList(parameters);
+    return await doctorListRepositoryBase.getDoctorsList(params);
   }
 }

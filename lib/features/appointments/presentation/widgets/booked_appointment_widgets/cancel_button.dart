@@ -5,13 +5,14 @@ import 'package:medora/core/constants/app_routes/app_router.dart'
     show AppRouter;
 import 'package:medora/core/constants/app_routes/app_router_names.dart'
     show AppRouterNames;
+import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart' show ClientAppointmentsEntity;
 
 import '../../../../../core/constants/app_strings/app_strings.dart';
 import '../../../../../core/constants/common_widgets/elevated_blue_button.dart';
 import '../../../data/models/client_appointments_model.dart';
 
 class CancelButton extends StatelessWidget {
-  final ClientAppointmentsModel appointment;
+  final ClientAppointmentsEntity appointment;
 
   const CancelButton({super.key, required this.appointment});
 

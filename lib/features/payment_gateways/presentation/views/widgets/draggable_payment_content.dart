@@ -1,7 +1,7 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:flutter_task/core/enum/payment_gateways_types.dart';
-// import 'package:flutter_task/features/payment_gateways/paymob/data/models/order_details.dart';
+// import 'package:flutter_task/features/payment_gateways/paymob/data/view_data/order_details.dart';
 // import 'package:flutter_task/features/payment_gateways/paymob/presentation/view/screens/paymob_initialization_screen.dart';
 // import 'package:flutter_task/features/payment_gateways/presentation/controller/cubit/payment_gateways_cubit.dart';
 // import 'package:flutter_task/features/payment_gateways/presentation/controller/states/payment_gateways_state.dart';

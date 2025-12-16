@@ -1,4 +1,3 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'paypal_payment_response_model.dart';
 
@@ -7,8 +6,8 @@ part of 'paypal_payment_response_model.dart';
 // **************************************************************************
 
 PaypalPaymentResponseModel _$PaypalPaymentResponseModelFromJson(
-  Map<dynamic, dynamic> json,
-) => PaypalPaymentResponseModel(
+    Map<dynamic, dynamic> json,
+    ) => PaypalPaymentResponseModel(
   error: json['error'] as bool?,
   message: json['message'] as String,
   data: json['data'] == null

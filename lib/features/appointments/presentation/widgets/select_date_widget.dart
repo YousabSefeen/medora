@@ -2,6 +2,7 @@ import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medora/core/constants/app_strings/app_strings.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 
@@ -23,7 +24,7 @@ class SelectDateWidget extends StatelessWidget {
 
   Widget _buildSectionTitle(BuildContext context) {
     return Text(
-      'Select Date',
+      AppStrings.selectDate,
       style: Theme.of(context).textTheme.mediumBlackBold,
       textAlign: TextAlign.start,
     );

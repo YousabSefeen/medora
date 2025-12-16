@@ -15,6 +15,7 @@ import 'package:medora/features/search/presentation/controller/states/search_sta
     show SearchStates;
 import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 
 import '../../../../../core/error/failure.dart' show Failure;
 
@@ -96,7 +97,7 @@ class SearchCubit extends HydratedCubit<SearchStates> {
   );
 
   Future<void> _executeSearch(
-    Future<Either<Failure, List<DoctorModel>>> searchFuture,
+    Future<Either<Failure, List<DoctorEntity>>> searchFuture,
   ) async {
     emit(state.copyWith(searchResultsState: LazyRequestState.loading));
 

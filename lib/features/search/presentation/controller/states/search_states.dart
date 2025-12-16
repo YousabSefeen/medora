@@ -2,12 +2,14 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart' show RangeValues;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 import 'package:medora/core/enum/search_type.dart' show SearchType;
-import 'package:medora/features/shared/data/models/doctor_model.dart'
-    show DoctorModel;
+
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
+
+import '../../../../shared/data/models/doctor_model.dart';
 
 class SearchStates extends Equatable {
   final SearchType searchType;
-  final List<DoctorModel> searchResults;
+  final List<DoctorEntity> searchResults;
   final LazyRequestState searchResultsState;
   final String searchResultsErrorMsg;
   final String? doctorName;
@@ -38,7 +40,7 @@ class SearchStates extends Equatable {
 
   SearchStates copyWith({
     SearchType? searchType,
-    List<DoctorModel>? searchResults,
+    List<DoctorEntity>? searchResults,
     LazyRequestState? searchResultsState,
     String? searchResultsErrorMsg,
 
@@ -76,7 +78,11 @@ class SearchStates extends Equatable {
   Map<String, dynamic> toJson() {
     return {
       'searchType': searchType.index,
-      'searchResults': searchResults.map((doctor) => doctor.toJson()).toList(),
+   //   'searchResults': searchResults.map((doctor) => doctor.toJson()).toList(),
+      'searchResults': searchResults
+      // يجب عليك إضافة دالة fromEntity في DoctorModel لإنشاء Model من Entity
+          .map((entity) => DoctorModel.fromEntity(entity).toJson())
+          .toList(),
       'searchResultsState': searchResultsState.index,
       'searchResultsErrorMsg': searchResultsErrorMsg,
       'doctorName': doctorName,
@@ -100,10 +106,17 @@ class SearchStates extends Equatable {
   factory SearchStates.fromJson(Map<String, dynamic> json) {
     return SearchStates(
       searchType: SearchType.values[json['searchType'] ?? 0],
+      // searchResults:
+      //     (json['searchResults'] as List?)
+      //         ?.map((doctorJson) => DoctorModel.fromJson(doctorJson))
+      //         .toList() ??
+      //     const [],
       searchResults:
-          (json['searchResults'] as List?)
-              ?.map((doctorJson) => DoctorModel.fromJson(doctorJson))
-              .toList() ??
+      (json['searchResults'] as List?)
+          ?.map((doctorJson) => DoctorModel.fromJson(doctorJson))
+      // **** هذا هو التحويل النهائي ****
+          .map((model) => model.toEntity())
+          .toList() ??
           const [],
       searchResultsState:
           LazyRequestState.values[json['searchResultsState'] ?? 0],

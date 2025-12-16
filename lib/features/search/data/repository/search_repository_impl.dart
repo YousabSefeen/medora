@@ -13,6 +13,7 @@ import 'package:medora/features/search/domain/value_objects/search_filters/speci
     show SpecialtyFilter;
 import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 
 import '../../../../core/error/failure.dart' show ServerFailure, Failure;
 
@@ -23,7 +24,7 @@ class SearchRepositoryImpl extends SearchRepositoryBase {
     : _dataSource = dataSource;
 
   @override
-  Future<Either<Failure, List<DoctorModel>>> searchDoctorsByName({
+  Future<Either<Failure, List<DoctorEntity>>> searchDoctorsByName({
     required String doctorName,
   }) async {
     try {
@@ -38,7 +39,7 @@ class SearchRepositoryImpl extends SearchRepositoryBase {
   }
 
   @override
-  Future<Either<Failure, List<DoctorModel>>> searchDoctorsByCriteria({
+  Future<Either<Failure, List<DoctorEntity>>> searchDoctorsByCriteria({
     required SearchFilters filters,
   }) async {
     try {
@@ -52,7 +53,7 @@ class SearchRepositoryImpl extends SearchRepositoryBase {
       ];
 
       final List doctorsList = await _dataSource.searchDoctors(searchFilters);
-      return right(doctorsList as List<DoctorModel>);
+      return right(doctorsList as List<DoctorEntity>);
     } catch (e) {
       return left(ServerFailure(catchError: e));
     }

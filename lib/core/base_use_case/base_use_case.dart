@@ -3,12 +3,12 @@ import 'package:equatable/equatable.dart';
 
 import '../error/failure.dart' show Failure;
 
-abstract class BaseUseCase<T, Parameters> {
-  Future<Either<Failure, T>> call(Parameters parameters);
+abstract class BaseUseCase<T, Params> {
+  Future<Either<Failure, T>> call(Params params);
 }
 
-class NoParameters extends Equatable {
-  const NoParameters();
+class NoParams extends Equatable {
+  const NoParams();
 
   @override
   List<Object> get props => [];

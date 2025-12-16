@@ -18,6 +18,7 @@ import 'package:medora/features/search/presentation/controller/cubit/home_doctor
 import 'package:medora/features/search/presentation/controller/states/home_doctor_search_states.dart';
 import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 import 'package:medora/features/shared/presentation/widgets/doctor_search_card.dart'
     show DoctorSearchCard;
 import 'package:medora/features/shared/presentation/widgets/empty_search_list_results.dart'
@@ -39,7 +40,7 @@ class DoctorSearchField extends StatelessWidget {
       builder: (BuildContext context, String? doctorName) {
         final bool isFelledEmpty = doctorName == null || doctorName == '';
 
-        return TypeAheadField<DoctorModel>(
+        return TypeAheadField<DoctorEntity>(
           hideOnEmpty: isFelledEmpty,
           hideOnUnfocus: false,
           hideWithKeyboard: false,
@@ -111,7 +112,7 @@ class DoctorSearchField extends StatelessWidget {
         thickness: 2,
       );
 
-  Future<List<DoctorModel>> _performInstantSearch(
+  Future<List<DoctorEntity>> _performInstantSearch(
     String searchPattern,
     BuildContext context,
   ) async {
@@ -195,10 +196,10 @@ class DoctorSearchField extends StatelessWidget {
 
   DoctorSearchCard _buildSuggestionItem(
     BuildContext context,
-    DoctorModel doctor,
+      DoctorEntity doctor,
   ) => DoctorSearchCard(doctor: doctor);
 
-  void _handleDoctorSelection(DoctorModel doctor, BuildContext context) =>
+  void _handleDoctorSelection(DoctorEntity doctor, BuildContext context) =>
       AppRouter.push(
         context,
         CreateAppointmentScreen(

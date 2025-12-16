@@ -7,13 +7,14 @@ import 'package:medora/features/appointments/presentation/screens/create_appoint
     show CreateAppointmentScreen;
 import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 import 'package:medora/features/shared/presentation/widgets/doctor_basic_info.dart'
     show DoctorBasicInfo;
 import 'package:medora/features/shared/value_objects/doctor_card_config.dart'
     show DoctorCardConfig;
 
 class DoctorCard extends StatelessWidget {
-  final DoctorModel doctor;
+  final DoctorEntity doctor;
 
   const DoctorCard({super.key, required this.doctor});
 

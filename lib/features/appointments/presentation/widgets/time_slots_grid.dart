@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
+import 'package:medora/features/appointments/presentation/view_data/doctor_time_slots_view_data.dart' show DoctorTimeSlotsViewData;
 
-import '../../data/models/time_slots_data_model.dart';
+
+
 import '../controller/cubit/appointment_cubit.dart';
 import 'time_slot_item.dart';
 
 class TimeSlotsGrid extends StatelessWidget {
-  final TimeSlotsDataModel data;
+  final DoctorTimeSlotsViewData data;
 
   const TimeSlotsGrid({super.key, required this.data});
 

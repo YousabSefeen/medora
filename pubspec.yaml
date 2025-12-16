@@ -51,7 +51,7 @@ dependencies:
   animate_do: ^4.2.0
   cached_network_image: ^3.4.1
   flutter_keyboard_visibility: ^6.0.0
-  #  # Packages that help create models
+  #  # Packages that help create view_data
   json_annotation: ^4.9.0
   easy_date_timeline: ^2.0.9
   flutter_datetime_picker_plus: ^2.2.0

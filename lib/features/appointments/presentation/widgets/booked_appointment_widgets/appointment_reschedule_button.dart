@@ -7,22 +7,23 @@ import 'package:medora/core/constants/app_alerts/app_alerts.dart'
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
+import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart' show ClientAppointmentsEntity;
 import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart'
     show AppointmentCubit;
+import 'package:medora/features/appointments/presentation/view_data/appointment_reschedule_view_data.dart' show AppointmentRescheduleViewData;
 import 'package:medora/features/shared/models/doctor_schedule_model.dart'
     show DoctorScheduleModel;
 
 import '../../../../../core/constants/app_routes/app_router.dart';
 import '../../../../../core/enum/lazy_request_state.dart';
-import '../../../data/models/appointment_reschedule.dart';
-import '../../../data/models/client_appointments_model.dart';
+
 import '../../controller/states/appointment_action_state.dart';
 import '../../controller/states/appointment_state.dart';
 import '../custom_widgets/adaptive_action_button.dart';
 import '../doctor_appointment_booking_section.dart';
 
 class AppointmentRescheduleButton extends StatelessWidget {
-  final ClientAppointmentsModel appointment;
+  final ClientAppointmentsEntity appointment;
 
   const AppointmentRescheduleButton({super.key, required this.appointment});
 
@@ -30,7 +31,7 @@ class AppointmentRescheduleButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: Theme.of(context).elevatedButtonTheme.style!.copyWith(
-        backgroundColor: WidgetStatePropertyAll(AppColors.softBlue),
+        backgroundColor: const WidgetStatePropertyAll(AppColors.softBlue),
         overlayColor: const WidgetStatePropertyAll(Colors.white),
       ),
       onPressed: () => _showRescheduleBottomSheet(context),
@@ -78,7 +79,7 @@ class AppointmentRescheduleButton extends StatelessWidget {
   Widget _buildDoctorBookingSection() => DoctorAppointmentBookingSection(
     doctorSchedule: DoctorScheduleModel(
       doctorId: appointment.doctorId,
-      doctorAvailability: appointment.doctorModel.doctorAvailability,
+      doctorAvailability: appointment.doctorEntity.doctorAvailability,
     ),
   );
 
@@ -143,7 +144,7 @@ class RescheduleConfirmationButton extends StatelessWidget {
 
   /// Triggers the reschedule appointment process
   void _executeReschedule(BuildContext context) {
-    print('RescheduleConfirmationButton._executeReschedule ${doctorId}');
+
     context.read<AppointmentCubit>().rescheduleAppointment(
       doctorId: doctorId,
       appointmentId: appointmentId,
@@ -193,7 +194,7 @@ class RescheduleConfirmationButton extends StatelessWidget {
         if (!context.mounted) return;
         AppAlerts.showRescheduleSuccessDialog(
           context: context,
-          appointmentReschedule: AppointmentRescheduleData(
+          appointmentReschedule: AppointmentRescheduleViewData(
             oldAppointmentDate: appointmentDate,
             oldAppointmentTime: appointmentTime,
             newAppointmentDate: appointmentData.selectedDate!,

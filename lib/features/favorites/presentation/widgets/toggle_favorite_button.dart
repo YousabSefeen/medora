@@ -14,9 +14,10 @@ import 'package:medora/features/favorites/presentation/controller/states/favorit
     show FavoritesStates;
 import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 
 class ToggleFavoriteButton extends StatefulWidget {
-  final DoctorModel doctorInfo;
+  final DoctorEntity doctorInfo;
 
   const ToggleFavoriteButton({super.key, required this.doctorInfo});
 

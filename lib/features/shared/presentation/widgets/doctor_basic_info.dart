@@ -4,6 +4,7 @@ import 'package:medora/features/favorites/presentation/widgets/toggle_favorite_b
     show ToggleFavoriteButton;
 import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 import 'package:medora/features/shared/presentation/widgets/doctor_image.dart'
     show DoctorImage;
 import 'package:medora/features/shared/presentation/widgets/doctor_info_footer.dart'
@@ -19,7 +20,7 @@ import 'package:medora/features/shared/value_objects/doctor_card_config.dart'
 
 class DoctorBasicInfo extends StatelessWidget {
   final NavigationSource navigationSource;
-  final DoctorModel doctor;
+  final DoctorEntity doctor;
   final DoctorCardConfig config;
 
   const DoctorBasicInfo({

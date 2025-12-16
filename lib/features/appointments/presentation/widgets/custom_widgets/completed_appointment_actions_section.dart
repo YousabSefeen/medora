@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:medora/features/appointments/data/models/picked_doctor_info_model.dart'
-    show PickedDoctorInfoModel;
-import 'package:medora/features/shared/data/models/doctor_model.dart'
-    show DoctorModel;
+import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart'
+    show ClientAppointmentsEntity;
+import 'package:medora/features/appointments/presentation/view_data/selected_doctor_view_data.dart' show SelectedDoctorViewData;
+
+
 
 import '../../../../../core/constants/app_alerts/app_alerts.dart';
 import '../../../../../core/constants/app_strings/app_strings.dart';
 import '../../../../../core/constants/common_widgets/elevated_blue_button.dart';
 import '../../../../../core/constants/themes/app_colors.dart';
 import '../../../../shared/models/doctor_schedule_model.dart';
-import '../../../data/models/client_appointments_model.dart';
 import '../book_appointment_button.dart';
 import '../doctor_appointment_booking_section.dart';
 
 class CompletedAppointmentActionsSection extends StatelessWidget {
-  final ClientAppointmentsModel appointment;
+  final ClientAppointmentsEntity appointment;
 
   const CompletedAppointmentActionsSection({
     super.key,
@@ -23,7 +23,6 @@ class CompletedAppointmentActionsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DoctorModel c = appointment.doctorModel;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 3),
       child: Row(
@@ -38,7 +37,7 @@ class CompletedAppointmentActionsSection extends StatelessWidget {
 }
 
 class BookAgainButton extends StatelessWidget {
-  final ClientAppointmentsModel appointment;
+  final ClientAppointmentsEntity appointment;
 
   const BookAgainButton({super.key, required this.appointment});
 
@@ -74,9 +73,9 @@ class BookAgainButton extends StatelessWidget {
       children: [
         _buildDoctorBookingSection(),
         BookAppointmentButton(
-          pickedDoctorInfoModel: PickedDoctorInfoModel(
+          pickedDoctorInfoModel: SelectedDoctorViewData(
             doctorId: appointment.doctorId,
-            doctorModel: appointment.doctorModel,
+            doctorModel: appointment.doctorEntity,
           ),
         ),
       ],
@@ -87,13 +86,13 @@ class BookAgainButton extends StatelessWidget {
   Widget _buildDoctorBookingSection() => DoctorAppointmentBookingSection(
     doctorSchedule: DoctorScheduleModel(
       doctorId: appointment.doctorId,
-      doctorAvailability: appointment.doctorModel.doctorAvailability,
+      doctorAvailability: appointment.doctorEntity.doctorAvailability,
     ),
   );
 }
 
 class LeaveAReviewButton extends StatelessWidget {
-  final ClientAppointmentsModel appointment;
+  final ClientAppointmentsEntity appointment;
 
   const LeaveAReviewButton({super.key, required this.appointment});
 

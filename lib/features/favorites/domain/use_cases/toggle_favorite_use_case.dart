@@ -14,15 +14,15 @@ class ToggleFavoriteUseCase
 
   @override
   Future<Either<Failure, void>> call(
-    ToggleFavoriteParameters parameters,
+    ToggleFavoriteParameters params,
   ) async {
-    if (parameters.isCurrentlyFavorite) {
+    if (params.isCurrentlyFavorite) {
       return await favoritesRepositoryBase.removeDoctorFromFavorites(
-        parameters.doctorId,
+        params.doctorId,
       );
     } else {
       return await favoritesRepositoryBase.addDoctorToFavorites(
-        parameters.doctorId,
+        params.doctorId,
       );
     }
   }

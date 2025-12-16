@@ -1,10 +1,12 @@
+/*
 import 'package:cloud_firestore/cloud_firestore.dart'
     show FirebaseFirestore, FieldPath, FieldValue;
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:medora/core/error/failure.dart';
-import 'package:medora/features/shared/data/models/doctor_model.dart'
+import 'package:medora/features/shared/data/view_data/doctor_model.dart'
     show DoctorModel;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 
 import '../../domain/favorites_repository_base/favorites_repository_base.dart';
 
@@ -52,7 +54,7 @@ class FavoritesRepository extends FavoritesRepositoryBase {
   }
 
   @override
-  Future<Either<Failure, List<DoctorModel>>> getFavoritesDoctors() async {
+  Future<Either<Failure, List<DoctorEntity>>> getFavoritesDoctors() async {
     try {
       final favoritesSnapshot = await _firestore
           .collection('users')
@@ -92,7 +94,7 @@ class FavoritesRepository extends FavoritesRepositoryBase {
         }
       }
 
-      return right(doctorList);
+      return right(doctorList as List<DoctorEntity>);
     } catch (e) {
       return Left(ServerFailure(catchError: e));
     }
@@ -124,3 +126,4 @@ class FavoritesRepository extends FavoritesRepositoryBase {
     throw UnimplementedError();
   }
 }
+*/

@@ -5,12 +5,13 @@ import 'package:medora/core/constants/app_strings/app_strings.dart'
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 import 'package:medora/generated/assets.dart' show Assets;
 
 class PaginationFooterWidget extends StatelessWidget {
   final bool isLoadingMore;
   final bool hasMore;
-  final List<DoctorModel> doctorsList;
+  final List<DoctorEntity> doctorsList;
 
   const PaginationFooterWidget({
     super.key,

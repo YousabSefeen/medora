@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:medora/features/appointments/domain/entities/book_appointment_entity.dart' show BookAppointmentEntity;
 
 part 'book_appointment_model.g.dart';
 
@@ -27,4 +28,29 @@ class BookAppointmentModel {
       _$BookAppointmentModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$BookAppointmentModelToJson(this);
+
+
+  BookAppointmentEntity toEntity() {
+    return BookAppointmentEntity(
+      patientName: patientName,
+      patientGender: patientGender,
+      patientAge: patientAge,
+      patientProblem: patientProblem,
+      appointmentStatus: appointmentStatus,
+      appointmentDate: appointmentDate,
+      appointmentTime: appointmentTime,
+    );
+  }
+
+  factory BookAppointmentModel.fromEntity(BookAppointmentEntity entity) {
+    return BookAppointmentModel(
+      patientName: entity.patientName,
+      patientGender: entity.patientGender,
+      patientAge: entity.patientAge,
+      patientProblem: entity.patientProblem,
+      appointmentStatus: entity.appointmentStatus,
+      appointmentDate: entity.appointmentDate,
+      appointmentTime: entity.appointmentTime,
+    );
+  }
 }

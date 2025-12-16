@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
+import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart' show ClientAppointmentsEntity;
 import 'package:medora/features/appointments/presentation/widgets/upcoming_appointments_list.dart'
     show UpcomingAppointmentsList;
 
@@ -10,7 +11,7 @@ import 'cancelled_appointments_list.dart';
 import 'completed_appointments_list.dart';
 
 class BookedAppointmentsList extends StatelessWidget {
-  final List<ClientAppointmentsModel> appointmentsList;
+  final List<ClientAppointmentsEntity> appointmentsList;
 
   const BookedAppointmentsList({super.key, required this.appointmentsList});
 

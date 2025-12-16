@@ -1,19 +1,36 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medora/core/base_use_case/base_use_case.dart' show NoParams;
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/core/enum/gender_type.dart' show GenderType;
 import 'package:medora/core/enum/payment_gateways_types.dart'
     show PaymentGatewaysTypes;
-import 'package:medora/features/appointments/data/models/book_appointment_model.dart'
-    show BookAppointmentModel;
-import 'package:medora/features/appointments/data/models/picked_doctor_info_model.dart'
-    show PickedDoctorInfoModel;
+import 'package:medora/features/appointments/domain/entities/book_appointment_entity.dart'
+    show BookAppointmentEntity;
+import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart'
+    show ClientAppointmentsEntity;
+import 'package:medora/features/appointments/domain/use_cases/book_appointment_use_case.dart';
+import 'package:medora/features/appointments/domain/use_cases/cancel_appointment_use_case.dart'
+    show CancelAppointmentUseCase, CancelAppointmentsParams;
+import 'package:medora/features/appointments/domain/use_cases/delete_appointment_use_case.dart'
+    show DeleteAppointmentUseCase, DeleteAppointmentParams;
+import 'package:medora/features/appointments/domain/use_cases/fetch_booked_time_slots_use_case.dart'
+    show FetchBookedTimeSlotsUseCase, FetchBookedTimeSlotsParams;
+import 'package:medora/features/appointments/domain/use_cases/fetch_client_appointments_use_case.dart'
+    show FetchClientAppointmentsUseCase;
+import 'package:medora/features/appointments/domain/use_cases/fetch_doctor_appointments_use_case.dart'
+    show FetchDoctorAppointmentsUseCase;
+import 'package:medora/features/appointments/domain/use_cases/reschedule_appointment_use_case.dart'
+    show RescheduleAppointmentUseCase, RescheduleAppointmentParams;
+
 import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_controllers.dart'
     show PatientFieldsControllers;
 import 'package:medora/features/appointments/presentation/controller/states/appointment_state.dart'
     show AppointmentState;
+import 'package:medora/features/appointments/presentation/view_data/selected_doctor_view_data.dart' show SelectedDoctorViewData;
+
 
 import '../../../../../core/app_settings/controller/cubit/app_settings_cubit.dart';
 import '../../../../../core/enum/appointment_availability_status.dart';
@@ -24,23 +41,32 @@ import '../../../../../core/enum/request_state.dart';
 import '../../../../../core/utils/date_time_formatter.dart';
 import '../../../../../core/utils/time_slot_helper.dart';
 import '../../../../shared/models/doctor_schedule_model.dart';
-import '../../../data/models/client_appointments_model.dart';
-import '../../../data/repository/appointment_repository.dart';
 
 class AppointmentCubit extends Cubit<AppointmentState> {
   final AppSettingsCubit appSettingsCubit;
-  final AppointmentRepository appointmentRepository;
+  final BookAppointmentUseCase bookAppointmentUS;
+  final CancelAppointmentUseCase cancelAppointmentUS;
+  final DeleteAppointmentUseCase deleteAppointmentUS;
+  final FetchClientAppointmentsUseCase fetchClientAppointmentsUseCase;
+  final FetchDoctorAppointmentsUseCase fetchDoctorAppointmentsUS;
+  final FetchBookedTimeSlotsUseCase fetchBookedTimeSlotsUseCase;
+
+  final RescheduleAppointmentUseCase rescheduleAppointmentUseCase;
 
   AppointmentCubit({
     required this.appSettingsCubit,
-    required this.appointmentRepository,
+    required this.bookAppointmentUS,
+    required this.cancelAppointmentUS,
+    required this.deleteAppointmentUS,
+    required this.fetchClientAppointmentsUseCase,
+    required this.fetchDoctorAppointmentsUS,
+    required this.fetchBookedTimeSlotsUseCase,
+    required this.rescheduleAppointmentUseCase,
   }) : super(const AppointmentState());
 
   // Public APIs
   Future<void> fetchDoctorAppointments(String doctorId) async {
-    final response = await appointmentRepository.fetchDoctorAppointments(
-      doctorId: doctorId,
-    );
+    final response = await fetchDoctorAppointmentsUS.call(doctorId);
     response.fold(
       (failure) => _emitDoctorAppointmentsError(failure),
       (appointments) => emit(
@@ -105,11 +131,13 @@ class AppointmentCubit extends Cubit<AppointmentState> {
     }
 
     emit(state.copyWith(rescheduleAppointmentState: LazyRequestState.loading));
-    final response = await appointmentRepository.rescheduleAppointment(
-      doctorId: doctorId,
-      appointmentId: appointmentId,
-      appointmentDate: state.selectedDateFormatted!,
-      appointmentTime: state.selectedTimeSlot!,
+    final response = await rescheduleAppointmentUseCase.call(
+      RescheduleAppointmentParams(
+        doctorId: doctorId,
+        appointmentId: appointmentId,
+        appointmentDate: state.selectedDateFormatted!,
+        appointmentTime: state.selectedTimeSlot!,
+      ),
     );
 
     response.fold(
@@ -146,9 +174,11 @@ class AppointmentCubit extends Cubit<AppointmentState> {
 
     emit(state.copyWith(cancelAppointmentState: LazyRequestState.loading));
 
-    final response = await appointmentRepository.cancelAppointment(
-      doctorId: doctorId,
-      appointmentId: appointmentId,
+    final response = await cancelAppointmentUS.call(
+      CancelAppointmentsParams(
+        doctorId: doctorId,
+        appointmentId: appointmentId,
+      ),
     );
 
     response.fold(
@@ -175,7 +205,7 @@ class AppointmentCubit extends Cubit<AppointmentState> {
   }
 
   ///
-  List<ClientAppointmentsModel>? get upcomingAppointments {
+  List<ClientAppointmentsEntity>? get upcomingAppointments {
     final now = DateTime.now();
     return state.getClientAppointmentsList
         .where(
@@ -191,7 +221,7 @@ class AppointmentCubit extends Cubit<AppointmentState> {
     return DateTimeFormatter.convertDateToString(appointDate);
   }
 
-  List<ClientAppointmentsModel>? get completedAppointments {
+  List<ClientAppointmentsEntity>? get completedAppointments {
     final now = DateTime.now();
     return state.getClientAppointmentsList
         .where(
@@ -207,7 +237,7 @@ class AppointmentCubit extends Cubit<AppointmentState> {
         .toList();
   }
 
-  List<ClientAppointmentsModel>? get cancelledAppointments {
+  List<ClientAppointmentsEntity>? get cancelledAppointments {
     return state.getClientAppointmentsList
         .where(
           (appointment) =>
@@ -218,8 +248,9 @@ class AppointmentCubit extends Cubit<AppointmentState> {
 
   ///
   Future<void> fetchClientAppointmentsWithDoctorDetails() async {
-    final response = await appointmentRepository
-        .fetchClientAppointmentsWithDoctorDetails();
+    final response = await fetchClientAppointmentsUseCase.call(
+      const NoParams(),
+    );
     response.fold(
       (failure) => emit(
         state.copyWith(
@@ -283,8 +314,9 @@ class AppointmentCubit extends Cubit<AppointmentState> {
   void _clearSelectedTimeSlot() => emit(state.copyWith(selectedTimeSlot: ''));
 
   Future<void> _loadReservedSlots(String doctorId, String date) async {
-    final response = await appointmentRepository
-        .fetchReservedTimeSlotsForDoctorOnDate(doctorId: doctorId, date: date);
+    final response = await fetchBookedTimeSlotsUseCase.call(
+      FetchBookedTimeSlotsParams(doctorId: doctorId, date: date),
+    );
 
     response.fold(
       (failure) => emit(
@@ -332,9 +364,8 @@ class AppointmentCubit extends Cubit<AppointmentState> {
     required String appointmentId,
     required String doctorId,
   }) async {
-    final response = await appointmentRepository.deleteAppointment(
-      appointmentId: appointmentId,
-      doctorId: doctorId,
+    final response = await deleteAppointmentUS.call(
+      DeleteAppointmentParams(appointmentId: appointmentId, doctorId: doctorId),
     );
     response.fold(
       (failure) {
@@ -353,10 +384,10 @@ class AppointmentCubit extends Cubit<AppointmentState> {
 
   //***************************************************************
 
-  void cachePickedDoctorInfo(PickedDoctorInfoModel pickedDoctorInfo) =>
-      emit(state.copyWith(pickedDoctorInfo: pickedDoctorInfo));
+  void cacheSelectedDoctor(SelectedDoctorViewData selectedDoctor) =>
+      emit(state.copyWith(selectedDoctor: selectedDoctor));
 
-  PickedDoctorInfoModel get pickedDoctorInfo => state.pickedDoctorInfo!;
+  SelectedDoctorViewData get pickedDoctorInfo => state.selectedDoctor!;
 
   void onChangeSelectedGenderIndex(int index) {
     if (index == 0) {
@@ -415,9 +446,11 @@ class AppointmentCubit extends Cubit<AppointmentState> {
 
     emit(state.copyWith(bookAppointmentState: LazyRequestState.loading));
 
-    final response = await appointmentRepository.bookAppointment(
-      doctorId: state.pickedDoctorInfo!.doctorId,
-      bookAppointmentModel: _createAppointmentModel(),
+    final response = await bookAppointmentUS.call(
+      BookAppointmentParams(
+        doctorId: state.selectedDoctor!.doctorId,
+        bookAppointmentEntity: _createAppointmentModel(),
+      ),
     );
 
     response.fold(
@@ -436,7 +469,7 @@ class AppointmentCubit extends Cubit<AppointmentState> {
     );
   }
 
-  BookAppointmentModel _createAppointmentModel() => BookAppointmentModel(
+  BookAppointmentEntity _createAppointmentModel() => BookAppointmentEntity(
     patientName: _cachedControllers!.nameController.text.trim(),
     patientGender: state.genderType.name,
     patientAge: _cachedControllers!.ageController.text.trim(),

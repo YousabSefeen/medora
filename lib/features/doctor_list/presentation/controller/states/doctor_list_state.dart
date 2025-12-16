@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
-import 'package:medora/features/shared/data/models/doctor_model.dart'
-    show DoctorModel;
+
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 
 import '../../../../../core/enum/request_state.dart';
 
 class DoctorListState extends Equatable {
   final bool isLoadedBefore;
-  final List<DoctorModel> doctorList;
+  final List<DoctorEntity> doctorList;
   final RequestState doctorListState;
   final String doctorListError;
 
@@ -27,7 +27,7 @@ class DoctorListState extends Equatable {
 
   DoctorListState copyWith({
     bool? isLoadedBefore,
-    List<DoctorModel>? doctorList,
+    List<DoctorEntity>? doctorList,
     RequestState? doctorListState,
     String? doctorListError,
     dynamic lastDocument,

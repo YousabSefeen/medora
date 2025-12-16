@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'paymob_transaction_data_result_model.g.dart';
 
 @JsonSerializable()
-class PaymobTransactionDataModel {
+class PaymobTransactionDataResultModel {
   ///1. الأساسية المتعلقة بالمعاملة (Transaction):
   //id: رقم تعريف المعاملة (Transaction ID)، يعتبر أساسيًا لتتبع المعاملة.
   final String? trnxId;
@@ -83,7 +83,7 @@ class PaymobTransactionDataModel {
   final String?
   sourceSubType; //sourceSubType: نوع البطاقة (مثل: MasterCard، Visa).
 
-  PaymobTransactionDataModel({
+  PaymobTransactionDataResultModel({
     required this.trnxId,
     required this.totalPrice,
     required this.success,
@@ -116,6 +116,6 @@ class PaymobTransactionDataModel {
     required this.sourceSubType,
   });
 
-  factory PaymobTransactionDataModel.fromJson(Map<String, dynamic> json) =>
+  factory PaymobTransactionDataResultModel.fromJson(Map<String, dynamic> json) =>
       _$PaymobTransactionDataResultModelFromJson(json);
 }

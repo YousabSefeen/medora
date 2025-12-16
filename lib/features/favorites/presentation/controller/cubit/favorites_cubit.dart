@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart' show Cubit;
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medora/core/base_use_case/base_use_case.dart' show NoParameters;
+import 'package:medora/core/base_use_case/base_use_case.dart' show NoParams;
 import 'package:medora/core/constants/app_duration/app_duration.dart'
     show AppDurations;
 import 'package:medora/core/constants/app_strings/app_strings.dart'
@@ -11,13 +11,13 @@ import 'package:medora/features/favorites/domain/use_cases/get_favorites_doctors
 import 'package:medora/features/favorites/domain/use_cases/is_doctor_favorite_use_case.dart'
     show IsDoctorFavoriteUseCase;
 import 'package:medora/features/favorites/domain/use_cases/toggle_favorite_use_case.dart'
-    show ToggleFavoriteUseCase, ToggleFavoriteParameters;
+    show ToggleFavoriteUseCase;
 import 'package:medora/features/favorites/domain/value_objects/toggle_favorite_parameters.dart'
     show ToggleFavoriteParameters;
 import 'package:medora/features/favorites/presentation/controller/states/favorites_states.dart'
     show FavoritesStates;
-import 'package:medora/features/shared/data/models/doctor_model.dart'
-    show DoctorModel;
+
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 
 import '../../../../../core/error/failure.dart' show Failure;
 
@@ -33,7 +33,7 @@ class FavoritesCubit extends Cubit<FavoritesStates> {
   }) : super(const FavoritesStates());
 
   Future<void> getFavoritesDoctors() async {
-    final result = await getFavoritesDoctorsUseCase(const NoParameters());
+    final result = await getFavoritesDoctorsUseCase(const NoParams());
 
     result.fold(
       (failure) => _handleFavoritesListError(failure),
@@ -48,7 +48,7 @@ class FavoritesCubit extends Cubit<FavoritesStates> {
     ),
   );
 
-  void _handleFavoritesListSuccess(List<DoctorModel> favoritesList) => emit(
+  void _handleFavoritesListSuccess(List<DoctorEntity> favoritesList) => emit(
     state.copyWith(
       favoritesDoctorsList: favoritesList,
       favoritesListState: LazyRequestState.loaded,
@@ -66,7 +66,7 @@ class FavoritesCubit extends Cubit<FavoritesStates> {
 
   Future<void> toggleFavorite({
     required bool isFavorite,
-    required DoctorModel doctorInfo,
+    required DoctorEntity doctorInfo,
   }) async {
     _applyOptimisticUpdates(isFavorite, doctorInfo);
 
@@ -83,7 +83,7 @@ class FavoritesCubit extends Cubit<FavoritesStates> {
     );
   }
 
-  void _onToggleFailure(bool isFavorite, DoctorModel doctorInfo) {
+  void _onToggleFailure(bool isFavorite, DoctorEntity doctorInfo) {
     emit(
       state.copyWith(
         toggleFavoriteState: LazyRequestState.error,
@@ -95,7 +95,7 @@ class FavoritesCubit extends Cubit<FavoritesStates> {
 
   // ========== PRIVATE METHODS ========== //
 
-  void _applyOptimisticUpdates(bool isFavorite, DoctorModel doctorInfo) {
+  void _applyOptimisticUpdates(bool isFavorite, DoctorEntity doctorInfo) {
     final updatedFavorites = _updateFavoriteDoctorsSet(
       doctorId: doctorInfo.doctorId!,
       shouldBeFavorite: !isFavorite,
@@ -130,11 +130,11 @@ class FavoritesCubit extends Cubit<FavoritesStates> {
   }
 
   /// Get the updated favorites list
-  List<DoctorModel> _getUpdatedFavoritesList({
+  List<DoctorEntity> _getUpdatedFavoritesList({
     required bool isFavorite,
-    required DoctorModel doctorInfo,
+    required DoctorEntity doctorInfo,
   }) {
-    final updatedList = List<DoctorModel>.from(state.favoritesDoctorsList);
+    final updatedList = List<DoctorEntity>.from(state.favoritesDoctorsList);
     final index = updatedList.indexWhere(
       (doctor) => doctor.doctorId == doctorInfo.doctorId,
     );
@@ -153,14 +153,14 @@ class FavoritesCubit extends Cubit<FavoritesStates> {
   }
 
   /// Rolling back updates after a delay period
-  void _rollbackWithDelay(bool originalState, DoctorModel doctorInfo) =>
+  void _rollbackWithDelay(bool originalState, DoctorEntity doctorInfo) =>
       Future.delayed(
         AppDurations.milliseconds_500,
         () => _applyOptimisticUpdates(!originalState, doctorInfo),
       );
 
   /// Handling the successful switch to the favorites
-  void _onToggleSuccess(bool isFavorite, DoctorModel doctorInfo) =>
+  void _onToggleSuccess(bool isFavorite, DoctorEntity doctorInfo) =>
       emit(state.copyWith(toggleFavoriteState: LazyRequestState.loaded));
 
   /// Handling favorites verification errors

@@ -10,7 +10,7 @@ class IsDoctorFavoriteUseCase extends BaseUseCase<bool, String> {
   IsDoctorFavoriteUseCase({required this.favoritesRepositoryBase});
 
   @override
-  Future<Either<Failure, bool>> call(String doctorId) async {
-    return await favoritesRepositoryBase.isDoctorFavorite(doctorId);
+  Future<Either<Failure, bool>> call(String params) async {
+    return await favoritesRepositoryBase.isDoctorFavorite(params);
   }
 }
