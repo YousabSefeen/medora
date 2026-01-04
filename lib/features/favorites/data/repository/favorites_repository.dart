@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart'
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:medora/core/error/failure.dart';
-import 'package:medora/features/shared/data/view_data/doctor_model.dart'
+import 'package:medora/features/shared/data/data/doctor_model.dart'
     show DoctorModel;
 import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 

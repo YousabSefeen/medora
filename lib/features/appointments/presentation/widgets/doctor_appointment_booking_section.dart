@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart'
-    show AppointmentCubit;
+
+import 'package:medora/features/appointments/presentation/controller/cubit/time_slot_cubit.dart' show TimeSlotCubit;
 import 'package:medora/features/appointments/presentation/widgets/appointment_time_selector.dart'
     show AppointmentTimeSelector;
 import 'package:medora/features/appointments/presentation/widgets/select_date_widget.dart'
@@ -28,7 +28,7 @@ class _DoctorAppointmentBookingSectionState
   void initState() {
     super.initState();
 
-    context.read<AppointmentCubit>().getAvailableDoctorTimeSlots(
+    context.read<TimeSlotCubit>().getAvailableDoctorTimeSlots(
       selectedDate: DateTime.now(),
       doctorSchedule: widget.doctorSchedule,
     );

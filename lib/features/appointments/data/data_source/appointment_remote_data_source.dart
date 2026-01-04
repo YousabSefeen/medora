@@ -1,12 +1,9 @@
-// data/data_source/appointment_remote_data_source.dart
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:medora/core/enum/appointment_status.dart';
 import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
 
-import '../models/book_appointment_model.dart';
 import '../models/client_appointments_model.dart';
 import '../models/doctor_appointment_model.dart';
 import 'appointment_remote_data_source_base.dart';
@@ -21,7 +18,78 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
   }) : _firestore = firestore ?? FirebaseFirestore.instance,
        _auth = auth ?? FirebaseAuth.instance;
 
-  // 1. fetching all doctor appointments
+  @override
+  Future<String> bookAppointment({
+    required Map<String, dynamic> queryParams,
+  }) async {
+    try {
+      final appointmentRef = _firestore.collection('appointments').doc();
+      final appointmentId = appointmentRef.id;
+      final data = {
+        ...queryParams,
+        'clientId': _getCurrentUserId(),
+        'appointmentStatus': 'pending',
+        'appointmentId': appointmentId,
+        'createdAt': FieldValue.serverTimestamp(),
+        'expiresAt': Timestamp.fromDate(
+          DateTime.now().add(const Duration(minutes: 12)),
+        ),
+      };
+
+      await appointmentRef.set(data);
+      await FirebaseFirestore.instance
+          .collection('doctors')
+          .doc(queryParams['doctorId'])
+          .collection('appointments')
+          .doc(appointmentId)
+          .set(data);
+      return appointmentId;
+    } catch (e) {
+      _logError('bookAppointment', e);
+      rethrow;
+    }
+  }
+
+  // confirmAppointment
+  @override
+  Future<void> confirmAppointment({
+    required Map<String, dynamic> queryParams,
+  }) async {
+    try {
+      final doctorId = queryParams['doctorId'];
+      final appointmentId = queryParams['appointmentId'];
+
+      final updateData = {
+        'patientName': queryParams['patientName'],
+        'patientGender': queryParams['patientGender'],
+        'patientAge': queryParams['patientAge'],
+        'patientProblem': queryParams['patientProblem'],
+
+        'appointmentStatus': 'confirmed',
+        'confirmedAt': FieldValue.serverTimestamp(),
+
+        'expiresAt': FieldValue.delete(),
+      };
+
+      //   Update the appointment in the public collection
+      await _firestore
+          .collection('appointments')
+          .doc(appointmentId)
+          .update(updateData);
+      //   Update the appointment in the doctor's collection
+      await _firestore
+          .collection('doctors')
+          .doc(doctorId)
+          .collection('appointments')
+          .doc(appointmentId)
+          .update(updateData);
+    } catch (e) {
+      _logError('confirmAppointment', e);
+      rethrow;
+    }
+  }
+
+  //   fetching all doctor appointments
   @override
   Future<List<DoctorAppointmentModel>> fetchDoctorAppointments({
     required String doctorId,
@@ -36,11 +104,11 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
       return snapshot.docs.map(_convertToDoctorAppointment).toList();
     } catch (e) {
       _logError('fetchDoctorAppointments', e);
-      rethrow; // إعادة رمي الخطأ ليتم التعامل معه في RepositoryImpl
+      rethrow;
     }
   }
 
-  // 2. Retrieve the booked times for a specific date
+  // Retrieve the booked times for a specific date
   @override
   Future<List<String>> fetchBookedTimeSlots({
     required Map<String, dynamic> queryParams,
@@ -48,46 +116,32 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
     try {
       final doctorId = queryParams['doctorId'] as String;
       final date = queryParams['date'] as String;
+
       final snapshot = await _firestore
           .collection('appointments')
           .where('doctorId', isEqualTo: doctorId)
           .where('appointmentDate', isEqualTo: date)
           .get();
 
+      final now = DateTime.now();
+
       return snapshot.docs
+          .where((doc) {
+            final status = doc['appointmentStatus'] as String;
+
+            if (status == 'confirmed') return true;
+
+            if (status == 'pending') {
+              final expiresAt = doc['expiresAt'] as Timestamp?;
+              return expiresAt != null && expiresAt.toDate().isAfter(now);
+            }
+
+            return false;
+          })
           .map((doc) => doc['appointmentTime'] as String)
           .toList();
     } catch (e) {
-      _logError('fetchReservedTimeSlotsForDoctorOnDate', e);
-      rethrow;
-    }
-  }
-
-  // 3. Book a new appointment
-  @override
-  Future<void> bookAppointment({
-    required String doctorId,
-    required BookAppointmentModel bookAppointmentModel, // يستقبل Model
-  }) async {
-    try {
-      final appointmentId = _firestore.collection('appointments').doc().id;
-      final clientId = _getCurrentUserId();
-
-      await _saveAppointmentUnderDoctor(
-        doctorId: doctorId,
-        clientId: clientId,
-        appointmentId: appointmentId,
-        bookAppointmentModel: bookAppointmentModel,
-      );
-
-      await _saveAppointmentGlobally(
-        doctorId: doctorId,
-        clientId: clientId,
-        appointmentId: appointmentId,
-        bookAppointmentModel: bookAppointmentModel,
-      );
-    } catch (e) {
-      _logError('bookAppointment', e);
+      _logError('fetchBookedTimeSlots', e);
       rethrow;
     }
   }
@@ -132,10 +186,9 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
     );
   }
 
-  // 6.  fetch client appointments with doctor details
+  //   fetch client appointments with doctor details
   @override
-  Future<List<ClientAppointmentsModel>?>
-  fetchClientAppointments() async {
+  Future<List<ClientAppointmentsModel>?> fetchClientAppointments() async {
     try {
       final clientId = _getCurrentUserId();
       final appointments = await _fetchAppointmentsByClientId(clientId);
@@ -198,35 +251,6 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
     return user.uid;
   }
 
-  /// حفظ الموعد في مجموعة الطبيب الفرعية
-  Future<void> _saveAppointmentUnderDoctor({
-    required String doctorId,
-    required String clientId,
-    required String appointmentId,
-    required BookAppointmentModel bookAppointmentModel,
-  }) async {
-    await _firestore
-        .collection('doctors')
-        .doc(doctorId)
-        .collection('appointments')
-        .doc(appointmentId)
-        .set({'clientId': clientId, ...bookAppointmentModel.toJson()});
-  }
-
-  /// حفظ الموعد في مجموعة المواعيد العامة
-  Future<void> _saveAppointmentGlobally({
-    required String doctorId,
-    required String clientId,
-    required String appointmentId,
-    required BookAppointmentModel bookAppointmentModel,
-  }) async {
-    await _firestore.collection('appointments').doc(appointmentId).set({
-      'doctorId': doctorId,
-      'clientId': clientId,
-      ...bookAppointmentModel.toJson(),
-    });
-  }
-
   /// تحديث موعد في كلتا المجموعتين (العامة والخاصة بالطبيب)
   Future<void> _updateAppointment({
     required String doctorId,
@@ -274,6 +298,7 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
   ) async {
     final snapshot = await _firestore
         .collection('appointments')
+        .where('appointmentStatus', isEqualTo: 'confirmed')
         .where('clientId', isEqualTo: clientId)
         .orderBy('appointmentDate')
         .get();
@@ -285,7 +310,7 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
     }).toList();
   }
 
-  /// استخراج معرّفات الأطباء الفريدة
+  /// Extracting unique doctors  identifiers
   List<String> _extractUniqueDoctorIds(
     List<Map<String, dynamic>> appointments,
   ) {

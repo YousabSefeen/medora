@@ -33,8 +33,8 @@ class AppRouter {
       case AppRouterNames.doctorProfile:
         return _animatedRoute(settings, const DoctorProfileScreen());
 
-      case AppRouterNames.patientDetails:
-        return _animatedRoute(settings, const PatientDetailsScreen());
+      // case AppRouterNames.patientDetails:
+      //   return _animatedRoute(settings, const PatientDetailsScreen());
 
       case AppRouterNames.bookedAppointments:
         return _animatedRoute(settings, const BookedAppointmentsScreen());

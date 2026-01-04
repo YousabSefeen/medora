@@ -3,7 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
-import 'package:medora/features/appointments/presentation/view_data/appointment_reschedule_view_data.dart' show AppointmentRescheduleViewData;
+import 'package:medora/features/appointments/presentation/data/appointment_reschedule_data.dart' show AppointmentRescheduleData;
+
 import 'package:medora/features/appointments/presentation/widgets/icon_with_text.dart'
     show IconWithText;
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
@@ -17,7 +18,7 @@ import '../themes/app_colors.dart';
 class AppointmentRescheduledDialog {
   static void show({
     required BuildContext context,
-    required AppointmentRescheduleViewData appointmentReschedule,
+    required AppointmentRescheduleData appointmentReschedule,
   }) {
     WoltModalSheet.show(
       context: context,
@@ -32,7 +33,7 @@ class AppointmentRescheduledDialog {
 
   static WoltModalSheetPage _buildSuccessModalPage(
     BuildContext context,
-    AppointmentRescheduleViewData appointmentReschedule,
+      AppointmentRescheduleData appointmentReschedule,
   ) {
     return WoltModalSheetPage(
       backgroundColor: Colors.white,
@@ -105,7 +106,7 @@ class AppointmentRescheduledDialog {
 
   static Widget _buildAppointmentComparison(
     BuildContext context,
-    AppointmentRescheduleViewData appointmentReschedule,
+      AppointmentRescheduleData appointmentReschedule,
   ) {
     final textTheme = Theme.of(context).textTheme;
     final oldAppointmentStyle = _getOldAppointmentStyle(textTheme);

@@ -3,10 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medora/core/constants/app_routes/app_router.dart'
     show AppRouter;
+import 'package:medora/core/constants/app_strings/app_strings.dart' show AppStrings;
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart'
     show AppointmentCubit;
+import 'package:medora/features/appointments/presentation/controller/cubit/book_appointment_cubit.dart'
+    show BookAppointmentCubit;
+import 'package:medora/features/appointments/presentation/controller/cubit/book_appointment_cubit.dart'
+    show BookAppointmentCubit;
 import 'package:medora/features/home/presentation/screens/bottom_nav_screen.dart';
 
 class BottomActionButtonSection extends StatelessWidget {
@@ -33,12 +38,12 @@ class BottomActionButtonSection extends StatelessWidget {
               children: [
                 RichText(
                   text: TextSpan(
-                    text: 'Total: ',
+                    text: AppStrings.total,
                     style: textTheme.largeBlackBold.copyWith(letterSpacing: 2),
                     children: [
                       TextSpan(
                         text:
-                            '${context.read<AppointmentCubit>().pickedDoctorInfo.doctorModel.fees} EGP',
+                            '${context.read<BookAppointmentCubit>().appointmentDataView.doctorEntity.fees} ${AppStrings.egyptianCurrency}',
                         style: textTheme.numbersStyle.copyWith(fontSize: 16.sp),
                       ),
                     ],

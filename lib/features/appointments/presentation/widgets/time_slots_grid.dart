@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
-import 'package:medora/features/appointments/presentation/view_data/doctor_time_slots_view_data.dart' show DoctorTimeSlotsViewData;
+import 'package:medora/features/appointments/presentation/controller/cubit/time_slot_cubit.dart' show TimeSlotCubit;
+import 'package:medora/features/appointments/presentation/data/time_slot_data.dart' show TimeSlotData;
 
 
-
-import '../controller/cubit/appointment_cubit.dart';
 import 'time_slot_item.dart';
 
 class TimeSlotsGrid extends StatelessWidget {
-  final DoctorTimeSlotsViewData data;
+  final TimeSlotData timeSlotData;
 
-  const TimeSlotsGrid({super.key, required this.data});
+  const TimeSlotsGrid({super.key, required this.timeSlotData});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: _calculateGridHeight(data.availableSlots.length),
+      height: _calculateGridHeight(timeSlotData.availableSlots.length),
       child: Container(
         padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(
@@ -32,14 +31,14 @@ class TimeSlotsGrid extends StatelessWidget {
             mainAxisSpacing: 8.0,
             crossAxisSpacing: 8.0,
           ),
-          itemCount: data.availableSlots.length,
+          itemCount: timeSlotData.availableSlots.length,
           itemBuilder: (context, index) {
-            final time = data.availableSlots[index];
+            final time = timeSlotData.availableSlots[index];
             return TimeSlotItem(
               time: time,
-              isSelected: data.selectedSlot == time,
+              isSelected: timeSlotData.selectedSlot == time,
               onTap: () =>
-                  context.read<AppointmentCubit>().updateSelectedTimeSlot(time),
+                  context.read<TimeSlotCubit>().updateSelectedTimeSlot(time),
             );
           },
         ),

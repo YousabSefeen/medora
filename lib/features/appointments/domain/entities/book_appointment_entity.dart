@@ -10,6 +10,7 @@ class BookAppointmentEntity extends Equatable {
   final String appointmentDate;
   final String appointmentTime;
 
+
   const BookAppointmentEntity({
     required this.patientName,
     required this.patientGender,
@@ -18,13 +19,19 @@ class BookAppointmentEntity extends Equatable {
     required this.appointmentStatus,
     required this.appointmentDate,
     required this.appointmentTime,
+
   });
 
   @override
   List<Object?> get props => [
     patientName,
-    patientGender,
+   patientGender,
     patientAge,
     patientProblem,
+
+    appointmentStatus,
+    appointmentDate,
+    appointmentTime,
+
   ];
 }

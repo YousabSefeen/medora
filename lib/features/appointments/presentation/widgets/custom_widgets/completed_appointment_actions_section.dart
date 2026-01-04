@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart'
     show ClientAppointmentsEntity;
-import 'package:medora/features/appointments/presentation/view_data/selected_doctor_view_data.dart' show SelectedDoctorViewData;
-
-
+import 'package:medora/features/appointments/presentation/widgets/book_appointment_button.dart'
+    show BookAppointmentButton;
 
 import '../../../../../core/constants/app_alerts/app_alerts.dart';
 import '../../../../../core/constants/app_strings/app_strings.dart';
@@ -72,12 +71,13 @@ class BookAgainButton extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildDoctorBookingSection(),
-        BookAppointmentButton(
-          pickedDoctorInfoModel: SelectedDoctorViewData(
-            doctorId: appointment.doctorId,
-            doctorModel: appointment.doctorEntity,
-          ),
-        ),
+        BookAppointmentButton(doctor: appointment.doctorEntity),
+        // BookAppointmentButton(
+        //   pickedDoctorInfoModel: SelectedDoctorViewData(
+        //     doctorId: appointment.doctorId,
+        //     doctorModel: appointment.doctorEntity,
+        //   ),
+        // ),
       ],
     ),
   );

@@ -337,6 +337,18 @@ class AppStrings {
   static const String selectTime = 'Select Time';
   static const String selectDate = 'Select Date';
 
+  static const String total='Total: ';
+  static const String dateLabel= 'Date';
+  static const String proceedToPay= 'Proceed to Pay';
+  static const String genderHint='Select Gender';
+
+  static const String requiredGenderField='Please select your gender';
+
+
+
+
+
+
 
 
 

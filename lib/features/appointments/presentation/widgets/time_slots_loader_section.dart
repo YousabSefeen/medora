@@ -2,14 +2,15 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medora/features/appointments/presentation/controller/cubit/time_slot_cubit.dart' show TimeSlotCubit;
+import 'package:medora/features/appointments/presentation/controller/states/time_slot_state.dart' show TimeSlotState;
 import 'package:medora/features/appointments/presentation/widgets/time_slots_display_section.dart'
     show TimeSlotsDisplaySection;
 
 import '../../../../core/constants/common_widgets/custom_error_widget.dart';
 import '../../../../core/constants/common_widgets/custom_shimmer.dart';
 import '../../../../core/enum/request_state.dart';
-import '../controller/cubit/appointment_cubit.dart';
-import '../controller/states/appointment_state.dart';
+
 
 class TimeSlotsLoaderSection extends StatelessWidget {
   const TimeSlotsLoaderSection({super.key});
@@ -17,12 +18,12 @@ class TimeSlotsLoaderSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocSelector<
-      AppointmentCubit,
-      AppointmentState,
+        TimeSlotCubit,
+        TimeSlotState,
       Tuple2<RequestState, String>
     >(
       selector: (state) =>
-          Tuple2(state.reservedTimeSlotsState, state.reservedTimeSlotsError),
+          Tuple2(state.reservedSlotsState, state.reservedSlotsError),
       builder: (context, requestStatusAndError) {
         final requestState = requestStatusAndError.value1;
         final errorMessage = requestStatusAndError.value2;

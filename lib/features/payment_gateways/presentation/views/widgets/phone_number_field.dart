@@ -12,41 +12,38 @@ class PhoneNumberField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomAnimationWidget(
-      endPosition: 1.0,
-      color: Colors.white,
-      child: TextFormField(
-        controller: controller,
-        keyboardType: TextInputType.phone,
-        style: GoogleFonts.inter(
-          fontSize: 14.sp,
-          color: Colors.black,
-          fontWeight: FontWeight.w600,
-          letterSpacing: 1.2,
+
+    return TextFormField(
+      controller: controller,
+      keyboardType: TextInputType.phone,
+      style: GoogleFonts.inter(
+        fontSize: 14.sp,
+        color: Colors.black,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 1.2,
+      ),
+      textAlignVertical: TextAlignVertical.center,
+      cursorColor: Colors.black,
+      cursorHeight: 20,
+      cursorWidth: 2,
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.zero,
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.r),
         ),
-        textAlignVertical: TextAlignVertical.center,
-        cursorColor: Colors.black,
-        cursorHeight: 20,
-        cursorWidth: 2,
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.zero,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.r),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.r),
-            borderSide: const BorderSide(width: 2),
-          ),
-          prefixIcon: const CountryCodeWithFlag(),
-          fillColor: Colors.white,
-          filled: true,
-          hintText: '  Phone Number',
-          hintStyle: GoogleFonts.poppins(
-            fontSize: 12.sp,
-            fontWeight: FontWeight.w700,
-            color: Colors.grey.shade500,
-            // letterSpacing: 1,
-          ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.r),
+          borderSide: const BorderSide(width: 2),
+        ),
+        prefixIcon: const CountryCodeWithFlag(),
+        fillColor: Colors.white,
+        filled: true,
+        hintText: '  Phone Number',
+        hintStyle: GoogleFonts.poppins(
+          fontSize: 12.sp,
+          fontWeight: FontWeight.w700,
+          color: Colors.grey.shade500,
+          // letterSpacing: 1,
         ),
       ),
     );

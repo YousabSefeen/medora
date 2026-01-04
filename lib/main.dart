@@ -5,6 +5,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart' show debugPaintLayerBordersEnabled, debugRepaintRainbowEnabled;
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' show dotenv;
@@ -16,6 +17,16 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:medora/core/app_settings/controller/cubit/app_settings_cubit.dart'
     show AppSettingsCubit;
 import 'package:medora/core/enum/internet_state.dart' show InternetState;
+import 'package:medora/features/appointments/presentation/controller/cubit/book_appointment_cubit.dart'
+    show BookAppointmentCubit;
+import 'package:medora/features/appointments/presentation/controller/cubit/cancel_appointment_cubit.dart' show CancelAppointmentCubit;
+
+import 'package:medora/features/appointments/presentation/controller/cubit/doctor_appointments_cubit.dart' show DoctorAppointmentsCubit;
+import 'package:medora/features/appointments/presentation/controller/cubit/fetch_client_appointments_cubit.dart' show FetchClientAppointmentsCubit;
+import 'package:medora/features/appointments/presentation/controller/cubit/patient_cubit.dart' show PatientCubit;
+import 'package:medora/features/appointments/presentation/controller/cubit/reschedule_appointment_cubit.dart' show RescheduleAppointmentCubit;
+
+import 'package:medora/features/appointments/presentation/controller/cubit/time_slot_cubit.dart' show TimeSlotCubit;
 import 'package:medora/features/auth/presentation/controller/cubit/login_cubit.dart'
     show LoginCubit;
 import 'package:medora/features/favorites/presentation/controller/cubit/favorites_cubit.dart'
@@ -27,6 +38,7 @@ import 'package:medora/features/home/presentation/screens/bottom_nav_screen.dart
     show BottomNavScreen;
 import 'package:medora/features/payment_gateways/paymob/presentation/controller/cubit/paymob_payment_cubit.dart'
     show PaymobPaymentCubit;
+import 'package:medora/features/payment_gateways/presentation/controller/cubit/payment_cubit.dart' show PaymentCubit;
 import 'package:medora/features/payment_gateways/stripe/presentation/View/Screens/stripe_payment_screen.dart'
     show StripePaymentScreen;
 import 'package:medora/features/search/presentation/controller/cubit/home_doctor_search_cubit.dart'
@@ -49,6 +61,8 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // debugPaintLayerBordersEnabled = true;  // رسم حدود الـ layers
+  // debugRepaintRainbowEnabled = true;     // ألوان عند إعادة الرسم
   await initializeDateFormatting('en_US');
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -94,13 +108,49 @@ void main() async {
         BlocProvider(create: (_) => serviceLocator<RegisterCubit>()),
         BlocProvider(create: (_) => serviceLocator<DoctorProfileCubit>()),
         BlocProvider(create: (_) => serviceLocator<DoctorListCubit>()),
-        BlocProvider(create: (_) => serviceLocator<AppointmentCubit>()),
+
         BlocProvider(create: (_) => serviceLocator<AppSettingsCubit>()),
 
         // BlocProvider(create: (_) => serviceLocator<SearchCubit>()),
 
         //Payment Gateways
         BlocProvider(create: (_) => serviceLocator<PaymobPaymentCubit>()),
+
+        ///xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        ///xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+        BlocProvider<FetchClientAppointmentsCubit>(
+          create: (context) => serviceLocator<FetchClientAppointmentsCubit>(),
+        ),
+
+        BlocProvider<DoctorAppointmentsCubit>(
+          create: (context) => serviceLocator<DoctorAppointmentsCubit>(),
+        ),
+        BlocProvider<TimeSlotCubit>(
+          create: (context) => serviceLocator<TimeSlotCubit>(),
+        ),
+
+        BlocProvider<BookAppointmentCubit>(
+          create: (context) => serviceLocator<BookAppointmentCubit>(),
+        ),
+
+
+
+        BlocProvider<PatientCubit>(
+          create: (context) => serviceLocator<PatientCubit>(),
+        ),
+
+        BlocProvider<PaymentCubit>(
+          create: (context) => serviceLocator<PaymentCubit>(),
+        ),
+
+        BlocProvider<CancelAppointmentCubit>(
+          create: (context) => serviceLocator<CancelAppointmentCubit>(),
+        ),
+
+        BlocProvider<RescheduleAppointmentCubit>(
+          create: (context) => serviceLocator<RescheduleAppointmentCubit>(),
+        ),
       ],
       child: const MyApp(),
     ),

@@ -263,7 +263,7 @@ import 'package:flutter_task/core/constants/themes/app_colors.dart';
 import 'package:flutter_task/core/constants/themes/app_text_styles.dart';
 import 'package:flutter_task/features/appointments/presentation/widgets/appointment_widgets/underline_title_widget.dart';
 import 'package:flutter_task/features/appointments/presentation/widgets/icon_with_text.dart';
-import 'package:flutter_task/features/doctor_profile/data/view_data/doctor_model.dart';
+import 'package:flutter_task/features/doctor_profile/data/data/doctor_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/constants/common_widgets/consultation_fee_and_wait_row.dart';

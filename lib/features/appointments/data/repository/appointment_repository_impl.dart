@@ -1,14 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:medora/core/error/failure.dart' show Failure, ServerFailure;
-import 'package:medora/features/appointments/domain/use_cases/fetch_booked_time_slots_use_case.dart'
-    show FetchBookedTimeSlotsParams;
 
-import '../../domain/entities/book_appointment_entity.dart';
 import '../../domain/entities/client_appointments_entity.dart';
 import '../../domain/entities/doctor_appointment_entity.dart';
 import '../../domain/repository/appointment_repository_base.dart';
 import '../data_source/appointment_remote_data_source_base.dart';
-import '../models/book_appointment_model.dart';
 
 class AppointmentRepositoryImpl extends AppointmentRepositoryBase {
   final AppointmentRemoteDataSourceBase remoteDataSource;
@@ -35,31 +31,10 @@ class AppointmentRepositoryImpl extends AppointmentRepositoryBase {
     required Map<String, dynamic> queryParams,
   }) async {
     try {
-      final timeSlots = await remoteDataSource
-          .fetchBookedTimeSlots(
+      final timeSlots = await remoteDataSource.fetchBookedTimeSlots(
         queryParams: queryParams,
-          );
+      );
       return right(timeSlots);
-    } catch (e) {
-      return left(ServerFailure(catchError: e));
-    }
-  }
-
-  @override
-  Future<Either<Failure, void>> bookAppointment({
-    required String doctorId,
-    required BookAppointmentEntity bookAppointmentEntity,
-  }) async {
-    try {
-      final bookAppointmentModel = BookAppointmentModel.fromEntity(
-        bookAppointmentEntity,
-      );
-
-      await remoteDataSource.bookAppointment(
-        doctorId: doctorId,
-        bookAppointmentModel: bookAppointmentModel,
-      );
-      return right(null);
     } catch (e) {
       return left(ServerFailure(catchError: e));
     }
@@ -70,9 +45,7 @@ class AppointmentRepositoryImpl extends AppointmentRepositoryBase {
     required Map<String, dynamic> queryParams,
   }) async {
     try {
-      await remoteDataSource.rescheduleAppointment(
-    queryParams: queryParams,
-      );
+      await remoteDataSource.rescheduleAppointment(queryParams: queryParams);
       return right(null);
     } catch (e) {
       return left(ServerFailure(catchError: e));
@@ -99,8 +72,7 @@ class AppointmentRepositoryImpl extends AppointmentRepositoryBase {
   Future<Either<Failure, List<ClientAppointmentsEntity>?>>
   fetchClientAppointments() async {
     try {
-      final models = await remoteDataSource
-          .fetchClientAppointments();
+      final models = await remoteDataSource.fetchClientAppointments();
 
       if (models == null) {
         return right(null);
@@ -124,6 +96,34 @@ class AppointmentRepositoryImpl extends AppointmentRepositoryBase {
         doctorId: doctorId,
       );
       return right(null);
+    } catch (e) {
+      return left(ServerFailure(catchError: e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> bookAppointment({
+    required Map<String, dynamic> queryParams,
+  }) async {
+    try {
+      final appointmentId = await remoteDataSource.bookAppointment(
+        queryParams: queryParams,
+      );
+
+      return Right(appointmentId);
+    } catch (e) {
+      return left(ServerFailure(catchError: e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> confirmAppointment({
+    required Map<String, dynamic> queryParams,
+  }) async {
+    try {
+      await remoteDataSource.confirmAppointment(queryParams: queryParams);
+
+      return const Right(null);
     } catch (e) {
       return left(ServerFailure(catchError: e));
     }

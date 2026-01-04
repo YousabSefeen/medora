@@ -9,7 +9,6 @@ class PatientFieldsControllers implements Disposable {
   final genderController = AnimatedDropDownFormFieldController();
   final ageController = TextEditingController();
   final problemController = TextEditingController();
-  final phoneNumberController = TextEditingController();
 
   @override
   void dispose() {
@@ -17,6 +16,5 @@ class PatientFieldsControllers implements Disposable {
     genderController.dispose();
     ageController.dispose();
     problemController.dispose();
-    phoneNumberController.dispose();
   }
 }

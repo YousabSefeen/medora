@@ -2,14 +2,17 @@ import 'package:animated_drop_down_form_field/animated_drop_down_form_field.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medora/core/constants/app_strings/app_strings.dart'
+    show AppStrings;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/enum/gender_type.dart' show GenderType;
-import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart'
-    show AppointmentCubit;
-import 'package:medora/features/appointments/presentation/controller/states/appointment_state.dart'
-    show AppointmentState;
+import 'package:medora/features/appointments/presentation/controller/cubit/patient_cubit.dart'
+    show PatientCubit;
+import 'package:medora/features/appointments/presentation/controller/cubit/patient_state.dart'
+    show PatientState;
+import 'package:medora/features/doctor_profile/presentation/widgets/form_title.dart' show FormTitle;
 
-import '../../../../doctor_profile/presentation/widgets/form_title.dart';
+
 
 class GenderDropdownField extends StatelessWidget {
   final AnimatedDropDownFormFieldController controller;
@@ -24,7 +27,7 @@ class GenderDropdownField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const FormTitle(label: 'Gender'),
-        BlocSelector<AppointmentCubit, AppointmentState, GenderType>(
+        BlocSelector<PatientCubit, PatientState, GenderType>(
           selector: (state) => state.genderType,
           builder: (context, selectedGenderIndex) => AnimatedDropDownFormField(
             items: _buildGenderItems(textTheme),
@@ -61,15 +64,12 @@ class GenderDropdownField extends StatelessWidget {
             dropDownAnimationParameters: _buildAnimationParameters(),
             controller: controller,
             errorWidget: Text(
-              'Please select your gender',
+              AppStrings.requiredGenderField,
               style: textTheme.styleInputFieldError,
             ),
             errorBorder: Border.all(color: Colors.red, width: 1.7),
-            onChangeSelectedIndex: (int index) {
-              context.read<AppointmentCubit>().onChangeSelectedGenderIndex(
-                index,
-              );
-            },
+            onChangeSelectedIndex: (int index) =>
+                context.read<PatientCubit>().onChangeSelectedGenderIndex(index),
           ),
         ),
       ],
@@ -77,14 +77,13 @@ class GenderDropdownField extends StatelessWidget {
   }
 
   String _getDisplayText(GenderType genderType) {
-    String displayText = '';
     switch (genderType) {
       case GenderType.init:
-        return 'Select Gender';
+        return AppStrings.genderHint;
       case GenderType.male:
-        return 'Male';
+        return AppStrings.male;
       case GenderType.female:
-        return 'Female';
+        return AppStrings.female;
     }
   }
 
@@ -94,8 +93,8 @@ class GenderDropdownField extends StatelessWidget {
       color: Colors.white,
     );
     return [
-      Text('Male', style: customTextStyle),
-      Text('Female', style: customTextStyle),
+      Text(AppStrings.male, style: customTextStyle),
+      Text(AppStrings.female, style: customTextStyle),
     ];
   }
 
@@ -130,8 +129,4 @@ class GenderDropdownField extends StatelessWidget {
         ? textTheme.hintFieldStyle
         : textTheme.styleInputField;
   }
-
-  // void _handleSelectionChange(BuildContext context, int? index) {
-  //   context.read<AppointmentCubit>().onChangeSelectedGenderIndex(index!);
-  // }
 }

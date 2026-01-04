@@ -33,11 +33,11 @@ class RescheduleAppointmentParams extends Equatable {
   });
 
   Map<String, dynamic> toMap() => {
-      'doctorId': doctorId,
-      'appointmentId': appointmentId,
-      'appointmentDate': appointmentDate,
-      'appointmentTime': appointmentTime,
-    };
+    'doctorId': doctorId,
+    'appointmentId': appointmentId,
+    'appointmentDate': appointmentDate,
+    'appointmentTime': appointmentTime,
+  };
 
   @override
   List<Object?> get props => [

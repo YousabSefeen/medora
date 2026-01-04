@@ -56,7 +56,7 @@ class DoctorInfoHeader extends StatelessWidget {
           TextSpan(
             text: title,
             style: textTheme.mediumPlaypenBold.copyWith(
-              color: AppColors.softBlue,
+              color: AppColors.softBlue,letterSpacing: 1,height: 2,
             ),
           ),
           TextSpan(

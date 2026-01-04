@@ -5,9 +5,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
+import 'package:medora/features/appointments/presentation/controller/cubit/time_slot_cubit.dart'
+    show TimeSlotCubit;
 
 import '../../../shared/models/doctor_schedule_model.dart';
-import '../controller/cubit/appointment_cubit.dart';
 
 class SelectDateWidget extends StatelessWidget {
   final DoctorScheduleModel doctorSchedule;
@@ -35,19 +36,19 @@ class SelectDateWidget extends StatelessWidget {
       margin: const EdgeInsets.only(top: 8, bottom: 17, right: 8),
       decoration: _dateTimelineDecoration(),
       child: EasyDateTimeLine(
-        onDateChange: (selectedDate) =>
-            _handleDateSelection(context, selectedDate),
         headerProps: _buildHeaderProps(context),
         initialDate: DateTime.now(),
         activeColor: AppColors.softBlue,
         dayProps: _buildDayProps(context),
         timeLineProps: _buildTimelineProps(),
+        onDateChange: (selectedDate) =>
+            _handleDateSelection(context, selectedDate),
       ),
     );
   }
 
   void _handleDateSelection(BuildContext context, DateTime selectedDate) {
-    context.read<AppointmentCubit>().getAvailableDoctorTimeSlots(
+    context.read<TimeSlotCubit>().getAvailableDoctorTimeSlots(
       selectedDate: selectedDate,
       doctorSchedule: doctorSchedule,
     );

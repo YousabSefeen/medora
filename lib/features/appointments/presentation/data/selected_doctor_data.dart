@@ -3,9 +3,9 @@
 
 import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 
-class SelectedDoctorViewData {
+class SelectedDoctorData {
   final String doctorId;
   final DoctorEntity doctorModel;
 
-  SelectedDoctorViewData({required this.doctorId, required this.doctorModel});
+  SelectedDoctorData({required this.doctorId, required this.doctorModel});
 }

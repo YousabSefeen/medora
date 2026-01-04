@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
-import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart'
-    show AppointmentCubit;
+import 'package:medora/features/appointments/presentation/controller/cubit/patient_cubit.dart';
+import 'package:medora/features/appointments/presentation/controller/cubit/patient_state.dart' show PatientState;
+
 import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_controllers.dart'
     show PatientFieldsControllers;
 import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_validator.dart'
     show PatientFieldsValidator;
-import 'package:medora/features/appointments/presentation/controller/states/appointment_state.dart'
-    show AppointmentState;
-import 'package:medora/features/appointments/presentation/widgets/patient_widgets/payment_processing_button.dart'
-    show PaymentProcessingButton;
+
+import 'package:medora/features/appointments/presentation/widgets/patient_widgets/proceed_to_pay_button.dart'
+    show ProceedToPayButton;
 import 'package:medora/features/doctor_profile/presentation/widgets/doctor_info_field.dart'
     show DoctorInfoField;
 
@@ -68,35 +68,39 @@ class _PatientDetailsScreenState extends State<PatientDetailsScreen> {
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-      child: BlocSelector<AppointmentCubit, AppointmentState, bool>(
-        selector: (state) => state.hasValidatedBefore,
-        builder: (context, hasValidatedBefore) => Form(
-          key: _formControllers.formKey,
-          autovalidateMode: hasValidatedBefore
-              ? AutovalidateMode.always
-              : AutovalidateMode.disabled,
-          child: SizedBox(
-            child: Column(
-              spacing: 25,
-              children: [
-                _buildNameField(),
-                _buildGenderField(),
-                _buildAgeField(),
-                _buildProblemField(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 30),
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: PaymentProcessingButton(
-                      formControllers: _formControllers,
+      child:
+          BlocSelector<
+            PatientCubit,
+              PatientState,
+            AutovalidateMode
+          >(
+            selector: (state) => state.validateMode,
+            builder: (context, validateMode) => Form(
+              key: _formControllers.formKey,
+              autovalidateMode: validateMode,
+              child: SizedBox(
+                child: Column(
+                  spacing: 25,
+                  children: [
+                    _buildNameField(),
+                    _buildGenderField(),
+                    _buildAgeField(),
+                    _buildProblemField(),
+
+                    Padding(
+                      padding: const EdgeInsets.only(top: 30),
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: ProceedToPayButton(
+                          formControllers: _formControllers,
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
-        ),
-      ),
     );
   }
 

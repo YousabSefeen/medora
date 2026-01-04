@@ -10,8 +10,8 @@
 // import '../../../../../core/enum/payment_gateways_types.dart';
 // import '../../../../../generated/assets.dart';
 // import '../../Controller/payment_gateways_provider.dart';
-// import '../../controller/cubit/payment_gateways_cubit.dart';
-// import '../../controller/states/payment_gateways_state.dart';
+// import '../../controller/cubit/payment_cubit.dart';
+// import '../../controller/states/payment_state.dart';
 //
 //
 //

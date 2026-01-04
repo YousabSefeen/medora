@@ -1,26 +1,18 @@
-
-
-import 'package:medora/features/appointments/data/models/book_appointment_model.dart';
 import 'package:medora/features/appointments/data/models/client_appointments_model.dart';
 import 'package:medora/features/appointments/data/models/doctor_appointment_model.dart';
 
-
 abstract class AppointmentRemoteDataSourceBase {
-
   Future<List<DoctorAppointmentModel>> fetchDoctorAppointments({
     required String doctorId,
   });
 
   Future<List<String>> fetchBookedTimeSlots({
     required Map<String, dynamic> queryParams,
-
   });
 
+  Future<String> bookAppointment({required Map<String, dynamic> queryParams});
 
-  Future<void> bookAppointment({
-    required String doctorId,
-    required BookAppointmentModel bookAppointmentModel,
-  });
+  Future<void> confirmAppointment({required Map<String, dynamic> queryParams});
 
   Future<void> rescheduleAppointment({
     required Map<String, dynamic> queryParams,
@@ -31,8 +23,7 @@ abstract class AppointmentRemoteDataSourceBase {
     required String appointmentId,
   });
 
-  Future<List<ClientAppointmentsModel>?>
-  fetchClientAppointments();
+  Future<List<ClientAppointmentsModel>?> fetchClientAppointments();
 
   Future<void> deleteAppointment({
     required String appointmentId,

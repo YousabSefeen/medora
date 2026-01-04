@@ -12,12 +12,11 @@ import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
-import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart'
-    show AppointmentCubit;
-import 'package:medora/features/appointments/presentation/controller/states/appointment_state.dart'
-    show AppointmentState;
+import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart' show ClientAppointmentsEntity;
+import 'package:medora/features/appointments/presentation/controller/cubit/cancel_appointment_cubit.dart' show CancelAppointmentCubit;
+import 'package:medora/features/appointments/presentation/controller/states/cancel_appointment_state.dart' show CancelAppointmentState;
 
-import '../../data/models/client_appointments_model.dart';
+
 import '../widgets/custom_widgets/adaptive_action_button.dart';
 
 class AppointmentCancellationScreen extends StatefulWidget {
@@ -34,8 +33,9 @@ class _AppointmentCancellationScreenState
 
   @override
   Widget build(BuildContext context) {
+    print('_AppointmentCancellationScreenState.buildxxxxxxxxxx');
     final appointment =
-        ModalRoute.of(context)!.settings.arguments as ClientAppointmentsModel;
+        ModalRoute.of(context)!.settings.arguments as ClientAppointmentsEntity;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: _buildAppBar(context),
@@ -69,7 +69,7 @@ class _AppointmentCancellationScreenState
     );
   }
 
-  Widget _buildBodyContent(ClientAppointmentsModel appointment) {
+  Widget _buildBodyContent(ClientAppointmentsEntity appointment) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,15 +113,15 @@ class _AppointmentCancellationScreenState
     }).toList();
   }
 
-  Widget _buildContinueButton(ClientAppointmentsModel appointment) {
+  Widget _buildContinueButton(ClientAppointmentsEntity appointment) {
     return BlocSelector<
-      AppointmentCubit,
-      AppointmentState,
+        CancelAppointmentCubit,
+        CancelAppointmentState,
       dartz.Tuple2<LazyRequestState, String>
     >(
       selector: (state) => dartz.Tuple2(
-        state.cancelAppointmentState,
-        state.cancelAppointmentError,
+        state.requestState,
+        state.failureMessage,
       ),
       builder: (context, values) {
         _handleCancelAppointmentResponse(context, values.value1, values.value2);
@@ -139,11 +139,11 @@ class _AppointmentCancellationScreenState
     );
   }
 
-  void _handleCancellationConfirmation(ClientAppointmentsModel appointment) {
+  void _handleCancellationConfirmation(ClientAppointmentsEntity appointment) {
     // TODO: Implement cancellation logic
     if (_selectedCancellationReason != null) {
       // Process cancellation
-      context.read<AppointmentCubit>().cancelAppointment(
+      context.read<CancelAppointmentCubit>().cancelAppointment(
         doctorId: appointment.doctorId,
         appointmentId: appointment.appointmentId,
       );
@@ -207,7 +207,7 @@ class _AppointmentCancellationScreenState
 
   /// Resets the Cancel Appointment State in cubit
   void _resetCancelAppointmentState(BuildContext context) =>
-      context.read<AppointmentCubit>().resetCancelAppointmentState();
+      context.read<CancelAppointmentCubit>().resetCancelAppointmentState();
 }
 
 class CancellationReasonItem extends StatelessWidget {

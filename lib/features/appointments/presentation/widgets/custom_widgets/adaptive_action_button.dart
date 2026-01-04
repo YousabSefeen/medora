@@ -39,10 +39,15 @@ class AdaptiveActionButton extends StatelessWidget {
     return ButtonStyle(
       elevation: const WidgetStatePropertyAll(1),
       backgroundColor: WidgetStatePropertyAll(
-        isEnabled ? AppColors.softBlue : Colors.grey.shade300,
+        isEnabled ? AppColors.softBlue : AppColors.customWhite,
       ),
       foregroundColor: WidgetStatePropertyAll(
         isEnabled ? Colors.white : Colors.black,
+      ),
+      side: WidgetStatePropertyAll(
+        isEnabled
+            ? const BorderSide(color: Colors.transparent)
+            : const BorderSide(color: AppColors.black12),
       ),
     );
   }

@@ -7,18 +7,25 @@ import 'package:medora/core/constants/app_alerts/app_alerts.dart'
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
-import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart' show ClientAppointmentsEntity;
-import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart'
-    show AppointmentCubit;
-import 'package:medora/features/appointments/presentation/view_data/appointment_reschedule_view_data.dart' show AppointmentRescheduleViewData;
+import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart'
+    show ClientAppointmentsEntity;
+import 'package:medora/features/appointments/domain/use_cases/reschedule_appointment_use_case.dart'
+    show RescheduleAppointmentParams;
+import 'package:medora/features/appointments/presentation/controller/cubit/reschedule_appointment_cubit.dart'
+    show RescheduleAppointmentCubit;
+import 'package:medora/features/appointments/presentation/controller/cubit/time_slot_cubit.dart'
+    show TimeSlotCubit;
+import 'package:medora/features/appointments/presentation/controller/states/reschedule_appointment_state.dart'
+    show RescheduleAppointmentState;
+import 'package:medora/features/appointments/presentation/controller/states/time_slot_state.dart'
+    show TimeSlotState;
+import 'package:medora/features/appointments/presentation/data/appointment_reschedule_data.dart'
+    show AppointmentRescheduleData;
 import 'package:medora/features/shared/models/doctor_schedule_model.dart'
     show DoctorScheduleModel;
 
 import '../../../../../core/constants/app_routes/app_router.dart';
 import '../../../../../core/enum/lazy_request_state.dart';
-
-import '../../controller/states/appointment_action_state.dart';
-import '../../controller/states/appointment_state.dart';
 import '../custom_widgets/adaptive_action_button.dart';
 import '../doctor_appointment_booking_section.dart';
 
@@ -108,10 +115,123 @@ class RescheduleConfirmationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocListener<RescheduleAppointmentCubit, RescheduleAppointmentState>(
+      listenWhen: (prev, curr) => prev.requestState != curr.requestState,
+      listener: (context, state) {
+        _handleRescheduleResponse(context, state);
+      },
+      child: BlocBuilder<TimeSlotCubit, TimeSlotState>(
+        builder: (context, selectedState) {
+          final isEnabled =
+              selectedState.selectedTimeSlot != null &&
+              selectedState.selectedTimeSlot!.isNotEmpty;
+
+          return AdaptiveActionButton(
+            title: AppStrings.confirmReschedule,
+            isEnabled: isEnabled,
+            isLoading:
+                context
+                    .watch<RescheduleAppointmentCubit>()
+                    .state
+                    .requestState ==
+                LazyRequestState.loading,
+            onPressed: () => _executeReschedule(context, selectedState),
+          );
+        },
+      ),
+    );
+  }
+
+  void _executeReschedule(BuildContext context, TimeSlotState selectedState) {
+    context.read<RescheduleAppointmentCubit>().rescheduleAppointment(
+      rescheduleAppointmentParams: RescheduleAppointmentParams(
+        doctorId: doctorId,
+        appointmentId: appointmentId,
+        appointmentDate: selectedState.selectedDateFormatted!,
+
+        appointmentTime: selectedState.selectedTimeSlot!,
+      ),
+    );
+  }
+
+  void _handleRescheduleResponse(
+    BuildContext context,
+    RescheduleAppointmentState state,
+  ) {
+    switch (state.requestState) {
+      case LazyRequestState.error:
+        _showRescheduleError(context, state.failureMessage);
+        break;
+
+      case LazyRequestState.loaded:
+        _handleSuccessfulReschedule(context);
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  void _showRescheduleError(BuildContext context, String errorMessage) {
+    Future.microtask(() {
+      if (!context.mounted) return;
+
+      AppAlerts.showCustomErrorDialog(context, errorMessage);
+      _resetRescheduleState(context);
+    });
+  }
+
+  void _handleSuccessfulReschedule(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!context.mounted) return;
+
+      AppRouter.pop(context);
+
+      Future.delayed(const Duration(milliseconds: 400), () {
+        if (!context.mounted) return;
+
+        AppAlerts.showRescheduleSuccessDialog(
+          context: context,
+          appointmentReschedule: AppointmentRescheduleData(
+            oldAppointmentDate: appointmentDate,
+            oldAppointmentTime: appointmentTime,
+
+            /*  newAppointmentDate: selectedState.selectedDate!,
+            newAppointmentTime: selectedState.selectedTimeSlot!,*/
+            newAppointmentDate: '20/30/2000',
+            newAppointmentTime: '02:00 AM',
+          ),
+        );
+      });
+
+      _resetRescheduleState(context);
+    });
+  }
+
+  void _resetRescheduleState(BuildContext context) =>
+      context.read<RescheduleAppointmentCubit>().resetRescheduleState();
+}
+
+/*class RescheduleConfirmationButton extends StatelessWidget {
+  final String doctorId;
+  final String appointmentId;
+  final String appointmentDate;
+  final String appointmentTime;
+
+  const RescheduleConfirmationButton({
+    super.key,
+    required this.doctorId,
+    required this.appointmentId,
+    required this.appointmentDate,
+    required this.appointmentTime,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return BlocSelector<
-      AppointmentCubit,
-      AppointmentState,
-      AppointmentActionState
+        AppointmentCubit,
+        AppointmentState,
+        AppointmentActionState
     >(
       selector: (state) => AppointmentActionState(
         selectedDate: state.selectedDateFormatted,
@@ -128,9 +248,9 @@ class RescheduleConfirmationButton extends StatelessWidget {
 
   /// Builds the reschedule confirmation button with appropriate state
   Widget _buildRescheduleButton(
-    BuildContext context,
-    AppointmentActionState appointmentData,
-  ) {
+      BuildContext context,
+      AppointmentActionState appointmentData,
+      ) {
     final isEnabled = appointmentData.selectedTimeSlot != '';
     final isLoading = appointmentData.actionState == LazyRequestState.loading;
 
@@ -153,9 +273,9 @@ class RescheduleConfirmationButton extends StatelessWidget {
 
   /// Handles different states of the reschedule process
   void _handleRescheduleResponse(
-    BuildContext context,
-    AppointmentActionState appointmentData,
-  ) {
+      BuildContext context,
+      AppointmentActionState appointmentData,
+      ) {
     switch (appointmentData.actionState) {
       case LazyRequestState.error:
         _showRescheduleError(context, appointmentData.actionError);
@@ -182,9 +302,9 @@ class RescheduleConfirmationButton extends StatelessWidget {
 
   /// Handles successful reschedule completion
   void _handleSuccessfulReschedule(
-    BuildContext context,
-    AppointmentActionState appointmentData,
-  ) {
+      BuildContext context,
+      AppointmentActionState appointmentData,
+      ) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!context.mounted) return;
 
@@ -213,4 +333,4 @@ class RescheduleConfirmationButton extends StatelessWidget {
   /// Resets the reschedule state in cubit
   void _resetRescheduleState(BuildContext context) =>
       context.read<AppointmentCubit>().resetRescheduleAppointmentState();
-}
+}*/

@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings, PaymentMethod;
-import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart'
-    show AppointmentCubit;
+import 'package:medora/features/payment_gateways/presentation/controller/cubit/payment_cubit.dart' show PaymentCubit;
+
 
 import '../../../../core/enum/payment_gateways_types.dart';
 import '../../../payment_gateways/presentation/views/widgets/payment_method_card.dart';
 
 class PaymentMethodListView extends StatelessWidget {
-  final TextEditingController? phoneNumberController;
+  final TextEditingController phoneNumberController;
   final PaymentGatewaysTypes selectedPaymentMethod;
 
   const PaymentMethodListView({
     super.key,
-    this.phoneNumberController,
+
+    required this.phoneNumberController,
     required this.selectedPaymentMethod,
   });
 
@@ -48,13 +49,15 @@ class PaymentMethodListView extends StatelessWidget {
       phoneNumberController: phoneNumberController,
       value: paymentMethod.value.name,
       groupValue: selectedMethodName,
-      onChanged: (String? newValue) {
-        context.read<AppointmentCubit>().onChangePaymentMethod(
-          paymentMethod.value,
-        );
-      },
+      onChanged: (String? newValue) =>
+          _changePaymentMethod(context, paymentMethod),
       isSelected: isSelected,
       paymentMethod: paymentMethod,
     );
   }
+
+  void _changePaymentMethod(
+    BuildContext context,
+    PaymentMethod paymentMethod,
+  ) => context.read<PaymentCubit>().onChangePaymentMethod(paymentMethod.value);
 }

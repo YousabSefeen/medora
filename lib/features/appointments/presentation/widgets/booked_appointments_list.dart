@@ -11,16 +11,18 @@ import 'cancelled_appointments_list.dart';
 import 'completed_appointments_list.dart';
 
 class BookedAppointmentsList extends StatelessWidget {
-  final List<ClientAppointmentsEntity> appointmentsList;
 
-  const BookedAppointmentsList({super.key, required this.appointmentsList});
+  final List<ClientAppointmentsEntity>? upcomingAppointmentsList;
+  final List<ClientAppointmentsEntity>? completedAppointmentsList;
+  final List<ClientAppointmentsEntity>? cancelledAppointmentsList;
+  const BookedAppointmentsList({super.key, required this.upcomingAppointmentsList, required this.completedAppointmentsList, required this.cancelledAppointmentsList});
 
   @override
   Widget build(BuildContext context) {
     List<Widget> appointmentCategories = [
-      const UpcomingAppointmentsList(),
-      const CompletedAppointmentsList(),
-      const CancelledAppointmentsList(),
+        UpcomingAppointmentsList(upcomingAppointmentsList:upcomingAppointmentsList),
+        CompletedAppointmentsList(completedAppointmentsList:completedAppointmentsList),
+        CancelledAppointmentsList(cancelledAppointmentsList:cancelledAppointmentsList),
     ];
     return DefaultTabController(
       length: appointmentCategories.length,
