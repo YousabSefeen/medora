@@ -28,7 +28,7 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
       final data = {
         ...queryParams,
         'clientId': _getCurrentUserId(),
-        'appointmentStatus': 'pending',
+        'appointmentStatus':AppointmentStatus.pendingPayment.name,
         'appointmentId': appointmentId,
         'createdAt': FieldValue.serverTimestamp(),
         'expiresAt': Timestamp.fromDate(
@@ -65,7 +65,7 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
         'patientAge': queryParams['patientAge'],
         'patientProblem': queryParams['patientProblem'],
 
-        'appointmentStatus': 'confirmed',
+        'appointmentStatus':     AppointmentStatus.confirmed.name,
         'confirmedAt': FieldValue.serverTimestamp(),
 
         'expiresAt': FieldValue.delete(),
@@ -173,9 +173,10 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
   //   Cancel appointment
   @override
   Future<void> cancelAppointment({
-    required String doctorId,
-    required String appointmentId,
+    required Map<String, dynamic> queryParams,
   }) async {
+    final doctorId = queryParams['doctorId'] as String;
+    final appointmentId = queryParams['appointmentId'] as String;
     final updates = {'appointmentStatus': AppointmentStatus.cancelled.name};
 
     return await _updateAppointment(
@@ -187,33 +188,35 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
   }
 
   //   fetch client appointments with doctor details
-  @override
-  Future<List<ClientAppointmentsModel>?> fetchClientAppointments() async {
-    try {
-      final clientId = _getCurrentUserId();
-      final appointments = await _fetchAppointmentsByClientId(clientId);
-      final doctorIds = _extractUniqueDoctorIds(appointments);
-      final doctorDataMap = await _fetchDoctorsDataByIds(doctorIds);
 
-      return appointments.map((appointment) {
-        final doctorId = appointment['doctorId'] as String;
-        return _createClientAppointmentModel(
-          appointment,
-          doctorDataMap[doctorId],
-        );
-      }).toList();
-    } catch (e) {
-      _logError('fetchClientAppointmentsWithDoctorDetails', e);
-      rethrow;
-    }
+  Future<List<ClientAppointmentsModel>?> _fetchAppointments({
+    required String appointmentStatus,
+  }) async {
+    final clientId = _getCurrentUserId();
+    final appointments = await _fetchAppointmentsByClientId(
+      clientId: clientId,
+      appointmentStatus: appointmentStatus,
+    );
+    final doctorIds = _extractUniqueDoctorIds(appointments);
+    final doctorDataMap = await _fetchDoctorsDataByIds(doctorIds);
+
+    return appointments.map((appointment) {
+      final doctorId = appointment['doctorId'] as String;
+      return _createClientAppointmentModel(
+        appointment,
+        doctorDataMap[doctorId],
+      );
+    }).toList();
   }
 
   //   Delete appointment
   @override
   Future<void> deleteAppointment({
-    required String appointmentId,
-    required String doctorId,
+    required Map<String, dynamic> queryParams,
   }) async {
+    final doctorId = queryParams['doctorId'] as String;
+    final appointmentId = queryParams['appointmentId'] as String;
+
     try {
       await Future.wait([
         _firestore.collection('appointments').doc(appointmentId).delete(),
@@ -292,13 +295,32 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
         .update(updates);
   }
 
-  /// جلب المواعيد حسب معرف العميل
+  /*  /// جلب المواعيد حسب معرف العميل
   Future<List<Map<String, dynamic>>> _fetchAppointmentsByClientId(
     String clientId,
   ) async {
     final snapshot = await _firestore
         .collection('appointments')
         .where('appointmentStatus', isEqualTo: 'confirmed')
+        .where('clientId', isEqualTo: clientId)
+        .orderBy('appointmentDate')
+        .get();
+
+    return snapshot.docs.map((doc) {
+      final data = doc.data();
+      data['appointmentId'] = doc.id;
+      return data;
+    }).toList();
+  }*/
+
+  ///  جديد جلب المواعيد حسب معرف العميل
+  Future<List<Map<String, dynamic>>> _fetchAppointmentsByClientId({
+    required String clientId,
+    required String appointmentStatus,
+  }) async {
+    final snapshot = await _firestore
+        .collection('appointments')
+        .where('appointmentStatus', isEqualTo: appointmentStatus)
         .where('clientId', isEqualTo: clientId)
         .orderBy('appointmentDate')
         .get();
@@ -351,4 +373,34 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
   void _logError(String methodName, dynamic error) {
     print('AppointmentRemoteDataSource.$methodName ERROR: $error');
   }
+
+
+  @override
+  Future<List<ClientAppointmentsModel>?> fetchUpcomingAppointments() async{
+    try {
+      return await _fetchAppointments(appointmentStatus:     AppointmentStatus.confirmed.name);
+    } catch (e) {
+      _logError('fetchCancelledAppointments', e);
+      rethrow;
+    }
+  }
+  @override
+  Future<List<ClientAppointmentsModel>?> fetchCompletedAppointments() async{
+    try {
+      return await _fetchAppointments(appointmentStatus: AppointmentStatus.confirmed.name);
+    } catch (e) {
+      _logError('fetchCancelledAppointments', e);
+      rethrow;
+    }
+  }
+  @override
+  Future<List<ClientAppointmentsModel>?> fetchCancelledAppointments() async {
+    try {
+      return await _fetchAppointments(appointmentStatus: 'cancelled');
+    } catch (e) {
+      _logError('fetchCancelledAppointments', e);
+      rethrow;
+    }
+  }
+
 }

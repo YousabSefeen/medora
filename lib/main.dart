@@ -119,9 +119,9 @@ void main() async {
         ///xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         ///xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-        BlocProvider<FetchClientAppointmentsCubit>(
-          create: (context) => serviceLocator<FetchClientAppointmentsCubit>(),
-        ),
+        // BlocProvider<FetchClientAppointmentsCubit>(
+        //   create: (context) => serviceLocator<FetchClientAppointmentsCubit>(),
+        // ),
 
         BlocProvider<DoctorAppointmentsCubit>(
           create: (context) => serviceLocator<DoctorAppointmentsCubit>(),

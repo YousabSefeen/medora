@@ -6,10 +6,10 @@ import 'package:medora/features/appointments/presentation/widgets/booked_appoint
 import '../../../data/models/client_appointments_model.dart';
 import 'cancel_button.dart';
 
-class BookedAppointmentActionsSection extends StatelessWidget {
+class UpcomingAppointmentActionsSection extends StatelessWidget {
   final ClientAppointmentsEntity appointment;
 
-  const BookedAppointmentActionsSection({super.key, required this.appointment});
+  const UpcomingAppointmentActionsSection({super.key, required this.appointment});
 
   @override
   Widget build(BuildContext context) {

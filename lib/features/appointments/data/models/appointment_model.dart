@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:medora/core/extensions/string_extensions.dart';
 import 'package:medora/features/appointments/domain/entities/appointment_entity.dart'
     show AppointmentEntity;
 

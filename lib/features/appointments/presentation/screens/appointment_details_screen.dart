@@ -1,479 +1,310 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
+import 'package:medora/core/constants/app_strings/app_strings.dart';
+import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/extensions/list_string_extension.dart';
-import 'package:medora/features/appointments/presentation/widgets/appointment_widgets/underline_title_widget.dart'
-    show UnderlineTitleWidget;
-import 'package:medora/features/appointments/presentation/widgets/icon_with_text.dart'
-    show IconWithText;
-import 'package:medora/features/shared/data/models/doctor_model.dart'
-    show DoctorModel;
-import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
+import 'package:medora/core/extensions/string_extensions.dart';
+import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart';
+import 'package:medora/features/appointments/presentation/widgets/appointment_widgets/underline_title_widget.dart';
+import 'package:medora/features/appointments/presentation/widgets/icon_with_text.dart';
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart'
+    show DoctorEntity;
 
 import '../../../../generated/assets.dart';
 
 class AppointmentDetailsScreen extends StatelessWidget {
-  final DoctorEntity doctorModel;
-  final String appointmentDate;
-  final String appointmentTime;
-  final String patientName;
-  final String patientGender;
-  final String patientAge;
-  final String patientProblem;
+  static const double _horizontalPadding = 7.0;
+  static const double _verticalPadding = 10.0;
+  static const double _cardHorizontalMargin = 15.0;
+  static const double _cardVerticalMargin = 10.0;
+  static const double _sectionSpacing = 30.0;
+  static const double _itemSpacing = 20.0;
+  static const double _smallSpacing = 25.0;
 
-  const AppointmentDetailsScreen({
+  final ClientAppointmentsEntity appointment;
+
+  const AppointmentDetailsScreen({super.key, required this.appointment});
+
+  @override
+  Widget build(BuildContext context) {
+    final doctor = appointment.doctorEntity;
+
+    return Scaffold(
+      appBar: _buildAppBar(),
+      body: _buildContent(context, doctor),
+    );
+  }
+
+  AppBar _buildAppBar() {
+    return AppBar(title: const Text(AppStrings.appointmentDetailsTitle));
+  }
+
+  Widget _buildContent(BuildContext context, DoctorEntity doctor) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(
+        horizontal: _horizontalPadding,
+        vertical: _verticalPadding,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildDoctorCard(doctor),
+          const SizedBox(height: _smallSpacing),
+          _buildDoctorInformationSection(doctor),
+          const SizedBox(height: _sectionSpacing),
+          _buildPatientInformationSection(),
+          const SizedBox(height: _sectionSpacing),
+          _buildAppointmentScheduleSection(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDoctorCard(DoctorEntity doctor) {
+    return Card(
+      margin: const EdgeInsets.symmetric(
+        horizontal: _cardHorizontalMargin,
+        vertical: _cardVerticalMargin,
+      ),
+      color: Colors.white,
+      elevation: 1,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.r),
+        side: const BorderSide(color: Colors.black26),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildDoctorImage(doctor.imageUrl),
+          Expanded(child: _buildDoctorInfoContent(doctor)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDoctorImage(String imageUrl) {
+    return Padding(
+      padding: const EdgeInsets.all(5),
+      child: CachedNetworkImage(
+        width: 90,
+        height: 100,
+        imageUrl: imageUrl,
+        fit: BoxFit.cover,
+        imageBuilder: (context, imageProvider) => Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+            border: Border.all(color: Colors.black12, width: 2),
+          ),
+        ),
+        placeholder: (context, _) =>
+            _buildImagePlaceholder(Assets.imagesLoading),
+        errorWidget: (context, s, _) =>
+            _buildImagePlaceholder(Assets.imagesError),
+      ),
+    );
+  }
+
+  Widget _buildImagePlaceholder(String assetPath) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.black38, width: 2),
+        image: DecorationImage(image: AssetImage(assetPath), fit: BoxFit.cover),
+      ),
+    );
+  }
+
+  Widget _buildDoctorInfoContent(DoctorEntity doctor) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        spacing: 5,
+        children: [
+          _buildDoctorName(doctor.name),
+          const Divider(color: Colors.black12, thickness: 2),
+          _buildDoctorSpecialties(doctor.specialties),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDoctorName(String name) {
+    return Builder(
+      builder: (context) => Text(
+        '${AppStrings.dR}${name.toCapitalizeFirstLetter()}',
+        style: Theme.of(context).textTheme.mediumBlackBold.copyWith(
+          fontSize: 17.sp,
+          letterSpacing: 1,
+          height: 1.5,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDoctorSpecialties(List<String> specialties) {
+    return Builder(
+      builder: (context) {
+        return Text(
+          specialties.buildJoin(),
+          style: Theme.of(context).textTheme.hintFieldStyle.copyWith(
+            fontSize: 15.sp,
+            height: 0.9,
+            letterSpacing: 1.2,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildDoctorInformationSection(DoctorEntity doctor) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const UnderlineTitleWidget(title: AppStrings.doctorInformationTitle),
+        const SizedBox(height: _sectionSpacing),
+        _buildInformationItem(label: AppStrings.bioLabel, value: doctor.bio),
+        const SizedBox(height: _itemSpacing),
+        _buildInformationItem(
+          label: AppStrings.locationLabel,
+          value: doctor.location,
+        ),
+        const SizedBox(height: _itemSpacing),
+        _buildInformationItem(
+          label: AppStrings.feeLable,
+          value: '${doctor.fees} ${AppStrings.egyptianCurrency}',
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPatientInformationSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const UnderlineTitleWidget(title: AppStrings.patientInformationLabel),
+        const SizedBox(height: _itemSpacing),
+        _buildInformationItem(
+          label: AppStrings.nameLabel,
+          value: appointment.patientName,
+        ),
+        const SizedBox(height: _itemSpacing),
+        _buildInformationItem(
+          label: AppStrings.genderLabel,
+          value: appointment.patientGender,
+        ),
+        const SizedBox(height: _itemSpacing),
+        _buildInformationItem(
+          label: AppStrings.ageLabel,
+          value: appointment.patientAge,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAppointmentScheduleSection(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const UnderlineTitleWidget(title: AppStrings.scheduledAppointmentLabel),
+        const SizedBox(height: _itemSpacing),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: _buildAppointmentDateTimeCard(context),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAppointmentDateTimeCard(BuildContext context) {
+    return _AppointmentDateTimeCard(
+      date: appointment.appointmentDate,
+      time: appointment.appointmentTime,
+    );
+  }
+
+  Widget _buildInformationItem({required String label, required String value}) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildLabelText(label, constraints),
+              _buildValueText(': $value', constraints),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildLabelText(String label, BoxConstraints constraints) {
+    return SizedBox(
+      width: constraints.maxWidth * 0.25,
+      child: Builder(
+        builder: (context) =>
+            Text(label, style: Theme.of(context).textTheme.bodyMediumBold),
+      ),
+    );
+  }
+
+  Widget _buildValueText(String value, BoxConstraints constraints) {
+    return SizedBox(
+      width: constraints.maxWidth * 0.6,
+      child: Builder(
+        builder: (context) =>
+            Text(value, style: Theme.of(context).textTheme.bodyRegular),
+      ),
+    );
+  }
+}
+
+class _AppointmentDateTimeCard extends StatelessWidget {
+  final String date;
+  final String time;
+
+  const _AppointmentDateTimeCard({
     super.key,
-    required this.doctorModel,
-    required this.appointmentDate,
-    required this.appointmentTime,
-    required this.patientName,
-    required this.patientGender,
-    required this.patientAge,
-    required this.patientProblem,
+    required this.date,
+    required this.time,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Appointment Details')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Card(
-              margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-              color: Colors.white,
-              elevation: 1,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.r),
-                side: const BorderSide(color: Colors.black26),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: CachedNetworkImage(
-                      width: 90,
-                      height: 100,
-                      imageUrl: doctorModel.imageUrl,
-                      fit: BoxFit.cover,
-                      imageBuilder: (context, imageProvider) => Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.cover,
-                          ),
-                          border: Border.all(color: Colors.black12, width: 2),
-                        ),
-                      ),
-                      placeholder: (context, _) =>
-                          _buildContainer(Assets.imagesLoading),
-                      errorWidget: (context, s, _) =>
-                          _buildContainer(Assets.imagesError),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 15,
-                        horizontal: 8.0,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        spacing: 5,
-                        children: [
-                          Text(
-                            'Dr.${doctorModel.name}',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 1,
-                              fontSize: 17.sp,
-                              color: AppColors.black,
-                            ),
-                          ),
-                          const Divider(color: Colors.black12, thickness: 2),
-                          Text(
-                            doctorModel.specialties.buildJoin(),
-                            style: GoogleFonts.roboto(
-                              textStyle: TextStyle(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.grey.shade500,
-                                letterSpacing: 1,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 25),
-            const UnderlineTitleWidget(title: 'Doctor Information'),
-            const SizedBox(height: 30),
-            _customRichText(title: 'Bio', des: ' : ${doctorModel.bio}'),
-            const SizedBox(height: 20),
-            _customRichText(
-              title: 'Location',
-              des: ' : ${doctorModel.location}',
-            ),
-            const SizedBox(height: 20),
-            _customRichText(title: 'Fee', des: ' : ${doctorModel.fees} EGP'),
-            const SizedBox(height: 30),
-            const UnderlineTitleWidget(title: 'Patient Information'),
-            const SizedBox(height: 20),
-            _customRichText(title: 'Full Name', des: ' : $patientName'),
-            const SizedBox(height: 20),
-            _customRichText(title: 'Gender: ', des: ' : $patientGender'),
-            const SizedBox(height: 20),
-            _customRichText(title: 'Age', des: ' : $patientAge'),
-            const SizedBox(height: 30),
-            const UnderlineTitleWidget(title: 'Scheduled appointment'),
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: _buildAppointmentCard(
-                date: appointmentDate,
-                time: appointmentTime,
-                style: Theme.of(context).textTheme.dateTimeBlackStyle.copyWith(
-                  color: Colors.white,
-                  fontSize: 15.sp,
-                ),
-                backgroundColor: AppColors.green,
-                borderColor: AppColors.green,
-              ),
-            ),
-          ],
-        ),
-      ),
+    final iconColor = Colors.black54;
+    final textStyle = Theme.of(context).textTheme.dateTimeBlackStyle.copyWith(
+      color: Colors.black,
+      fontSize: 15.sp,
     );
-  }
-
-  static Widget _buildAppointmentCard({
-    required String date,
-    required String time,
-    required TextStyle style,
-    required Color backgroundColor,
-    required Color borderColor,
-  }) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: borderColor, width: 1.2),
+        color: AppColors.customWhite,
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           IconWithText(
+            iconColor: iconColor,
             icon: Icons.calendar_month,
             text: date,
-            textStyle: style,
-          ),
-          IconWithText(icon: Icons.alarm, text: time, textStyle: style),
-        ],
-      ),
-    );
-  }
-
-  Container _buildContainer(String image) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.black38, width: 2),
-        image: DecorationImage(image: AssetImage(image), fit: BoxFit.cover),
-      ),
-    );
-  }
-
-  _customRichText({required String title, required String des}) {
-    return LayoutBuilder(
-      builder: (context, constraints) => Padding(
-        padding: const EdgeInsets.only(left: 8.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: constraints.maxWidth * 0.25,
-              child: Text(
-                title,
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.grey.shade900,
-                  letterSpacing: 1,
-                ),
-              ),
-            ),
-            SizedBox(
-              width: constraints.maxWidth * 0.6,
-              child: Text(
-                des,
-                style: TextStyle(
-                  fontSize: 15.sp,
-                  fontWeight: FontWeight.w400,
-
-                  color: Colors.grey.shade700,
-                  letterSpacing: 1,
-                ),
-              ),
-            ),
-            /*  RichText(
-              text: TextSpan(
-                  text: title,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w800, letterSpacing: 1,
-                    fontSize: 14.sp,
-                    // color: const Color(0xff3674B5),
-                    color: AppColors.black,
-                  ),
-                  children: [
-                    TextSpan(
-                        text: des,
-                        style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.grey.shade700,
-                            letterSpacing: 1),
-                    )
-                  ]),
-            ),*/
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/*
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_task/core/constants/themes/app_colors.dart';
-import 'package:flutter_task/core/constants/themes/app_text_styles.dart';
-import 'package:flutter_task/features/appointments/presentation/widgets/appointment_widgets/underline_title_widget.dart';
-import 'package:flutter_task/features/appointments/presentation/widgets/icon_with_text.dart';
-import 'package:flutter_task/features/doctor_profile/data/data/doctor_model.dart';
-import 'package:google_fonts/google_fonts.dart';
-
-import '../../../../core/constants/common_widgets/consultation_fee_and_wait_row.dart';
-import '../../../../generated/assets.dart';
-
-class AppointmentDetailsScreen extends StatelessWidget {
-  final DoctorModel doctorModel;
-  final String appointmentDate;
-  final String appointmentTime;
-
-  const AppointmentDetailsScreen(
-      {super.key,
-      required this.doctorModel,
-      required this.appointmentDate,
-      required this.appointmentTime});
-
-  @override
-  Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.sizeOf(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Appointment Details'),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Card(
-              margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-              color: Colors.white,
-              elevation: 1,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.r),
-                side: const BorderSide(
-                  color: Colors.black26,
-                ),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: CachedNetworkImage(
-                      width: 90,
-                      height: 100,
-                      imageUrl: doctorModel.imageUrl,
-                      fit: BoxFit.cover,
-                      imageBuilder: (context, imageProvider) => Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          image: DecorationImage(
-                              image: imageProvider, fit: BoxFit.cover),
-                          border: Border.all(
-                            color: Colors.black12,
-                            width: 2,
-                          ),
-                        ),
-                      ),
-                      placeholder: (context, _) =>
-                          _buildContainer(Assets.imagesLoading),
-                      errorWidget: (context, s, _) =>
-                          _buildContainer(Assets.imagesError),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        spacing: 5,
-                        children: [
-                          Text(
-                            'Dr.${doctorModel.name}',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600, letterSpacing: 1,
-                              fontSize: 17.sp,
-                              // color: const Color(0xff3674B5),
-                              color: AppColors.black,
-                            ),
-                          ),
-                          const Divider(color: Colors.black12, thickness: 2),
-                          Text(
-                            doctorModel.specialties,
-                            style: GoogleFonts.roboto(
-                                textStyle: TextStyle(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.grey.shade500,
-                                    letterSpacing: 1)),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 25),
-            const UnderlineTitleWidget(title: 'Doctor Information'),
-            const SizedBox(height: 30),
-            _customRichText(title: 'Bio: ', des: doctorModel.bio),
-            const SizedBox(height: 20),
-            _customRichText(title: 'Location: ', des: doctorModel.location),
-            const SizedBox(height: 20),
-            _customRichText(title: 'Consultation Fee: ', des: '${doctorModel.fees} EGP'),
-
-
-            const SizedBox(height: 30),
-            const UnderlineTitleWidget(title: 'Patient Information'),
-            const SizedBox(height: 20),
-            _customRichText(title: 'Full Name: ', des: 'Yousab sefeen'),
-            const SizedBox(height: 20),
-            _customRichText(title: 'Gender: ', des: 'Male'),
-
-
-            const SizedBox(height: 20),
-            _customRichText(title: 'Age: ', des: '27'),
-
-            const SizedBox(height: 30),
-            const UnderlineTitleWidget(title: 'Scheduled appointment'),
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: _buildAppointmentCard(
-                date: appointmentDate,
-                time: appointmentTime,
-                style: Theme.of(context)
-                    .textTheme
-                    .dateTimeBlackStyle
-                    .copyWith(color: Colors.white, fontSize: 15.sp),
-                backgroundColor: AppColors.green,
-                borderColor: AppColors.green,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  static Widget _buildAppointmentCard({
-    required String date,
-    required String time,
-    required TextStyle style,
-    required Color backgroundColor,
-    required Color borderColor,
-  }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: borderColor, width: 1.2),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          IconWithText(
-            icon: Icons.calendar_month,
-            text: date,
-            textStyle: style,
+            textStyle: textStyle,
           ),
           IconWithText(
+            iconColor: iconColor,
             icon: Icons.alarm,
             text: time,
-            textStyle: style,
+            textStyle: textStyle,
           ),
         ],
       ),
     );
   }
-
-  Container _buildContainer(String image) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.black38, width: 2),
-        image: DecorationImage(
-          image: AssetImage(image),
-          fit: BoxFit.cover,
-        ),
-      ),
-    );
-  }
-
-  _customRichText({required String title, required String des}) {
-    return RichText(
-      text: TextSpan(
-          text: title,
-          style: TextStyle(
-            fontWeight: FontWeight.w800, letterSpacing: 1,
-            fontSize: 14.sp,
-            // color: const Color(0xff3674B5),
-            color: AppColors.black,
-          ),
-          children: [
-            TextSpan(
-                text: des,
-                style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.grey.shade700,
-                    letterSpacing: 1))
-          ]),
-    );
-  }
 }
-
- */

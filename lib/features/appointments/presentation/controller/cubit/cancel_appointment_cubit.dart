@@ -5,6 +5,7 @@ import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/core/enum/internet_state.dart';
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
+import 'package:medora/features/appointments/domain/params/cancel_appointments_params.dart' show CancelAppointmentsParams;
 import 'package:medora/features/appointments/domain/use_cases/cancel_appointment_use_case.dart'
     show CancelAppointmentUseCase, CancelAppointmentsParams;
 import 'package:medora/features/appointments/presentation/controller/states/cancel_appointment_state.dart'

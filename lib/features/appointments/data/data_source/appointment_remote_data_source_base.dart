@@ -19,14 +19,15 @@ abstract class AppointmentRemoteDataSourceBase {
   });
 
   Future<void> cancelAppointment({
-    required String doctorId,
-    required String appointmentId,
+    required Map<String, dynamic> queryParams,
   });
 
-  Future<List<ClientAppointmentsModel>?> fetchClientAppointments();
+
+  Future<List<ClientAppointmentsModel>?> fetchUpcomingAppointments();
+  Future<List<ClientAppointmentsModel>?> fetchCompletedAppointments();
+  Future<List<ClientAppointmentsModel>?> fetchCancelledAppointments();
 
   Future<void> deleteAppointment({
-    required String appointmentId,
-    required String doctorId,
+    required Map<String, dynamic> queryParams,
   });
 }

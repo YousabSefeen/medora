@@ -108,7 +108,7 @@ class AppStrings {
   static const String hintSelectTime = 'Select time';
   static const String requiredField = 'required field';
   static const String feesLabel = 'Fees';
-  static const String fee = 'Fee';
+  static const String feeLable = 'Fee';
   static const String waitingTime = 'Waiting time';
   static const String min_15 = '15 min';
   static const String egyptianCurrency = 'EGP';
@@ -196,7 +196,7 @@ class AppStrings {
   static const String male = 'Male';
   static const String female = 'Female';
   static const String fullNameHint = 'Please enter your name';
-  static const String ageLabel = 'Your Age';
+  static const String yourAgeLabel = 'Your Age';
   static const String ageHint = 'Please enter your age';
   static const String problemLabel = 'Write your problem';
   static const String problemHint = 'Briefly describe your health concern...';
@@ -343,6 +343,23 @@ class AppStrings {
   static const String genderHint='Select Gender';
 
   static const String requiredGenderField='Please select your gender';
+  static const String appointmentDetailsTitle='Appointment Details';
+  static const String doctorInformationTitle='Doctor Information';
+  static const String patientInformationLabel='Patient Information';
+  static const String genderLabel='Gender';
+  static const String ageLabel='Age';
+  static const String scheduledAppointmentLabel='Scheduled appointment';
+
+
+
+
+
+
+
+
+
+
+
 
 
 

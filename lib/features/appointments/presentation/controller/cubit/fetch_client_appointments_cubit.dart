@@ -1,3 +1,4 @@
+/*
 import 'package:hydrated_bloc/hydrated_bloc.dart' show Cubit;
 import 'package:medora/core/base_use_case/base_use_case.dart' show NoParams;
 import 'package:medora/core/enum/appointment_status.dart'
@@ -39,7 +40,14 @@ class FetchClientAppointmentsCubit extends Cubit<FetchClientAppointmentsState> {
       },
     );
   }
+void printData(){
+    if(state.clientAppointments.isNotEmpty){
+      print('FetchClientAppointmentsCubit.printData ${state.clientAppointments[0]}');
 
+    }else{
+      print('Empty List');
+    }
+  }
   List<ClientAppointmentsEntity>? get upcomingAppointments => state
       .clientAppointments
       .where(
@@ -77,3 +85,4 @@ class FetchClientAppointmentsCubit extends Cubit<FetchClientAppointmentsState> {
       )
       .toList();
 }
+*/

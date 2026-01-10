@@ -31,14 +31,14 @@ class DoctorInfoFooter extends StatelessWidget {
             icon: FontAwesomeIcons.locationDot,
             iconColor: AppColors.red,
             label: AppStrings.locationLabel,
-            value: location.capitalizeFirstLetter(),
+            value: location.toCapitalizeFirstLetter(),
           ),
         ),
         Expanded(
           child: _IconLabelValue(
             icon: FontAwesomeIcons.dollarSign,
             iconColor: Colors.black54,
-            label: AppStrings.fee,
+            label: AppStrings.feeLable,
             value: '$fee ${AppStrings.egyptianCurrency}',
           ),
         ),

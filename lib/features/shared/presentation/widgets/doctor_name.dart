@@ -12,7 +12,7 @@ class DoctorName extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      name.capitalizeFirstLetter(),
+      name.toCapitalizeFirstLetter(),
       style: Theme.of(context).textTheme.mediumBlack.copyWith(
         fontSize: fontSize.sp,
         fontWeight: FontWeight.w700,

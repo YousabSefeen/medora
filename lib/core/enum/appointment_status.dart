@@ -1,1 +1,1 @@
-enum AppointmentStatus { confirmed, completed, cancelled }
+enum AppointmentStatus { pendingPayment,confirmed, completed, cancelled }

@@ -12,10 +12,12 @@ import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
-import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart' show ClientAppointmentsEntity;
-import 'package:medora/features/appointments/presentation/controller/cubit/cancel_appointment_cubit.dart' show CancelAppointmentCubit;
-import 'package:medora/features/appointments/presentation/controller/states/cancel_appointment_state.dart' show CancelAppointmentState;
-
+import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart'
+    show ClientAppointmentsEntity;
+import 'package:medora/features/appointments/presentation/controller/cubit/cancel_appointment_cubit.dart'
+    show CancelAppointmentCubit;
+import 'package:medora/features/appointments/presentation/controller/states/cancel_appointment_state.dart'
+    show CancelAppointmentState;
 
 import '../widgets/custom_widgets/adaptive_action_button.dart';
 
@@ -115,14 +117,12 @@ class _AppointmentCancellationScreenState
 
   Widget _buildContinueButton(ClientAppointmentsEntity appointment) {
     return BlocSelector<
-        CancelAppointmentCubit,
-        CancelAppointmentState,
+      CancelAppointmentCubit,
+      CancelAppointmentState,
       dartz.Tuple2<LazyRequestState, String>
     >(
-      selector: (state) => dartz.Tuple2(
-        state.requestState,
-        state.failureMessage,
-      ),
+      selector: (state) =>
+          dartz.Tuple2(state.requestState, state.failureMessage),
       builder: (context, values) {
         _handleCancelAppointmentResponse(context, values.value1, values.value2);
 

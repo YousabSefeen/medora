@@ -48,7 +48,7 @@ class BookedAppointmentInfoSection extends StatelessWidget {
   ) => IconWithText(
     icon: Icons.circle_rounded,
     iconColor: _getIconColor(appointmentStatus),
-    text: appointment.appointmentStatus.capitalizeFirstLetter(),
+    text: appointment.appointmentStatus.toCapitalizeFirstLetter(),
     //    textStyle: textStyle,
     textStyle: textStyle.copyWith(
       letterSpacing: 1,
@@ -57,7 +57,8 @@ class BookedAppointmentInfoSection extends StatelessWidget {
     ),
   );
 
-  _getIconColor(AppointmentStatus appointmentStatus) {
+ Color _getIconColor(AppointmentStatus appointmentStatus) {
+
     switch (appointmentStatus) {
       case AppointmentStatus.confirmed:
         return const Color(0xFFFFC107);
@@ -65,6 +66,7 @@ class BookedAppointmentInfoSection extends StatelessWidget {
       case AppointmentStatus.completed:
         return const Color(0xFF4CAF50);
       case AppointmentStatus.cancelled:
+      case AppointmentStatus.pendingPayment:
         return const Color(0xFFF44336);
     }
   }

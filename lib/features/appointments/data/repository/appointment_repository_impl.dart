@@ -54,47 +54,23 @@ class AppointmentRepositoryImpl extends AppointmentRepositoryBase {
 
   @override
   Future<Either<Failure, void>> cancelAppointment({
-    required String doctorId,
-    required String appointmentId,
+    required Map<String, dynamic> queryParams,
   }) async {
     try {
-      await remoteDataSource.cancelAppointment(
-        doctorId: doctorId,
-        appointmentId: appointmentId,
-      );
+      await remoteDataSource.cancelAppointment(queryParams: queryParams);
       return right(null);
     } catch (e) {
       return left(ServerFailure(catchError: e));
     }
   }
 
-  @override
-  Future<Either<Failure, List<ClientAppointmentsEntity>?>>
-  fetchClientAppointments() async {
-    try {
-      final models = await remoteDataSource.fetchClientAppointments();
-
-      if (models == null) {
-        return right(null);
-      }
-
-      final entities = models.map((model) => model.toEntity()).toList();
-      return right(entities);
-    } catch (e) {
-      return left(ServerFailure(catchError: e));
-    }
-  }
 
   @override
   Future<Either<Failure, void>> deleteAppointment({
-    required String appointmentId,
-    required String doctorId,
+    required Map<String, dynamic> queryParams,
   }) async {
     try {
-      await remoteDataSource.deleteAppointment(
-        appointmentId: appointmentId,
-        doctorId: doctorId,
-      );
+      await remoteDataSource.deleteAppointment(queryParams: queryParams);
       return right(null);
     } catch (e) {
       return left(ServerFailure(catchError: e));
@@ -124,6 +100,57 @@ class AppointmentRepositoryImpl extends AppointmentRepositoryBase {
       await remoteDataSource.confirmAppointment(queryParams: queryParams);
 
       return const Right(null);
+    } catch (e) {
+      return left(ServerFailure(catchError: e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<ClientAppointmentsEntity>?>>
+  fetchUpcomingAppointments() async {
+    try {
+      final models = await remoteDataSource.fetchUpcomingAppointments();
+
+      if (models == null) {
+        return right(null);
+      }
+
+      final entities = models.map((model) => model.toEntity()).toList();
+      return right(entities);
+    } catch (e) {
+      return left(ServerFailure(catchError: e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<ClientAppointmentsEntity>?>>
+  fetchCompletedAppointments() async {
+    try {
+      final models = await remoteDataSource.fetchCompletedAppointments();
+
+      if (models == null) {
+        return right(null);
+      }
+
+      final entities = models.map((model) => model.toEntity()).toList();
+      return right(entities);
+    } catch (e) {
+      return left(ServerFailure(catchError: e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<ClientAppointmentsEntity>?>>
+  fetchCancelledAppointments() async {
+    try {
+      final models = await remoteDataSource.fetchCancelledAppointments();
+
+      if (models == null) {
+        return right(null);
+      }
+
+      final entities = models.map((model) => model.toEntity()).toList();
+      return right(entities);
     } catch (e) {
       return left(ServerFailure(catchError: e));
     }

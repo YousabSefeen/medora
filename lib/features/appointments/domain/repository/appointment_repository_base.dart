@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-
 import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart'
     show ClientAppointmentsEntity;
 import 'package:medora/features/appointments/domain/entities/doctor_appointment_entity.dart'
@@ -15,23 +14,27 @@ abstract class AppointmentRepositoryBase {
     required Map<String, dynamic> queryParams,
   });
 
-
-
   Future<Either<Failure, void>> rescheduleAppointment({
     required Map<String, dynamic> queryParams,
   });
 
   Future<Either<Failure, void>> cancelAppointment({
-    required String doctorId,
-    required String appointmentId,
+    required Map<String, dynamic> queryParams,
   });
 
+
+
   Future<Either<Failure, List<ClientAppointmentsEntity>?>>
-  fetchClientAppointments();
+  fetchUpcomingAppointments();
+
+  Future<Either<Failure, List<ClientAppointmentsEntity>?>>
+  fetchCompletedAppointments();
+
+  Future<Either<Failure, List<ClientAppointmentsEntity>?>>
+  fetchCancelledAppointments();
 
   Future<Either<Failure, void>> deleteAppointment({
-    required String appointmentId,
-    required String doctorId,
+    required Map<String, dynamic> queryParams,
   });
 
   //New
@@ -39,6 +42,7 @@ abstract class AppointmentRepositoryBase {
   Future<Either<Failure, String>> bookAppointment({
     required Map<String, dynamic> queryParams,
   });
+
   Future<Either<Failure, void>> confirmAppointment({
     required Map<String, dynamic> queryParams,
   });

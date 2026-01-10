@@ -115,7 +115,7 @@ class _PatientDetailsScreenState extends State<PatientDetailsScreen> {
       GenderDropdownField(controller: _formControllers.genderController);
 
   Widget _buildAgeField() => DoctorInfoField(
-    label: AppStrings.ageLabel,
+    label: AppStrings.yourAgeLabel,
     hintText: AppStrings.ageHint,
     controller: _formControllers.ageController,
     keyboardType: TextInputType.number,

@@ -113,7 +113,7 @@ class CustomSliverAppBar extends StatelessWidget {
         ),
         constraints: BoxConstraints(maxWidth: deviceWidth * 0.52),
         child: Text(
-          doctor.name.capitalizeFirstLetter(),
+          doctor.name.toCapitalizeFirstLetter(),
           style: textTheme.extraLargeWhiteBold,
           textAlign: TextAlign.center,
           maxLines: 2,
