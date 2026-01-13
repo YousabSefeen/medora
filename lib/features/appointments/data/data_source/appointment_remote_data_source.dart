@@ -1,8 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:medora/core/enum/appointment_status.dart';
+import 'package:medora/features/appointments/data/models/paginated_appointments_response.dart'
+    show PaginatedAppointmentsResponse;
 import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
+import 'package:medora/features/shared/domain/entities/pagination_parameters.dart'
+    show PaginationParameters;
 
 import '../models/client_appointments_model.dart';
 import '../models/doctor_appointment_model.dart';
@@ -11,6 +15,10 @@ import 'appointment_remote_data_source_base.dart';
 class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
   final FirebaseFirestore _firestore;
   final FirebaseAuth _auth;
+
+  static const String _appointmentsCollection = 'appointments';
+  static const String _doctorsCollection = 'doctors';
+  static const int _defaultPageSize = 10;
 
   AppointmentRemoteDataSource({
     FirebaseFirestore? firestore,
@@ -28,7 +36,7 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
       final data = {
         ...queryParams,
         'clientId': _getCurrentUserId(),
-        'appointmentStatus':AppointmentStatus.pendingPayment.name,
+        'appointmentStatus': AppointmentStatus.pendingPayment.name,
         'appointmentId': appointmentId,
         'createdAt': FieldValue.serverTimestamp(),
         'expiresAt': Timestamp.fromDate(
@@ -50,7 +58,6 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
     }
   }
 
-  // confirmAppointment
   @override
   Future<void> confirmAppointment({
     required Map<String, dynamic> queryParams,
@@ -64,19 +71,16 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
         'patientGender': queryParams['patientGender'],
         'patientAge': queryParams['patientAge'],
         'patientProblem': queryParams['patientProblem'],
-
-        'appointmentStatus':     AppointmentStatus.confirmed.name,
+        'appointmentStatus': AppointmentStatus.confirmed.name,
         'confirmedAt': FieldValue.serverTimestamp(),
-
         'expiresAt': FieldValue.delete(),
       };
 
-      //   Update the appointment in the public collection
       await _firestore
           .collection('appointments')
           .doc(appointmentId)
           .update(updateData);
-      //   Update the appointment in the doctor's collection
+
       await _firestore
           .collection('doctors')
           .doc(doctorId)
@@ -89,7 +93,6 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
     }
   }
 
-  //   fetching all doctor appointments
   @override
   Future<List<DoctorAppointmentModel>> fetchDoctorAppointments({
     required String doctorId,
@@ -108,7 +111,6 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
     }
   }
 
-  // Retrieve the booked times for a specific date
   @override
   Future<List<String>> fetchBookedTimeSlots({
     required Map<String, dynamic> queryParams,
@@ -128,11 +130,12 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
       return snapshot.docs
           .where((doc) {
             final status = doc['appointmentStatus'] as String;
+            final data = doc.data() as Map<String, dynamic>;
 
             if (status == 'confirmed') return true;
 
             if (status == 'pending') {
-              final expiresAt = doc['expiresAt'] as Timestamp?;
+              final expiresAt = data['expiresAt'] as Timestamp?;
               return expiresAt != null && expiresAt.toDate().isAfter(now);
             }
 
@@ -146,7 +149,6 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
     }
   }
 
-  //   Reschedule an appointment
   @override
   Future<void> rescheduleAppointment({
     required Map<String, dynamic> queryParams,
@@ -170,7 +172,6 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
     );
   }
 
-  //   Cancel appointment
   @override
   Future<void> cancelAppointment({
     required Map<String, dynamic> queryParams,
@@ -187,29 +188,6 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
     );
   }
 
-  //   fetch client appointments with doctor details
-
-  Future<List<ClientAppointmentsModel>?> _fetchAppointments({
-    required String appointmentStatus,
-  }) async {
-    final clientId = _getCurrentUserId();
-    final appointments = await _fetchAppointmentsByClientId(
-      clientId: clientId,
-      appointmentStatus: appointmentStatus,
-    );
-    final doctorIds = _extractUniqueDoctorIds(appointments);
-    final doctorDataMap = await _fetchDoctorsDataByIds(doctorIds);
-
-    return appointments.map((appointment) {
-      final doctorId = appointment['doctorId'] as String;
-      return _createClientAppointmentModel(
-        appointment,
-        doctorDataMap[doctorId],
-      );
-    }).toList();
-  }
-
-  //   Delete appointment
   @override
   Future<void> deleteAppointment({
     required Map<String, dynamic> queryParams,
@@ -233,11 +211,171 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
     }
   }
 
-  // -----------------------------------------------------------------------
-  //                        الدوال المساعدة (Helper Methods)
-  // -----------------------------------------------------------------------
+  @override
+  Future<PaginatedAppointmentsResponse> fetchUpcomingAppointments({
+    PaginationParameters parameters = const PaginationParameters(),
+  }) async {
+    return _fetchAppointmentsByStatus(
+      status: AppointmentStatus.confirmed.name,
+      parameters: parameters,
+    );
+  }
 
-  /// تحويل مستند Firestore إلى DoctorAppointmentModel
+  @override
+  Future<PaginatedAppointmentsResponse> fetchCompletedAppointments({
+    PaginationParameters parameters = const PaginationParameters(),
+  }) async {
+    return _fetchAppointmentsByStatus(
+      status: AppointmentStatus.completed.name,
+      parameters: parameters,
+    );
+  }
+
+  @override
+  Future<PaginatedAppointmentsResponse> fetchCancelledAppointments({
+    PaginationParameters parameters = const PaginationParameters(),
+  }) async {
+    return _fetchAppointmentsByStatus(
+      status: AppointmentStatus.cancelled.name,
+      parameters: parameters,
+    );
+  }
+
+  Future<PaginatedAppointmentsResponse> _fetchAppointmentsByStatus({
+    required String status,
+    required PaginationParameters parameters,
+  }) async {
+    try {
+      final clientId = _getCurrentUserId();
+      final appointmentDocs = await _fetchPaginatedAppointments(
+        clientId: clientId,
+        status: status,
+        parameters: parameters,
+      );
+
+      if (appointmentDocs.isEmpty) {
+        return PaginatedAppointmentsResponse(appointments: [], hasMore: false);
+      }
+
+      final doctorIds = _extractDoctorIdsFromDocs(appointmentDocs);
+      final doctorDataMap = await _fetchDoctorsDataByIds(doctorIds);
+
+      final appointmentModels = _convertDocsToModels(
+        docs: appointmentDocs,
+        doctorDataMap: doctorDataMap,
+      );
+
+      return _createPaginatedResponse(
+        appointments: appointmentModels,
+        queryDocs: appointmentDocs,
+        pageSize: parameters.limit,
+      );
+    } catch (error) {
+      _logError('_fetchAppointmentsByStatus', error);
+      rethrow;
+    }
+  }
+
+  Future _fetchPaginatedAppointments({
+    required String clientId,
+    required String status,
+    required PaginationParameters parameters,
+  }) async {
+    final pageSize = parameters.limit > 0 ? parameters.limit : _defaultPageSize;
+
+    Query query = _firestore
+        .collection(_appointmentsCollection)
+        .where('appointmentStatus', isEqualTo: status)
+        .where('clientId', isEqualTo: clientId)
+        .orderBy('appointmentDate')
+        .limit(pageSize);
+
+    if (parameters.lastDocument != null) {
+      query = query.startAfterDocument(parameters.lastDocument!);
+    }
+
+    final snapshot = await query.get();
+    return snapshot.docs;
+  }
+
+  List<String> _extractDoctorIdsFromDocs(
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> docs,
+  ) {
+    try {
+      return docs
+          .map((doc) {
+            final data = doc.data();
+            final doctorId = data['doctorId'] as String?;
+
+            if (doctorId == null || doctorId.isEmpty) {
+              throw Exception('Invalid doctorId in appointment ${doc.id}');
+            }
+
+            return doctorId;
+          })
+          .toSet()
+          .toList();
+    } catch (e) {
+      _logError('_extractDoctorIdsFromDocs', e);
+      return [];
+    }
+  }
+
+  Future<Map<String, DoctorModel>> _fetchDoctorsDataByIds(
+    List<String> doctorIds,
+  ) async {
+    if (doctorIds.isEmpty) return {};
+
+    final snapshot = await _firestore
+        .collection(_doctorsCollection)
+        .where(FieldPath.documentId, whereIn: doctorIds)
+        .get();
+
+    return {
+      for (var doc in snapshot.docs)
+        doc.id: DoctorModel.fromJson({'doctorId': doc.id, ...doc.data()}),
+    };
+  }
+
+  List<ClientAppointmentsModel> _convertDocsToModels({
+    required List<QueryDocumentSnapshot<Map<String, dynamic>>> docs,
+    required Map<String, DoctorModel> doctorDataMap,
+  }) {
+    return docs.map((doc) {
+      try {
+        final appointmentData = doc.data();
+        final doctorId = appointmentData['doctorId'] as String;
+        final doctorModel = doctorDataMap[doctorId];
+
+        return ClientAppointmentsModel.fromJson({
+          'appointmentId': doc.id,
+          ...appointmentData,
+          'doctorModel': doctorModel?.toJson() ?? {},
+        });
+      } catch (e) {
+        _logError('_convertDocsToModels for doc: ${doc.id}', e);
+        rethrow;
+      }
+    }).toList();
+  }
+
+  PaginatedAppointmentsResponse _createPaginatedResponse({
+    required List<ClientAppointmentsModel> appointments,
+    required List<QueryDocumentSnapshot<Map<String, dynamic>>> queryDocs,
+    required int pageSize,
+  }) {
+    DocumentSnapshot? lastDocument;
+    if (queryDocs.isNotEmpty) {
+      lastDocument = queryDocs.last;
+    }
+
+    return PaginatedAppointmentsResponse(
+      appointments: appointments.map((model) => model.toEntity()).toList(),
+      lastDocument: lastDocument,
+      hasMore: queryDocs.length == pageSize,
+    );
+  }
+
   DoctorAppointmentModel _convertToDoctorAppointment(
     QueryDocumentSnapshot<Map<String, dynamic>> doc,
   ) {
@@ -247,14 +385,12 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
     });
   }
 
-  /// الحصول على معرف المستخدم الحالي
   String _getCurrentUserId() {
     final user = _auth.currentUser;
     if (user == null) throw Exception('User not authenticated');
     return user.uid;
   }
 
-  /// تحديث موعد في كلتا المجموعتين (العامة والخاصة بالطبيب)
   Future<void> _updateAppointment({
     required String doctorId,
     required String appointmentId,
@@ -295,112 +431,7 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
         .update(updates);
   }
 
-  /*  /// جلب المواعيد حسب معرف العميل
-  Future<List<Map<String, dynamic>>> _fetchAppointmentsByClientId(
-    String clientId,
-  ) async {
-    final snapshot = await _firestore
-        .collection('appointments')
-        .where('appointmentStatus', isEqualTo: 'confirmed')
-        .where('clientId', isEqualTo: clientId)
-        .orderBy('appointmentDate')
-        .get();
-
-    return snapshot.docs.map((doc) {
-      final data = doc.data();
-      data['appointmentId'] = doc.id;
-      return data;
-    }).toList();
-  }*/
-
-  ///  جديد جلب المواعيد حسب معرف العميل
-  Future<List<Map<String, dynamic>>> _fetchAppointmentsByClientId({
-    required String clientId,
-    required String appointmentStatus,
-  }) async {
-    final snapshot = await _firestore
-        .collection('appointments')
-        .where('appointmentStatus', isEqualTo: appointmentStatus)
-        .where('clientId', isEqualTo: clientId)
-        .orderBy('appointmentDate')
-        .get();
-
-    return snapshot.docs.map((doc) {
-      final data = doc.data();
-      data['appointmentId'] = doc.id;
-      return data;
-    }).toList();
-  }
-
-  /// Extracting unique doctors  identifiers
-  List<String> _extractUniqueDoctorIds(
-    List<Map<String, dynamic>> appointments,
-  ) {
-    return appointments
-        .map((appointment) => appointment['doctorId'] as String)
-        .toSet()
-        .toList();
-  }
-
-  /// جلب بيانات الأطباء بالجملة
-  Future<Map<String, DoctorModel>> _fetchDoctorsDataByIds(
-    List<String> doctorIds,
-  ) async {
-    if (doctorIds.isEmpty) return {};
-
-    final snapshot = await _firestore
-        .collection('doctors')
-        .where(FieldPath.documentId, whereIn: doctorIds)
-        .get();
-
-    return {
-      for (var doc in snapshot.docs) doc.id: DoctorModel.fromJson(doc.data()),
-    };
-  }
-
-  /// إنشاء ClientAppointmentsModel من البيانات الخام
-  ClientAppointmentsModel _createClientAppointmentModel(
-    Map<String, dynamic> appointment,
-    DoctorModel? doctorModel,
-  ) {
-    return ClientAppointmentsModel.fromJson({
-      ...appointment,
-
-      'doctorModel': doctorModel?.toJson() ?? {},
-    });
-  }
-
   void _logError(String methodName, dynamic error) {
     print('AppointmentRemoteDataSource.$methodName ERROR: $error');
   }
-
-
-  @override
-  Future<List<ClientAppointmentsModel>?> fetchUpcomingAppointments() async{
-    try {
-      return await _fetchAppointments(appointmentStatus:     AppointmentStatus.confirmed.name);
-    } catch (e) {
-      _logError('fetchCancelledAppointments', e);
-      rethrow;
-    }
-  }
-  @override
-  Future<List<ClientAppointmentsModel>?> fetchCompletedAppointments() async{
-    try {
-      return await _fetchAppointments(appointmentStatus: AppointmentStatus.confirmed.name);
-    } catch (e) {
-      _logError('fetchCancelledAppointments', e);
-      rethrow;
-    }
-  }
-  @override
-  Future<List<ClientAppointmentsModel>?> fetchCancelledAppointments() async {
-    try {
-      return await _fetchAppointments(appointmentStatus: 'cancelled');
-    } catch (e) {
-      _logError('fetchCancelledAppointments', e);
-      rethrow;
-    }
-  }
-
 }

@@ -13,22 +13,22 @@ class CompletedAppointmentsCubit extends Cubit<CompletedAppointmentsState> {
     : super(const CompletedAppointmentsState());
 
   Future<void> fetchCompletedAppointments() async {
-    final response = await completedAppointmentUseCase.call(const NoParams());
-    response.fold(
-      (failure) => emit(
-        state.copyWith(
-          requestState: RequestState.error,
-          failureMessage: failure.toString(),
-        ),
-      ),
-      (appointments) {
-        emit(
-          state.copyWith(
-            appointments: appointments,
-            requestState: RequestState.loaded,
-          ),
-        );
-      },
-    );
+    // final response = await completedAppointmentUseCase.call(const NoParams());
+    // response.fold(
+    //   (failure) => emit(
+    //     state.copyWith(
+    //       requestState: RequestState.error,
+    //       failureMessage: failure.toString(),
+    //     ),
+    //   ),
+    //   (appointments) {
+    //     emit(
+    //       state.copyWith(
+    //         appointments: appointments,
+    //         requestState: RequestState.loaded,
+    //       ),
+    //     );
+    //   },
+    // );
   }
 }

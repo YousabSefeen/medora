@@ -1,7 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:medora/core/error/failure.dart' show Failure, ServerFailure;
+import 'package:medora/features/appointments/data/models/paginated_appointments_response.dart'
+    show PaginatedAppointmentsResponse;
+import 'package:medora/features/shared/domain/entities/pagination_parameters.dart'
+    show PaginationParameters;
 
-import '../../domain/entities/client_appointments_entity.dart';
 import '../../domain/entities/doctor_appointment_entity.dart';
 import '../../domain/repository/appointment_repository_base.dart';
 import '../data_source/appointment_remote_data_source_base.dart';
@@ -64,7 +67,6 @@ class AppointmentRepositoryImpl extends AppointmentRepositoryBase {
     }
   }
 
-
   @override
   Future<Either<Failure, void>> deleteAppointment({
     required Map<String, dynamic> queryParams,
@@ -106,51 +108,54 @@ class AppointmentRepositoryImpl extends AppointmentRepositoryBase {
   }
 
   @override
-  Future<Either<Failure, List<ClientAppointmentsEntity>?>>
-  fetchUpcomingAppointments() async {
+  Future<Either<Failure, PaginatedAppointmentsResponse>>
+  fetchUpcomingAppointments({required PaginationParameters parameters}) async {
     try {
-      final models = await remoteDataSource.fetchUpcomingAppointments();
-
-      if (models == null) {
+      final response = await remoteDataSource.fetchUpcomingAppointments();
+      //     final List<ClientAppointmentsEntity> entities = response.appointments
+      //             .map((model) => model.toEntity())
+      //             .toList();
+      /*  if (models.appointments.isNotEmpty) {
         return right(null);
       }
 
-      final entities = models.map((model) => model.toEntity()).toList();
-      return right(entities);
+      final entities = models.map((model) => model.toEntity()).toList();*/
+         
+      return right(response);
     } catch (e) {
       return left(ServerFailure(catchError: e));
     }
   }
 
   @override
-  Future<Either<Failure, List<ClientAppointmentsEntity>?>>
-  fetchCompletedAppointments() async {
+  Future<Either<Failure, PaginatedAppointmentsResponse>>
+  fetchCompletedAppointments({required PaginationParameters parameters}) async {
     try {
       final models = await remoteDataSource.fetchCompletedAppointments();
 
-      if (models == null) {
-        return right(null);
-      }
-
-      final entities = models.map((model) => model.toEntity()).toList();
-      return right(entities);
+      // if (models == null) {
+      //   return right(null);
+      // }
+      //
+      // final entities = models.map((model) => model.toEntity()).toList();
+      return right(models);
     } catch (e) {
       return left(ServerFailure(catchError: e));
     }
   }
 
   @override
-  Future<Either<Failure, List<ClientAppointmentsEntity>?>>
-  fetchCancelledAppointments() async {
+  Future<Either<Failure, PaginatedAppointmentsResponse>>
+  fetchCancelledAppointments({required PaginationParameters parameters}) async {
     try {
       final models = await remoteDataSource.fetchCancelledAppointments();
 
-      if (models == null) {
-        return right(null);
-      }
-
-      final entities = models.map((model) => model.toEntity()).toList();
-      return right(entities);
+      // if (models == null) {
+      //   return right(null);
+      // }
+      //
+      // final entities = models.map((model) => model.toEntity()).toList();
+      return right(models);
     } catch (e) {
       return left(ServerFailure(catchError: e));
     }

@@ -1,25 +1,26 @@
-
-
 import 'package:dartz/dartz.dart';
 import 'package:medora/core/base_use_case/base_use_case.dart'
-    show BaseUseCase, NoParams;
+    show BaseUseCase;
 import 'package:medora/core/error/failure.dart';
-import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart'
-    show ClientAppointmentsEntity;
+import 'package:medora/features/appointments/data/models/paginated_appointments_response.dart'
+    show PaginatedAppointmentsResponse;
 import 'package:medora/features/appointments/domain/repository/appointment_repository_base.dart'
     show AppointmentRepositoryBase;
-class FetchUpcomingAppointmentUseCase  extends BaseUseCase<List<ClientAppointmentsEntity>?, NoParams> {
+import 'package:medora/features/shared/domain/entities/pagination_parameters.dart'
+    show PaginationParameters;
+
+class FetchUpcomingAppointmentUseCase
+    extends BaseUseCase<PaginatedAppointmentsResponse, PaginationParameters> {
   final AppointmentRepositoryBase appointmentRepositoryBase;
 
-  FetchUpcomingAppointmentUseCase({
-    required this.appointmentRepositoryBase,
-  });
+  FetchUpcomingAppointmentUseCase({required this.appointmentRepositoryBase});
 
   @override
-  Future<Either<Failure, List<ClientAppointmentsEntity>?>> call(
-      NoParams params,
-      ) async {
-    return await appointmentRepositoryBase
-        .fetchUpcomingAppointments();
+  Future<Either<Failure, PaginatedAppointmentsResponse>> call(
+    PaginationParameters parameters,
+  ) async {
+    return await appointmentRepositoryBase.fetchUpcomingAppointments(
+      parameters: parameters,
+    );
   }
 }
