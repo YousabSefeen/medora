@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart' show DocumentSnapshot;
 import 'package:equatable/equatable.dart' show Equatable;
 import 'package:medora/core/enum/appointment_status.dart'
     show AppointmentStatus;
@@ -9,32 +8,44 @@ import 'package:medora/features/appointments/domain/entities/client_appointments
     show ClientAppointmentsEntity;
 
 class UpcomingAppointmentsState extends Equatable {
+  final bool isLoadedBefore;
+
   final RequestState requestState;
   final String failureMessage;
   final List<ClientAppointmentsEntity> appointments;
-  final DocumentSnapshot? upcomingLastDocument;
-  final bool upcomingHasMore;
+
+  //  fields for Pagination
+  final dynamic lastDocument;
+  final bool hasMore;
+  final bool isLoadingMore;
+
   const UpcomingAppointmentsState({
+    this.isLoadedBefore = false,
     this.requestState = RequestState.loading,
     this.failureMessage = '',
     this.appointments = const [],
-    this.upcomingLastDocument,
-    this.upcomingHasMore = false,
+    this.lastDocument,
+    this.hasMore = true,
+    this.isLoadingMore = false,
   });
 
   UpcomingAppointmentsState copyWith({
+    bool? isLoadedBefore,
     RequestState? requestState,
     String? failureMessage,
     List<ClientAppointmentsEntity>? appointments,
-    DocumentSnapshot? upcomingLastDocument,
-    bool? upcomingHasMore,
+    dynamic lastDocument,
+    bool? hasMore,
+    bool? isLoadingMore,
   }) {
     return UpcomingAppointmentsState(
+      isLoadedBefore: isLoadedBefore ?? this.isLoadedBefore,
       requestState: requestState ?? this.requestState,
       failureMessage: failureMessage ?? this.failureMessage,
       appointments: appointments ?? this.appointments,
-      upcomingLastDocument: upcomingLastDocument ?? this.upcomingLastDocument,
-      upcomingHasMore: upcomingHasMore ?? this.upcomingHasMore
+      lastDocument: lastDocument ?? this.lastDocument,
+      hasMore: hasMore ?? this.hasMore,
+      isLoadingMore: isLoadingMore ?? this.isLoadingMore,
     );
   }
 
@@ -54,5 +65,13 @@ class UpcomingAppointmentsState extends Equatable {
       DateTimeFormatter.convertDateToString(appointDate);
 
   @override
-  List<Object?> get props => [requestState, failureMessage, appointments, upcomingLastDocument, upcomingHasMore];
+  List<Object?> get props => [
+    isLoadedBefore,
+    requestState,
+    failureMessage,
+    appointments,
+    lastDocument,
+    hasMore,
+    isLoadingMore,
+  ];
 }

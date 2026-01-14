@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:medora/core/error/failure.dart' show Failure, ServerFailure;
-import 'package:medora/features/appointments/data/models/paginated_appointments_response.dart'
-    show PaginatedAppointmentsResponse;
+import 'package:medora/features/shared/domain/entities/paginated_data_response.dart' show PaginatedDataResponse;
+
 import 'package:medora/features/shared/domain/entities/pagination_parameters.dart'
     show PaginationParameters;
 
@@ -108,10 +108,12 @@ class AppointmentRepositoryImpl extends AppointmentRepositoryBase {
   }
 
   @override
-  Future<Either<Failure, PaginatedAppointmentsResponse>>
+  Future<Either<Failure, PaginatedDataResponse>>
   fetchUpcomingAppointments({required PaginationParameters parameters}) async {
     try {
-      final response = await remoteDataSource.fetchUpcomingAppointments();
+      final response = await remoteDataSource.fetchUpcomingAppointments(
+        parameters: parameters,
+      );
       //     final List<ClientAppointmentsEntity> entities = response.appointments
       //             .map((model) => model.toEntity())
       //             .toList();
@@ -128,10 +130,12 @@ class AppointmentRepositoryImpl extends AppointmentRepositoryBase {
   }
 
   @override
-  Future<Either<Failure, PaginatedAppointmentsResponse>>
+  Future<Either<Failure, PaginatedDataResponse>>
   fetchCompletedAppointments({required PaginationParameters parameters}) async {
     try {
-      final models = await remoteDataSource.fetchCompletedAppointments();
+      final models = await remoteDataSource.fetchCompletedAppointments(
+        parameters: parameters,
+      );
 
       // if (models == null) {
       //   return right(null);
@@ -145,10 +149,13 @@ class AppointmentRepositoryImpl extends AppointmentRepositoryBase {
   }
 
   @override
-  Future<Either<Failure, PaginatedAppointmentsResponse>>
+  Future<Either<Failure, PaginatedDataResponse>>
   fetchCancelledAppointments({required PaginationParameters parameters}) async {
     try {
-      final models = await remoteDataSource.fetchCancelledAppointments();
+      final models = await remoteDataSource.fetchCancelledAppointments(
+
+        parameters: parameters,
+      );
 
       // if (models == null) {
       //   return right(null);

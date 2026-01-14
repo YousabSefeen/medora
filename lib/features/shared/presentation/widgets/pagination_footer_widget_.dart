@@ -11,7 +11,7 @@ import 'package:medora/generated/assets.dart' show Assets;
 class PaginationFooterWidget extends StatelessWidget {
   final bool isLoadingMore;
   final bool hasMore;
-  final List<DoctorEntity> doctorsList;
+  final List<dynamic> doctorsList;
 
   const PaginationFooterWidget({
     super.key,

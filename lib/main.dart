@@ -27,6 +27,7 @@ import 'package:medora/features/appointments/presentation/controller/cubit/patie
 import 'package:medora/features/appointments/presentation/controller/cubit/reschedule_appointment_cubit.dart' show RescheduleAppointmentCubit;
 
 import 'package:medora/features/appointments/presentation/controller/cubit/time_slot_cubit.dart' show TimeSlotCubit;
+import 'package:medora/features/appointments/presentation/controller/cubit/upcoming_appointments_cubit.dart' show UpcomingAppointmentsCubit;
 import 'package:medora/features/auth/presentation/controller/cubit/login_cubit.dart'
     show LoginCubit;
 import 'package:medora/features/favorites/presentation/controller/cubit/favorites_cubit.dart'
@@ -150,6 +151,10 @@ void main() async {
 
         BlocProvider<RescheduleAppointmentCubit>(
           create: (context) => serviceLocator<RescheduleAppointmentCubit>(),
+        ),
+
+        BlocProvider<UpcomingAppointmentsCubit>(
+          create: (context) => serviceLocator<UpcomingAppointmentsCubit>(),
         ),
       ],
       child: const MyApp(),

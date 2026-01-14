@@ -1,9 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:medora/features/appointments/data/models/paginated_appointments_response.dart' show PaginatedAppointmentsResponse;
-import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart'
-    show ClientAppointmentsEntity;
+
 import 'package:medora/features/appointments/domain/entities/doctor_appointment_entity.dart'
     show DoctorAppointmentEntity;
+import 'package:medora/features/shared/domain/entities/paginated_data_response.dart' show PaginatedDataResponse;
 import 'package:medora/features/shared/domain/entities/pagination_parameters.dart' show PaginationParameters;
 
 import '../../../../core/error/failure.dart';
@@ -26,17 +25,17 @@ abstract class AppointmentRepositoryBase {
 
 
 
-  Future<Either<Failure, PaginatedAppointmentsResponse>>
+  Future<Either<Failure, PaginatedDataResponse>>
   fetchUpcomingAppointments({
    required PaginationParameters parameters,
   });
 
-  Future<Either<Failure, PaginatedAppointmentsResponse>>
+  Future<Either<Failure, PaginatedDataResponse>>
   fetchCompletedAppointments({
     required PaginationParameters parameters,
   });
 
-  Future<Either<Failure, PaginatedAppointmentsResponse>>
+  Future<Either<Failure, PaginatedDataResponse>>
   fetchCancelledAppointments({
     required  PaginationParameters parameters,
   });

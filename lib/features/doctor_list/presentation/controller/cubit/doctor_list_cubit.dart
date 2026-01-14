@@ -70,7 +70,7 @@ class DoctorListCubit extends Cubit<DoctorListState> {
     PaginatedDataResponse paginatedDataResponse,
     bool isInitial,
   ) {
-    final List<DoctorEntity> newDoctors = paginatedDataResponse.doctors;
+    final List<DoctorEntity> newDoctors = paginatedDataResponse.list as List<DoctorEntity>;
 
     //  Merging lists
     final List<DoctorEntity> updatedList = isInitial

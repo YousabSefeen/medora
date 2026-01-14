@@ -1,6 +1,6 @@
 import 'package:medora/features/appointments/data/models/doctor_appointment_model.dart';
-import 'package:medora/features/appointments/data/models/paginated_appointments_response.dart'
-    show PaginatedAppointmentsResponse;
+import 'package:medora/features/shared/domain/entities/paginated_data_response.dart' show PaginatedDataResponse;
+
 import 'package:medora/features/shared/domain/entities/pagination_parameters.dart'
     show PaginationParameters;
 
@@ -27,16 +27,16 @@ abstract class AppointmentRemoteDataSourceBase {
   Future<List<ClientAppointmentsModel>?> fetchCompletedAppointments();
   Future<List<ClientAppointmentsModel>?> fetchCancelledAppointments();*/
 
-  Future<PaginatedAppointmentsResponse> fetchUpcomingAppointments({
-    PaginationParameters parameters,
+  Future<PaginatedDataResponse> fetchUpcomingAppointments({
+    required   PaginationParameters parameters,
   });
 
-  Future<PaginatedAppointmentsResponse> fetchCompletedAppointments({
-    PaginationParameters parameters,
+  Future<PaginatedDataResponse> fetchCompletedAppointments({
+    required PaginationParameters parameters,
   });
 
-  Future<PaginatedAppointmentsResponse> fetchCancelledAppointments({
-    PaginationParameters parameters,
+  Future<PaginatedDataResponse> fetchCancelledAppointments({
+    required   PaginationParameters parameters,
   });
 
   Future<void> deleteAppointment({required Map<String, dynamic> queryParams});
