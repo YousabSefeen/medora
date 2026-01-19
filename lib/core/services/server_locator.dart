@@ -31,7 +31,8 @@ import 'package:medora/features/appointments/domain/use_cases/fetch_client_appoi
 import 'package:medora/features/appointments/domain/use_cases/fetch_completed_appointment_use_case.dart' show FetchCompletedAppointmentUseCase;
 import 'package:medora/features/appointments/domain/use_cases/fetch_doctor_appointments_use_case.dart'
     show FetchDoctorAppointmentsUseCase;
-import 'package:medora/features/appointments/domain/use_cases/fetch_upcoming_appointment_use_case.dart' show FetchUpcomingAppointmentUseCase;
+import 'package:medora/features/appointments/domain/use_cases/fetch_upcoming_appointment_uc.dart'
+    show FetchUpcomingAppointmentUC;
 import 'package:medora/features/appointments/domain/use_cases/reschedule_appointment_use_case.dart'
     show RescheduleAppointmentUseCase;
 import 'package:medora/features/appointments/presentation/controller/cubit/book_appointment_cubit.dart'
@@ -187,9 +188,9 @@ class ServiceLocator {
 
 
 
-    serviceLocator.registerLazySingleton<FetchUpcomingAppointmentUseCase>(
-          () => FetchUpcomingAppointmentUseCase(
-        appointmentRepositoryBase: serviceLocator(),
+    serviceLocator.registerLazySingleton<FetchUpcomingAppointmentUC>(
+          () => FetchUpcomingAppointmentUC(
+        repository: serviceLocator(),
       ),
     );
     serviceLocator.registerLazySingleton<FetchCompletedAppointmentUseCase>(
@@ -272,7 +273,7 @@ class ServiceLocator {
     );*/
 
     serviceLocator.registerFactory<UpcomingAppointmentsCubit>(
-          () => UpcomingAppointmentsCubit(upcomingAppointmentsUseCase: serviceLocator()),
+          () => UpcomingAppointmentsCubit(useCase: serviceLocator()),
     );
     serviceLocator.registerFactory<CompletedAppointmentsCubit>(
           () => CompletedAppointmentsCubit(completedAppointmentUseCase: serviceLocator()),

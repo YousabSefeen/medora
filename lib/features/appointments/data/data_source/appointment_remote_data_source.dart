@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart' show DateFormat;
 import 'package:medora/core/enum/appointment_status.dart';
-
-import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart' show ClientAppointmentsEntity;
+import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart'
+    show ClientAppointmentsEntity;
 import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
-import 'package:medora/features/shared/domain/entities/paginated_data_response.dart' show PaginatedDataResponse;
+import 'package:medora/features/shared/domain/entities/paginated_data_response.dart'
+    show PaginatedDataResponse;
 import 'package:medora/features/shared/domain/entities/pagination_parameters.dart'
     show PaginationParameters;
 
@@ -20,32 +22,29 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
   static const String _appointmentsCollection = 'appointments';
   static const String _doctorsCollection = 'doctors';
 
-
   AppointmentRemoteDataSource({
     FirebaseFirestore? firestore,
     FirebaseAuth? auth,
   }) : _firestore = firestore ?? FirebaseFirestore.instance,
-        _auth = auth ?? FirebaseAuth.instance;
+       _auth = auth ?? FirebaseAuth.instance;
 
   // -------------------------------------------------------------
   // 1. PAGINATION METHODS - بنفس نمط DoctorsList
   // -------------------------------------------------------------
 
   @override
-  Future<PaginatedDataResponse> fetchUpcomingAppointments({
-   required PaginationParameters parameters  ,
-  }) async {
+  Future<PaginatedDataResponse<ClientAppointmentsEntity>>
+  fetchUpcomingAppointments({required PaginationParameters parameters}) async {
     return _fetchAppointmentsByStatus(
       status: AppointmentStatus.confirmed.name,
       parameters: parameters,
-      isPastDate: false, // Upcoming: تاريخ مستقبلي
+      isPastDate: true, // Upcoming: تاريخ مستقبلي
     );
   }
 
   @override
-  Future<PaginatedDataResponse> fetchCompletedAppointments({
-    PaginationParameters parameters = const PaginationParameters(),
-  }) async {
+  Future<PaginatedDataResponse<ClientAppointmentsEntity>>
+  fetchCompletedAppointments({required PaginationParameters parameters}) async {
     return _fetchAppointmentsByStatus(
       status: AppointmentStatus.completed.name,
       parameters: parameters,
@@ -54,16 +53,16 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
   }
 
   @override
-  Future<PaginatedDataResponse> fetchCancelledAppointments({
-    PaginationParameters parameters = const PaginationParameters(),
-  }) async {
+  Future<PaginatedDataResponse<ClientAppointmentsEntity>>
+  fetchCancelledAppointments({required PaginationParameters parameters}) async {
     return _fetchAppointmentsByStatus(
       status: AppointmentStatus.cancelled.name,
       parameters: parameters,
     );
   }
 
-  Future<PaginatedDataResponse> _fetchAppointmentsByStatus({
+  Future<PaginatedDataResponse<ClientAppointmentsEntity>>
+  _fetchAppointmentsByStatus({
     required String status,
     required PaginationParameters parameters,
     bool? isPastDate,
@@ -81,10 +80,7 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
 
       // 2. إذا لم توجد مواعيد
       if (querySnapshot.docs.isEmpty) {
-        return PaginatedDataResponse(
-          list: [],
-          hasMore: false,
-        );
+        return PaginatedDataResponse(list: [], hasMore: false);
       }
 
       // 3. استخراج doctor IDs
@@ -98,7 +94,7 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
         docs: querySnapshot.docs,
         doctorDataMap: doctorDataMap,
       );
-      print('appointmentEntities.length333333333333: ${appointmentEntities.length}');
+
       // 6. إرجاع النتيجة مع Pagination data - بنفس نمط DoctorsList
       return PaginatedDataResponse(
         list: appointmentEntities,
@@ -119,33 +115,22 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
     required PaginationParameters parameters,
     bool? isPastDate,
   }) async {
-
-
     // بناء Query الأساسي - بنفس نمط DoctorsList
     Query<Map<String, dynamic>> query = _firestore
         .collection(_appointmentsCollection)
         .where('appointmentStatus', isEqualTo: status)
         .where('clientId', isEqualTo: clientId);
 
- /*   // إضافة filter للتاريخ إذا طلب
-    if (isPastDate != null) {
-      final now = DateTime.now();
-      final todayDate = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
-
-      if (isPastDate) {
-        // Completed: تاريخ مضى (أقل من اليوم)
-        query = query.where('appointmentDate', isLessThan: todayDate);
-      } else {
-        // Upcoming: تاريخ مستقبلي (أكبر من أو يساوي اليوم)
-        query = query.where('appointmentDate', isGreaterThanOrEqualTo: todayDate);
-      }
-    }*/
+    // إضافة filter للتاريخ إذا طلب
+    if (isPastDate == true) {
+      query = query.where(
+        'appointmentTimestamp',
+        isGreaterThan: Timestamp.now(),
+      );
+    }
 
     // إضافة Order و Limit - بنفس نمط DoctorsList
-    query = query
-        .orderBy('appointmentDate')
-        .orderBy('appointmentTime')
-        .limit(parameters.limit);
+    query = query.orderBy('appointmentTimestamp').limit(parameters.limit);
 
     // Pagination - بنفس نمط DoctorsList
     if (parameters.lastDocument != null) {
@@ -160,15 +145,15 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
   // -------------------------------------------------------------
 
   List<String> _extractDoctorIdsFromDocs(
-      List<QueryDocumentSnapshot<Map<String, dynamic>>> docs,
-      ) {
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> docs,
+  ) {
     try {
       return docs
           .map((doc) {
-        final data = doc.data();
-        final doctorId = data['doctorId'] as String?;
-        return doctorId ?? '';
-      })
+            final data = doc.data();
+            final doctorId = data['doctorId'] as String?;
+            return doctorId ?? '';
+          })
           .where((id) => id.isNotEmpty) // تصفية IDs الفارغة
           .toSet()
           .toList();
@@ -179,8 +164,8 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
   }
 
   Future<Map<String, DoctorModel>> _fetchDoctorsDataByIds(
-      List<String> doctorIds,
-      ) async {
+    List<String> doctorIds,
+  ) async {
     if (doctorIds.isEmpty) return {};
 
     final snapshot = await _firestore
@@ -238,6 +223,13 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
     required Map<String, dynamic> queryParams,
   }) async {
     try {
+      final extractAppointmentDate = queryParams['appointmentDate'];
+      final extractAppointmentTime = queryParams['appointmentTime'];
+      final appointmentTimestamp = Timestamp.fromDate(
+        DateFormat(
+          'dd/MM/yyyy hh:mm a',
+        ).parse('$extractAppointmentDate $extractAppointmentTime'),
+      );
       final appointmentRef = _firestore.collection('appointments').doc();
       final appointmentId = appointmentRef.id;
       final data = {
@@ -245,6 +237,7 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
         'clientId': _getCurrentUserId(),
         'appointmentStatus': AppointmentStatus.pendingPayment.name,
         'appointmentId': appointmentId,
+        'appointmentTimestamp': appointmentTimestamp,
         'createdAt': FieldValue.serverTimestamp(),
         'expiresAt': Timestamp.fromDate(
           DateTime.now().add(const Duration(minutes: 12)),
@@ -331,18 +324,18 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
 
       return snapshot.docs
           .where((doc) {
-        final data = doc.data() as Map<String, dynamic>;
-        final status = data['appointmentStatus'] as String;
+            final data = doc.data() as Map<String, dynamic>;
+            final status = data['appointmentStatus'] as String;
 
-        if (status == AppointmentStatus.confirmed.name) return true;
+            if (status == AppointmentStatus.confirmed.name) return true;
 
-        if (status == AppointmentStatus.pendingPayment.name) {
-          final expiresAt = data['expiresAt'] as Timestamp?;
-          return expiresAt != null && expiresAt.toDate().isAfter(now);
-        }
+            if (status == AppointmentStatus.pendingPayment.name) {
+              final expiresAt = data['expiresAt'] as Timestamp?;
+              return expiresAt != null && expiresAt.toDate().isAfter(now);
+            }
 
-        return false;
-      })
+            return false;
+          })
           .map((doc) => doc['appointmentTime'] as String)
           .toList();
     } catch (e) {
@@ -418,8 +411,8 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
   // -------------------------------------------------------------
 
   DoctorAppointmentModel _convertToDoctorAppointment(
-      QueryDocumentSnapshot<Map<String, dynamic>> doc,
-      ) {
+    QueryDocumentSnapshot<Map<String, dynamic>> doc,
+  ) {
     return DoctorAppointmentModel.fromJson({
       'appointmentId': doc.id,
       'appointmentModel': doc.data(),
@@ -450,9 +443,9 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
   }
 
   Future<void> _updateGlobalAppointment(
-      String appointmentId,
-      Map<String, dynamic> updates,
-      ) {
+    String appointmentId,
+    Map<String, dynamic> updates,
+  ) {
     return _firestore
         .collection('appointments')
         .doc(appointmentId)
@@ -460,10 +453,10 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
   }
 
   Future<void> _updateDoctorAppointment(
-      String doctorId,
-      String appointmentId,
-      Map<String, dynamic> updates,
-      ) {
+    String doctorId,
+    String appointmentId,
+    Map<String, dynamic> updates,
+  ) {
     return _firestore
         .collection('doctors')
         .doc(doctorId)

@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart' show DocumentSnapshot;
 
 
-class PaginatedDataResponse {
-  final List<dynamic> list;
+class PaginatedDataResponse<T> {
+  final List<T> list;
   final DocumentSnapshot? lastDocument;
   final bool hasMore;
 
