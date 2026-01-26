@@ -1,10 +1,11 @@
 import 'package:dartz/dartz.dart';
-import 'package:medora/core/enum/appointment_status.dart' show AppointmentStatus;
 import 'package:medora/core/error/failure.dart' show Failure, ServerFailure;
-import 'package:medora/core/utils/date_time_formatter.dart' show DateTimeFormatter;
-import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart' show ClientAppointmentsEntity;
-import 'package:medora/features/shared/domain/entities/paginated_data_response.dart' show PaginatedDataResponse;
-
+import 'package:medora/core/utils/date_time_formatter.dart'
+    show DateTimeFormatter;
+import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart'
+    show ClientAppointmentsEntity;
+import 'package:medora/features/shared/domain/entities/paginated_data_response.dart'
+    show PaginatedDataResponse;
 import 'package:medora/features/shared/domain/entities/pagination_parameters.dart'
     show PaginationParameters;
 
@@ -26,10 +27,6 @@ class AppointmentRepositoryImpl extends AppointmentRepositoryBase {
       );
 
       final entities = models.map((model) => model.toEntity()).toList();
-
-
-
-
 
       return right(entities);
     } catch (e) {
@@ -114,32 +111,19 @@ class AppointmentRepositoryImpl extends AppointmentRepositoryBase {
       return left(ServerFailure(catchError: e));
     }
   }
-  DateTime _appointDateFormatted(String appointDate) =>
-      DateTimeFormatter.convertDateToString(appointDate);
+
+
+
   @override
-  Future<Either<Failure, PaginatedDataResponse<ClientAppointmentsEntity>>> fetchUpcomingAppointments({
-    required PaginationParameters parameters,
-  }) async {
+  Future<Either<Failure, PaginatedDataResponse<ClientAppointmentsEntity>>>
+  fetchUpcomingAppointments({required PaginationParameters parameters}) async {
     try {
-      final entities = await remoteDataSource.fetchUpcomingAppointments( parameters: parameters);
-
-      // final now = DateTime.now();
-      // final upcomingAppointments = entities.list.where(
-      //       (appointment) {
-      //         print('AppointmentRepositoryImpl.${appointment}');
-      //         return appointment .appointmentStatus ==
-      //       AppointmentStatus.confirmed.name &&
-      //       _appointDateFormatted(appointment .appointmentDate).isAfter(now);
-      //       },
-      // )
-      //     .toList();
-      // final filter=PaginatedDataResponse<ClientAppointmentsEntity>(
-      //   list: upcomingAppointments,
-      //   lastDocument: entities.lastDocument,
-      //   hasMore: entities.hasMore,
-     //    );
-
-      return Right(entities);
+      final response = await remoteDataSource.fetchUpcomingAppointments(
+        parameters: parameters,
+      );
+      print('length: ${response.list.length}');
+    //  print('list: ${response.list[0]}');
+      return Right(response);
     } catch (e) {
       return Left(ServerFailure(catchError: e));
     }
@@ -149,16 +133,12 @@ class AppointmentRepositoryImpl extends AppointmentRepositoryBase {
   Future<Either<Failure, PaginatedDataResponse<ClientAppointmentsEntity>>>
   fetchCompletedAppointments({required PaginationParameters parameters}) async {
     try {
-      final models = await remoteDataSource.fetchCompletedAppointments(
+      final response = await remoteDataSource.fetchCompletedAppointments(
         parameters: parameters,
       );
+      print('**********************************: ${response.list.length}');
 
-      // if (models == null) {
-      //   return right(null);
-      // }
-      //
-      // final entities = models.map((model) => model.toEntity()).toList();
-      return right(models);
+      return right(response);
     } catch (e) {
       return left(ServerFailure(catchError: e));
     }
@@ -168,17 +148,11 @@ class AppointmentRepositoryImpl extends AppointmentRepositoryBase {
   Future<Either<Failure, PaginatedDataResponse<ClientAppointmentsEntity>>>
   fetchCancelledAppointments({required PaginationParameters parameters}) async {
     try {
-      final models = await remoteDataSource.fetchCancelledAppointments(
-
+      final response = await remoteDataSource.fetchCancelledAppointments(
         parameters: parameters,
       );
 
-      // if (models == null) {
-      //   return right(null);
-      // }
-      //
-      // final entities = models.map((model) => model.toEntity()).toList();
-      return right(models);
+      return right(response);
     } catch (e) {
       return left(ServerFailure(catchError: e));
     }

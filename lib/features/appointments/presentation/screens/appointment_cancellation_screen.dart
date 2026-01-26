@@ -16,6 +16,8 @@ import 'package:medora/features/appointments/domain/entities/client_appointments
     show ClientAppointmentsEntity;
 import 'package:medora/features/appointments/presentation/controller/cubit/cancel_appointment_cubit.dart'
     show CancelAppointmentCubit;
+import 'package:medora/features/appointments/presentation/controller/cubit/upcoming_appointments_cubit.dart'
+    show UpcomingAppointmentsCubit;
 import 'package:medora/features/appointments/presentation/controller/states/cancel_appointment_state.dart'
     show CancelAppointmentState;
 
@@ -35,9 +37,9 @@ class _AppointmentCancellationScreenState
 
   @override
   Widget build(BuildContext context) {
-    print('_AppointmentCancellationScreenState.buildxxxxxxxxxx');
     final appointment =
         ModalRoute.of(context)!.settings.arguments as ClientAppointmentsEntity;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: _buildAppBar(context),
@@ -124,7 +126,12 @@ class _AppointmentCancellationScreenState
       selector: (state) =>
           dartz.Tuple2(state.requestState, state.failureMessage),
       builder: (context, values) {
-        _handleCancelAppointmentResponse(context, values.value1, values.value2);
+        _handleCancelAppointmentResponse(
+          context,
+          values.value1,
+          values.value2,
+          appointment.appointmentId,
+        );
 
         final isEnabled = _selectedCancellationReason != null;
         final isLoading = values.value1 == LazyRequestState.loading;
@@ -154,13 +161,14 @@ class _AppointmentCancellationScreenState
     BuildContext context,
     LazyRequestState cancelAppointmentState,
     String cancelAppointmentError,
+    String appointmentId,
   ) {
     switch (cancelAppointmentState) {
       case LazyRequestState.lazy:
       case LazyRequestState.loading:
         break;
       case LazyRequestState.loaded:
-        _handleCancelAppointmentSuccess(context);
+        _handleCancelAppointmentSuccess(context, appointmentId);
 
         break;
       case LazyRequestState.error:
@@ -169,7 +177,13 @@ class _AppointmentCancellationScreenState
     }
   }
 
-  void _handleCancelAppointmentSuccess(BuildContext context) {
+  void _handleCancelAppointmentSuccess(
+    BuildContext context,
+    String appointmentId,
+  ) {
+    context.read<UpcomingAppointmentsCubit>().removeAppointmentLocally(
+      appointmentId: appointmentId,
+    );
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _showSuccessDialog(context);
 

@@ -38,7 +38,6 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
     return _fetchAppointmentsByStatus(
       status: AppointmentStatus.confirmed.name,
       parameters: parameters,
-      isPastDate: true, // Upcoming: تاريخ مستقبلي
     );
   }
 
@@ -48,7 +47,6 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
     return _fetchAppointmentsByStatus(
       status: AppointmentStatus.completed.name,
       parameters: parameters,
-      isPastDate: true, // Completed: تاريخ مضى
     );
   }
 
@@ -65,7 +63,6 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
   _fetchAppointmentsByStatus({
     required String status,
     required PaginationParameters parameters,
-    bool? isPastDate,
   }) async {
     try {
       final clientId = _getCurrentUserId();
@@ -75,7 +72,6 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
         clientId: clientId,
         status: status,
         parameters: parameters,
-        isPastDate: isPastDate,
       );
 
       // 2. إذا لم توجد مواعيد
@@ -113,26 +109,29 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
     required String clientId,
     required String status,
     required PaginationParameters parameters,
-    bool? isPastDate,
   }) async {
-    // بناء Query الأساسي - بنفس نمط DoctorsList
     Query<Map<String, dynamic>> query = _firestore
         .collection(_appointmentsCollection)
-        .where('appointmentStatus', isEqualTo: status)
         .where('clientId', isEqualTo: clientId);
 
-    // إضافة filter للتاريخ إذا طلب
-    if (isPastDate == true) {
+    if (status == AppointmentStatus.confirmed.name) {
       query = query.where(
-        'appointmentTimestamp',
-        isGreaterThan: Timestamp.now(),
+        Filter.and(
+          Filter('appointmentStatus', isEqualTo: status),
+          Filter(
+            'appointmentTimestamp',
+            isGreaterThanOrEqualTo: Timestamp.now(),
+          ),
+        ),
       );
+    } else if (status == AppointmentStatus.completed.name) {
+      query = query.where('appointmentTimestamp', isLessThan: Timestamp.now());
+    } else if (status == AppointmentStatus.cancelled.name) {
+      query = query.where('appointmentStatus', isEqualTo: status);
     }
 
-    // إضافة Order و Limit - بنفس نمط DoctorsList
     query = query.orderBy('appointmentTimestamp').limit(parameters.limit);
 
-    // Pagination - بنفس نمط DoctorsList
     if (parameters.lastDocument != null) {
       query = query.startAfterDocument(parameters.lastDocument!);
     }
@@ -141,7 +140,7 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
   }
 
   // -------------------------------------------------------------
-  // 2. HELPER METHODS - محسنة بنفس النمط
+  // HELPER METHODS
   // -------------------------------------------------------------
 
   List<String> _extractDoctorIdsFromDocs(
@@ -154,7 +153,7 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
             final doctorId = data['doctorId'] as String?;
             return doctorId ?? '';
           })
-          .where((id) => id.isNotEmpty) // تصفية IDs الفارغة
+          .where((id) => id.isNotEmpty) // Filter out empty IDs
           .toSet()
           .toList();
     } catch (e) {
@@ -210,7 +209,6 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
       doctorDataMap: doctorDataMap,
     );
 
-    // التحويل إلى Entities بنفس نمط DoctorsList
     return models.map((model) => model.toEntity()).toList();
   }
 

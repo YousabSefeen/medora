@@ -30,8 +30,9 @@ class AppointmentCard extends StatelessWidget {
           BookedAppointmentHeader(doctorModel: appointment.doctorEntity),
           _buildDivider(),
           BookedAppointmentFooter(
-            appointment: appointment,
             appointmentStatus: appointmentStatus,
+            appointment: appointment,
+
           ),
         ],
       ),

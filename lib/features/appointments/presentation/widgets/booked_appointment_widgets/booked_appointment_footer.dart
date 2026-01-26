@@ -4,17 +4,17 @@ import 'package:medora/features/appointments/domain/entities/client_appointments
 
 import '../../../../../core/enum/appointment_status.dart';
 import '../custom_widgets/completed_appointment_actions_section.dart';
-import 'upcoming_appointment_actions_section.dart';
 import 'booked_appointment_info_section.dart';
+import 'upcoming_appointment_actions_section.dart';
 
 class BookedAppointmentFooter extends StatelessWidget {
-  final ClientAppointmentsEntity appointment;
   final AppointmentStatus appointmentStatus;
+  final ClientAppointmentsEntity appointment;
 
   const BookedAppointmentFooter({
     super.key,
-    required this.appointment,
     required this.appointmentStatus,
+    required this.appointment,
   });
 
   @override
@@ -25,7 +25,8 @@ class BookedAppointmentFooter extends StatelessWidget {
         spacing: 5,
         children: [
           BookedAppointmentInfoSection(
-            appointment: appointment,
+            appointmentDate: appointment.appointmentDate,
+            appointmentTime: appointment.appointmentTime,
             appointmentStatus: appointmentStatus,
           ),
           buildBookedAppointmentActionsSection(appointmentStatus, appointment),

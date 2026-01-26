@@ -20,15 +20,14 @@ import 'package:medora/features/appointments/domain/use_cases/cancel_appointment
     show CancelAppointmentUseCase;
 import 'package:medora/features/appointments/domain/use_cases/confirm_appointment_use_case.dart'
     show ConfirmAppointmentUseCase;
-
 import 'package:medora/features/appointments/domain/use_cases/delete_appointment_use_case.dart'
     show DeleteAppointmentUseCase;
 import 'package:medora/features/appointments/domain/use_cases/fetch_booked_time_slots_use_case.dart'
     show FetchBookedTimeSlotsUseCase;
-import 'package:medora/features/appointments/domain/use_cases/fetch_cancelled_appointment_use_case.dart' show FetchCancelledAppointmentUseCase;
-import 'package:medora/features/appointments/domain/use_cases/fetch_client_appointments_use_case.dart'
-    show FetchClientAppointmentsUseCase;
-import 'package:medora/features/appointments/domain/use_cases/fetch_completed_appointment_use_case.dart' show FetchCompletedAppointmentUseCase;
+import 'package:medora/features/appointments/domain/use_cases/fetch_cancelled_appointment_uc.dart'
+    show FetchCancelledAppointmentUC;
+import 'package:medora/features/appointments/domain/use_cases/fetch_completed_appointment_uc.dart'
+    show FetchCompletedAppointmentUC;
 import 'package:medora/features/appointments/domain/use_cases/fetch_doctor_appointments_use_case.dart'
     show FetchDoctorAppointmentsUseCase;
 import 'package:medora/features/appointments/domain/use_cases/fetch_upcoming_appointment_uc.dart'
@@ -39,22 +38,22 @@ import 'package:medora/features/appointments/presentation/controller/cubit/book_
     show BookAppointmentCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/cancel_appointment_cubit.dart'
     show CancelAppointmentCubit;
-import 'package:medora/features/appointments/presentation/controller/cubit/cancelled_appointments_cubit.dart' show CancelledAppointmentsCubit;
-import 'package:medora/features/appointments/presentation/controller/cubit/completed_appointments_cubit.dart' show CompletedAppointmentsCubit;
+import 'package:medora/features/appointments/presentation/controller/cubit/cancelled_appointments_cubit.dart'
+    show CancelledAppointmentsCubit;
+import 'package:medora/features/appointments/presentation/controller/cubit/completed_appointments_cubit.dart'
+    show CompletedAppointmentsCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/confirm_pending_appointment_cubit.dart'
     show ConfirmPendingAppointmentCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/doctor_appointments_cubit.dart'
     show DoctorAppointmentsCubit;
-import 'package:medora/features/appointments/presentation/controller/cubit/fetch_client_appointments_cubit.dart'
-    show FetchClientAppointmentsCubit;
-import 'package:medora/features/appointments/presentation/controller/cubit/patient_cubit.dart' show PatientCubit;
+import 'package:medora/features/appointments/presentation/controller/cubit/patient_cubit.dart'
+    show PatientCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/reschedule_appointment_cubit.dart'
     show RescheduleAppointmentCubit;
-import 'package:medora/features/appointments/presentation/controller/cubit/selected_doctor_cubit.dart'
-    show SelectedDoctorCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/time_slot_cubit.dart'
     show TimeSlotCubit;
-import 'package:medora/features/appointments/presentation/controller/cubit/upcoming_appointments_cubit.dart' show UpcomingAppointmentsCubit;
+import 'package:medora/features/appointments/presentation/controller/cubit/upcoming_appointments_cubit.dart'
+    show UpcomingAppointmentsCubit;
 import 'package:medora/features/doctor_list/data/data_source/doctors_list_remote_data_source.dart'
     show DoctorsListRemoteDataSource;
 import 'package:medora/features/doctor_list/domain/repository/doctor_list_repository_base.dart'
@@ -91,7 +90,8 @@ import 'package:medora/features/payment_gateways/paypal/data/repository/paypal_r
     show PaypalRepository;
 import 'package:medora/features/payment_gateways/paypal/presentation/controller/cubit/paypal_payment_cubit.dart'
     show PaypalPaymentCubit;
-import 'package:medora/features/payment_gateways/presentation/controller/cubit/payment_cubit.dart' show PaymentCubit;
+import 'package:medora/features/payment_gateways/presentation/controller/cubit/payment_cubit.dart'
+    show PaymentCubit;
 import 'package:medora/features/payment_gateways/stripe/data/repository/stripe_repository.dart'
     show StripeRepository;
 import 'package:medora/features/payment_gateways/stripe/presentation/controller/cubit/stripe_payment_cubit.dart'
@@ -154,7 +154,7 @@ class ServiceLocator {
       () =>
           DeleteAppointmentUseCase(appointmentRepositoryBase: serviceLocator()),
     );
-   /* serviceLocator.registerLazySingleton<FetchClientAppointmentsUseCase>(
+    /* serviceLocator.registerLazySingleton<FetchClientAppointmentsUseCase>(
       () => FetchClientAppointmentsUseCase(
         appointmentRepositoryBase: serviceLocator(),
       ),
@@ -170,9 +170,7 @@ class ServiceLocator {
       ),
     );
     serviceLocator.registerLazySingleton<BookAppointmentUseCase>(
-      () => BookAppointmentUseCase(
-        appointmentRepositoryBase: serviceLocator(),
-      ),
+      () => BookAppointmentUseCase(appointmentRepositoryBase: serviceLocator()),
     );
     serviceLocator.registerLazySingleton<ConfirmAppointmentUseCase>(
       () => ConfirmAppointmentUseCase(
@@ -185,23 +183,16 @@ class ServiceLocator {
       ),
     );
 
-
-
-
     serviceLocator.registerLazySingleton<FetchUpcomingAppointmentUC>(
-          () => FetchUpcomingAppointmentUC(
-        repository: serviceLocator(),
-      ),
+      () => FetchUpcomingAppointmentUC(repository: serviceLocator()),
     );
-    serviceLocator.registerLazySingleton<FetchCompletedAppointmentUseCase>(
-          () => FetchCompletedAppointmentUseCase(
+    serviceLocator.registerLazySingleton<FetchCompletedAppointmentUC>(
+      () => FetchCompletedAppointmentUC(
         appointmentRepositoryBase: serviceLocator(),
       ),
     );
-    serviceLocator.registerLazySingleton<FetchCancelledAppointmentUseCase>(
-          () => FetchCancelledAppointmentUseCase(
-        appointmentRepositoryBase: serviceLocator(),
-      ),
+    serviceLocator.registerLazySingleton<FetchCancelledAppointmentUC>(
+      () => FetchCancelledAppointmentUC(repository: serviceLocator()),
     );
     // ========== التسجيل الجديد للـ Cubits المنفصلة ==========
 
@@ -263,27 +254,23 @@ class ServiceLocator {
         appSettingsCubit: serviceLocator(),
 
         bookAppointmentUseCase: serviceLocator(),
-
       ),
     );
-   /* serviceLocator.registerFactory<FetchClientAppointmentsCubit>(
+    /* serviceLocator.registerFactory<FetchClientAppointmentsCubit>(
       () => FetchClientAppointmentsCubit(
         fetchClientAppointmentsUseCase: serviceLocator(),
       ),
     );*/
 
     serviceLocator.registerFactory<UpcomingAppointmentsCubit>(
-          () => UpcomingAppointmentsCubit(useCase: serviceLocator()),
+      () => UpcomingAppointmentsCubit(useCase: serviceLocator()),
     );
     serviceLocator.registerFactory<CompletedAppointmentsCubit>(
-          () => CompletedAppointmentsCubit(completedAppointmentUseCase: serviceLocator()),
+      () => CompletedAppointmentsCubit(useCase: serviceLocator()),
     );
     serviceLocator.registerFactory<CancelledAppointmentsCubit>(
-          () => CancelledAppointmentsCubit(cancelledAppointmentUseCase: serviceLocator()),
+      () => CancelledAppointmentsCubit(useCase: serviceLocator()),
     );
-
-
-
 
     serviceLocator.registerFactory<TimeSlotCubit>(
       () => TimeSlotCubit(fetchBookedTimeSlotsUseCase: serviceLocator()),
@@ -304,17 +291,9 @@ class ServiceLocator {
       ),
     );
 
-    serviceLocator.registerFactory<PatientCubit>(
-      () => PatientCubit(
+    serviceLocator.registerFactory<PatientCubit>(() => PatientCubit());
 
-      ),
-    );
-
-    serviceLocator.registerFactory<PaymentCubit>(
-      () => PaymentCubit(
-
-      ),
-    );
+    serviceLocator.registerFactory<PaymentCubit>(() => PaymentCubit());
   }
 
   /*  void setupAppointmentsDependencies() {

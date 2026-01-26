@@ -20,6 +20,8 @@ import 'package:medora/core/enum/internet_state.dart' show InternetState;
 import 'package:medora/features/appointments/presentation/controller/cubit/book_appointment_cubit.dart'
     show BookAppointmentCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/cancel_appointment_cubit.dart' show CancelAppointmentCubit;
+import 'package:medora/features/appointments/presentation/controller/cubit/cancelled_appointments_cubit.dart' show CancelledAppointmentsCubit;
+import 'package:medora/features/appointments/presentation/controller/cubit/completed_appointments_cubit.dart' show CompletedAppointmentsCubit;
 
 import 'package:medora/features/appointments/presentation/controller/cubit/doctor_appointments_cubit.dart' show DoctorAppointmentsCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/fetch_client_appointments_cubit.dart' show FetchClientAppointmentsCubit;
@@ -155,6 +157,12 @@ void main() async {
 
         BlocProvider<UpcomingAppointmentsCubit>(
           create: (context) => serviceLocator<UpcomingAppointmentsCubit>(),
+        ),
+        BlocProvider<CompletedAppointmentsCubit>(
+          create: (context) => serviceLocator<CompletedAppointmentsCubit>(),
+        ),
+        BlocProvider<CancelledAppointmentsCubit>(
+          create: (context) => serviceLocator<CancelledAppointmentsCubit>(),
         ),
       ],
       child: const MyApp(),

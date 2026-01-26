@@ -1,54 +1,55 @@
-import 'package:equatable/equatable.dart' show Equatable;
-import 'package:medora/core/enum/appointment_status.dart'
-    show AppointmentStatus;
+// features/appointments/presentation/controller/states/upcoming_appointments_state.dart
+
+import 'package:medora/core/enum/appointment_status.dart' show AppointmentStatus;
 import 'package:medora/core/enum/request_state.dart' show RequestState;
-import 'package:medora/core/utils/date_time_formatter.dart'
-    show DateTimeFormatter;
-import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart'
-    show ClientAppointmentsEntity;
+import 'package:medora/core/utils/date_time_formatter.dart' show DateTimeFormatter;
+import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart' show ClientAppointmentsEntity;
+import 'package:medora/features/shared/presentation/controllers/state/base_pagination_state.dart' show BasePaginationState;
 
-class CompletedAppointmentsState extends Equatable {
-  final RequestState requestState;
-  final String failureMessage;
-  final List<ClientAppointmentsEntity> appointments;
-
+class CompletedAppointmentsState extends BasePaginationState<ClientAppointmentsEntity> {
   const CompletedAppointmentsState({
-    this.requestState = RequestState.loading,
-    this.failureMessage = '',
-    this.appointments = const [],
+    super.dataList,
+    super.requestState,
+    super.failureMessage,
+    super.isLoadingMore,
+    super.hasMore,
+    super.lastDocument,
+    super.isLoadedBefore,
   });
 
+  @override
   CompletedAppointmentsState copyWith({
+    List<ClientAppointmentsEntity>? dataList,
     RequestState? requestState,
     String? failureMessage,
-    List<ClientAppointmentsEntity>? appointments,
+    bool? isLoadingMore,
+    bool? hasMore,
+    dynamic lastDocument,
+    bool? isLoadedBefore,
   }) {
     return CompletedAppointmentsState(
+      dataList: dataList ?? this.dataList,
       requestState: requestState ?? this.requestState,
       failureMessage: failureMessage ?? this.failureMessage,
-      appointments: appointments ?? this.appointments,
+      isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+      hasMore: hasMore ?? this.hasMore,
+      lastDocument: lastDocument ?? this.lastDocument,
+      isLoadedBefore: isLoadedBefore ?? this.isLoadedBefore,
     );
   }
 
-  List<ClientAppointmentsEntity> get completedAppointments {
+  List<ClientAppointmentsEntity> get upcomingAppointments {
     final now = DateTime.now();
-    return appointments
+    return dataList
         .where(
           (appointment) =>
-              appointment.appointmentStatus ==
-                  AppointmentStatus.completed.name ||
-              (appointment.appointmentStatus ==
-                      AppointmentStatus.confirmed.name &&
-                  _appointDateFormatted(
-                    appointment.appointmentDate,
-                  ).isBefore(now)),
-        )
+      appointment.appointmentStatus ==
+          AppointmentStatus.confirmed.name &&
+          _appointDateFormatted(appointment.appointmentDate).isAfter(now),
+    )
         .toList();
   }
 
   DateTime _appointDateFormatted(String appointDate) =>
       DateTimeFormatter.convertDateToString(appointDate);
-
-  @override
-  List<Object?> get props => [requestState, failureMessage, appointments];
 }

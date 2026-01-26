@@ -3,9 +3,6 @@ import 'package:lottie/lottie.dart' show Lottie;
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
-import 'package:medora/features/shared/data/models/doctor_model.dart'
-    show DoctorModel;
-import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 import 'package:medora/generated/assets.dart' show Assets;
 
 class PaginationFooterWidget extends StatelessWidget {
@@ -26,7 +23,7 @@ class PaginationFooterWidget extends StatelessWidget {
       return _buildLoadingMoreIndicator();
     }
 
-    if (!hasMore && doctorsList.isNotEmpty) {
+    if (!hasMore && doctorsList.isNotEmpty && doctorsList.length > 10) {
       return _buildNoMoreDataMessage(context);
     }
 

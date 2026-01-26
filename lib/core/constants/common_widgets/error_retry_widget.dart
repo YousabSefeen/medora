@@ -6,6 +6,7 @@ import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 
 class ErrorRetryWidget extends StatelessWidget {
+  final bool? isSliverWidget;
   final String errorMessage;
   final String? retryButtonText;
 
@@ -13,6 +14,7 @@ class ErrorRetryWidget extends StatelessWidget {
 
   const ErrorRetryWidget({
     super.key,
+    this.isSliverWidget = true,
     required this.errorMessage,
     this.retryButtonText = AppStrings.tryAgainNormal,
     required this.onRetry,
@@ -20,11 +22,12 @@ class ErrorRetryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverFillRemaining(
-      hasScrollBody: false,
-
-      child: _buildErrorContent(context),
-    );
+    return isSliverWidget == true
+        ? SliverFillRemaining(
+            hasScrollBody: false,
+            child: _buildErrorContent(context),
+          )
+        : Center(child: _buildErrorContent(context));
   }
 
   Padding _buildErrorContent(BuildContext context) => Padding(

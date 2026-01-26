@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
+import 'package:medora/core/constants/common_widgets/content_unavailable_widget.dart'
+    show ContentUnavailableWidget;
 import 'package:medora/core/constants/common_widgets/error_retry_widget.dart'
     show ErrorRetryWidget;
 import 'package:medora/core/constants/common_widgets/loading_list.dart'
@@ -43,7 +45,7 @@ mixin PaginationScreenMixin<
 
   void _scrollListener() {
     if (scrollController.position.pixels >=
-        scrollController.position.maxScrollExtent - 150) {
+        scrollController.position.maxScrollExtent) {
       context.read<C>().loadMore();
     }
   }
@@ -56,8 +58,9 @@ mixin PaginationScreenMixin<
 
   // دالة لبناء الخطأ
   Widget buildErrorWidget(String message) => ErrorRetryWidget(
+    isSliverWidget: false,
     errorMessage: message,
-    retryButtonText: AppStrings.reloadDoctors,
+
     onRetry: () => context.read<C>().fetchInitialList(),
   );
 
@@ -79,8 +82,13 @@ mixin PaginationScreenMixin<
     if (state.requestState == RequestState.error && state.dataList.isEmpty) {
       return buildErrorWidget(state.failureMessage);
     }
-
+    if (state.requestState == RequestState.loaded && state.dataList.isEmpty) {
+      return const ContentUnavailableWidget(
+        description: AppStrings.emptyUpcomingAppointmentsMessage,
+      );
+    }
     return ListView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 15),
       controller: scrollController,
       itemCount: _calculateItemCount(state),
       itemBuilder: (context, index) {

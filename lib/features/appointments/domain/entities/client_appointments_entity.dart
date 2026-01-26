@@ -6,12 +6,9 @@ class ClientAppointmentsEntity extends Equatable {
   final String doctorId;
   final String appointmentId;
   final String patientName;
-
   final String patientGender;
-
   final String patientAge;
   final String patientProblem;
-
   final String appointmentDate;
   final String appointmentTime;
   final String appointmentStatus;
@@ -31,12 +28,39 @@ class ClientAppointmentsEntity extends Equatable {
     required this.doctorEntity,
   });
 
+  ClientAppointmentsEntity copyWith({
+    String? clientId,
+    String? doctorId,
+    String? appointmentId,
+    String? patientName,
+    String? patientGender,
+    String? patientAge,
+    String? patientProblem,
+    String? appointmentDate,
+    String? appointmentTime,
+    String? appointmentStatus,
+    DoctorEntity? doctorEntity,
+  }) {
+    return ClientAppointmentsEntity(
+      clientId: clientId ?? this.clientId,
+      doctorId: doctorId ?? this.doctorId,
+      appointmentId: appointmentId ?? this.appointmentId,
+      patientName: patientName ?? this.patientName,
+      patientGender: patientGender ?? this.patientGender,
+      patientAge: patientAge ?? this.patientAge,
+      patientProblem: patientProblem ?? this.patientProblem,
+      appointmentDate: appointmentDate ?? this.appointmentDate,
+      appointmentTime: appointmentTime ?? this.appointmentTime,
+      appointmentStatus: appointmentStatus ?? this.appointmentStatus,
+      doctorEntity: doctorEntity ?? this.doctorEntity,
+    );
+  }
+
   @override
   List<Object?> get props => [
-    appointmentId,
     clientId,
     doctorId,
-
+    appointmentId,
     patientName,
     patientGender,
     patientAge,

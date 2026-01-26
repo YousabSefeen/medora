@@ -30,4 +30,30 @@ class UpcomingAppointmentsCubit
   getUseCaseCall(PaginationParameters params) {
     return useCase.call(params);
   }
+
+  void updateAppointmentLocally({
+    required String appointmentId,
+    required String newDate,
+    required String newTime,
+  }) {
+    final updatedList = state.dataList.map((appointment) {
+      if (appointment.appointmentId == appointmentId) {
+        return appointment.copyWith(
+          appointmentDate: newDate,
+          appointmentTime: newTime,
+        );
+      }
+      return appointment;
+    }).toList();
+
+    emit(state.copyWith(dataList: updatedList));
+  }
+
+  void removeAppointmentLocally({required String appointmentId}) {
+    final updatedList = state.dataList
+        .where((appointment) => appointment.appointmentId != appointmentId)
+        .toList();
+
+    emit(state.copyWith(dataList: updatedList));
+  }
 }

@@ -349,7 +349,9 @@ class AppStrings {
   static const String genderLabel='Gender';
   static const String ageLabel='Age';
   static const String scheduledAppointmentLabel='Scheduled appointment';
+  static const String whenToComeQuestion='When would you like to come?';
 
+  static const String defaultErrorMessage='An unexpected error occurred. Please try again';
 
 
 

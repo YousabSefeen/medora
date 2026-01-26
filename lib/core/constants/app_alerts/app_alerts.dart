@@ -12,13 +12,11 @@ import 'package:medora/core/constants/app_alerts/widgets/loading_dialog_body.dar
     show LoadingDialogBody;
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
-import 'package:medora/features/appointments/presentation/data/appointment_reschedule_data.dart' show AppointmentRescheduleData;
-
-
+import 'package:medora/features/appointments/presentation/data/appointment_reschedule_data.dart'
+    show AppointmentRescheduleData;
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
-
 
 import '../../animations/custom_modal_type_bottom_sheet.dart';
 import 'appointment_canceled_success_dialog.dart';
@@ -161,10 +159,7 @@ class AppAlerts {
           onPressed: Navigator.of(modalSheetContext).pop,
         ),
 
-        // إذا كنت ترغب في إضافة شريط التمرير هذا الجسم باستخدام مكون واجهة المستخدم ليتمكن من المرور في ورقة مشروطة ، يجب عليك ضبط مكون واجهة المستخدم بواسطة ال Scrollbar Widget
-        // ليكون بهذا الشكل
-        //   child: Scrollbar(child: body),
-        child: shouldShowScrollbar! ? Scrollbar(child: body) : body,
+        child: body,
       ),
     ],
     onModalDismissedWithBarrierTap: () {
@@ -207,9 +202,7 @@ class AppAlerts {
           onPressed: onCancelPressed,
         ),
 
-        // إذا كنت ترغب في إضافة شريط التمرير هذا الجسم باستخدام مكون واجهة المستخدم ليتمكن من المرور في ورقة مشروطة ، يجب عليك ضبط مكون واجهة المستخدم بواسطة ال Scrollbar Widget
-        // ليكون بهذا الشكل
-        //   child: Scrollbar(child: body),
+
         child: body,
       ),
     ],
