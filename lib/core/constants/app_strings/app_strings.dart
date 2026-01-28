@@ -352,6 +352,10 @@ class AppStrings {
   static const String whenToComeQuestion='When would you like to come?';
 
   static const String defaultErrorMessage='An unexpected error occurred. Please try again';
+  static const String internetConnected = ' Connected to Internet';
+  static const String noInternetConnection = ' No Internet Connection';
+  static const String noFavoritesDoctorsFoundMessage = 'Your favorite list is empty \nStart adding doctors to your favorites!';
+
 
 
 

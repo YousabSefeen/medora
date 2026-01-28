@@ -10,8 +10,11 @@ import 'package:medora/core/constants/app_alerts/widgets/appointment_success_dia
     show AppointmentSuccessDialog;
 import 'package:medora/core/constants/app_alerts/widgets/loading_dialog_body.dart'
     show LoadingDialogBody;
+import 'package:medora/core/constants/app_duration/app_duration.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
+import 'package:medora/core/constants/themes/app_colors.dart';
+import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/features/appointments/presentation/data/appointment_reschedule_data.dart'
     show AppointmentRescheduleData;
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
@@ -26,6 +29,46 @@ import 'error_dialogs.dart';
 import 'widgets/app_alert_widgets.dart';
 
 class AppAlerts {
+  static void showInternetAlert(BuildContext context, bool isConnected) {
+    final message = isConnected
+        ? AppStrings.internetConnected
+        : AppStrings.noInternetConnection;
+    final color = isConnected ? AppColors.green : AppColors.red;
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            CircleAvatar(
+              radius: 11.r,
+              backgroundColor: Colors.white,
+              child: FaIcon(
+                isConnected ? FontAwesomeIcons.check : FontAwesomeIcons.xmark,
+                size: 12.sp,
+                color: Colors.black,
+              ),
+            ),
+            Text(
+              message,
+
+              style: Theme.of(
+                context,
+              ).textTheme.buttonStyle.copyWith(fontSize: 13.sp),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+        duration: AppDurations.seconds_3,
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.only(left: 10.w, right: 30.w, bottom: 5.h),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+
+        backgroundColor: color,
+      ),
+    );
+  }
+
   static void showErrorSnackBar(BuildContext context, String errorMessage) {
     //  ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(
@@ -33,7 +76,7 @@ class AppAlerts {
     ).showSnackBar(AppAlertWidgets.errorSnackBar(errorMessage));
   }
 
-  static showTopSnackBarAlert({
+  static void showTopSnackBarAlert({
     required BuildContext context,
     IconData? icon,
     required String msg,
@@ -201,7 +244,6 @@ class AppAlerts {
           ),
           onPressed: onCancelPressed,
         ),
-
 
         child: body,
       ),
