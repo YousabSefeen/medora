@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:medora/features/shared/data/models/doctor_model.dart'
-    show DoctorModel;
 import 'package:medora/features/shared/domain/entities/doctor_entity.dart';
 import 'package:medora/features/shared/presentation/widgets/doctor_card.dart'
     show DoctorCard;
