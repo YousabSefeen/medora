@@ -24,7 +24,20 @@ class AppLightTheme {
         letterSpacing: 1,
       ),
     ),
+    tabBarTheme: TabBarThemeData(
+      indicator: BoxDecoration(
+        color: AppColors.softBlue,
+        borderRadius: BorderRadius.circular(8.r),
+      ),
+      labelStyle: TextStyle(
+        color: Colors.white,
+        fontSize: 15.sp,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 1,
+      ),
+      unselectedLabelColor: AppColors.black,
 
+    ),
     iconTheme: IconThemeData(color: AppColors.softBlue, size: 22.sp),
 
     textSelectionTheme: TextSelectionThemeData(
