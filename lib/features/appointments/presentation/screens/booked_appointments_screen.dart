@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
-import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/features/appointments/presentation/widgets/cancelled_appointments_list.dart'
     show CancelledAppointmentsList;
 import 'package:medora/features/appointments/presentation/widgets/completed_appointments_list.dart'
@@ -48,12 +47,6 @@ class BookedAppointmentsScreen extends StatelessWidget {
       ),
       child: TabBar(
         isScrollable: true,
-        indicator: BoxDecoration(
-          color: AppColors.softBlue,
-          borderRadius: BorderRadius.circular(8.r),
-        ),
-        labelStyle: Theme.of(context).textTheme.bodyMediumWhite,
-        unselectedLabelColor: Colors.black,
         tabs: AppStrings.appointmentsListTitles
             .map((title) => Tab(text: title))
             .toList(),

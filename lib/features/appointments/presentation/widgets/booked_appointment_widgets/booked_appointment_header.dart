@@ -1,11 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/extensions/list_string_extension.dart';
-import 'package:medora/features/shared/data/models/doctor_model.dart'
-    show DoctorModel;
-import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart'
+    show DoctorEntity;
+import 'package:medora/features/shared/presentation/widgets/circular_doctor_image.dart' show CircularDoctorImage;
 
 import '../../../../../core/constants/app_strings/app_strings.dart';
 
@@ -16,11 +17,25 @@ class BookedAppointmentHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      contentPadding: EdgeInsets.zero,
-      leading: _buildDoctorImage(doctorModel.imageUrl),
-      title: _buildDoctorName(context),
-      subtitle: _buildDoctorSpecialties(context),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
+      child: Row(
+       spacing: 12.w,
+        children: [
+          CircularDoctorImage(imageUrl: doctorModel.imageUrl),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              spacing: 4.h,
+              children: [
+                _buildDoctorName(context),
+                _buildDoctorSpecialties(context),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -44,20 +59,5 @@ class BookedAppointmentHeader extends StatelessWidget {
     );
   }
 
-  Widget _buildDoctorImage(String imageUrl) {
-    return CircleAvatar(
-      radius: 40,
-      child: CachedNetworkImage(
-        imageUrl: imageUrl,
-        imageBuilder: (context, imageProvider) => Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
-          ),
-        ),
-        placeholder: (context, url) => const CircularProgressIndicator(),
-        errorWidget: (context, url, error) => const Icon(Icons.error),
-      ),
-    );
-  }
+
 }
