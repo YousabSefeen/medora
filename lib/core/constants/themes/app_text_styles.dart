@@ -40,8 +40,6 @@ extension AppTextStyles on TextTheme {
     fontSize: 10,
   );
 
-
-
   // Original: titleMedium (DoctorList info)
   TextStyle get mediumPlaypenBold => GoogleFonts.playpenSans(
     fontSize: 14.sp,
@@ -79,28 +77,14 @@ extension AppTextStyles on TextTheme {
     height: 1.6,
   );
 
-/*
- TextStyle(
-          color: Colors.white,
-          fontSize: 15.sp,
-          fontWeight: FontWeight.w600,
-          letterSpacing: 1,
-        )
- */
-
-  TextStyle get bodyMediumWhite =>  TextStyle(
-    color: Colors.white,
-    fontSize: 15.sp,
-    fontWeight: FontWeight.w600,
-    letterSpacing: 1,
-  );
   TextStyle get bodyMediumBold => TextStyle(
     fontSize: 16.sp,
     fontWeight: FontWeight.w600,
     color: Colors.grey.shade900,
     letterSpacing: 1,
   );
-  TextStyle get bodyRegular  => TextStyle(
+
+  TextStyle get bodyRegular => TextStyle(
     fontSize: 15.sp,
     fontWeight: FontWeight.w400,
     color: Colors.grey.shade700,
