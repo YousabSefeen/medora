@@ -13,7 +13,7 @@ class CustomDashedLineDivider extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CustomHalfCircle(isLeftPosition: true),
-        CustomDashedLine(),
+        Expanded(child: CustomDashedLine()),
         CustomHalfCircle(isLeftPosition: false),
       ],
     );
