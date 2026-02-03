@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:medora/core/enum/navigation_source.dart' show NavigationSource;
 import 'package:medora/features/favorites/presentation/widgets/toggle_favorite_button.dart'
     show ToggleFavoriteButton;
-import 'package:medora/features/shared/data/models/doctor_model.dart'
-    show DoctorModel;
-import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart'
+    show DoctorEntity;
 import 'package:medora/features/shared/presentation/widgets/doctor_image.dart'
     show DoctorImage;
 import 'package:medora/features/shared/presentation/widgets/doctor_info_footer.dart'
@@ -53,12 +52,7 @@ class DoctorBasicInfo extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Expanded(
-                        child: DoctorName(
-                          name: doctor.name,
-                          fontSize: config.nameFontSize,
-                        ),
-                      ),
+                      Expanded(child: DoctorName(name: doctor.name)),
 
                       Visibility(
                         visible: config.showFavoriteButton,
@@ -66,10 +60,7 @@ class DoctorBasicInfo extends StatelessWidget {
                       ),
                     ],
                   ),
-                  DoctorSpecialties(
-                    specialties: doctor.specialties,
-                    fontSize: config.specialtiesFontSize,
-                  ),
+                  DoctorSpecialties(specialties: doctor.specialties),
                   const SizedBox(height: 8),
                   DoctorRating(
                     ratingValue: 3.4,

@@ -137,7 +137,7 @@ class AppStrings {
   static const String reloadFavorites = 'Reload Favorites';
   static const String saveButtonText = 'Save';
 
-  static const String dR = 'Dr.';
+  static const String dR = 'Dr. ';
   static const String successMessage = 'Book Appointment Successfully';
 
   static const List<String> doctorNotAvailableMessage = [
