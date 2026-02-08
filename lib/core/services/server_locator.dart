@@ -58,8 +58,8 @@ import 'package:medora/features/doctor_list/data/data_source/doctors_list_remote
     show DoctorsListRemoteDataSource;
 import 'package:medora/features/doctor_list/domain/repository/doctor_list_repository_base.dart'
     show DoctorListRepositoryBase;
-import 'package:medora/features/doctor_list/domain/use_cases/get_doctors_list_use_case.dart'
-    show GetDoctorsListUseCase;
+import 'package:medora/features/doctor_list/domain/use_cases/get_doctors_list_uc.dart' show GetDoctorsListUC;
+
 import 'package:medora/features/doctors_specialties/data/repository/specialty_doctors_repository.dart'
     show SpecialtyDoctorsRepository;
 import 'package:medora/features/doctors_specialties/presentation/controller/cubit/specialty_doctors_cubit.dart'
@@ -373,12 +373,12 @@ class ServiceLocator {
     );
 
     // Use Cases
-    serviceLocator.registerLazySingleton<GetDoctorsListUseCase>(
-      () => GetDoctorsListUseCase(doctorListRepositoryBase: serviceLocator()),
+    serviceLocator.registerLazySingleton<GetDoctorsListUC>(
+      () => GetDoctorsListUC(repository: serviceLocator()),
     );
 
     serviceLocator.registerFactory<DoctorListCubit>(
-      () => DoctorListCubit(getDoctorsListUseCase: serviceLocator()),
+      () => DoctorListCubit(useCase: serviceLocator()),
     );
   }
 

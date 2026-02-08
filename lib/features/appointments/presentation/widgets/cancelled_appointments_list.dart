@@ -28,11 +28,13 @@ class _CancelledAppointmentsListState extends State<CancelledAppointmentsList>
           CancelledAppointmentsState,
           CancelledAppointmentsCubit,
           CancelledAppointmentsList
-        > ,AutomaticKeepAliveClientMixin{
+        >,
+        AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
+
   @override
-  Widget buildDataCard(ClientAppointmentsEntity appointment) {
+  Widget buildDataCard(ClientAppointmentsEntity appointment, int index) {
     return GestureDetector(
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute(

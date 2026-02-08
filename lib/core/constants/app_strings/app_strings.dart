@@ -337,44 +337,31 @@ class AppStrings {
   static const String selectTime = 'Select Time';
   static const String selectDate = 'Select Date';
 
-  static const String total='Total: ';
-  static const String dateLabel= 'Date';
-  static const String proceedToPay= 'Proceed to Pay';
-  static const String genderHint='Select Gender';
+  static const String total = 'Total: ';
+  static const String dateLabel = 'Date';
+  static const String proceedToPay = 'Proceed to Pay';
+  static const String genderHint = 'Select Gender';
 
-  static const String requiredGenderField='Please select your gender';
-  static const String appointmentDetailsTitle='Appointment Details';
-  static const String doctorInformationTitle='Doctor Information';
-  static const String patientInformationLabel='Patient Information';
-  static const String genderLabel='Gender';
-  static const String ageLabel='Age';
-  static const String scheduledAppointmentLabel='Scheduled appointment';
-  static const String whenToComeQuestion='When would you like to come?';
+  static const String requiredGenderField = 'Please select your gender';
+  static const String appointmentDetailsTitle = 'Appointment Details';
+  static const String doctorInformationTitle = 'Doctor Information';
+  static const String patientInformationLabel = 'Patient Information';
+  static const String genderLabel = 'Gender';
+  static const String ageLabel = 'Age';
+  static const String scheduledAppointmentLabel = 'Scheduled appointment';
+  static const String whenToComeQuestion = 'When would you like to come?';
 
-  static const String defaultErrorMessage='An unexpected error occurred. Please try again';
+  static const String defaultErrorMessage =
+      'An unexpected error occurred. Please try again';
   static const String internetConnected = ' Connected to Internet';
   static const String noInternetConnection = ' No Internet Connection';
-  static const String noFavoritesDoctorsFoundMessage = 'Your favorite list is empty \nStart adding doctors to your favorites!';
+  static const String noFavoritesDoctorsFoundMessage =
+      'Your favorite list is empty \nStart adding doctors to your favorites!';
 
+  static const String doctorsEndMessage = '✅ All doctors have been displayed';
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  static const String appointmentsEndMessage =
+      '📋 All appointments have been shown';
 }
 
 class PaymentMethod {

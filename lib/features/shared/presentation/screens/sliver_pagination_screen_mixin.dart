@@ -6,8 +6,8 @@ import 'package:medora/core/constants/common_widgets/content_unavailable_widget.
     show ContentUnavailableWidget;
 import 'package:medora/core/constants/common_widgets/error_retry_widget.dart'
     show ErrorRetryWidget;
-import 'package:medora/core/constants/common_widgets/loading_list.dart'
-    show LoadingList;
+import 'package:medora/core/constants/common_widgets/sliver_loading%20_list.dart'
+    show SliverLoadingList;
 import 'package:medora/core/enum/request_state.dart' show RequestState;
 import 'package:medora/features/shared/presentation/controllers/cubit/base_pagination_cubit.dart'
     show BasePaginationCubit;
@@ -16,75 +16,86 @@ import 'package:medora/features/shared/presentation/controllers/state/base_pagin
 import 'package:medora/features/shared/presentation/widgets/pagination_footer_widget_.dart'
     show PaginationFooterWidget;
 
-mixin PaginationScreenMixin<
+mixin SliverPaginationScreenMixin<
   E,
   S extends BasePaginationState<E>,
   C extends BasePaginationCubit<E, S>,
   T extends StatefulWidget
 >
     on State<T> {
-  late final ScrollController scrollController;
+  late final ScrollController _scrollController;
+
+  // Connecting the external controller (Important: before super.initState())
+  void attachScrollController(ScrollController controller) {
+    _scrollController = controller;
+    _scrollController.addListener(_scrollListener);
+  }
 
   @override
   void initState() {
     super.initState();
-    _initialScrollController();
-
-    // Fetch data for the first time
     _fetchInitialData();
-  }
-
-  void _initialScrollController() {
-    scrollController = ScrollController();
-    scrollController.addListener(_scrollListener);
-  }
-
-  void _fetchInitialData() {
-    context.read<C>().fetchInitialList();
   }
 
   @override
   void dispose() {
-    scrollController.dispose();
+    _cleanupScrollListener();
     super.dispose();
   }
 
-  /// listener للـ scroll detection
+  void _cleanupScrollListener() {
+    // We only remove the listener, we don't dispose of the controller because it's external
+    _scrollController.removeListener(_scrollListener);
+  }
+
+  // Fetch data for the first time
+  void _fetchInitialData() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<C>().fetchInitialList();
+    });
+  }
+
   void _scrollListener() {
-    if (scrollController.position.pixels >=
-        scrollController.position.maxScrollExtent) {
+    final position = _scrollController.position;
+
+    if (position.pixels >= position.maxScrollExtent) {
       context.read<C>().loadMore();
     }
   }
 
-  // Function to build the card (must be executed on the screen)
   Widget buildDataCard(E item, int index);
 
-  // A function to build the Loading (can be override if you want a different look)
-  Widget buildInitialLoading() => const LoadingList(height: 150);
+  Widget buildInitialLoading() => const SliverLoadingList(height: 150);
 
-  // A function to construct the error
   Widget buildErrorWidget(String message) => ErrorRetryWidget(
-    isSliverWidget: false,
     errorMessage: message,
-
     onRetry: () => context.read<C>().fetchInitialList(),
   );
 
-  ContentUnavailableWidget buildEmptyWidget() {
-    return const ContentUnavailableWidget(
-      description: AppStrings.emptyUpcomingAppointmentsMessage,
-    );
-  }
+  Widget buildEmptyWidget() => const ContentUnavailableWidget(
+    description: AppStrings.emptyUpcomingAppointmentsMessage,
+  );
 
   // Logic for counting the number of items (List + Footer)
   int _calculateItemCount(S state) {
     int count = state.dataList.length;
+
     if (state.isLoadingMore || (!state.hasMore && state.dataList.isNotEmpty)) {
       count += 1; // Adding the footer element
     }
 
     return count;
+  }
+
+  String? noMoreDataMessage;
+
+  Widget _buildPaginationFooter(S state) {
+    return PaginationFooterWidget(
+      noMoreDataMessage: noMoreDataMessage ?? AppStrings.doctorsEndMessage,
+      isLoadingMore: state.isLoadingMore,
+      hasMore: state.hasMore,
+      doctorsList: state.dataList,
+    );
   }
 
   /// ========== Main function for building the interface ==========
@@ -98,31 +109,22 @@ mixin PaginationScreenMixin<
     if (state.requestState == RequestState.error && state.dataList.isEmpty) {
       return buildErrorWidget(state.failureMessage);
     }
+
     if (state.requestState == RequestState.loaded && state.dataList.isEmpty) {
       return buildEmptyWidget();
     }
 
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-      controller: scrollController,
+    return SliverList.builder(
       itemCount: _calculateItemCount(state),
       itemBuilder: (context, index) {
+        // إذا كان الفهرس يشير إلى عنصر الـ footer
         if (index >= state.dataList.length) {
           return _buildPaginationFooter(state);
         }
+
+        // عرض عنصر البيانات
         return buildDataCard(state.dataList[index], index);
       },
-    );
-  }
-
-  String? noMoreDataMessage;
-
-  PaginationFooterWidget _buildPaginationFooter(S state) {
-    return PaginationFooterWidget(
-      noMoreDataMessage: noMoreDataMessage ?? AppStrings.appointmentsEndMessage,
-      isLoadingMore: state.isLoadingMore,
-      hasMore: state.hasMore,
-      doctorsList: state.dataList,
     );
   }
 }

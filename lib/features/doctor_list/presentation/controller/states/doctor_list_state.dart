@@ -1,58 +1,37 @@
-import 'package:equatable/equatable.dart';
+import 'package:medora/core/enum/request_state.dart' show RequestState;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart';
+import 'package:medora/features/shared/presentation/controllers/state/base_pagination_state.dart'
+    show BasePaginationState;
 
-import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
-
-import '../../../../../core/enum/request_state.dart';
-
-class DoctorListState extends Equatable {
-  final bool isLoadedBefore;
-  final List<DoctorEntity> doctorList;
-  final RequestState doctorListState;
-  final String doctorListError;
-
-  //  fields for Pagination
-  final dynamic lastDocument;
-  final bool hasMore;
-  final bool isLoadingMore;
-
+class DoctorListState extends BasePaginationState<DoctorEntity> {
   const DoctorListState({
-    this.isLoadedBefore = false,
-    this.doctorList = const [],
-    this.doctorListState = RequestState.loading,
-    this.doctorListError = '',
-    this.lastDocument,
-    this.hasMore = true,
-    this.isLoadingMore = false,
+    super.dataList,
+    super.requestState,
+    super.failureMessage,
+    super.isLoadingMore,
+    super.hasMore,
+    super.lastDocument,
+    super.isLoadedBefore,
   });
 
+  @override
   DoctorListState copyWith({
-    bool? isLoadedBefore,
-    List<DoctorEntity>? doctorList,
-    RequestState? doctorListState,
-    String? doctorListError,
-    dynamic lastDocument,
-    bool? hasMore,
+    List<DoctorEntity>? dataList,
+    RequestState? requestState,
+    String? failureMessage,
     bool? isLoadingMore,
+    bool? hasMore,
+    dynamic lastDocument,
+    bool? isLoadedBefore,
   }) {
     return DoctorListState(
-      isLoadedBefore: isLoadedBefore ?? this.isLoadedBefore,
-      doctorList: doctorList ?? this.doctorList,
-      doctorListState: doctorListState ?? this.doctorListState,
-      doctorListError: doctorListError ?? this.doctorListError,
-      lastDocument: lastDocument ?? this.lastDocument,
-      hasMore: hasMore ?? this.hasMore,
+      dataList: dataList ?? this.dataList,
+      requestState: requestState ?? this.requestState,
+      failureMessage: failureMessage ?? this.failureMessage,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+      hasMore: hasMore ?? this.hasMore,
+      lastDocument: lastDocument ?? this.lastDocument,
+      isLoadedBefore: isLoadedBefore ?? this.isLoadedBefore,
     );
   }
-
-  @override
-  List<Object?> get props => [
-    isLoadedBefore,
-    doctorList,
-    doctorListState,
-    doctorListError,
-    lastDocument,
-    hasMore,
-    isLoadingMore,
-  ];
 }

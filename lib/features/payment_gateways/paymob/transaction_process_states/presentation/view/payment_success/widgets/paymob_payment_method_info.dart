@@ -18,7 +18,7 @@ class PaymobPaymentMethodInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 22),
+      padding: const EdgeInsets.all(5),
       margin: EdgeInsets.zero,
       decoration: ShapeDecoration(
         color: Colors.white,
@@ -26,34 +26,38 @@ class PaymobPaymentMethodInfo extends StatelessWidget {
       ),
       child: Row(
         children: [
-          _getPaymentMethodIcon(),
-          const SizedBox(width: 23),
-          Text.rich(
-            TextSpan(
-              children: [
-                TextSpan(
-                  text: '${transactionData.sourceSubType!.toUpperCase()}\n', //
-                  style: GoogleFonts.inter(
-                    textStyle: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w500,
+          Expanded(child: _getPaymentMethodIcon()),
+
+          Expanded(
+            flex: 3,
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: '${transactionData.sourceSubType!.toUpperCase()}\n',
+                    //
+                    style: GoogleFonts.inter(
+                      textStyle: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
-                ),
-                TextSpan(
-                  text: transactionData.sourceSubType == 'wallet'
-                      ? transactionData.sourceDataPan
-                      : '**** **** **** ${transactionData.sourceDataPan}',
-                  style: const TextStyle(
-                    color: Colors.black54,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    letterSpacing: 1.2,
-                    height: 0,
+                  TextSpan(
+                    text: transactionData.sourceSubType == 'wallet'
+                        ? transactionData.sourceDataPan
+                        : '**** **** **** ${transactionData.sourceDataPan}',
+                    style: const TextStyle(
+                      color: Colors.black54,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: 1.2,
+                      height: 0,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],

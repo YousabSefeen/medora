@@ -16,24 +16,26 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late ScrollController _scrollController;
+  late final ScrollController scrollController;
 
   @override
   void initState() {
-    _scrollController = ScrollController();
+    scrollController = ScrollController();
     super.initState();
   }
 
   @override
   void dispose() {
-    _scrollController.dispose();
+    scrollController.dispose();
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
-      controller: _scrollController,
+      controller: scrollController,
+
       // Keyboard locks when scrolling
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       key: const PageStorageKey<String>('home_screen'),
@@ -50,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
           maxExtent: MediaQuery.sizeOf(context).width * 0.95,
           sliver: SliverPadding(
             padding: HomeConstants.homeBodyPadding,
-            sliver: PopularDoctorsSection(scrollController: _scrollController),
+            sliver: PopularDoctorsSection(scrollController: scrollController),
           ),
         ),
       ],

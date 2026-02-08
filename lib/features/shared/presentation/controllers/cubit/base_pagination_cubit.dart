@@ -35,7 +35,7 @@ abstract class BasePaginationCubit<T, S extends BasePaginationState<T>>
   Future<void> _fetchData({required bool isInitial}) async {
     final parameters = PaginationParameters(
       lastDocument: isInitial ? null : state.lastDocument,
-      limit: 10,
+      limit: 8,
     );
 
     final response = await getUseCaseCall(parameters);

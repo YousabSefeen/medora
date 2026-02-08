@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart' show Lottie;
-import 'package:medora/core/constants/app_strings/app_strings.dart'
-    show AppStrings;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/generated/assets.dart' show Assets;
 
@@ -9,12 +7,14 @@ class PaginationFooterWidget extends StatelessWidget {
   final bool isLoadingMore;
   final bool hasMore;
   final List<dynamic> doctorsList;
+  final String noMoreDataMessage;
 
   const PaginationFooterWidget({
     super.key,
     required this.isLoadingMore,
     required this.hasMore,
     required this.doctorsList,
+    required this.noMoreDataMessage,
   });
 
   @override
@@ -23,7 +23,7 @@ class PaginationFooterWidget extends StatelessWidget {
       return _buildLoadingMoreIndicator();
     }
 
-    if (!hasMore && doctorsList.isNotEmpty && doctorsList.length > 10) {
+    if (!hasMore && doctorsList.isNotEmpty && doctorsList.length > 8) {
       return _buildNoMoreDataMessage(context);
     }
 
@@ -31,9 +31,9 @@ class PaginationFooterWidget extends StatelessWidget {
   }
 
   Padding _buildNoMoreDataMessage(BuildContext context) => Padding(
-    padding: const EdgeInsets.only(top: 10, bottom: 30),
+    padding: const EdgeInsets.only(top: 10, bottom: 50),
     child: Text(
-      AppStrings.noMoreDoctorsMsg,
+      noMoreDataMessage,
       textAlign: TextAlign.center,
       style: Theme.of(
         context,

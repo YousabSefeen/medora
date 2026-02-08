@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart'
     show FirebaseFirestore, Query, DocumentSnapshot, QuerySnapshot;
 import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart';
 import 'package:medora/features/shared/domain/entities/paginated_data_response.dart'
     show PaginatedDataResponse;
 import 'package:medora/features/shared/domain/entities/pagination_parameters.dart'
@@ -18,7 +19,7 @@ class DoctorsListRemoteDataSource extends DoctorsListRemoteDataSourceBase {
     : _firestore = firestore ?? FirebaseFirestore.instance;
 
   @override
-  Future<PaginatedDataResponse> getDoctorsList(
+  Future<PaginatedDataResponse<DoctorEntity>> getDoctorsList(
     PaginationParameters parameters,
   ) async {
     Query query = _firestore

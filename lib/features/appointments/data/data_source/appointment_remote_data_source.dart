@@ -127,11 +127,11 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
     } else if (status == AppointmentStatus.completed.name) {
       query = query.where(
         Filter.and(
-          Filter('appointmentTimestamp', isLessThan: Timestamp.now()),
           Filter(
             'appointmentStatus',
-            isNotEqualTo: AppointmentStatus.pendingPayment.name,
+            isEqualTo: AppointmentStatus.confirmed.name,
           ),
+          Filter('appointmentTimestamp', isLessThan: Timestamp.now()),
         ),
       );
     } else if (status == AppointmentStatus.cancelled.name) {
