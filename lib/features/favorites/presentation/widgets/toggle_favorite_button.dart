@@ -12,14 +12,18 @@ import 'package:medora/features/favorites/presentation/controller/cubit/favorite
     show FavoritesCubit;
 import 'package:medora/features/favorites/presentation/controller/states/favorites_states.dart'
     show FavoritesStates;
-import 'package:medora/features/shared/data/models/doctor_model.dart'
-    show DoctorModel;
-import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart'
+    show DoctorEntity;
 
 class ToggleFavoriteButton extends StatefulWidget {
   final DoctorEntity doctorInfo;
+  final double? iconSize;
 
-  const ToggleFavoriteButton({super.key, required this.doctorInfo});
+  const ToggleFavoriteButton({
+    super.key,
+    required this.doctorInfo,
+    this.iconSize,
+  });
 
   @override
   State<ToggleFavoriteButton> createState() => _ToggleFavoriteButtonState();
@@ -84,7 +88,7 @@ class _ToggleFavoriteButtonState extends State<ToggleFavoriteButton> {
       key: ValueKey(isFav),
       padding: EdgeInsets.zero,
       constraints: const BoxConstraints(),
-      iconSize: 24,
+      iconSize: widget.iconSize ?? 24,
       icon: Icon(
         isFav ? Icons.favorite : Icons.favorite_border,
         color: isFav ? Colors.red : Colors.grey,

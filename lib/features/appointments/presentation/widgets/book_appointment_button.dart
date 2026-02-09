@@ -22,6 +22,8 @@ import 'package:medora/features/appointments/presentation/screens/patient_detail
     show PatientDetailsScreen;
 import 'package:medora/features/appointments/presentation/widgets/custom_widgets/adaptive_action_button.dart'
     show AdaptiveActionButton;
+import 'package:medora/features/favorites/presentation/widgets/toggle_favorite_button.dart'
+    show ToggleFavoriteButton;
 import 'package:medora/features/shared/domain/entities/doctor_entity.dart'
     show DoctorEntity;
 
@@ -32,6 +34,7 @@ class BookAppointmentButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final EdgeInsets padding = MediaQuery.of(context).padding;
     return BlocSelector<TimeSlotCubit, TimeSlotState, String?>(
       selector: (state) => state.selectedTimeSlot,
       builder: (context, selectedTimeSlot) {
@@ -39,6 +42,7 @@ class BookAppointmentButton extends StatelessWidget {
 
         return _buildAppointmentButton(
           context: context,
+          padding: padding,
           isEnabled: isTimeSlotSelected,
           selectedTimeSlot: selectedTimeSlot,
         );
@@ -48,13 +52,11 @@ class BookAppointmentButton extends StatelessWidget {
 
   Widget _buildAppointmentButton({
     required BuildContext context,
+    required EdgeInsets padding,
     required bool isEnabled,
     required String? selectedTimeSlot,
   }) {
-    return BlocConsumer<
-      BookAppointmentCubit,
-      BookAppointmentState
-    >(
+    return BlocConsumer<BookAppointmentCubit, BookAppointmentState>(
       listenWhen: (previous, current) =>
           previous.bookingStatus != current.bookingStatus,
       buildWhen: (previous, current) =>
@@ -63,11 +65,27 @@ class BookAppointmentButton extends StatelessWidget {
         _handleAppointmentStateChange(state: state, context: context);
       },
       builder: (context, state) {
-        return AdaptiveActionButton(
-          title: AppStrings.bookAppointment,
-          isEnabled: isEnabled,
-          isLoading: state.bookingStatus == LazyRequestState.loading,
-          onPressed: () => _createAppointment(context, selectedTimeSlot!),
+        return Container(
+          margin: EdgeInsets.only(
+            bottom: padding.bottom > 0 ? padding.bottom : 16,
+          ),
+          width: double.infinity,
+          child: Row(
+            children: [
+              const SizedBox(width: 15),
+              ToggleFavoriteButton(doctorInfo: doctor, iconSize: 30),
+              Expanded(
+                child: AdaptiveActionButton(
+                  title: AppStrings.bookAppointment,
+                  isEnabled: isEnabled,
+                  isLoading: state.bookingStatus == LazyRequestState.loading,
+                  onPressed: () =>
+                      _createAppointment(context, selectedTimeSlot!),
+                ),
+              ),
+              const SizedBox(width: 5),
+            ],
+          ),
         );
       },
     );
@@ -81,9 +99,9 @@ class BookAppointmentButton extends StatelessWidget {
       appointmentTime: selectedTimeSlot,
     );
 
-    context
-        .read<BookAppointmentCubit>()
-        .saveAndBookAppointment(appointmentData);
+    context.read<BookAppointmentCubit>().saveAndBookAppointment(
+      appointmentData,
+    );
   }
 
   void _handleAppointmentStateChange({

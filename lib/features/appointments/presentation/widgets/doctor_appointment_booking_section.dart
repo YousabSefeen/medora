@@ -42,7 +42,6 @@ class _DoctorAppointmentBookingSectionState
       children: [
         SelectDateWidget(doctorSchedule: widget.doctorSchedule),
         const AppointmentTimeSelector(),
-        // BookAppointmentButton(doctorId: widget.doctorSchedule.doctorId),
       ],
     );
   }

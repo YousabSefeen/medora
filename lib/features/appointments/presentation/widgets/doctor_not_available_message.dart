@@ -18,10 +18,11 @@ class DoctorNotAvailableMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deviceSize = MediaQuery.sizeOf(context);
     return Center(
       child: Container(
-        height: MediaQuery.sizeOf(context).height * 0.25,
-        width: MediaQuery.sizeOf(context).width * 0.8,
+        height: deviceSize.height * 0.25,
+        width: deviceSize.width * 0.9,
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
         child: Column(
           children: [_buildLottieAnimation(), _buildRichTextMessage(context)],
