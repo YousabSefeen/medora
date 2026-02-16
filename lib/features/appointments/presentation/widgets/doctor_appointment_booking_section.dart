@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:medora/features/appointments/presentation/controller/cubit/time_slot_cubit.dart' show TimeSlotCubit;
+import 'package:medora/core/extensions/media_query_extension.dart';
+import 'package:medora/features/appointments/presentation/controller/cubit/time_slot_cubit.dart'
+    show TimeSlotCubit;
 import 'package:medora/features/appointments/presentation/widgets/appointment_time_selector.dart'
     show AppointmentTimeSelector;
 import 'package:medora/features/appointments/presentation/widgets/select_date_widget.dart'
@@ -41,7 +42,10 @@ class _DoctorAppointmentBookingSectionState
       spacing: 15,
       children: [
         SelectDateWidget(doctorSchedule: widget.doctorSchedule),
-        const AppointmentTimeSelector(),
+        ConstrainedBox(
+          constraints: BoxConstraints(minHeight: context.screenHeight * 0.2),
+          child: const AppointmentTimeSelector(),
+        ),
       ],
     );
   }

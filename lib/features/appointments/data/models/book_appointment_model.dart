@@ -48,7 +48,7 @@ class BookAppointmentModel {
       patientGender: entity.patientGender,
       patientAge: entity.patientAge,
       patientProblem: entity.patientProblem,
-      appointmentStatus: entity.appointmentStatus,
+      appointmentStatus: entity.appointmentStatus!,
       appointmentDate: entity.appointmentDate,
       appointmentTime: entity.appointmentTime,
     );

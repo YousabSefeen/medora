@@ -16,7 +16,7 @@ import '../../../../generated/assets.dart';
 
 class AppointmentDetailsScreen extends StatelessWidget {
   static const double _horizontalPadding = 7.0;
-  static const double _verticalPadding = 10.0;
+
   static const double _cardHorizontalMargin = 15.0;
   static const double _cardVerticalMargin = 10.0;
   static const double _sectionSpacing = 30.0;
@@ -43,19 +43,21 @@ class AppointmentDetailsScreen extends StatelessWidget {
 
   Widget _buildContent(BuildContext context, DoctorEntity doctor) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(
-        horizontal: _horizontalPadding,
-        vertical: _verticalPadding,
+      padding: const EdgeInsets.only(
+        left: _horizontalPadding,
+        right: _horizontalPadding,
+        bottom: 50,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: _smallSpacing,
         children: [
           _buildDoctorCard(doctor),
-          const SizedBox(height: _smallSpacing),
+
           _buildDoctorInformationSection(doctor),
-          const SizedBox(height: _sectionSpacing),
+
           _buildPatientInformationSection(),
-          const SizedBox(height: _sectionSpacing),
+
           _buildAppointmentScheduleSection(context),
         ],
       ),
@@ -64,10 +66,7 @@ class AppointmentDetailsScreen extends StatelessWidget {
 
   Widget _buildDoctorCard(DoctorEntity doctor) {
     return Card(
-      margin: const EdgeInsets.symmetric(
-        horizontal: _cardHorizontalMargin,
-        vertical: _cardVerticalMargin,
-      ),
+      margin: const EdgeInsets.symmetric(horizontal: _cardHorizontalMargin),
       color: Colors.white,
       elevation: 1,
       shape: RoundedRectangleBorder(

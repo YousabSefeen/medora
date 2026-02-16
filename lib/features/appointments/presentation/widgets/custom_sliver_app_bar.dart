@@ -14,9 +14,8 @@ import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/enum/navigation_source.dart' show NavigationSource;
 import 'package:medora/core/extensions/string_extensions.dart';
-import 'package:medora/features/shared/data/models/doctor_model.dart'
-    show DoctorModel;
-import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart'
+    show DoctorEntity;
 
 class CustomSliverAppBar extends StatelessWidget {
   final DoctorEntity doctor;
@@ -38,18 +37,7 @@ class CustomSliverAppBar extends StatelessWidget {
     return SliverAppBar(
       pinned: true,
       expandedHeight: deviceHeight * 0.35,
-      leading: IconButton(
-        icon: CircleAvatar(
-          radius: 15.r,
-          backgroundColor: AppColors.customWhite,
-          child: FaIcon(
-            FontAwesomeIcons.arrowLeft,
-            color: AppColors.softBlue,
-            size: 16.sp,
-          ),
-        ),
-        onPressed: () => AppRouter.popWithKeyboardDismiss(context),
-      ),
+      leading: _buildBackIcon(context),
       flexibleSpace: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           final isCollapsed =
@@ -66,18 +54,42 @@ class CustomSliverAppBar extends StatelessWidget {
                     ),
                   )
                 : null,
-            background: Stack(
-              alignment: Alignment.bottomLeft,
-              children: [
-                _buildDoctorImage(deviceHeight),
-                _buildDoctorName(deviceWidth, textTheme),
-              ],
+            background: Container(
+              decoration: BoxDecoration(
+                color: AppColors.customWhite,
+
+                border: Border.all(color: Colors.black12, width: 0.5),
+              ),
+              child: Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  _buildDoctorImage(deviceHeight),
+                  Positioned(
+                    bottom: 0,
+                    left: 5,
+                    child: _buildDoctorName(deviceWidth, textTheme),
+                  ),
+                ],
+              ),
             ),
           );
         },
       ),
     );
   }
+
+  IconButton _buildBackIcon(BuildContext context) => IconButton(
+    icon: CircleAvatar(
+      radius: 15.r,
+      backgroundColor: AppColors.customWhite,
+      child: FaIcon(
+        FontAwesomeIcons.arrowLeft,
+        color: AppColors.softBlue,
+        size: 16.sp,
+      ),
+    ),
+    onPressed: () => AppRouter.popWithKeyboardDismiss(context),
+  );
 
   Widget _buildDoctorImage(double deviceHeight) {
     switch (navigationSource) {

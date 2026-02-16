@@ -169,6 +169,7 @@ class AppStrings {
   static const String tryAgainNormal = 'Try Again';
 
   //Error
+  static const String  errorMessagePrefix = 'An Error Occurred:';
   static const String errorDisplayTitle = 'An error occurred while displaying';
   static const String errorMessageLabel = 'Error Message: ';
   static const String pastDateBookingError =
@@ -362,6 +363,15 @@ class AppStrings {
 
   static const String appointmentsEndMessage =
       '📋 All appointments have been shown';
+
+  static const String askNow='Ask now';
+
+  static const String popularDoctors='Popular Doctors';
+  static const String doctorSpecialties='Doctor Specialties';
+
+  static const String  viewAll='View All';
+
+
 }
 
 class PaymentMethod {

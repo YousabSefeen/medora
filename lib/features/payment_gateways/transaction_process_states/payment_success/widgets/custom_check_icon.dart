@@ -8,7 +8,7 @@ class CustomCheckIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 30),
+      margin: const EdgeInsets.only(top: 10,bottom: 20),
       decoration: ShapeDecoration(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(180)),
         shadows: const [

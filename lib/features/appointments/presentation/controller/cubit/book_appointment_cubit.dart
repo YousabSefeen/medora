@@ -14,8 +14,7 @@ import 'package:medora/features/appointments/presentation/data/appointment_booki
 
 import '../../../../../core/error/failure.dart' show Failure;
 
-class BookAppointmentCubit
-    extends Cubit<BookAppointmentState> {
+class BookAppointmentCubit extends Cubit<BookAppointmentState> {
   final AppSettingsCubit appSettingsCubit;
   final BookAppointmentUseCase bookAppointmentUseCase;
 
@@ -25,55 +24,14 @@ class BookAppointmentCubit
     required this.bookAppointmentUseCase,
   }) : super(const BookAppointmentState());
 
-/*  void cacheSelectedDoctorAndCreatePendingAppointment(
-    AppointmentBookingData appointmentDataView,
-  ) {
-    _cacheSelectedDoctor(appointmentDataView);
-    _createPendingAppointment();
-  }
-
-  void _cacheSelectedDoctor(AppointmentBookingData appointmentDataView) =>
-      emit(state.copyWith(appointmentBookingData: appointmentDataView));
-
-  Future<void> _createPendingAppointment() async {
-    emit(state.copyWith(pendingAppointmentState: LazyRequestState.loading));
-    final response = await createPendingAppointmentUseCase.call(
-      CreatePendingAppointmentParams(
-        doctorId: state.appointmentBookingData!.doctorEntity.doctorId!,
-        appointmentDate: state.appointmentBookingData!.appointmentDate,
-        appointmentTime: state.appointmentBookingData!.appointmentTime,
-      ),
-    );
-    response.fold(
-      (failure) => emit(
-        state.copyWith(
-          pendingAppointmentState: LazyRequestState.error,
-          pendingAppointmentError: failure.toString(),
-        ),
-      ),
-      (appointmentId) {
-        print(
-          'CreatePendingAppointmentCubit.createPendingAppointment: appointmentId: $appointmentId',
-        );
-        emit(
-          state.copyWith(
-            pendingAppointmentState: LazyRequestState.loaded,
-            appointmentId: appointmentId,
-          ),
-        );
-      },
-    );
-  }*/
   void saveAndBookAppointment(AppointmentBookingData bookingData) {
     _cacheBookingData(bookingData);
     _processAppointmentBooking();
   }
 
-  // ✅ اسم أوضح للتخزين
   void _cacheBookingData(AppointmentBookingData bookingData) =>
       emit(state.copyWith(bookingData: bookingData));
 
-  // ✅ اسم أوضح للعملية
   Future<void> _processAppointmentBooking() async {
     emit(state.copyWith(bookingStatus: LazyRequestState.loading));
 
@@ -82,13 +40,9 @@ class BookAppointmentCubit
 
     final result = await bookAppointmentUseCase.call(params);
 
-    result.fold(
-      _handleBookingFailure,
-      _handleBookingSuccess,
-    );
+    result.fold(_handleBookingFailure, _handleBookingSuccess);
   }
 
-  // ✅ استخراج إنشاء المعاملات
   BookAppointmentParams _createBookingParams(AppointmentBookingData booking) {
     return BookAppointmentParams(
       doctorId: booking.doctorEntity.doctorId!,
@@ -97,7 +51,6 @@ class BookAppointmentCubit
     );
   }
 
-  // ✅ معالجة الفشل بشكل منفصل
   void _handleBookingFailure(Failure failure) {
     emit(
       state.copyWith(
@@ -107,7 +60,6 @@ class BookAppointmentCubit
     );
   }
 
-  // ✅ معالجة النجاح بشكل منفصل
   void _handleBookingSuccess(String appointmentId) {
     _logSuccessfulBooking(appointmentId);
 
@@ -119,10 +71,11 @@ class BookAppointmentCubit
     );
   }
 
-  // ✅ دالة مساعدة للتسجيل
   void _logSuccessfulBooking(String appointmentId) {
     debugPrint('Appointment booked successfully. ID: $appointmentId');
+    print('Appointment booked successfully. ID: $appointmentId');
   }
+
   AppointmentBookingData get appointmentDataView => state.bookingData!;
 
   String get appointmentId => state.appointmentId;

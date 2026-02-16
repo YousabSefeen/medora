@@ -130,7 +130,6 @@ class ServiceLocator {
     favoritesInit();
     setupSearchDependencies();
     setupAppointmentsDependencies();
-    print('ServiceLocator.initxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
   }
 
   void setupAppointmentsDependencies() {

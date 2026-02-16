@@ -20,10 +20,11 @@ class BottomActionButtonSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final padding = MediaQuery.of(context).padding;
     return Container(
       height: 150,
       padding: const EdgeInsets.symmetric(horizontal: 22),
-      margin: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
+      margin:   EdgeInsets.only(bottom: padding.bottom>0? padding.bottom:16, left: 20, right: 20),
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(20.r)),

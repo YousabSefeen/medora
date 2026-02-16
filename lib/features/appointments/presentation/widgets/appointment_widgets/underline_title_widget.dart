@@ -8,16 +8,20 @@ class UnderlineTitleWidget extends StatelessWidget {
 
   const UnderlineTitleWidget({super.key, required this.title});
 
+  static const double _underlineHeight = 1.5;
+
   @override
   Widget build(BuildContext context) {
     return IntrinsicWidth(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        spacing: 2,
+        spacing: 4,
         children: [
           Text(
             title,
+            maxLines: 1,
+            softWrap: false,
             style: GoogleFonts.playpenSans(
               fontSize: 16.sp,
               letterSpacing: 0.5,
@@ -25,15 +29,13 @@ class UnderlineTitleWidget extends StatelessWidget {
               color: AppColors.customBlue,
             ),
           ),
-          Container(
-            height: 2,
-            decoration: ShapeDecoration(
-              color: Colors.black,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(1000),
-              ),
-              shadows: const [BoxShadow(color: Colors.blue, blurRadius: 2)],
-            ),
+
+          const Material(
+            elevation: _underlineHeight,
+            shadowColor: AppColors.lightBlue,
+            color: AppColors.softBlue,
+            shape: StadiumBorder(),
+            child: SizedBox(height: _underlineHeight),
           ),
         ],
       ),

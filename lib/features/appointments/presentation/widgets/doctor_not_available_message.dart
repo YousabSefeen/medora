@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
+import 'package:medora/core/extensions/media_query_extension.dart';
 import 'package:medora/features/shared/presentation/widgets/custom_rich_text.dart'
     show CustomRichText;
 
@@ -18,11 +19,10 @@ class DoctorNotAvailableMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.sizeOf(context);
     return Center(
       child: Container(
-        height: deviceSize.height * 0.25,
-        width: deviceSize.width * 0.9,
+        height: context.screenHeight * 0.2,
+        width: context.screenWidth * 0.9,
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
         child: Column(
           children: [_buildLottieAnimation(), _buildRichTextMessage(context)],

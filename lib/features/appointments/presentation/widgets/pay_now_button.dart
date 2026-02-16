@@ -11,15 +11,16 @@ import 'package:medora/core/constants/app_strings/app_strings.dart'
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/enum/payment_gateways_types.dart'
     show PaymentGatewaysTypes;
-
 import 'package:medora/features/appointments/presentation/widgets/custom_widgets/adaptive_action_button.dart'
     show AdaptiveActionButton;
 import 'package:medora/features/payment_gateways/paymob/presentation/view/screens/paymob_payment_screen.dart'
     show PaymobPaymentScreen;
 import 'package:medora/features/payment_gateways/paypal/presentation/views/screens/paypal_payment_screen.dart'
     show PaypalPaymentScreen;
-import 'package:medora/features/payment_gateways/presentation/controller/cubit/payment_cubit.dart' show PaymentCubit;
-import 'package:medora/features/payment_gateways/presentation/controller/state/payment_state.dart' show PaymentState;
+import 'package:medora/features/payment_gateways/presentation/controller/cubit/payment_cubit.dart'
+    show PaymentCubit;
+import 'package:medora/features/payment_gateways/presentation/controller/state/payment_state.dart'
+    show PaymentState;
 import 'package:medora/features/payment_gateways/stripe/presentation/View/Screens/stripe_payment_screen.dart'
     show StripePaymentScreen;
 
@@ -30,11 +31,7 @@ class PayNowButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<
-        PaymentCubit,
-        PaymentState,
-      PaymentGatewaysTypes
-    >(
+    return BlocSelector<PaymentCubit, PaymentState, PaymentGatewaysTypes>(
       selector: (state) => state.selectedPaymentMethod,
       builder: (context, selectedPaymentMethod) => AdaptiveActionButton(
         title: AppStrings.payNow,
@@ -106,7 +103,7 @@ class PayNowButton extends StatelessWidget {
     PaymentGatewaysTypes selectedPaymentMethod,
   ) {
     // Close payment method selection bottom sheet
-  ///  AppRouter.pop(context);
+    ///  AppRouter.pop(context);
     // Start appointment booking and payment pذrocess
     //xxxxxxxxxxxxxx
     // context.read<BookAppointmentCubit>().handleSubmitAppointmentRequest(
@@ -152,10 +149,7 @@ class PayNowButton extends StatelessWidget {
         selectedPaymentMethod: paymentMethod,
         phoneNumber: phoneNumberController.text,
       ),
-      onResult: (value) {
-        print('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-        _handlePaymentResult(context, value);
-      },
+      onResult: (value) => _handlePaymentResult(context, value),
     );
   }
 

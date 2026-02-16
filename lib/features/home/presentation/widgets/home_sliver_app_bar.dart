@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medora/core/constants/app_strings/app_strings.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/features/home/presentation/constants/home_constants.dart'
     show HomeConstants;
@@ -19,7 +20,6 @@ class HomeSliverAppBar extends StatelessWidget {
       pinned: true,
 
       titleSpacing: 0,
-      floating: false,
 
       title: Padding(
         padding: EdgeInsets.symmetric(horizontal: 7.w),
@@ -37,8 +37,41 @@ class HomeSliverAppBar extends StatelessWidget {
             top: 15.h + kToolbarHeight,
             right: 10,
             left: 10,
+
           ),
-          child: Image.asset(Assets.imagesAiDoctor, fit: BoxFit.fill),
+          child: Stack(
+            alignment: Alignment.center,
+            fit: StackFit.expand,
+            children: [
+              Image.asset(Assets.imagesAiDoctor, fit: BoxFit.fill),
+              _buildAskNowButton(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Positioned _buildAskNowButton() {
+    return Positioned(
+      left: 20,
+      bottom: 15,
+      child: SizedBox(
+        height: 30,
+        child: ElevatedButton(
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all(AppColors.lightBlue),
+            overlayColor: WidgetStateProperty.all(AppColors.grey),
+            foregroundColor: WidgetStateProperty.all(AppColors.white),
+            shape: WidgetStateProperty.all(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(200),
+                side: const BorderSide(color: Colors.white60, width: 1.5),
+              ),
+            ),
+          ),
+          onPressed: () {},
+          child: const Text(AppStrings.askNow),
         ),
       ),
     );
