@@ -34,7 +34,6 @@ class BookAppointmentButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final EdgeInsets padding = MediaQuery.of(context).padding;
     return BlocSelector<TimeSlotCubit, TimeSlotState, String?>(
       selector: (state) => state.selectedTimeSlot,
       builder: (context, selectedTimeSlot) {
@@ -42,7 +41,7 @@ class BookAppointmentButton extends StatelessWidget {
 
         return _buildAppointmentButton(
           context: context,
-          padding: padding,
+
           isEnabled: isTimeSlotSelected,
           selectedTimeSlot: selectedTimeSlot,
         );
@@ -52,10 +51,11 @@ class BookAppointmentButton extends StatelessWidget {
 
   Widget _buildAppointmentButton({
     required BuildContext context,
-    required EdgeInsets padding,
+
     required bool isEnabled,
     required String? selectedTimeSlot,
   }) {
+    final EdgeInsets padding = MediaQuery.of(context).padding;
     return BlocConsumer<BookAppointmentCubit, BookAppointmentState>(
       listenWhen: (previous, current) =>
           previous.bookingStatus != current.bookingStatus,
@@ -70,6 +70,7 @@ class BookAppointmentButton extends StatelessWidget {
             bottom: padding.bottom > 0 ? padding.bottom : 16,
           ),
           width: double.infinity,
+
           child: Row(
             children: [
               const SizedBox(width: 15),

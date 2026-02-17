@@ -370,6 +370,9 @@ class AppStrings {
   static const String doctorSpecialties='Doctor Specialties';
 
   static const String  viewAll='View All';
+  static const String  specialtiesLabel='Specialties';
+
+
 
 
 }

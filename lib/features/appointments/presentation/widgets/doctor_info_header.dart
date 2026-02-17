@@ -3,30 +3,38 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart';
 import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
-import 'package:medora/features/shared/data/models/doctor_model.dart'
-    show DoctorModel;
-import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart'
+    show DoctorEntity;
 
 class DoctorInfoHeader extends StatelessWidget {
-  final DoctorEntity doctorInfo;
 
-  const DoctorInfoHeader({super.key, required this.doctorInfo});
+  final List<String> specialties;
+  final String bio;
+  final List<String> workingDays;
+
+  const DoctorInfoHeader({
+    super.key,
+
+    required this.specialties,
+    required this.bio,
+    required this.workingDays,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      spacing: 10,
+      spacing: 5,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _customRichText(
           context: context,
-          title: 'Specialties: ',
-          info: doctorInfo.specialties.join(', '),
+          title: '${AppStrings.specialtiesLabel}: ',
+          info:  specialties.join(', '),
         ),
         _customRichText(
           context: context,
           title: '${AppStrings.bioLabel}: ',
-          info: doctorInfo.bio,
+          info:  bio,
         ),
 
         _customRichText(
@@ -39,7 +47,7 @@ class DoctorInfoHeader extends StatelessWidget {
     );
   }
 
-  String getWorkingDays() => doctorInfo.doctorAvailability.workingDays
+  String getWorkingDays() =>  workingDays
       .toString()
       .replaceAll('[', '')
       .replaceAll(']', '');
@@ -56,7 +64,9 @@ class DoctorInfoHeader extends StatelessWidget {
           TextSpan(
             text: title,
             style: textTheme.mediumPlaypenBold.copyWith(
-              color: AppColors.softBlue,letterSpacing: 1,height: 2,
+              color: AppColors.softBlue,
+              letterSpacing: 1,
+              height: 2,
             ),
           ),
           TextSpan(
