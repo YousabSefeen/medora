@@ -188,10 +188,11 @@ class AppLightTheme {
     ),
 
     cardTheme: CardThemeData(
+      elevation: 1,
       color: Colors.white,
       margin: EdgeInsets.zero,
       shadowColor: Colors.white,
-      elevation: 10,
+
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
     ),
     dividerTheme: const DividerThemeData(

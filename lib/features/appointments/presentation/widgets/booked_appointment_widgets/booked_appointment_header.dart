@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:medora/features/shared/domain/entities/doctor_entity.dart'
-    show DoctorEntity;
-import 'package:medora/features/shared/presentation/widgets/circular_doctor_image.dart'
-    show CircularDoctorImage;
+import 'package:medora/features/shared/presentation/widgets/doctor_avatar.dart'
+    show DoctorAvatar;
 import 'package:medora/features/shared/presentation/widgets/doctor_name.dart'
     show DoctorName;
 import 'package:medora/features/shared/presentation/widgets/doctor_specialties.dart'
     show DoctorSpecialties;
 
 class BookedAppointmentHeader extends StatelessWidget {
-  final DoctorEntity doctorModel;
+  final String heroTag;
 
-  const BookedAppointmentHeader({super.key, required this.doctorModel});
+  final String imageUrl;
+  final String doctorName;
+  final List<String> doctorSpecialties;
+
+  const BookedAppointmentHeader({
+    super.key,
+    required this.heroTag,
+    required this.imageUrl,
+    required this.doctorName,
+    required this.doctorSpecialties,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,15 +29,16 @@ class BookedAppointmentHeader extends StatelessWidget {
       child: Row(
         spacing: 12.w,
         children: [
-          CircularDoctorImage(imageUrl: doctorModel.imageUrl),
+          DoctorAvatar(heroTag: heroTag, imageUrl: imageUrl),
+
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
 
               children: [
-                DoctorName(name: doctorModel.name),
-                DoctorSpecialties(specialties: doctorModel.specialties),
+                DoctorName(name: doctorName),
+                DoctorSpecialties(specialties: doctorSpecialties),
               ],
             ),
           ),

@@ -239,7 +239,7 @@ class CancellationReasonItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 1,
+
       margin: const EdgeInsets.symmetric(horizontal: 15),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.r),

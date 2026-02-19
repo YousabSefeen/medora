@@ -340,6 +340,7 @@ class AppStrings {
 
   static const String total = 'Total: ';
   static const String dateLabel = 'Date';
+  static const String timeLabel = 'Time';
   static const String proceedToPay = 'Proceed to Pay';
   static const String genderHint = 'Select Gender';
 

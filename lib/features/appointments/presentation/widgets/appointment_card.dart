@@ -20,11 +20,15 @@ class AppointmentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.only(bottom: 15),
-      elevation: 1,
-      shape: _buildRoundedRectangleBorder(),
+
       child: Column(
         children: [
-          BookedAppointmentHeader(doctorModel: appointment.doctorEntity),
+          BookedAppointmentHeader(
+            heroTag: appointment.appointmentId,
+            imageUrl: appointment.doctorEntity.imageUrl,
+            doctorName: appointment.doctorEntity.name,
+            doctorSpecialties: appointment.doctorEntity.specialties,
+          ),
           _buildDivider(),
           BookedAppointmentFooter(
             appointmentStatus: appointmentStatus,
@@ -35,17 +39,8 @@ class AppointmentCard extends StatelessWidget {
     );
   }
 
-  RoundedRectangleBorder _buildRoundedRectangleBorder() {
-    return RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
-      side: const BorderSide(color: Colors.black12),
-    );
-  }
-
-  Widget _buildDivider() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
-      child: Divider(color: Colors.black12, height: 1.7),
-    );
-  }
+  Widget _buildDivider() => const Padding(
+    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+    child: Divider(color: Colors.black12, height: 1.7),
+  );
 }

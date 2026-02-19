@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:medora/core/constants/common_widgets/app_network_image.dart'
+    show AppNetworkImage;
 import 'package:medora/core/enum/navigation_source.dart' show NavigationSource;
 import 'package:medora/features/favorites/presentation/widgets/toggle_favorite_button.dart'
     show ToggleFavoriteButton;
 import 'package:medora/features/shared/domain/entities/doctor_entity.dart'
     show DoctorEntity;
-import 'package:medora/features/shared/presentation/widgets/doctor_image.dart'
-    show DoctorImage;
 import 'package:medora/features/shared/presentation/widgets/doctor_info_footer.dart'
     show DoctorInfoFooter;
 import 'package:medora/features/shared/presentation/widgets/doctor_name.dart'
@@ -32,15 +32,15 @@ class DoctorBasicInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10, left: 0),
+      padding: const EdgeInsets.only(bottom: 10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          DoctorImage(
-            navigationSource: navigationSource,
+          AppNetworkImage(
+            heroTag: doctor.doctorId!,
             imageUrl: doctor.imageUrl,
-            doctorId: doctor.doctorId!,
-            size: config.imageSize,
+            width: config.imageSize,
+            height: config.imageSize,
             imageRadius: config.imageRadius,
           ),
           const SizedBox(width: 10),

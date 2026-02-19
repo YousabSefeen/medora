@@ -17,6 +17,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:medora/core/app_settings/controller/cubit/app_settings_cubit.dart'
     show AppSettingsCubit;
 import 'package:medora/core/constants/app_alerts/app_alerts.dart';
+import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/enum/internet_state.dart' show InternetState;
 import 'package:medora/features/appointments/presentation/controller/cubit/book_appointment_cubit.dart'
     show BookAppointmentCubit;
@@ -53,6 +54,7 @@ import 'package:medora/features/payment_gateways/presentation/controller/cubit/p
     show PaymentCubit;
 import 'package:medora/features/payment_gateways/stripe/presentation/View/Screens/stripe_payment_screen.dart'
     show StripePaymentScreen;
+import 'package:medora/features/payment_gateways/transaction_process_states/payment_success/widgets/doctor_info.dart' show DoctorInfo;
 import 'package:medora/features/search/presentation/controller/cubit/home_doctor_search_cubit.dart'
     show HomeDoctorSearchCubit;
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
@@ -208,6 +210,8 @@ class MyApp extends StatelessWidget {
         home: FirebaseAuth.instance.currentUser?.uid != null
             ? const BottomNavScreen()
             : const LoginScreen(),
+
+       // home: FuckHome(),
       ),
     );
   }

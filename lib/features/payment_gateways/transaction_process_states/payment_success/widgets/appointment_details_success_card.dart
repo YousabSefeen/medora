@@ -3,15 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
-import 'package:medora/features/appointments/presentation/controller/cubit/appointment_cubit.dart'
-    show AppointmentCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/book_appointment_cubit.dart'
     show BookAppointmentCubit;
-import 'package:medora/features/appointments/presentation/controller/cubit/confirm_pending_appointment_cubit.dart'
-    show ConfirmPendingAppointmentCubit;
-import 'package:medora/features/appointments/presentation/controller/cubit/book_appointment_cubit.dart'
-    show BookAppointmentCubit;
-import 'package:medora/features/appointments/presentation/controller/cubit/time_slot_cubit.dart' show TimeSlotCubit;
+import 'package:medora/features/appointments/presentation/controller/cubit/time_slot_cubit.dart'
+    show TimeSlotCubit;
 import 'package:medora/features/payment_gateways/transaction_process_states/payment_success/screens/payment_success_screen.dart'
     show PaymentSuccessScreen;
 import 'package:medora/features/payment_gateways/transaction_process_states/payment_success/widgets/appointment_details_widget.dart'
@@ -39,7 +34,6 @@ class AppointmentDetailsSuccessCard extends StatelessWidget {
       color: Colors.transparent,
       elevation: 0,
       margin: const EdgeInsets.symmetric(horizontal: 3),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Column(
@@ -47,6 +41,7 @@ class AppointmentDetailsSuccessCard extends StatelessWidget {
           spacing: 20,
           children: [
             DoctorInfo(
+              heroTag: doctorModel.doctorId!,
               doctorImage: doctorModel.imageUrl,
               doctorName: doctorModel.name,
             ),
@@ -55,10 +50,13 @@ class AppointmentDetailsSuccessCard extends StatelessWidget {
               value: doctorModel.location,
             ),
             AppointmentDetailsWidget(
-              label:AppStrings.dateLabel,
+              label: AppStrings.dateLabel,
               value: selectedDateFormatted,
             ),
-            AppointmentDetailsWidget(label: 'Time', value: selectedTimeSlot),
+            AppointmentDetailsWidget(
+              label: AppStrings.timeLabel,
+              value: selectedTimeSlot,
+            ),
             Text(
               AppStrings.paymentMethod,
               style: Theme.of(context).textTheme.latoSemiBoldDark,

@@ -1,15 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart'
     show FaIcon, FontAwesomeIcons;
 import 'package:medora/core/constants/app_routes/app_router.dart';
-import 'package:medora/core/constants/app_strings/app_strings.dart'
-    show AppStrings;
-import 'package:medora/core/constants/common_widgets/custom_error_widget.dart'
-    show CustomErrorWidget;
-import 'package:medora/core/constants/common_widgets/custom_shimmer.dart'
-    show CustomShimmer;
+import 'package:medora/core/constants/common_widgets/app_network_image.dart'
+    show AppNetworkImage;
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/enum/navigation_source.dart' show NavigationSource;
@@ -98,7 +93,7 @@ class _FlexibleAppBarContent extends StatelessWidget {
             child: Stack(
               alignment: Alignment.topCenter,
               children: [
-                _buildDoctorImage(doctorId: doctorId, imageUrl: imageUrl),
+                _buildImage(heroTag: doctorId, imageUrl: imageUrl),
                 Positioned(
                   bottom: 0,
                   left: 5,
@@ -112,31 +107,14 @@ class _FlexibleAppBarContent extends StatelessWidget {
     );
   }
 
-  Widget _buildDoctorImage({
-    required String doctorId,
+  AppNetworkImage _buildImage({
+    required String heroTag,
     required String imageUrl,
-  }) {
-    switch (navigationSource) {
-      case NavigationSource.search:
-        return _buildImage(imageUrl);
-      case NavigationSource.direct:
-        return Hero(tag: doctorId, child: _buildImage(imageUrl));
-    }
-  }
-
-  CachedNetworkImage _buildImage(String imageUrl) => CachedNetworkImage(
+  }) => AppNetworkImage(
+    heroTag: heroTag,
     imageUrl: imageUrl,
-    fit: BoxFit.cover,
     width: double.infinity,
-    placeholder: (context, _) => _buildImagePlaceholder(),
-    errorWidget: (context, _, __) => _buildImageError(),
   );
-
-  CustomShimmer _buildImagePlaceholder() =>
-      const CustomShimmer(height: 100, width: double.infinity);
-
-  CustomErrorWidget _buildImageError() =>
-      const CustomErrorWidget(errorMessage: AppStrings.imageNotFound);
 
   Builder _buildDoctorName(String doctorName) => Builder(
     builder: (context) => Container(

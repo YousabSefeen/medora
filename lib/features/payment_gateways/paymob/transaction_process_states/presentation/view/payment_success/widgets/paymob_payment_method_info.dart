@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
+import 'package:medora/core/constants/themes/app_text_styles.dart';
+import 'package:medora/core/extensions/transaction_display.dart';
 import 'package:medora/features/payment_gateways/paymob/transaction_process_states/data/models/paymob_transaction_data_result_model.dart'
     show PaymobTransactionDataResultModel;
 
@@ -16,6 +14,7 @@ class PaymobPaymentMethodInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textStyle = Theme.of(context).textTheme.largeInterBold;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(5),
@@ -35,25 +34,14 @@ class PaymobPaymentMethodInfo extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: '${transactionData.sourceSubType!.toUpperCase()}\n',
-                    //
-                    style: GoogleFonts.inter(
-                      textStyle: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                    style: textStyle,
                   ),
                   TextSpan(
-                    text: transactionData.sourceSubType == 'wallet'
-                        ? transactionData.sourceDataPan
-                        : '**** **** **** ${transactionData.sourceDataPan}',
-                    style: const TextStyle(
+                    text: transactionData.displaySourceIdentifier,
+                    style: textStyle.copyWith(
+                      letterSpacing: 1,
                       color: Colors.black54,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      letterSpacing: 1.2,
-                      height: 0,
+                      wordSpacing: 1,
                     ),
                   ),
                 ],
@@ -66,23 +54,10 @@ class PaymobPaymentMethodInfo extends StatelessWidget {
   }
 
   Widget _getPaymentMethodIcon() {
-    if (transactionData.sourceSubType == 'MasterCard') {
-      return const CustomImageWidget(image: Assets.imagesMasterCard);
-    } else if (transactionData.sourceSubType == 'wallet') {
+    if (transactionData.sourceSubType == 'wallet') {
       return const CustomImageWidget(image: Assets.imagesMobileWalletsLogo);
     } else {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 2),
-        decoration: BoxDecoration(
-          color: AppColors.softBlue,
-          borderRadius: BorderRadius.circular(2.r),
-        ),
-        child: FaIcon(
-          FontAwesomeIcons.ccVisa,
-          color: Colors.white,
-          size: 35.sp,
-        ),
-      );
+      return const CustomImageWidget(image: Assets.imagesMasterCard);
     }
   }
 }
