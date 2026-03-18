@@ -19,8 +19,8 @@ import 'package:medora/features/search/presentation/controller/states/home_docto
 import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
 import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
-import 'package:medora/features/shared/presentation/widgets/doctor_search_card.dart'
-    show DoctorSearchCard;
+import 'package:medora/features/shared/presentation/widgets/home_search_doctor_card.dart'
+    show HomeSearchDoctorCard;
 import 'package:medora/features/shared/presentation/widgets/empty_search_list_results.dart'
     show EmptySearchListResult;
 
@@ -194,10 +194,10 @@ class DoctorSearchField extends StatelessWidget {
     );
   }
 
-  DoctorSearchCard _buildSuggestionItem(
+  HomeSearchDoctorCard _buildSuggestionItem(
     BuildContext context,
       DoctorEntity doctor,
-  ) => DoctorSearchCard(doctor: doctor);
+  ) => HomeSearchDoctorCard(doctor: doctor);
 
   void _handleDoctorSelection(DoctorEntity doctor, BuildContext context) =>
       AppRouter.push(

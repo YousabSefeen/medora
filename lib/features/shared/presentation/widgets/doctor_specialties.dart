@@ -4,8 +4,9 @@ import 'package:medora/core/extensions/list_string_extension.dart';
 
 class DoctorSpecialties extends StatelessWidget {
   final List<String> specialties;
+final double? specialtiesFontSize;
 
-  const DoctorSpecialties({super.key, required this.specialties});
+  const DoctorSpecialties({super.key, required this.specialties, this.specialtiesFontSize});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class DoctorSpecialties extends StatelessWidget {
       specialtiesText,
       style: Theme.of(
         context,
-      ).listTileTheme.subtitleTextStyle!.copyWith(fontSize: 13.sp),
+      ).listTileTheme.subtitleTextStyle!.copyWith(fontSize:specialtiesFontSize?? 13.sp),
       maxLines: 2,
       overflow: TextOverflow.ellipsis,
     );

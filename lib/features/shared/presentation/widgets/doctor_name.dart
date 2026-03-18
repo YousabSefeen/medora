@@ -6,16 +6,19 @@ import 'package:medora/core/extensions/string_extensions.dart';
 
 class DoctorName extends StatelessWidget {
   final String name;
+ final double? nameFontSize;
 
 
-  const DoctorName({super.key, required this.name });
+  const DoctorName({super.key, required this.name, this.nameFontSize });
 
   @override
   Widget build(BuildContext context) {
     return Text(
       '${AppStrings.dR}${name.toCapitalizeFirstLetter()}',
 
-      style: Theme.of(context).textTheme.largeBlackBold,
+      style: Theme.of(context).textTheme.largeBlackBold.copyWith(
+        fontSize: nameFontSize
+      ),
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
     );

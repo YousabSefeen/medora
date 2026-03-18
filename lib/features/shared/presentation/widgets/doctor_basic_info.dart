@@ -52,7 +52,12 @@ class DoctorBasicInfo extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Expanded(child: DoctorName(name: doctor.name)),
+                      Expanded(
+                        child: DoctorName(
+                          name: doctor.name,
+                          nameFontSize: config.nameFontSize,
+                        ),
+                      ),
 
                       Visibility(
                         visible: config.showFavoriteButton,
@@ -60,7 +65,10 @@ class DoctorBasicInfo extends StatelessWidget {
                       ),
                     ],
                   ),
-                  DoctorSpecialties(specialties: doctor.specialties),
+                  DoctorSpecialties(
+                    specialties: doctor.specialties,
+                    specialtiesFontSize: config.specialtiesFontSize,
+                  ),
                   const SizedBox(height: 8),
                   DoctorRating(
                     ratingValue: 3.4,
@@ -68,7 +76,12 @@ class DoctorBasicInfo extends StatelessWidget {
                     fontSize: config.ratingFontSize,
                   ),
                   const SizedBox(height: 8),
-                  DoctorInfoFooter(fee: doctor.fees, location: doctor.location),
+                  DoctorInfoFooter(
+                    fee: doctor.fees,
+                    location: doctor.location,
+                    iconSize: config.iconSize,
+                    textSize: config.textSize,
+                  ),
                 ],
               ),
             ),

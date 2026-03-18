@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medora/core/enum/doctor_info_variant.dart'
     show DoctorInfoVariant;
 import 'package:medora/features/appointments/presentation/widgets/doctor_appointment_booking_section.dart'
@@ -42,6 +43,8 @@ class CreateAppointmentContent extends StatelessWidget {
               variant: DoctorInfoVariant.details,
               fee: doctor.fees,
               location: doctor.location,
+              iconSize: 18.sp,
+              textSize: 12.sp,
             ),
             _buildDivider(),
             DoctorAppointmentBookingSection(

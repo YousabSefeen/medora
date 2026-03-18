@@ -30,15 +30,7 @@ class DoctorCard extends StatelessWidget {
             AppRouter.push(context, CreateAppointmentScreen(doctor: doctor)),
         child: DoctorBasicInfo(
           doctor: doctor,
-          config: const DoctorCardConfig(
-            imageSize: 80,
-            imageRadius: 8,
-            showFavoriteButton: true,
-            nameFontSize: 16,
-            specialtiesFontSize: 12,
-            ratingIconSize: 16,
-            ratingFontSize: 12,
-          ),
+          config: DoctorCardConfig.defaultConfig(),
         ),
       ),
     );

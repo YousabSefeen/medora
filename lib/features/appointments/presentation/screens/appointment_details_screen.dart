@@ -232,13 +232,13 @@ class _AppointmentDateTimeCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           IconWithText(
-            iconColor: AppColors.softBlue,
+            iconColor: AppColors.black,
             icon: Icons.calendar_month,
             text: date,
             textStyle: textStyle,
           ),
           IconWithText(
-            iconColor: AppColors.softBlue,
+            iconColor: AppColors.black,
             icon: Icons.alarm,
             text: time,
             textStyle: textStyle,
