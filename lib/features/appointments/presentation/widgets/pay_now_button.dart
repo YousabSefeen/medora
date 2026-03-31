@@ -33,12 +33,15 @@ class PayNowButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocSelector<PaymentCubit, PaymentState, PaymentGatewaysTypes>(
       selector: (state) => state.selectedPaymentMethod,
-      builder: (context, selectedPaymentMethod) => AdaptiveActionButton(
-        title: AppStrings.payNow,
-        isEnabled: selectedPaymentMethod != PaymentGatewaysTypes.none,
-        isLoading: false,
-        onPressed: () =>
-            _handlePaymentSelection(context, selectedPaymentMethod),
+      builder: (context, selectedPaymentMethod) => Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: AdaptiveActionButton(
+          title: AppStrings.payNow,
+          isEnabled: selectedPaymentMethod != PaymentGatewaysTypes.none,
+          isLoading: false,
+          onPressed: () =>
+              _handlePaymentSelection(context, selectedPaymentMethod),
+        ),
       ),
     );
   }
@@ -54,7 +57,7 @@ class PayNowButton extends StatelessWidget {
     if (selectedPaymentMethod == PaymentGatewaysTypes.paymobMobileWallets) {
       _validateAndProcessPaymobPayment(context, selectedPaymentMethod);
     } else {
-      _processAppointmentRequest(context, selectedPaymentMethod);
+      _navigateToPaymentGateway(context, selectedPaymentMethod);
     }
   }
 
@@ -69,15 +72,14 @@ class PayNowButton extends StatelessWidget {
       _showPhoneValidationError(context);
       return;
     }
-    _processAppointmentRequest(context, selectedPaymentMethod);
+    _navigateToPaymentGateway(context, selectedPaymentMethod);
   }
 
   /// Validate phone number format
   ///
   /// Requires phone number to be non-empty and more than 5 digits
-  bool _isPhoneNumberValid(String phoneNumber) {
-    return phoneNumber.isNotEmpty && phoneNumber.length > 5;
-  }
+  bool _isPhoneNumberValid(String phoneNumber) =>
+      phoneNumber.isNotEmpty && phoneNumber.length > 5;
 
   /// Show phone number validation error message
   void _showPhoneValidationError(BuildContext context) {
@@ -98,20 +100,6 @@ class PayNowButton extends StatelessWidget {
   /// After selecting payment method and validating requirements:
   /// 1. Close payment method selection bottom sheet
   /// 2. Start appointment booking process through AppointmentCubit
-  void _processAppointmentRequest(
-    BuildContext context,
-    PaymentGatewaysTypes selectedPaymentMethod,
-  ) {
-    // Close payment method selection bottom sheet
-    ///  AppRouter.pop(context);
-    // Start appointment booking and payment pذrocess
-    //xxxxxxxxxxxxxx
-    // context.read<BookAppointmentCubit>().handleSubmitAppointmentRequest(
-    //   phoneNumber: formControllers.phoneNumberController.text.trim(),
-    //   controllers: formControllers,
-    // );
-    _navigateToPaymentGateway(context, selectedPaymentMethod);
-  }
 
   void _navigateToPaymentGateway(
     BuildContext context,
@@ -154,24 +142,18 @@ class PayNowButton extends StatelessWidget {
   }
 
   /// Route to PayPal payment screen
-  void _navigateToPaypalPayment(BuildContext context) {
-    //xxxx _resetAppointmentState(context);
-    AppRouter.push(
-      context,
-      const PaypalPaymentScreen(),
-      onResult: (value) => _handlePaymentResult(context, value),
-    );
-  }
+  void _navigateToPaypalPayment(BuildContext context) => AppRouter.push(
+    context,
+    const PaypalPaymentScreen(),
+    onResult: (value) => _handlePaymentResult(context, value),
+  );
 
   /// Route to Stripe payment screen
-  void _navigateToStripePayment(BuildContext context) {
-    //xxxx _resetAppointmentState(context);
-    AppRouter.push(
-      context,
-      const StripePaymentScreen(),
-      onResult: (value) => _handlePaymentResult(context, value),
-    );
-  }
+  void _navigateToStripePayment(BuildContext context) => AppRouter.push(
+    context,
+    const StripePaymentScreen(),
+    onResult: (value) => _handlePaymentResult(context, value),
+  );
 
   /// Process payment result from different gateways and handle navigation back
   ///

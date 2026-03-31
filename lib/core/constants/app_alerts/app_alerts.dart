@@ -15,8 +15,8 @@ import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
-import 'package:medora/features/appointments/presentation/data/appointment_reschedule_data.dart'
-    show AppointmentRescheduleData;
+import 'package:medora/features/appointments/presentation/ui_models/appointment_reschedule_ui_model.dart' show AppointmentRescheduleUIModel;
+
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
@@ -141,7 +141,7 @@ class AppAlerts {
     ),
   );
 
-  static void showAppointmentSuccessDialog({
+  static Future<void> showAppointmentSuccessDialog({
     required BuildContext context,
     required String message,
   }) => showGeneralDialog(
@@ -280,20 +280,25 @@ class AppAlerts {
   );
 
   //*************
-  static void showNoInternetDialog(BuildContext context) =>
-      NoInternetDialog.showErrorModal(context: context);
+  static Future<void> showNoInternetDialog(BuildContext context) async =>
+      await NoInternetDialog.showErrorModal(context: context);
 
-  static void showErrorDialog(BuildContext context, String errorMessage) =>
-      ErrorDialogs.showErrorDialog(
-        context: context,
-        errorMessage: errorMessage,
-      );
+  static Future<void> showErrorDialog(
+    BuildContext context,
+    String errorMessage,
+  ) async => await ErrorDialogs.showErrorDialog(
+    context: context,
+    errorMessage: errorMessage,
+  );
 
-  static void showCustomErrorDialog(BuildContext context, String errorMessage) {
+  static Future<void> showCustomErrorDialog(
+    BuildContext context,
+    String errorMessage,
+  ) async {
     if (errorMessage == AppStrings.noInternetConnectionErrorMsg) {
-      showNoInternetDialog(context);
+      await showNoInternetDialog(context);
     } else {
-      showErrorDialog(context, errorMessage);
+      await showErrorDialog(context, errorMessage);
     }
   }
 
@@ -309,7 +314,7 @@ class AppAlerts {
 
   static void showRescheduleSuccessDialog({
     required BuildContext context,
-    required AppointmentRescheduleData appointmentReschedule,
+    required AppointmentRescheduleUIModel appointmentReschedule,
   }) => AppointmentRescheduledDialog.show(
     context: context,
     appointmentReschedule: appointmentReschedule,

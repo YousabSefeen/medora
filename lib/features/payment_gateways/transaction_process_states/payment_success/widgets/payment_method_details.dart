@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medora/core/enum/payment_gateways_types.dart'
     show PaymentGatewaysTypes;
+import 'package:medora/features/payment_gateways/paymob/transaction_process_states/data/models/paymob_transaction_data_result_model.dart';
 import 'package:medora/features/payment_gateways/paymob/transaction_process_states/presentation/view/payment_success/widgets/paymob_payment_method_info.dart'
     show PaymobPaymentMethodInfo;
 import 'package:medora/features/payment_gateways/paypal/transaction_process_states/presentation/widgets/paypal_payment_method_info.dart'
@@ -22,10 +23,7 @@ class PaymentMethodDetails extends StatelessWidget {
       case PaymentGatewaysTypes.paymobMobileWallets:
       case PaymentGatewaysTypes.paymobCard:
         return PaymobPaymentMethodInfo(
-          transactionData:
-              (context.findAncestorWidgetOfExactType<PaymentSuccessScreen>()
-                      as PaymentSuccessScreen)
-                  .paymobResponseModel!,
+          transactionData: transactionData(context),
         );
       case PaymentGatewaysTypes.stripe:
         return const StripePaymentMethodInfo();
@@ -34,8 +32,14 @@ class PaymentMethodDetails extends StatelessWidget {
           userEmail:
               (context.findAncestorWidgetOfExactType<PaymentSuccessScreen>()
                       as PaymentSuccessScreen)
-                  .paypalPayerEmail!,
+                  .paypalEmail!,
         );
     }
+  }
+
+  PaymobTransactionDataResultModel transactionData(BuildContext context) {
+    return (context.findAncestorWidgetOfExactType<PaymentSuccessScreen>()
+            as PaymentSuccessScreen)
+        .paymobResponse!;
   }
 }

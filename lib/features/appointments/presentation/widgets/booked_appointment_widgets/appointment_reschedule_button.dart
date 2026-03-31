@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:medora/core/constants/app_alerts/app_alerts.dart'
     show AppAlerts;
+import 'package:medora/core/constants/app_duration/app_duration.dart';
 import 'package:medora/core/constants/app_routes/app_router.dart'
     show AppRouter;
 import 'package:medora/core/constants/app_strings/app_strings.dart';
@@ -18,21 +18,20 @@ import 'package:medora/features/appointments/presentation/controller/cubit/upcom
     show UpcomingAppointmentsCubit;
 import 'package:medora/features/appointments/presentation/controller/states/reschedule_appointment_state.dart';
 import 'package:medora/features/appointments/presentation/controller/states/time_slot_state.dart';
-import 'package:medora/features/appointments/presentation/data/appointment_reschedule_data.dart'
-    show AppointmentRescheduleData;
+import 'package:medora/features/appointments/presentation/ui_models/appointment_reschedule_ui_model.dart'
+    show AppointmentRescheduleUIModel;
 import 'package:medora/features/appointments/presentation/widgets/custom_widgets/adaptive_action_button.dart';
 import 'package:medora/features/appointments/presentation/widgets/doctor_appointment_booking_section.dart';
 import 'package:medora/features/shared/models/doctor_schedule_model.dart';
 
 class AppointmentRescheduleButton extends StatelessWidget {
-  static const double _horizontalPadding = 10.0;
-  static const double _verticalPadding = 30.0;
-  static const double _contentSpacing = 30.0;
-  static const Duration _successDialogDelay = Duration(milliseconds: 400);
-
   final ClientAppointmentsEntity appointment;
 
   const AppointmentRescheduleButton({super.key, required this.appointment});
+
+  static const double _horizontalPadding = 10.0;
+  static const double _verticalPadding = 30.0;
+  static const double _contentSpacing = 30.0;
 
   @override
   Widget build(BuildContext context) {
@@ -56,10 +55,10 @@ class AppointmentRescheduleButton extends StatelessWidget {
         appBarBackgroundColor: AppColors.softBlue,
         appBarTitle: AppStrings.editBookingAppointment,
         appBarTitleColor: AppColors.white,
-        body: _buildRescheduleContent(),
+        body: _buildRescheduleContent(context),
       );
 
-  Widget _buildRescheduleContent() => Padding(
+  Padding _buildRescheduleContent(BuildContext context) => Padding(
     padding: const EdgeInsets.symmetric(
       horizontal: _horizontalPadding,
       vertical: _verticalPadding,
@@ -68,64 +67,41 @@ class AppointmentRescheduleButton extends StatelessWidget {
       spacing: _contentSpacing,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildRescheduleTitle(),
         _buildDoctorBookingSection(),
         _buildRescheduleConfirmationButton(),
       ],
     ),
   );
 
-  Widget _buildRescheduleTitle() {
-    return Text(
-      AppStrings.whenToComeQuestion,
-      style: GoogleFonts.roboto(
-        color: Colors.black,
-        fontSize: 18,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 0.5,
-      ),
-      textAlign: TextAlign.start,
-    );
-  }
+  DoctorAppointmentBookingSection _buildDoctorBookingSection() =>
+      DoctorAppointmentBookingSection(
+        doctorSchedule: DoctorScheduleModel(
+          doctorId: appointment.doctorId,
+          doctorAvailability: appointment.doctorEntity.doctorAvailability,
+        ),
+      );
 
-  Widget _buildDoctorBookingSection() {
-    return DoctorAppointmentBookingSection(
-      doctorSchedule: DoctorScheduleModel(
+  _RescheduleConfirmationButton _buildRescheduleConfirmationButton() =>
+      _RescheduleConfirmationButton(
         doctorId: appointment.doctorId,
-        doctorAvailability: appointment.doctorEntity.doctorAvailability,
-      ),
-    );
-  }
-
-  Widget _buildRescheduleConfirmationButton() {
-    return RescheduleConfirmationButton(
-      doctorId: appointment.doctorId,
-      appointmentId: appointment.appointmentId,
-      originalAppointment: AppointmentDateTime(
-        date: appointment.appointmentDate,
-        time: appointment.appointmentTime,
-      ),
-    );
-  }
+        appointmentId: appointment.appointmentId,
+        originalAppointmentDate: appointment.appointmentDate,
+        originalAppointmentTime: appointment.appointmentTime,
+      );
 }
 
-class AppointmentDateTime {
-  final String date;
-  final String time;
-
-  const AppointmentDateTime({required this.date, required this.time});
-}
-
-class RescheduleConfirmationButton extends StatelessWidget {
+class _RescheduleConfirmationButton extends StatelessWidget {
   final String doctorId;
   final String appointmentId;
-  final AppointmentDateTime originalAppointment;
+  final String originalAppointmentDate;
+  final String originalAppointmentTime;
 
-  const RescheduleConfirmationButton({
+  const _RescheduleConfirmationButton({
     super.key,
     required this.doctorId,
     required this.appointmentId,
-    required this.originalAppointment,
+    required this.originalAppointmentDate,
+    required this.originalAppointmentTime,
   });
 
   @override
@@ -210,13 +186,10 @@ class RescheduleConfirmationButton extends StatelessWidget {
   }
 
   void _handleSuccessfulReschedule(BuildContext context) {
-    // نحفظ البيانات الجديدة قبل إغلاق الـ BottomSheet أو الـ Dialog
     final timeSlotState = context.read<TimeSlotCubit>().state;
     final newDate = timeSlotState.selectedDateFormatted!;
     final newTime = timeSlotState.selectedTimeSlot!;
 
-    // الوصول لـ UpcomingAppointmentsCubit وتحديث العنصر يدوياً
-    // تأكد أن الـ Cubit متوفر في الـ context قبل الـ BottomSheet
     context.read<UpcomingAppointmentsCubit>().updateAppointmentLocally(
       appointmentId: appointmentId,
       newDate: newDate,
@@ -232,7 +205,7 @@ class RescheduleConfirmationButton extends StatelessWidget {
   }
 
   void _showSuccessDialogWithDelay(BuildContext context) {
-    Future.delayed(AppointmentRescheduleButton._successDialogDelay, () {
+    Future.delayed(AppDurations.milliseconds_500, () {
       if (!context.mounted) return;
 
       final timeSlotCubit = context.read<TimeSlotCubit>().state;
@@ -245,11 +218,11 @@ class RescheduleConfirmationButton extends StatelessWidget {
     });
   }
 
-  AppointmentRescheduleData _buildAppointmentRescheduleData(
+  AppointmentRescheduleUIModel _buildAppointmentRescheduleData(
     TimeSlotState timeSlotState,
-  ) => AppointmentRescheduleData(
-    oldAppointmentDate: originalAppointment.date,
-    oldAppointmentTime: originalAppointment.time,
+  ) => AppointmentRescheduleUIModel(
+    oldAppointmentDate: originalAppointmentDate,
+    oldAppointmentTime: originalAppointmentTime,
     newAppointmentDate: timeSlotState.selectedDateFormatted!,
     newAppointmentTime: timeSlotState.selectedTimeSlot!,
   );

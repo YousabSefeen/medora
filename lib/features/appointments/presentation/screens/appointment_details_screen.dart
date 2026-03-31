@@ -30,49 +30,44 @@ class AppointmentDetailsScreen extends StatelessWidget {
     return Scaffold(appBar: _buildAppBar(), body: _buildContent(context));
   }
 
-  AppBar _buildAppBar() {
-    return AppBar(title: const Text(AppStrings.appointmentDetailsTitle));
-  }
+  AppBar _buildAppBar() =>
+      AppBar(title: const Text(AppStrings.appointmentDetailsTitle));
 
-  Widget _buildContent(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.only(
-        left: _horizontalPadding,
-        right: _horizontalPadding,
-        bottom: 50,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: _smallSpacing,
-        children: [
-          _buildDoctorCard(),
+  Widget _buildContent(BuildContext context) => SingleChildScrollView(
+    padding: const EdgeInsets.only(
+      left: _horizontalPadding,
+      right: _horizontalPadding,
+      bottom: 50,
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: _smallSpacing,
+      children: [
+        _buildDoctorCard(),
 
-          _buildDoctorInformationSection(),
+        _buildDoctorInformationSection(),
 
-          _buildPatientInformationSection(),
+        _buildPatientInformationSection(),
 
-          _buildAppointmentScheduleSection(context),
-        ],
-      ),
-    );
-  }
+        _buildAppointmentScheduleSection(context),
+      ],
+    ),
+  );
 
-  Widget _buildDoctorCard() {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: _cardHorizontalMargin),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.r),
-        side: const BorderSide(color: Colors.black26),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildDoctorImage(),
-          Expanded(child: _buildDoctorInfoContent()),
-        ],
-      ),
-    );
-  }
+  Widget _buildDoctorCard() => Card(
+    margin: const EdgeInsets.symmetric(horizontal: _cardHorizontalMargin),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12.r),
+      side: const BorderSide(color: Colors.black26),
+    ),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildDoctorImage(),
+        Expanded(child: _buildDoctorInfoContent()),
+      ],
+    ),
+  );
 
   Padding _buildDoctorImage() => Padding(
     padding: const EdgeInsets.all(5),
@@ -85,129 +80,117 @@ class AppointmentDetailsScreen extends StatelessWidget {
     ),
   );
 
-  Widget _buildDoctorInfoContent() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        spacing: 5,
-        children: [
-          DoctorName(name: appointment.doctorEntity.name),
-          const Divider(color: Colors.black12, thickness: 3),
-
-          DoctorSpecialties(specialties: appointment.doctorEntity.specialties),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDoctorInformationSection() {
-    return Column(
+  Widget _buildDoctorInfoContent() => Padding(
+    padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 8.0),
+    child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      spacing: 5,
       children: [
-        const UnderlineTitleWidget(title: AppStrings.doctorInformationTitle),
-        const SizedBox(height: _sectionSpacing),
-        _buildInformationItem(
-          label: AppStrings.bioLabel,
-          value: appointment.doctorEntity.bio,
-        ),
-        const SizedBox(height: _itemSpacing),
-        _buildInformationItem(
-          label: AppStrings.locationLabel,
-          value: appointment.doctorEntity.location,
-        ),
-        const SizedBox(height: _itemSpacing),
-        _buildInformationItem(
-          label: AppStrings.feeLable,
-          value:
-              '${appointment.doctorEntity.fees} ${AppStrings.egyptianCurrency}',
-        ),
+        DoctorName(name: appointment.doctorEntity.name),
+        const Divider(color: Colors.black12, thickness: 3),
+
+        DoctorSpecialties(specialties: appointment.doctorEntity.specialties),
       ],
-    );
-  }
+    ),
+  );
 
-  Widget _buildPatientInformationSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const UnderlineTitleWidget(title: AppStrings.patientInformationLabel),
-        const SizedBox(height: _itemSpacing),
-        _buildInformationItem(
-          label: AppStrings.nameLabel,
-          value: appointment.patientName,
-        ),
-        const SizedBox(height: _itemSpacing),
-        _buildInformationItem(
-          label: AppStrings.genderLabel,
-          value: appointment.patientGender,
-        ),
-        const SizedBox(height: _itemSpacing),
-        _buildInformationItem(
-          label: AppStrings.ageLabel,
-          value: appointment.patientAge,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildAppointmentScheduleSection(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const UnderlineTitleWidget(title: AppStrings.scheduledAppointmentLabel),
-        const SizedBox(height: _itemSpacing),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: _buildAppointmentDateTimeCard(context),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildAppointmentDateTimeCard(BuildContext context) {
-    return _AppointmentDateTimeCard(
-      date: appointment.appointmentDate,
-      time: appointment.appointmentTime,
-    );
-  }
-
-  Widget _buildInformationItem({required String label, required String value}) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildLabelText(label, constraints),
-              _buildValueText(': $value', constraints),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildLabelText(String label, BoxConstraints constraints) {
-    return SizedBox(
-      width: constraints.maxWidth * 0.25,
-      child: Builder(
-        builder: (context) =>
-            Text(label, style: Theme.of(context).textTheme.poppinsSemiBoldDark),
+  Widget _buildDoctorInformationSection() => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      const UnderlineTitleWidget(title: AppStrings.doctorInformationTitle),
+      const SizedBox(height: _sectionSpacing),
+      _buildInformationItem(
+        label: AppStrings.bioLabel,
+        value: appointment.doctorEntity.bio,
       ),
-    );
-  }
-
-  Widget _buildValueText(String value, BoxConstraints constraints) {
-    return SizedBox(
-      width: constraints.maxWidth * 0.6,
-      child: Builder(
-        builder: (context) =>
-            Text(value, style: Theme.of(context).textTheme.bodyRegular),
+      const SizedBox(height: _itemSpacing),
+      _buildInformationItem(
+        label: AppStrings.locationLabel,
+        value: appointment.doctorEntity.location,
       ),
-    );
-  }
+      const SizedBox(height: _itemSpacing),
+      _buildInformationItem(
+        label: AppStrings.feeLable,
+        value:
+            '${appointment.doctorEntity.fees} ${AppStrings.egyptianCurrency}',
+      ),
+    ],
+  );
+
+  Widget _buildPatientInformationSection() => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      const UnderlineTitleWidget(title: AppStrings.patientInformationLabel),
+      const SizedBox(height: _itemSpacing),
+      _buildInformationItem(
+        label: AppStrings.nameLabel,
+        value: appointment.patientName,
+      ),
+      const SizedBox(height: _itemSpacing),
+      _buildInformationItem(
+        label: AppStrings.genderLabel,
+        value: appointment.patientGender,
+      ),
+      const SizedBox(height: _itemSpacing),
+      _buildInformationItem(
+        label: AppStrings.ageLabel,
+        value: appointment.patientAge,
+      ),
+    ],
+  );
+
+  Widget _buildAppointmentScheduleSection(BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      const UnderlineTitleWidget(title: AppStrings.scheduledAppointmentLabel),
+      const SizedBox(height: _itemSpacing),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: _buildAppointmentDateTimeCard(context),
+      ),
+    ],
+  );
+
+  Widget _buildAppointmentDateTimeCard(BuildContext context) =>
+      _AppointmentDateTimeCard(
+        date: appointment.appointmentDate,
+        time: appointment.appointmentTime,
+      );
+
+  Widget _buildInformationItem({
+    required String label,
+    required String value,
+  }) => LayoutBuilder(
+    builder: (context, constraints) {
+      return Padding(
+        padding: const EdgeInsets.only(left: 8.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildLabelText(label, constraints),
+            _buildValueText(': $value', constraints),
+          ],
+        ),
+      );
+    },
+  );
+
+  Widget _buildLabelText(String label, BoxConstraints constraints) => SizedBox(
+    width: constraints.maxWidth * 0.25,
+    child: Builder(
+      builder: (context) =>
+          Text(label, style: Theme.of(context).textTheme.poppinsSemiBoldDark),
+    ),
+  );
+
+  Widget _buildValueText(String value, BoxConstraints constraints) => SizedBox(
+    width: constraints.maxWidth * 0.6,
+    child: Builder(
+      builder: (context) =>
+          Text(value, style: Theme.of(context).textTheme.bodyRegular),
+    ),
+  );
 }
 
 class _AppointmentDateTimeCard extends StatelessWidget {

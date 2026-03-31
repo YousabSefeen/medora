@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
+import 'package:medora/core/extensions/theme_extension.dart'
+    show ThemeExtension;
 import 'package:medora/core/extensions/transaction_display.dart';
 import 'package:medora/features/payment_gateways/paymob/transaction_process_states/data/models/paymob_transaction_data_result_model.dart'
     show PaymobTransactionDataResultModel;
@@ -14,7 +16,7 @@ class PaymobPaymentMethodInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = Theme.of(context).textTheme.largeInterBold;
+    final textStyle = context.textTheme.largeInterBold;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(5),

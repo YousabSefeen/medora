@@ -10,6 +10,8 @@ import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/enum/navigation_source.dart' show NavigationSource;
 import 'package:medora/core/extensions/media_query_extension.dart';
 import 'package:medora/core/extensions/string_extensions.dart';
+import 'package:medora/core/extensions/theme_extension.dart'
+    show ThemeExtension;
 
 class CreateAppointmentAppBar extends StatelessWidget {
   final String doctorId;
@@ -80,8 +82,10 @@ class _FlexibleAppBarContent extends StatelessWidget {
           title: isCollapsed
               ? Text(
                   doctorName,
-                  style: Theme.of(context).textTheme.extraLargeWhiteBold
-                      .copyWith(fontSize: 19.sp, color: AppColors.darkBlue),
+                  style: context.textTheme.extraLargeWhiteBold.copyWith(
+                    fontSize: 19.sp,
+                    color: AppColors.darkBlue,
+                  ),
                 )
               : null,
           background: Container(
@@ -128,7 +132,7 @@ class _FlexibleAppBarContent extends StatelessWidget {
       constraints: BoxConstraints(maxWidth: context.screenWidth * 0.52),
       child: Text(
         doctorName.toCapitalizeFirstLetter(),
-        style: Theme.of(context).textTheme.extraLargeWhiteBold,
+        style: context.textTheme.extraLargeWhiteBold,
         textAlign: TextAlign.center,
         maxLines: 2,
         overflow: TextOverflow.ellipsis,

@@ -27,10 +27,10 @@ import 'package:medora/features/favorites/presentation/widgets/toggle_favorite_b
 import 'package:medora/features/shared/domain/entities/doctor_entity.dart'
     show DoctorEntity;
 
-class BookAppointmentButton extends StatelessWidget {
+class CreateAppointmentFooterActions extends StatelessWidget {
   final DoctorEntity doctor;
 
-  const BookAppointmentButton({super.key, required this.doctor});
+  const CreateAppointmentFooterActions({super.key, required this.doctor});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,6 @@ class BookAppointmentButton extends StatelessWidget {
 
         return _buildAppointmentButton(
           context: context,
-
           isEnabled: isTimeSlotSelected,
           selectedTimeSlot: selectedTimeSlot,
         );
@@ -55,7 +54,6 @@ class BookAppointmentButton extends StatelessWidget {
     required bool isEnabled,
     required String? selectedTimeSlot,
   }) {
-    final EdgeInsets padding = MediaQuery.of(context).padding;
     return BlocConsumer<BookAppointmentCubit, BookAppointmentState>(
       listenWhen: (previous, current) =>
           previous.bookingStatus != current.bookingStatus,
@@ -65,28 +63,21 @@ class BookAppointmentButton extends StatelessWidget {
         _handleAppointmentStateChange(state: state, context: context);
       },
       builder: (context, state) {
-        return Container(
-          margin: EdgeInsets.only(
-            bottom: padding.bottom > 0 ? padding.bottom : 16,
-          ),
-          width: double.infinity,
+        return Row(
+          spacing: 15,
+          children: [
+            ToggleFavoriteButton(doctorInfo: doctor, iconSize: 30),
 
-          child: Row(
-            children: [
-              const SizedBox(width: 15),
-              ToggleFavoriteButton(doctorInfo: doctor, iconSize: 30),
-              Expanded(
-                child: AdaptiveActionButton(
-                  title: AppStrings.bookAppointment,
-                  isEnabled: isEnabled,
-                  isLoading: state.bookingStatus == LazyRequestState.loading,
-                  onPressed: () =>
-                      _createAppointment(context, selectedTimeSlot!),
-                ),
+            Expanded(
+              child: AdaptiveActionButton(
+                title: AppStrings.bookAppointment,
+                isEnabled: isEnabled,
+                isLoading: state.bookingStatus == LazyRequestState.loading,
+                onPressed: () => _createAppointment(context, selectedTimeSlot!),
               ),
-              const SizedBox(width: 5),
-            ],
-          ),
+            ),
+            const SizedBox(width: 15),
+          ],
         );
       },
     );

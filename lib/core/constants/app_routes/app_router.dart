@@ -3,10 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:medora/core/animations/custom_animation_route.dart'
     show CustomAnimationRoute;
-import 'package:medora/features/appointments/presentation/screens/appointment_cancellation_screen.dart'
-    show AppointmentCancellationScreen;
-import 'package:medora/features/appointments/presentation/screens/patient_details_screen.dart'
-    show PatientDetailsScreen;
 import 'package:medora/features/home/presentation/screens/bottom_nav_screen.dart'
     show BottomNavScreen;
 import 'package:medora/features/payment_gateways/paypal/presentation/views/screens/paypal_payment_screen.dart'
@@ -33,22 +29,11 @@ class AppRouter {
       case AppRouterNames.doctorProfile:
         return _animatedRoute(settings, const DoctorProfileScreen());
 
-      // case AppRouterNames.patientDetails:
-      //   return _animatedRoute(settings, const PatientDetailsScreen());
-
       case AppRouterNames.bookedAppointments:
         return _animatedRoute(settings, const BookedAppointmentsScreen());
 
-      // case AppRouterNames.appointmentDetails:
-      //   return _animatedRoute(settings, const AppointmentDetailsScreen());
-      case AppRouterNames.appointmentCancellation:
-        return _animatedRoute(settings, const AppointmentCancellationScreen());
-
       case AppRouterNames.paypalPayment:
         return _animatedRoute(settings, const PaypalPaymentScreen());
-
-      // case AppRouterNames.twoScreen:
-      // return _animatedRoute(settings,   TwoScreen());
 
       default:
         return MaterialPageRoute(
@@ -82,6 +67,7 @@ class AppRouter {
     Object? arguments,
     FutureOr<dynamic> Function(Object?)? onResult,
   }) {
+    // Standard Material navigation (Slide from side on iOS, Fade/Scale on Android)
     Navigator.of(context)
         .push(
           MaterialPageRoute(
@@ -94,6 +80,26 @@ class AppRouter {
             onResult(value);
           }
         });
+    /* * [ NOTE: Custom Animated Transition ]
+     * Use the commented block below to replace MaterialPageRoute with our custom AnimatedRoute.
+     * * - AnimatedRoute: Provides custom transitions (Slide-up or Scale-in).
+     * - isFadeRoute (true): Performs a Bottom-to-Top Slide transition.
+     * - isFadeRoute (false): Performs a Center-out Scale transition.
+     * * This ensures consistent custom animations across the app instead of platform-default ones.
+     */
+    // Navigator.of(context)
+    //     .push(
+    //   AnimatedRoute(
+    //     builder: (context) => screen,
+    //     arguments: arguments,
+    //     isFadeRoute: false,
+    //   ),
+    // )
+    //     .then((value) {
+    //   if (onResult != null) {
+    //     onResult(value);
+    //   }
+    // });
   }
 
   static Future<Object?> pushNamedAndRemoveUntil(

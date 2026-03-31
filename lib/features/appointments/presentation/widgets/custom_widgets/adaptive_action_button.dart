@@ -20,13 +20,13 @@ class AdaptiveActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20),
+    return SizedBox(
       width: double.infinity,
       height: 50,
+
       child: ElevatedButton(
         onPressed: isEnabled ? onPressed : null,
-        style: _getButtonStyle(isEnabled),
+        style: _buildButtonStyle(isEnabled),
         child: isLoading
             ? const CircularProgressIndicator(color: Colors.white)
             : _buildButtonText(),
@@ -34,29 +34,23 @@ class AdaptiveActionButton extends StatelessWidget {
     );
   }
 
-  /// Returns the appropriate button style based on disabled state
-  ButtonStyle _getButtonStyle(bool isEnabled) {
-    return ButtonStyle(
-      elevation: const WidgetStatePropertyAll(1),
-      backgroundColor: WidgetStatePropertyAll(
-        isEnabled ? AppColors.softBlue : AppColors.customWhite,
-      ),
-      foregroundColor: WidgetStatePropertyAll(
-        isEnabled ? Colors.white : Colors.black,
-      ),
-      side: WidgetStatePropertyAll(
-        isEnabled
-            ? const BorderSide(color: Colors.transparent)
-            : const BorderSide(color: AppColors.black12),
-      ),
-    );
-  }
+  ButtonStyle _buildButtonStyle(bool isEnabled) => ButtonStyle(
+    elevation: const WidgetStatePropertyAll(1),
+    backgroundColor: WidgetStatePropertyAll(
+      isEnabled ? AppColors.softBlue : AppColors.customWhite,
+    ),
+    foregroundColor: WidgetStatePropertyAll(
+      isEnabled ? Colors.white : Colors.black,
+    ),
+    side: WidgetStatePropertyAll(
+      isEnabled
+          ? const BorderSide(color: Colors.transparent)
+          : const BorderSide(color: AppColors.black12),
+    ),
+  );
 
-  /// Builds the text widget for the button with consistent styling
-  Widget _buildButtonText() {
-    return Text(
-      title,
-      style: GoogleFonts.roboto(fontSize: 19.sp, fontWeight: FontWeight.w700),
-    );
-  }
+  Widget _buildButtonText() => Text(
+    title,
+    style: GoogleFonts.roboto(fontSize: 19.sp, fontWeight: FontWeight.w700),
+  );
 }

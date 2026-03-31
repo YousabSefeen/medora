@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
-import 'package:medora/features/appointments/presentation/controller/cubit/book_appointment_cubit.dart'
-    show BookAppointmentCubit;
-import 'package:medora/features/appointments/presentation/controller/cubit/patient_cubit.dart' show PatientCubit;
+import 'package:medora/features/appointments/presentation/controller/cubit/patient_cubit.dart'
+    show PatientCubit;
 import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_controllers.dart'
     show PatientFieldsControllers;
 import 'package:medora/features/appointments/presentation/widgets/payment_selection_sheet.dart'

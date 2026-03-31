@@ -120,11 +120,13 @@ extension AppTextStyles on TextTheme {
     color: Colors.black,
     letterSpacing: 1.5,
   );
+
   TextStyle get largeInterBold => GoogleFonts.inter(
     color: Colors.black,
     fontSize: 14.sp,
     fontWeight: FontWeight.w500,
   );
+
   TextStyle get dialogTitleStyle => GoogleFonts.playpenSans(
     fontSize: 16.sp,
     letterSpacing: 1,
@@ -152,7 +154,6 @@ extension AppTextStyles on TextTheme {
     color: Colors.grey.shade600,
   );
 
-  //سسسس
   TextStyle get smallSoftBlueMedium => TextStyle(
     fontSize: 12.sp,
     color: AppColors.softBlue,
@@ -203,13 +204,14 @@ extension AppTextStyles on TextTheme {
     color: Colors.white,
     letterSpacing: 1,
   );
-  TextStyle get poppinsSemiBoldDark => GoogleFonts.poppins(
-  fontSize: 15.sp,
-  fontWeight: FontWeight.w600,
-  color: AppColors.black,
-  letterSpacing: 0.5,
 
+  TextStyle get poppinsSemiBoldDark => GoogleFonts.poppins(
+    fontSize: 15.sp,
+    fontWeight: FontWeight.w600,
+    color: AppColors.black,
+    letterSpacing: 0.5,
   );
+
   TextStyle get latoSemiBoldDark => GoogleFonts.lato(
     textStyle: TextStyle(
       color: Colors.white,

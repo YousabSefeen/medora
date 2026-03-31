@@ -11,11 +11,10 @@ import '../app_strings/app_strings.dart';
 import '../themes/app_colors.dart';
 
 class ErrorDialogs {
-  static void showErrorDialog({
+  static Future<void> showErrorDialog({
     required BuildContext context,
     required String errorMessage,
-  }) {
-    WoltModalSheet.show(
+  }) => WoltModalSheet.show(
       context: context,
       modalTypeBuilder: (_) => MyCustomModalTypeDialog(),
       barrierDismissible: true,
@@ -34,10 +33,8 @@ class ErrorDialogs {
       ],
       onModalDismissedWithBarrierTap: () => Navigator.of(context).pop(),
     );
-  }
 
-  static Widget _buildTopBar(BuildContext context) {
-    return Container(
+  static Widget _buildTopBar(BuildContext context) => Container(
       padding: const EdgeInsets.symmetric(horizontal: 5),
       alignment: Alignment.center,
       color: AppColors.red,
@@ -65,7 +62,6 @@ class ErrorDialogs {
         ],
       ),
     );
-  }
 
   static Widget _buildErrorBody(BuildContext context, String errorMessage) {
     return Container(

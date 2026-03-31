@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
+import 'package:medora/core/enum/payment_gateways_types.dart';
 import 'package:medora/features/appointments/presentation/controller/cubit/book_appointment_cubit.dart'
     show BookAppointmentCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/time_slot_cubit.dart'
@@ -62,15 +63,16 @@ class AppointmentDetailsSuccessCard extends StatelessWidget {
               style: Theme.of(context).textTheme.latoSemiBoldDark,
             ),
 
-            PaymentMethodDetails(
-              paymentMethod:
-                  (context.findAncestorWidgetOfExactType<PaymentSuccessScreen>()
-                          as PaymentSuccessScreen)
-                      .paymentMethod,
-            ),
+            PaymentMethodDetails(paymentMethod: _paymentMethod(context)),
           ],
         ),
       ),
     );
+  }
+
+  PaymentGatewaysTypes _paymentMethod(BuildContext context) {
+    return (context.findAncestorWidgetOfExactType<PaymentSuccessScreen>()
+            as PaymentSuccessScreen)
+        .paymentMethod;
   }
 }

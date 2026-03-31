@@ -154,9 +154,9 @@ void main() async {
           create: (context) => serviceLocator<PaymentCubit>(),
         ),
 
-        BlocProvider<CancelAppointmentCubit>(
+      /*  BlocProvider<CancelAppointmentCubit>(
           create: (context) => serviceLocator<CancelAppointmentCubit>(),
-        ),
+        ),*/
 
         BlocProvider<RescheduleAppointmentCubit>(
           create: (context) => serviceLocator<RescheduleAppointmentCubit>(),

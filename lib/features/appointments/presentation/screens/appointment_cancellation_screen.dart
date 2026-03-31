@@ -1,274 +1,249 @@
-import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:medora/core/constants/app_alerts/app_alerts.dart'
     show AppAlerts;
-import 'package:medora/core/constants/app_routes/app_router.dart'
-    show AppRouter;
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
+import 'package:medora/core/constants/themes/app_text_styles.dart'
+    show AppTextStyles;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
-import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart'
-    show ClientAppointmentsEntity;
+import 'package:medora/core/extensions/theme_extension.dart'
+    show ThemeExtension;
+import 'package:medora/core/services/server_locator.dart' show serviceLocator;
 import 'package:medora/features/appointments/presentation/controller/cubit/cancel_appointment_cubit.dart'
     show CancelAppointmentCubit;
+import 'package:medora/features/appointments/presentation/controller/cubit/cancelled_appointments_cubit.dart'
+    show CancelledAppointmentsCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/upcoming_appointments_cubit.dart'
     show UpcomingAppointmentsCubit;
 import 'package:medora/features/appointments/presentation/controller/states/cancel_appointment_state.dart'
     show CancelAppointmentState;
+import 'package:medora/features/appointments/presentation/widgets/custom_widgets/adaptive_action_button.dart'
+    show AdaptiveActionButton;
 
-import '../widgets/custom_widgets/adaptive_action_button.dart';
+class AppointmentCancellationScreen extends StatelessWidget {
+  final String doctorId;
+  final String appointmentId;
 
-class AppointmentCancellationScreen extends StatefulWidget {
-  const AppointmentCancellationScreen({super.key});
-
-  @override
-  State<AppointmentCancellationScreen> createState() =>
-      _AppointmentCancellationScreenState();
-}
-
-class _AppointmentCancellationScreenState
-    extends State<AppointmentCancellationScreen> {
-  String? _selectedCancellationReason;
+  const AppointmentCancellationScreen({
+    super.key,
+    required this.doctorId,
+    required this.appointmentId,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final appointment =
-        ModalRoute.of(context)!.settings.arguments as ClientAppointmentsEntity;
-
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: _buildAppBar(context),
-      body: _buildBodyContent(appointment),
-    );
-  }
-
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
-    return AppBar(
-      backgroundColor: Colors.white,
-      actions: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: IconButton(
-            onPressed: () => AppRouter.pop(context),
-            icon: const FaIcon(FontAwesomeIcons.xmark, color: Colors.black),
-          ),
-        ),
-      ],
-      title: const Padding(
-        padding: EdgeInsets.only(top: 8.0),
-        child: Text(
-          AppStrings.cancelAppointment,
-          style: TextStyle(
-            fontSize: 18,
-            color: Colors.black,
-            fontWeight: FontWeight.w700,
+      appBar: _CancelAppBar(),
+      body: BlocProvider(
+        create: (context) => serviceLocator<CancelAppointmentCubit>(),
+        child: BlocListener<CancelAppointmentCubit, CancelAppointmentState>(
+          listenWhen: (prev, curr) => prev.requestState != curr.requestState,
+          listener: (context, state) =>
+              _onStateChangeListener(context, state, appointmentId),
+          child: _CancellationBody(
+            doctorId: doctorId,
+            appointmentId: appointmentId,
           ),
         ),
       ),
     );
   }
 
-  Widget _buildBodyContent(ClientAppointmentsEntity appointment) {
+  void _onStateChangeListener(
+    BuildContext context,
+    CancelAppointmentState state,
+    String appointmentId,
+  ) {
+    if (state.requestState == LazyRequestState.loaded) {
+      _handleSuccess(context, appointmentId);
+    } else if (state.requestState == LazyRequestState.error) {
+      _handleError(context, state.failureMessage);
+    }
+  }
+
+  Future<void> _handleSuccess(
+    BuildContext context,
+    String appointmentId,
+  ) async {
+    context.read<UpcomingAppointmentsCubit>().removeAppointmentLocally(
+      appointmentId: appointmentId,
+    );
+    context.read<CancelledAppointmentsCubit>().refreshData();
+
+    await AppAlerts.showAppointmentSuccessDialog(
+      context: context,
+      message: AppStrings.cancelledSuccessfullyMsg,
+    );
+
+    if (context.mounted) Navigator.pop(context);
+  }
+
+  void _handleError(BuildContext context, String message) {
+    AppAlerts.showCustomErrorDialog(context, message);
+    context.read<CancelAppointmentCubit>().resetCancelAppointmentState();
+  }
+}
+
+class _CancelAppBar extends StatelessWidget implements PreferredSizeWidget {
+  @override
+  Widget build(BuildContext context) => AppBar(
+    backgroundColor: Colors.white,
+
+    title: Text(
+      AppStrings.cancelAppointment,
+      style: _textStyle(context).copyWith(
+        color: Colors.black,
+        fontSize: _textStyle(context).fontSize! - 2,
+      ),
+    ),
+    actions: [
+      IconButton(
+        onPressed: () => Navigator.pop(context),
+        icon: const FaIcon(FontAwesomeIcons.xmark, color: Colors.black),
+      ),
+    ],
+  );
+
+  TextStyle _textStyle(BuildContext context) =>
+      Theme.of(context).appBarTheme.titleTextStyle!;
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+}
+
+class _CancellationBody extends StatelessWidget {
+  final String doctorId;
+  final String appointmentId;
+
+  const _CancellationBody({
+    required this.doctorId,
+    required this.appointmentId,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return SingleChildScrollView(
+      padding: EdgeInsets.symmetric(vertical: 15.h),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 15,
         children: [
-          _buildCancellationInfoCard(),
-          ..._buildCancellationReasonList(),
-          _buildContinueButton(appointment),
+          _buildInfoCard(context),
+          SizedBox(height: 20.h),
+          _ReasonsListSection(),
+          SizedBox(height: 30.h),
+          _SubmitButton(doctorId: doctorId, appointmentId: appointmentId),
         ],
       ),
     );
   }
 
-  Widget _buildCancellationInfoCard() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5),
-      decoration: BoxDecoration(
-        color: AppColors.customWhite,
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: Text(
-        AppStrings.cancellationFeedbackDescription,
-        style: TextStyle(fontSize: 14, color: Colors.grey[700], height: 1.5),
-        textAlign: TextAlign.start,
-      ),
-    );
-  }
+  Widget _buildInfoCard(BuildContext context) => Container(
+    margin: EdgeInsets.symmetric(horizontal: 15.w),
+    padding: EdgeInsets.all(12.r),
+    decoration: BoxDecoration(
+      color: AppColors.customWhite,
+      borderRadius: BorderRadius.circular(12.r),
+    ),
+    child: Text(
+      AppStrings.cancellationFeedbackDescription,
+      style: context.textTheme.smallOrangeMedium,
+    ),
+  );
+}
 
-  List<Widget> _buildCancellationReasonList() {
-    return AppStrings.reasonsForCancellingList.map((reason) {
-      return CancellationReasonItem(
-        reason: reason,
-        isSelected: _selectedCancellationReason == reason,
-        onSelectionChanged: (selectedReason) {
-          setState(() {
-            _selectedCancellationReason = selectedReason;
-          });
-        },
-      );
-    }).toList();
-  }
-
-  Widget _buildContinueButton(ClientAppointmentsEntity appointment) {
-    return BlocSelector<
-      CancelAppointmentCubit,
-      CancelAppointmentState,
-      dartz.Tuple2<LazyRequestState, String>
-    >(
-      selector: (state) =>
-          dartz.Tuple2(state.requestState, state.failureMessage),
-      builder: (context, values) {
-        _handleCancelAppointmentResponse(
-          context,
-          values.value1,
-          values.value2,
-          appointment.appointmentId,
-        );
-
-        final isEnabled = _selectedCancellationReason != null;
-        final isLoading = values.value1 == LazyRequestState.loading;
-
-        return AdaptiveActionButton(
-          title: AppStrings.confirmCancellation,
-          isEnabled: isEnabled,
-          isLoading: isLoading,
-          onPressed: () => _handleCancellationConfirmation(appointment),
+class _ReasonsListSection extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<CancelAppointmentCubit, CancelAppointmentState, String>(
+      selector: (state) => state.selectedCancellationReason,
+      builder: (context, selectedReason) {
+        return RadioGroup<String>(
+          groupValue: selectedReason,
+          onChanged: (val) => context
+              .read<CancelAppointmentCubit>()
+              .setCancellationReason(val!),
+          child: Column(
+            spacing: 12.h,
+            children: AppStrings.reasonsForCancellingList.map((reason) {
+              return _CancellationReasonItem(
+                reason: reason,
+                isSelected: selectedReason == reason,
+              );
+            }).toList(),
+          ),
         );
       },
     );
   }
-
-  void _handleCancellationConfirmation(ClientAppointmentsEntity appointment) {
-    // TODO: Implement cancellation logic
-    if (_selectedCancellationReason != null) {
-      // Process cancellation
-      context.read<CancelAppointmentCubit>().cancelAppointment(
-        doctorId: appointment.doctorId,
-        appointmentId: appointment.appointmentId,
-      );
-    }
-  }
-
-  void _handleCancelAppointmentResponse(
-    BuildContext context,
-    LazyRequestState cancelAppointmentState,
-    String cancelAppointmentError,
-    String appointmentId,
-  ) {
-    switch (cancelAppointmentState) {
-      case LazyRequestState.lazy:
-      case LazyRequestState.loading:
-        break;
-      case LazyRequestState.loaded:
-        _handleCancelAppointmentSuccess(context, appointmentId);
-
-        break;
-      case LazyRequestState.error:
-        _handleCancelAppointmentError(context, cancelAppointmentError);
-        break;
-    }
-  }
-
-  void _handleCancelAppointmentSuccess(
-    BuildContext context,
-    String appointmentId,
-  ) {
-    context.read<UpcomingAppointmentsCubit>().removeAppointmentLocally(
-      appointmentId: appointmentId,
-    );
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _showSuccessDialog(context);
-
-      Future.delayed(const Duration(milliseconds: 700), () {
-        if (!context.mounted) return;
-        _navigateToAppointmentList(context);
-      });
-
-      _resetCancelAppointmentState(context);
-    });
-  }
-
-  /// Displays success dialog after booking confirmation
-  void _showSuccessDialog(BuildContext context) =>
-      AppAlerts.showAppointmentSuccessDialog(
-        context: context,
-        message: AppStrings.successMessage,
-      );
-
-  void _navigateToAppointmentList(BuildContext context) =>
-      AppRouter.pop(context);
-
-  void _handleCancelAppointmentError(
-    BuildContext context,
-    String errorMessage,
-  ) {
-    Future.microtask(() {
-      if (!context.mounted) return;
-
-      AppAlerts.showCustomErrorDialog(context, errorMessage);
-
-      _resetCancelAppointmentState(context);
-    });
-  }
-
-  /// Resets the Cancel Appointment State in cubit
-  void _resetCancelAppointmentState(BuildContext context) =>
-      context.read<CancelAppointmentCubit>().resetCancelAppointmentState();
 }
 
-class CancellationReasonItem extends StatelessWidget {
+class _CancellationReasonItem extends StatelessWidget {
   final String reason;
   final bool isSelected;
-  final ValueChanged<String?> onSelectionChanged;
 
-  const CancellationReasonItem({
-    super.key,
+  const _CancellationReasonItem({
     required this.reason,
     required this.isSelected,
-    required this.onSelectionChanged,
   });
 
   @override
   Widget build(BuildContext context) {
     return Card(
-
-      margin: const EdgeInsets.symmetric(horizontal: 15),
+      margin: EdgeInsets.symmetric(horizontal: 15.w),
+      color: isSelected ? AppColors.customWhite : Colors.white,
+      elevation: isSelected ? 4 : 1,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.r),
-        side: const BorderSide(color: Colors.grey),
+        side: BorderSide(
+          color: isSelected ? AppColors.lightBlue : Colors.black26,
+        ),
       ),
       child: RadioListTile<String>(
+        value: reason,
+        horizontalTitleGap: 1.5,
         dense: true,
         visualDensity: VisualDensity.compact,
-        contentPadding: const EdgeInsets.all(5),
-        activeColor: Colors.black,
-        title: Transform.translate(
-          offset: const Offset(-15, 0),
-          child: Text(
-            reason,
-            style: GoogleFonts.roboto(
-              textStyle: TextStyle(
-                fontSize: 13.sp,
-                color: Colors.black,
-                fontWeight: FontWeight.w400,
-                letterSpacing: 0.5,
-                height: 1.6,
-              ),
-            ),
+        contentPadding: EdgeInsets.all(5.r),
+        activeColor: AppColors.lightBlue,
+        title: Text(
+          reason,
+          style: context.textTheme.numbersStyle.copyWith(
+            fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
           ),
         ),
-        value: reason,
-        groupValue: isSelected ? reason : null,
-        onChanged: onSelectionChanged,
       ),
+    );
+  }
+}
+
+class _SubmitButton extends StatelessWidget {
+  final String doctorId;
+  final String appointmentId;
+
+  const _SubmitButton({required this.doctorId, required this.appointmentId});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<CancelAppointmentCubit, CancelAppointmentState>(
+      builder: (context, state) {
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 30.w),
+          child: AdaptiveActionButton(
+            title: AppStrings.confirmCancellation,
+            isEnabled: state.selectedCancellationReason.isNotEmpty,
+            isLoading: state.requestState == LazyRequestState.loading,
+            onPressed: () =>
+                context.read<CancelAppointmentCubit>().cancelAppointment(
+                  doctorId: doctorId,
+                  appointmentId: appointmentId,
+                ),
+          ),
+        );
+      },
     );
   }
 }

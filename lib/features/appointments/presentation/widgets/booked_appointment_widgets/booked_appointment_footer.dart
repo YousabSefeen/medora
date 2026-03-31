@@ -3,9 +3,9 @@ import 'package:medora/features/appointments/domain/entities/client_appointments
     show ClientAppointmentsEntity;
 
 import '../../../../../core/enum/appointment_status.dart';
-import '../custom_widgets/completed_appointment_actions_section.dart';
+import '../custom_widgets/completed_appointment_footer_actions.dart';
 import 'booked_appointment_info_section.dart';
-import 'upcoming_appointment_actions_section.dart';
+import 'upcoming_appointment_footer_actions.dart';
 
 class BookedAppointmentFooter extends StatelessWidget {
   final AppointmentStatus appointmentStatus;
@@ -29,25 +29,22 @@ class BookedAppointmentFooter extends StatelessWidget {
             appointmentTime: appointment.appointmentTime,
             appointmentStatus: appointmentStatus,
           ),
-          buildBookedAppointmentActionsSection(appointmentStatus, appointment),
+          _buildFooterActions(appointmentStatus, appointment),
         ],
       ),
     );
   }
 
-  Widget buildBookedAppointmentActionsSection(
+  Widget _buildFooterActions(
     AppointmentStatus appointmentStatus,
     ClientAppointmentsEntity appointment,
   ) {
-    switch (appointmentStatus) {
-      case AppointmentStatus.confirmed:
-        return UpcomingAppointmentActionsSection(appointment: appointment);
-
-      case AppointmentStatus.completed:
-        return CompletedAppointmentActionsSection(appointment: appointment);
-      case AppointmentStatus.cancelled:
-      case AppointmentStatus.pendingPayment:
-        return const SizedBox.shrink();
+    if (appointmentStatus == AppointmentStatus.confirmed) {
+      return UpcomingAppointmentFooterActions(appointment: appointment);
+    } else if (appointmentStatus == AppointmentStatus.completed) {
+      return CompletedAppointmentFooterActions(appointment: appointment);
+    } else {
+      return const SizedBox.shrink();
     }
   }
 }

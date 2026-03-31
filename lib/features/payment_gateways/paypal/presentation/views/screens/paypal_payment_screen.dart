@@ -50,7 +50,7 @@ class _PaypalPaymentScreenState extends State<PaypalPaymentScreen>
         context,
         PaymentSuccessScreen(
           paymentMethod: PaymentGatewaysTypes.payPal,
-          paypalPayerEmail: successData,
+          paypalEmail: successData,
         ),
       );
     }

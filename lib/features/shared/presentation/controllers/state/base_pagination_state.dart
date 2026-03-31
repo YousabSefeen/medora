@@ -1,5 +1,3 @@
-// core/utils/pagination/base_pagination_state.dart
-
 import 'package:equatable/equatable.dart';
 import 'package:medora/core/enum/request_state.dart';
 
@@ -22,7 +20,6 @@ abstract class BasePaginationState<T> extends Equatable {
     this.isLoadedBefore = false,
   });
 
-  // دالة copyWith ستكون abstract هنا لأن كل كلاس وارث سيحتاج لتنفيذها لنوعه الخاص
   BasePaginationState<T> copyWith({
     List<T>? dataList,
     RequestState? requestState,

@@ -67,7 +67,7 @@ class _PaymobPaymentScreenState extends State<PaymobPaymentScreen>
         context,
         PaymentSuccessScreen(
           paymentMethod: widget.selectedPaymentMethod,
-          paymobResponseModel: successData,
+          paymobResponse: successData,
         ),
       );
     }

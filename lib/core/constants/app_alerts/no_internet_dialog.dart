@@ -10,30 +10,29 @@ import '../app_strings/app_strings.dart';
 import '../themes/app_colors.dart';
 
 class NoInternetDialog {
-  static void showErrorModal({required BuildContext context}) {
-    WoltModalSheet.show(
-      context: context,
-      modalTypeBuilder: (_) => MyCustomModalTypeDialog(),
-      barrierDismissible: true,
-      pageListBuilder: (_) => [
-        WoltModalSheetPage(
-          backgroundColor: Colors.white,
-          hasSabGradient: false,
-          topBarTitle: const SizedBox.shrink(),
-          topBar: _buildTopBar(context),
-          navBarHeight: 150,
-          child: _buildErrorBody(context),
-          stickyActionBar: const TryAgainButton(
-            backgroundColor: AppColors.black,
+  static Future<void> showErrorModal({required BuildContext context}) async =>
+      await WoltModalSheet.show(
+        context: context,
+        modalTypeBuilder: (_) => MyCustomModalTypeDialog(),
+        barrierDismissible: true,
+        pageListBuilder: (_) => [
+          WoltModalSheetPage(
+            backgroundColor: Colors.white,
+            hasSabGradient: false,
+            topBarTitle: const SizedBox.shrink(),
+            topBar: _buildTopBar(context),
+            navBarHeight: 150,
+            child: _buildErrorBody(context),
+            stickyActionBar: const TryAgainButton(
+              backgroundColor: AppColors.black,
+            ),
+            isTopBarLayerAlwaysVisible: true,
           ),
-          isTopBarLayerAlwaysVisible: true,
-        ),
-      ],
-      onModalDismissedWithBarrierTap: () {
-        Navigator.of(context).pop();
-      },
-    );
-  }
+        ],
+        onModalDismissedWithBarrierTap: () {
+          Navigator.of(context).pop();
+        },
+      );
 
   static Container _buildTopBar(BuildContext context) => Container(
     alignment: Alignment.center,

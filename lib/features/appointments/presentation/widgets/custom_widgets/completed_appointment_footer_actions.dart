@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart'
     show ClientAppointmentsEntity;
-import 'package:medora/features/appointments/presentation/widgets/book_appointment_button.dart'
-    show BookAppointmentButton;
+import 'package:medora/features/appointments/presentation/widgets/create_appointment_footer_actions.dart'
+    show CreateAppointmentFooterActions;
 
 import '../../../../../core/constants/app_alerts/app_alerts.dart';
 import '../../../../../core/constants/app_strings/app_strings.dart';
 import '../../../../../core/constants/common_widgets/elevated_blue_button.dart';
 import '../../../../../core/constants/themes/app_colors.dart';
 import '../../../../shared/models/doctor_schedule_model.dart';
-import '../book_appointment_button.dart';
+import '../create_appointment_footer_actions.dart';
 import '../doctor_appointment_booking_section.dart';
 
-class CompletedAppointmentActionsSection extends StatelessWidget {
+class CompletedAppointmentFooterActions extends StatelessWidget {
   final ClientAppointmentsEntity appointment;
 
-  const CompletedAppointmentActionsSection({
+  const CompletedAppointmentFooterActions({
     super.key,
     required this.appointment,
   });
@@ -27,18 +27,18 @@ class CompletedAppointmentActionsSection extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          BookAgainButton(appointment: appointment),
-          LeaveAReviewButton(appointment: appointment),
+          _BookAgainButton(appointment: appointment),
+          _LeaveAReviewButton(appointment: appointment),
         ],
       ),
     );
   }
 }
 
-class BookAgainButton extends StatelessWidget {
+class _BookAgainButton extends StatelessWidget {
   final ClientAppointmentsEntity appointment;
 
-  const BookAgainButton({super.key, required this.appointment});
+  const _BookAgainButton({super.key, required this.appointment});
 
   @override
   Widget build(BuildContext context) {
@@ -65,19 +65,18 @@ class BookAgainButton extends StatelessWidget {
 
   /// Builds the content of reschedule bottom sheet
   Widget _buildRescheduleContent() => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+    padding: const EdgeInsets.only(top: 30, left: 10, right: 10),
     child: Column(
       spacing: 30,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildDoctorBookingSection(),
-        BookAppointmentButton(doctor: appointment.doctorEntity),
-        // BookAppointmentButton(
-        //   pickedDoctorInfoModel: SelectedDoctorViewData(
-        //     doctorId: appointment.doctorId,
-        //     doctorModel: appointment.doctorEntity,
-        //   ),
-        // ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CreateAppointmentFooterActions(
+            doctor: appointment.doctorEntity,
+          ),
+        ),
       ],
     ),
   );
@@ -91,10 +90,10 @@ class BookAgainButton extends StatelessWidget {
   );
 }
 
-class LeaveAReviewButton extends StatelessWidget {
+class _LeaveAReviewButton extends StatelessWidget {
   final ClientAppointmentsEntity appointment;
 
-  const LeaveAReviewButton({super.key, required this.appointment});
+  const _LeaveAReviewButton({super.key, required this.appointment});
 
   @override
   Widget build(BuildContext context) {

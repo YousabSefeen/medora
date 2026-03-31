@@ -30,7 +30,7 @@ class DoctorInfo extends StatelessWidget {
             style: Theme.of(
               context,
             ).textTheme.largeBlackBold.copyWith(color: Colors.white),
-            maxLines: 1,
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
         ),

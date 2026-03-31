@@ -103,7 +103,7 @@ mixin PaginationScreenMixin<
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
       controller: scrollController,
       itemCount: _calculateItemCount(state),
       itemBuilder: (context, index) {

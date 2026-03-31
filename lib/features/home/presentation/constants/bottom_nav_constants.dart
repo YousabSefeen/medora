@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' show IconData, Widget;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart'
     show FontAwesomeIcons;
+import 'package:medora/core/constants/app_strings/app_strings.dart'
+    show AppStrings;
 import 'package:medora/features/appointments/presentation/screens/booked_appointments_screen.dart'
     show BookedAppointmentsScreen;
 import 'package:medora/features/favorites/presentation/screens/favorites_screen.dart'
@@ -22,14 +24,19 @@ class BottomNavConstants {
     FontAwesomeIcons.gear,
   ];
   static const appBarTitles = <String>[
-    'Dummy Title ',
-    'My Appointments',
-    'My Favorite Doctors',
-    'Setting',
-    'Search',
+    AppStrings.dummyTitle,
+    AppStrings.myAppointments,
+    AppStrings.myFavoriteDoctors,
+    AppStrings.setting,
+    AppStrings.search,
   ];
 
-  static const titles = <String>['Home', 'Appointments', 'Favorite', 'Setting'];
+  static const titles = <String>[
+    AppStrings.home,
+    AppStrings.appointments,
+    AppStrings.favorite,
+    AppStrings.setting,
+  ];
 
   static const List<Widget> screens = [
     HomeScreen(),

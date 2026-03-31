@@ -5,9 +5,10 @@ import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/core/enum/internet_state.dart';
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
-import 'package:medora/features/appointments/domain/params/cancel_appointments_params.dart' show CancelAppointmentsParams;
+import 'package:medora/features/appointments/domain/params/cancel_appointments_params.dart'
+    show CancelAppointmentsParams;
 import 'package:medora/features/appointments/domain/use_cases/cancel_appointment_use_case.dart'
-    show CancelAppointmentUseCase, CancelAppointmentsParams;
+    show CancelAppointmentUseCase;
 import 'package:medora/features/appointments/presentation/controller/states/cancel_appointment_state.dart'
     show CancelAppointmentState;
 
@@ -51,18 +52,18 @@ class CancelAppointmentCubit extends Cubit<CancelAppointmentState> {
         ),
       ),
       (_) async {
-        ///await fetchClientAppointmentsWithDoctorDetails();
-
         emit(state.copyWith(requestState: LazyRequestState.loaded));
       },
     );
   }
+
   void resetCancelAppointmentState() => emit(
-    state.copyWith(
-      requestState: LazyRequestState.lazy,
-      failureMessage: '',
-    ),
+    state.copyWith(requestState: LazyRequestState.lazy, failureMessage: ''),
   );
+
   bool _isInternetDisconnected() =>
       appSettingsCubit.state.internetState == InternetState.disconnected;
+
+  void setCancellationReason(String reason) =>
+      emit(state.copyWith(selectedCancellationReason: reason));
 }

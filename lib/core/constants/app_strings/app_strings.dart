@@ -139,6 +139,8 @@ class AppStrings {
 
   static const String dR = 'Dr. ';
   static const String successMessage = 'Book Appointment Successfully';
+  static const String cancelledSuccessfullyMsg =
+      'Appointment Cancelled Successfully';
 
   static const List<String> doctorNotAvailableMessage = [
     'Doctor is not available on the selected day. Please check the ',
@@ -169,7 +171,7 @@ class AppStrings {
   static const String tryAgainNormal = 'Try Again';
 
   //Error
-  static const String  errorMessagePrefix = 'An Error Occurred:';
+  static const String errorMessagePrefix = 'An Error Occurred:';
   static const String errorDisplayTitle = 'An error occurred while displaying';
   static const String errorMessageLabel = 'Error Message: ';
   static const String pastDateBookingError =
@@ -351,7 +353,6 @@ class AppStrings {
   static const String genderLabel = 'Gender';
   static const String ageLabel = 'Age';
   static const String scheduledAppointmentLabel = 'Scheduled appointment';
-  static const String whenToComeQuestion = 'When would you like to come?';
 
   static const String defaultErrorMessage =
       'An unexpected error occurred. Please try again';
@@ -365,17 +366,22 @@ class AppStrings {
   static const String appointmentsEndMessage =
       '📋 All appointments have been shown';
 
-  static const String askNow='Ask now';
+  static const String askNow = 'Ask now';
 
-  static const String popularDoctors='Popular Doctors';
-  static const String doctorSpecialties='Doctor Specialties';
+  static const String popularDoctors = 'Popular Doctors';
+  static const String doctorSpecialties = 'Doctor Specialties';
 
-  static const String  viewAll='View All';
-  static const String  specialtiesLabel='Specialties';
+  static const String viewAll = 'View All';
+  static const String specialtiesLabel = 'Specialties';
+  static const String myAppointments = 'My Appointments';
+  static const String myFavoriteDoctors = 'My Favorite Doctors';
+  static const String setting = 'Setting';
+  static const String dummyTitle = 'Dummy Title ';
+  static const String home = 'Home';
+  static const String appointments = 'Appointments';
 
-
-
-
+  static const String search = 'Search';
+  static const String favorite = 'Favorite';
 }
 
 class PaymentMethod {

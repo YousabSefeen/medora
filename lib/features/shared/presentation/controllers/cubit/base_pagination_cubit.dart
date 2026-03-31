@@ -67,17 +67,22 @@ abstract class BasePaginationCubit<T, S extends BasePaginationState<T>>
     );
   }
 
-  void resetCubitState() {
-    emit(
-      state.copyWith(
-            requestState: RequestState.loading,
-            failureMessage: '',
-            dataList: [],
-            lastDocument: null,
-            hasMore: true,
-            isLoadingMore: false,
-          )
-          as S,
-    );
+  void refreshData() {
+    _resetStateToInitial();
+
+    _fetchData(isInitial: true);
   }
+
+  void _resetStateToInitial() => emit(
+    state.copyWith(
+          requestState: RequestState.loading,
+          failureMessage: '',
+          dataList: [],
+          lastDocument: null,
+          hasMore: true,
+          isLoadingMore: false,
+          isLoadedBefore: false,
+        )
+        as S,
+  );
 }

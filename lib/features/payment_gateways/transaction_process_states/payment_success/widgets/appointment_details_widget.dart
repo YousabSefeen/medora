@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
+import 'package:medora/core/extensions/media_query_extension.dart'
+    show MediaQueryExtension;
+import 'package:medora/core/extensions/theme_extension.dart';
 
 class AppointmentDetailsWidget extends StatelessWidget {
   final String label;
@@ -13,17 +16,15 @@ class AppointmentDetailsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final deviceWidth = MediaQuery.sizeOf(context).width;
-    final textTheme = Theme.of(context).textTheme;
-    final latoSemiBoldDark = textTheme.latoSemiBoldDark;
-    final caladeaMediumLight = textTheme.caladeaMediumLight;
+    final latoSemiBoldDark = context.textTheme.latoSemiBoldDark;
+    final caladeaMediumLight = context.textTheme.caladeaMediumLight;
     return Padding(
       padding: const EdgeInsets.only(left: 8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: deviceWidth * 0.32,
+            width: context.screenWidth * 0.32,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -39,27 +40,14 @@ class AppointmentDetailsWidget extends StatelessWidget {
             ),
           ),
 
-          Expanded(child: Text(value, style: caladeaMediumLight.copyWith())),
-          // Expanded(
-          //   child: RichText(
-          //
-          //     text: TextSpan(
-          //       children: [
-          //         TextSpan(
-          //           text: ':    ',
-          //           style: latoSemiBoldDark.copyWith(
-          //             fontWeight: FontWeight.w900,
-          //             shadows: [],
-          //           ),
-          //         ),
-          //         TextSpan(
-          //           text: 'value Payment Success Static Header',
-          //           style: caladeaMediumLight.copyWith(),
-          //         )
-          //       ],
-          //     ),
-          //   ),
-          // ),
+          Expanded(
+            child: Text(
+              value,
+              style: caladeaMediumLight,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
         ],
       ),
     );
