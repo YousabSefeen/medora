@@ -102,13 +102,7 @@ class TimeSlotCubit extends Cubit<TimeSlotState> {
       ),
     );
   }
-  String get selectedTimeSlot {
-    return state.selectedTimeSlot ?? 'selectedTimeSlot Null';
-  }
 
-  String get selectedDateFormatted {
-    return state.selectedDateFormatted ?? 'selectedTimeSlot Null';
-  }
   void _clearSelectedTimeSlot() => emit(state.copyWith(selectedTimeSlot: ''));
   void resetStates() => emit(const TimeSlotState());
 }

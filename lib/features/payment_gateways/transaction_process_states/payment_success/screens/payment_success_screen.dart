@@ -11,8 +11,6 @@ import 'package:medora/core/enum/lazy_request_state.dart';
 import 'package:medora/core/enum/payment_gateways_types.dart';
 import 'package:medora/core/extensions/media_query_extension.dart';
 import 'package:medora/core/services/server_locator.dart';
-import 'package:medora/features/appointments/domain/entities/book_appointment_entity.dart'
-    show BookAppointmentEntity;
 import 'package:medora/features/appointments/presentation/controller/cubit/book_appointment_cubit.dart';
 import 'package:medora/features/appointments/presentation/controller/cubit/confirm_pending_appointment_cubit.dart';
 import 'package:medora/features/appointments/presentation/controller/cubit/patient_cubit.dart';
@@ -24,6 +22,7 @@ import 'package:medora/features/payment_gateways/transaction_process_states/paym
 import 'package:medora/features/payment_gateways/transaction_process_states/payment_success/widgets/custom_dashed_line_divider.dart';
 import 'package:medora/features/payment_gateways/transaction_process_states/payment_success/widgets/custom_payment_success_message.dart';
 import 'package:medora/features/payment_gateways/transaction_process_states/payment_success/widgets/payment_success_fab_section.dart';
+
 
 class PaymentSuccessScreen extends StatelessWidget {
   final PaymentGatewaysTypes paymentMethod;
@@ -39,43 +38,35 @@ class PaymentSuccessScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final patientCubit = context.read<PatientCubit>();
+    final bookCubit = context.read<BookAppointmentCubit>();
+
+    final appointmentEntity = bookCubit.createEntityFromPatientData(
+      name: patientCubit.patientName,
+      age: patientCubit.patientAge,
+      gender: patientCubit.patientGender,
+      problem: patientCubit.patientProblem,
+    );
+
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, _) => _onBackPress(context, didPop),
-      child: Scaffold(
-        backgroundColor: AppColors.lightPeriwinkle,
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: const PaymentSuccessFABSection(),
-        body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.only(
-              top: kToolbarHeight + MediaQuery.viewPaddingOf(context).top,
-            ),
-            child: _buildMainContent(context),
+      child: BlocProvider<ConfirmPendingAppointmentCubit>(
+        create: (context) =>
+            serviceLocator<ConfirmPendingAppointmentCubit>()
+              ..confirmPendingAppointment(entity: appointmentEntity),
+        child: Scaffold(
+          backgroundColor: AppColors.lightPeriwinkle,
+          floatingActionButton: const PaymentSuccessFABSection(),
+          body: SafeArea(
+            child:
+                BlocBuilder<
+                  ConfirmPendingAppointmentCubit,
+                  ConfirmPendingAppointmentState
+                >(builder: (context, state) => _mapStateToWidget(state)),
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildMainContent(BuildContext context) {
-    return BlocProvider<ConfirmPendingAppointmentCubit>(
-      create: (context) {
-        final cubit = serviceLocator<ConfirmPendingAppointmentCubit>();
-        cubit.confirmPendingAppointment(
-          entity: _mapToAppointmentEntity(context),
-        );
-        return cubit;
-      },
-      child:
-          BlocBuilder<
-            ConfirmPendingAppointmentCubit,
-            ConfirmPendingAppointmentState
-          >(
-            builder: (context, state) {
-              return _mapStateToWidget(state);
-            },
-          ),
     );
   }
 
@@ -90,23 +81,6 @@ class PaymentSuccessScreen extends StatelessWidget {
       ),
       _ => const SizedBox.shrink(),
     };
-  }
-
-  BookAppointmentEntity _mapToAppointmentEntity(BuildContext context) {
-    final bookCubit = context.read<BookAppointmentCubit>();
-    final patientCubit = context.read<PatientCubit>();
-    final patientData = patientCubit.getPatientData;
-
-    return BookAppointmentEntity(
-      doctorId: bookCubit.appointmentDataView.doctorEntity.doctorId!,
-      appointmentId: bookCubit.appointmentId,
-      appointmentDate: bookCubit.appointmentDataView.appointmentDate,
-      appointmentTime: bookCubit.appointmentDataView.appointmentTime,
-      patientName: patientData.nameController.text,
-      patientAge: patientData.ageController.text,
-      patientGender: patientCubit.getGender,
-      patientProblem: patientData.problemController.text,
-    );
   }
 
   void _onBackPress(BuildContext context, bool didPop) {

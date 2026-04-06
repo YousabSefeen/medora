@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
+import 'package:medora/core/enum/gender_type.dart' show GenderType;
 import 'package:medora/features/appointments/presentation/controller/cubit/patient_cubit.dart'
     show PatientCubit;
 import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_controllers.dart'
@@ -13,13 +14,14 @@ import '../../../../../core/constants/app_routes/app_router.dart';
 import '../../../../../core/constants/app_strings/app_strings.dart';
 import '../custom_widgets/adaptive_action_button.dart';
 
-/// Payment processing button responsible for opening payment method selection screen
-/// and managing appointment booking state and routing to appropriate payment gateways
+// Payment processing button responsible for opening payment method selection screen
+// and managing appointment booking state and routing to appropriate payment gateways
 ///
-/// This component handles:
-/// - Opening bottom sheet for payment method selection
-/// - Managing appointment booking states (loading, success, error)
-/// - Routing to different payment gateways based on selection
+// This component handles:
+// - Opening bottom sheet for payment method selection
+// - Managing appointment booking states (loading, success, error)
+// - Routing to different payment gateways based on selection
+
 class ProceedToPayButton extends StatelessWidget {
   final PatientFieldsControllers formControllers;
 
@@ -27,29 +29,32 @@ class ProceedToPayButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final patientCubit = context.read<PatientCubit>();
     return AdaptiveActionButton(
       title: AppStrings.proceedToPay,
       isEnabled: true,
       isLoading: false,
       onPressed: () {
-        context.read<PatientCubit>().changeValidateMode();
+        patientCubit.changeValidateMode();
 
-        if (!_isFormValid(formControllers)) {
+        if (!_isFormValid(context, patientCubit, formControllers)) {
           return;
         } else {
-          context.read<PatientCubit>().cachePatientData(
-            formControllers: formControllers,
-          );
+          patientCubit.cachePatientData(formControllers: formControllers);
           _openPaymentMethodSelection(context);
         }
       },
     );
   }
 
-  bool _isFormValid(PatientFieldsControllers controllers) {
+  bool _isFormValid(
+    BuildContext context,
+    PatientCubit patientCubit,
+    PatientFieldsControllers controllers,
+  ) {
     final isFormFieldsValid =
         controllers.formKey.currentState?.validate() ?? false;
-    final isGenderValid = controllers.genderController.validate();
+    final isGenderValid = patientCubit.state.genderType != GenderType.init;
     return isFormFieldsValid && isGenderValid;
   }
 

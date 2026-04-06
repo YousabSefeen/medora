@@ -2,19 +2,20 @@ import 'package:equatable/equatable.dart' show Equatable;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_controllers.dart'
     show PatientFieldsControllers;
-import 'package:medora/features/appointments/presentation/data/appointment_booking_data.dart' show AppointmentBookingData;
+import 'package:medora/features/appointments/presentation/ui_models/appointment_booking_ui_model.dart'
+    show AppointmentBookingUIModel;
 
 
 class BookAppointmentState extends Equatable {
 
-  final AppointmentBookingData? bookingData;
+  final AppointmentBookingUIModel? appointmentBookingUIModel;
 
   final LazyRequestState bookingStatus;
   final String bookingError;
   final String appointmentId;
 
   const BookAppointmentState({
-    this.bookingData,
+    this.appointmentBookingUIModel,
 
     this.bookingStatus = LazyRequestState.lazy,
     this.bookingError = '',
@@ -22,7 +23,7 @@ class BookAppointmentState extends Equatable {
   });
 
   BookAppointmentState copyWith({
-    AppointmentBookingData? bookingData,
+    AppointmentBookingUIModel? appointmentBookingUIModel,
 
     LazyRequestState? bookingStatus,
     String? bookingError,
@@ -30,7 +31,7 @@ class BookAppointmentState extends Equatable {
     PatientFieldsControllers? patientFieldsControllers,
   }) {
     return BookAppointmentState(
-      bookingData: bookingData ??  this.bookingData,
+      appointmentBookingUIModel: appointmentBookingUIModel ??  this.appointmentBookingUIModel,
 
       bookingStatus:
           bookingStatus ?? this.bookingStatus,
@@ -42,7 +43,7 @@ class BookAppointmentState extends Equatable {
 
   @override
   List<Object?> get props => [
-    bookingData,
+    appointmentBookingUIModel,
 
     bookingStatus,
     bookingError,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medora/core/constants/app_borders/app_borders.dart'
+    show AppBorders;
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 
@@ -16,6 +17,8 @@ class DoctorInfoField extends StatelessWidget {
   final bool isDense;
   final void Function(String)? onChanged;
 
+  final double? textHeight;
+
   const DoctorInfoField({
     super.key,
     this.label,
@@ -26,6 +29,8 @@ class DoctorInfoField extends StatelessWidget {
     this.validator,
     this.isDense = false,
     this.onChanged,
+
+    this.textHeight,
   });
 
   @override
@@ -34,9 +39,9 @@ class DoctorInfoField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        label != null ? FormTitle(label: label!) : const SizedBox(),
+        label != null ? FormTitle(label: label!) : const SizedBox.shrink(),
         TextFormField(
-          style: textTheme.styleInputField,
+          style: textTheme.styleInputField.copyWith(height: textHeight),
           onChanged: onChanged,
           controller: controller,
           keyboardType: keyboardType,
@@ -44,26 +49,18 @@ class DoctorInfoField extends StatelessWidget {
           validator: validator,
           decoration: InputDecoration(
             isDense: isDense,
-
             hintText: hintText,
             hintStyle: textTheme.hintFieldStyle,
             fillColor: AppColors.fieldFillColor,
             filled: true,
-            border: _buildBorder(AppColors.fieldBorderColor),
-            enabledBorder: _buildBorder(AppColors.fieldBorderColor),
-            focusedBorder: _buildBorder(AppColors.fieldBorderColor),
-            errorBorder: _buildBorder(Colors.red),
+            border: AppBorders.inputEnabledBorder,
+            enabledBorder: AppBorders.inputEnabledBorder,
+            focusedBorder: AppBorders.inputFocusedBorder,
+            errorBorder: AppBorders.inputErrorBorder,
             errorStyle: textTheme.styleInputFieldError,
           ),
         ),
       ],
-    );
-  }
-
-  OutlineInputBorder _buildBorder(Color color) {
-    return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8.r),
-      borderSide: BorderSide(color: color, width: 1.2),
     );
   }
 }

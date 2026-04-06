@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medora/core/constants/common_widgets/field_error_text.dart'
+    show FieldErrorText;
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 
 class CustomFieldContainer extends StatelessWidget {
@@ -30,16 +32,10 @@ class CustomFieldContainer extends StatelessWidget {
           ),
           child: child,
         ),
-        field.hasError ? _displayErrorText() : const SizedBox(),
+        field.hasError
+            ? FieldErrorText(errorText: field.errorText!)
+            : const SizedBox.shrink(),
       ],
     );
   }
-
-  Padding _displayErrorText() => Padding(
-    padding: const EdgeInsets.only(top: 5, left: 8),
-    child: Text(
-      field.errorText!,
-      style: TextStyle(color: Colors.red, fontSize: 12.sp),
-    ),
-  );
 }

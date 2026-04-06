@@ -9,7 +9,8 @@ import 'package:medora/features/appointments/presentation/controller/cubit/time_
     show TimeSlotCubit;
 import 'package:medora/features/appointments/presentation/controller/states/time_slot_state.dart'
     show TimeSlotState;
-import 'package:medora/features/appointments/presentation/data/time_slot_data.dart' show TimeSlotData;
+import 'package:medora/features/appointments/presentation/ui_models/time_slot_ui_model.dart'
+    show TimeSlotUIModel;
 
 import 'package:medora/features/appointments/presentation/widgets/time_slots_grid.dart'
     show TimeSlotsGrid;
@@ -19,7 +20,7 @@ class TimeSlotsDisplaySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<TimeSlotCubit, TimeSlotState,  TimeSlotData>(
+    return BlocSelector<TimeSlotCubit, TimeSlotState,  TimeSlotUIModel>(
       selector: _mapStateToData,
       builder: (context, data) {
         return data.availableSlots.isEmpty
@@ -32,8 +33,8 @@ class TimeSlotsDisplaySection extends StatelessWidget {
     );
   }
 
-  TimeSlotData _mapStateToData(TimeSlotState state) {
-    return TimeSlotData(
+  TimeSlotUIModel _mapStateToData(TimeSlotState state) {
+    return TimeSlotUIModel(
       selectedSlot: state.selectedTimeSlot,
       availableSlots: state.availableDoctorTimeSlots,
     );
@@ -41,7 +42,7 @@ class TimeSlotsDisplaySection extends StatelessWidget {
 }
 
 class _TimeSlotsWithTitle extends StatelessWidget {
-  final TimeSlotData data;
+  final TimeSlotUIModel data;
 
   const _TimeSlotsWithTitle({required this.data});
 
@@ -56,7 +57,7 @@ class _TimeSlotsWithTitle extends StatelessWidget {
           style: Theme.of(context).textTheme.mediumBlackBold,
         ),
         const SizedBox(height: 20),
-        TimeSlotsGrid(timeSlotData: data),
+        TimeSlotsGrid(timeSlotUIModel: data),
       ],
     );
   }

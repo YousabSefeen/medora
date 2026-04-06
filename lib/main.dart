@@ -37,6 +37,7 @@ import 'package:medora/features/appointments/presentation/controller/cubit/time_
     show TimeSlotCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/upcoming_appointments_cubit.dart'
     show UpcomingAppointmentsCubit;
+import 'package:medora/features/appointments/presentation/screens/patient_details_screen.dart' show PatientDetailsScreen;
 import 'package:medora/features/auth/presentation/controller/cubit/login_cubit.dart'
     show LoginCubit;
 import 'package:medora/features/auth/presentation/screens/login_screen.dart'
@@ -211,7 +212,7 @@ class MyApp extends StatelessWidget {
             ? const BottomNavScreen()
             : const LoginScreen(),
 
-       // home: FuckHome(),
+     //  home: PatientDetailsScreen(),
       ),
     );
   }

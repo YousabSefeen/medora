@@ -4,6 +4,7 @@ import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/enum/payment_gateways_types.dart';
+import 'package:medora/core/extensions/theme_extension.dart' show ThemeExtension;
 import 'package:medora/features/appointments/presentation/controller/cubit/book_appointment_cubit.dart'
     show BookAppointmentCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/time_slot_cubit.dart'
@@ -22,14 +23,11 @@ class AppointmentDetailsSuccessCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final doctorModel = context
-        .read<BookAppointmentCubit>()
-        .appointmentDataView
-        .doctorEntity;
-    final selectedTimeSlot = context.read<TimeSlotCubit>().selectedTimeSlot;
-    final selectedDateFormatted = context
-        .read<TimeSlotCubit>()
-        .selectedDateFormatted;
+    final bookCubit = context.read<BookAppointmentCubit>();
+    final doctorModel = bookCubit.bookingDetails.doctorEntity;
+    final timeSlotState = context.read<TimeSlotCubit>().state;
+    final selectedTimeSlot = timeSlotState.selectedTimeSlot!;
+    final selectedDateFormatted = timeSlotState.selectedDateFormatted!;
 
     return Card(
       color: Colors.transparent,
@@ -60,7 +58,7 @@ class AppointmentDetailsSuccessCard extends StatelessWidget {
             ),
             Text(
               AppStrings.paymentMethod,
-              style: Theme.of(context).textTheme.latoSemiBoldDark,
+              style:context.textTheme.latoSemiBoldDark,
             ),
 
             PaymentMethodDetails(paymentMethod: _paymentMethod(context)),

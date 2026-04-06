@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/enum/navigation_source.dart';
 import 'package:medora/features/appointments/presentation/widgets/create_appointment_app_bar.dart';
 import 'package:medora/features/appointments/presentation/widgets/create_appointment_content.dart'
@@ -33,7 +34,7 @@ class CreateAppointmentScreen extends StatelessWidget {
               imageUrl: doctor.imageUrl,
               navigationSource: navigationSource,
             ),
-            CreateAppointmentContent(doctor: doctor),
+
             CreateAppointmentContent(doctor: doctor),
           ],
         ),
@@ -41,14 +42,14 @@ class CreateAppointmentScreen extends StatelessWidget {
     );
   }
 
-  BoxDecoration _buildBoxDecoration() => BoxDecoration(
+  BoxDecoration _buildBoxDecoration() => const BoxDecoration(
     color: Colors.white,
     boxShadow: [
       BoxShadow(
-        color: Colors.grey.withOpacity(0.5),
+        color: AppColors.black12,
         spreadRadius: 5,
         blurRadius: 7,
-        offset: const Offset(0, 3),
+        offset: Offset(0, 3),
       ),
     ],
   );

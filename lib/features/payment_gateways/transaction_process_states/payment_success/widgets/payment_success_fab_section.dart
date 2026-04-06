@@ -55,7 +55,7 @@ class _TotalAmountSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final doctorFees = context
         .read<BookAppointmentCubit>()
-        .appointmentDataView
+        .bookingDetails
         .doctorEntity
         .fees;
     final textTheme = context.textTheme;

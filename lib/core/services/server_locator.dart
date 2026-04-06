@@ -46,14 +46,15 @@ import 'package:medora/features/appointments/presentation/controller/cubit/confi
     show ConfirmPendingAppointmentCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/doctor_appointments_cubit.dart'
     show DoctorAppointmentsCubit;
-import 'package:medora/features/appointments/presentation/controller/cubit/patient_cubit.dart'
-    show PatientCubit;
+import 'package:medora/features/appointments/presentation/controller/cubit/patient_cubit.dart' show PatientCubit;
+
 import 'package:medora/features/appointments/presentation/controller/cubit/reschedule_appointment_cubit.dart'
     show RescheduleAppointmentCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/time_slot_cubit.dart'
     show TimeSlotCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/upcoming_appointments_cubit.dart'
     show UpcomingAppointmentsCubit;
+import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_controllers.dart' show PatientLocalDataSource, PatientLocalDataSourceImpl;
 import 'package:medora/features/doctor_list/data/data_source/doctors_list_remote_data_source.dart'
     show DoctorsListRemoteDataSource;
 import 'package:medora/features/doctor_list/domain/repository/doctor_list_repository_base.dart'
@@ -108,6 +109,7 @@ import 'package:medora/features/search/domain/use_cases/search_doctors_by_name_u
     show SearchDoctorsByNameUseCase;
 import 'package:medora/features/search/presentation/controller/cubit/home_doctor_search_cubit.dart'
     show HomeDoctorSearchCubit;
+import 'package:shared_preferences/shared_preferences.dart' show SharedPreferences;
 
 import '../../features/auth/data/repository/auth_repository.dart';
 import '../../features/auth/presentation/controller/cubit/login_cubit.dart';
@@ -132,7 +134,7 @@ class ServiceLocator {
     setupAppointmentsDependencies();
   }
 
-  void setupAppointmentsDependencies() {
+  void setupAppointmentsDependencies() async{
     // Data Sources - كما هي بدون تغيير
     serviceLocator.registerLazySingleton<AppointmentRemoteDataSourceBase>(
       () => AppointmentRemoteDataSource(),
@@ -153,11 +155,7 @@ class ServiceLocator {
       () =>
           DeleteAppointmentUseCase(appointmentRepositoryBase: serviceLocator()),
     );
-    /* serviceLocator.registerLazySingleton<FetchClientAppointmentsUseCase>(
-      () => FetchClientAppointmentsUseCase(
-        appointmentRepositoryBase: serviceLocator(),
-      ),
-    );*/
+
     serviceLocator.registerLazySingleton<FetchDoctorAppointmentsUseCase>(
       () => FetchDoctorAppointmentsUseCase(
         appointmentRepositoryBase: serviceLocator(),
@@ -193,54 +191,13 @@ class ServiceLocator {
     serviceLocator.registerLazySingleton<FetchCancelledAppointmentUC>(
       () => FetchCancelledAppointmentUC(repository: serviceLocator()),
     );
-    // ========== التسجيل الجديد للـ Cubits المنفصلة ==========
 
-    // 1. Selected Doctor Cubit (لا يحتاج dependencies)
-    // serviceLocator.registerFactory<SelectedDoctorCubit>(
-    //   () => SelectedDoctorCubit(),
-    // );
-
-    // 2. Doctor Appointments Cubit
     serviceLocator.registerFactory<DoctorAppointmentsCubit>(
       () =>
           DoctorAppointmentsCubit(fetchDoctorAppointmentsUS: serviceLocator()),
     );
 
-    // 3. Time Slot Cubit
-    // serviceLocator.registerFactory<TimeSlotCubit>(
-    //       () => TimeSlotCubit(
-    //     fetchBookedTimeSlotsUseCase: serviceLocator(),
-    //   ),
-    // );
 
-    // 4. Client Appointments Cubit
-    // serviceLocator.registerFactory<ClientAppointmentsCubit>(
-    //       () => ClientAppointmentsCubit(
-    //     fetchClientAppointmentsUseCase: serviceLocator(),
-    //     rescheduleAppointmentUseCase: serviceLocator(),
-    //     cancelAppointmentUS: serviceLocator(),
-    //     deleteAppointmentUS: serviceLocator(),
-    //     appSettingsCubit: serviceLocator(),
-    //   ),
-    // );
-
-    // 5. Book Appointment Cubit
-
-    /*    serviceLocator.registerFactory<CreatePendingAppointmentCubit>(
-      () => CreatePendingAppointmentCubit(
-
-        pendingAppointmentUseCase:  serviceLocator(),
-
-
-      ),
-    ); serviceLocator.registerFactory<ConfirmPendingAppointmentCubit>(
-      () => ConfirmPendingAppointmentCubit(
-        appSettingsCubit: serviceLocator(),
-       confirmPendingAppointmentUseCase: serviceLocator(),
-
-
-      ),
-    );*/
     serviceLocator.registerFactory<ConfirmPendingAppointmentCubit>(
       () => ConfirmPendingAppointmentCubit(
         appSettingsCubit: serviceLocator(),
@@ -255,11 +212,7 @@ class ServiceLocator {
         bookAppointmentUseCase: serviceLocator(),
       ),
     );
-    /* serviceLocator.registerFactory<FetchClientAppointmentsCubit>(
-      () => FetchClientAppointmentsCubit(
-        fetchClientAppointmentsUseCase: serviceLocator(),
-      ),
-    );*/
+
 
     serviceLocator.registerFactory<UpcomingAppointmentsCubit>(
       () => UpcomingAppointmentsCubit(useCase: serviceLocator()),
@@ -289,75 +242,20 @@ class ServiceLocator {
         rescheduleAppointmentUseCase: serviceLocator(),
       ),
     );
+    serviceLocator.registerFactory<PatientCubit>(
+          () => PatientCubit(serviceLocator<PatientLocalDataSource>()),
+    );
+    final sharedPrefs = await SharedPreferences.getInstance();
+    serviceLocator.registerLazySingleton(() => sharedPrefs);
 
-    serviceLocator.registerFactory<PatientCubit>(() => PatientCubit());
+    serviceLocator.registerLazySingleton<PatientLocalDataSource>(
+          () => PatientLocalDataSourceImpl(serviceLocator()),
+    );
 
     serviceLocator.registerFactory<PaymentCubit>(() => PaymentCubit());
   }
 
-  /*  void setupAppointmentsDependencies() {
-    // Data Sources
 
-    serviceLocator.registerLazySingleton<AppointmentRemoteDataSourceBase>(
-      () => AppointmentRemoteDataSource(),
-    );
-
-    // Repositories
-
-    serviceLocator.registerLazySingleton<AppointmentRepositoryBase>(
-      () => AppointmentRepositoryImpl(remoteDataSource: serviceLocator()),
-    );
-
-    // Use Cases
-    serviceLocator.registerLazySingleton<BookAppointmentUseCase>(
-      () => BookAppointmentUseCase(appointmentRepositoryBase: serviceLocator()),
-    );
-    serviceLocator.registerLazySingleton<CancelAppointmentUseCase>(
-      () =>
-          CancelAppointmentUseCase(appointmentRepositoryBase: serviceLocator()),
-    );
-    serviceLocator.registerLazySingleton<DeleteAppointmentUseCase>(
-      () =>
-          DeleteAppointmentUseCase(appointmentRepositoryBase: serviceLocator()),
-    );
-    serviceLocator
-        .registerLazySingleton<FetchClientAppointmentsUseCase>(
-          () => FetchClientAppointmentsUseCase(
-            appointmentRepositoryBase: serviceLocator(),
-          ),
-        );
-    serviceLocator.registerLazySingleton<FetchDoctorAppointmentsUseCase>(
-      () => FetchDoctorAppointmentsUseCase(
-        appointmentRepositoryBase: serviceLocator(),
-      ),
-    );
-    serviceLocator
-        .registerLazySingleton<FetchBookedTimeSlotsUseCase>(
-          () => FetchBookedTimeSlotsUseCase(
-            appointmentRepositoryBase: serviceLocator(),
-          ),
-        );
-    serviceLocator.registerLazySingleton<RescheduleAppointmentUseCase>(
-      () => RescheduleAppointmentUseCase(
-        appointmentRepositoryBase: serviceLocator(),
-      ),
-    );
-    // Cubit
-    serviceLocator.registerFactory<AppointmentCubit>(
-      () => AppointmentCubit(
-        appSettingsCubit: serviceLocator(),
-
-        bookAppointmentUS: serviceLocator(),
-        cancelAppointmentUS: serviceLocator(),
-        deleteAppointmentUS: serviceLocator(),
-        fetchClientAppointmentsUseCase: serviceLocator(),
-        fetchDoctorAppointmentsUS: serviceLocator(),
-
-        fetchBookedTimeSlotsUseCase: serviceLocator(),
-        rescheduleAppointmentUseCase: serviceLocator(),
-      ),
-    );
-  }*/
 
   void setupDoctorsListDependencies() {
     // Data Sources
@@ -403,15 +301,6 @@ class ServiceLocator {
       ),
     );
 
-    /// SearchCubit registration removed from serviceLocator to prevent state sharing issues.
-    /// Using direct BlocProvider creation in SearchScreen instead for proper screen-level state isolation.
-    /// This avoids Cubit disposal conflicts and ensures each screen has its own state instance.
-    // serviceLocator.registerLazySingleton<SearchCubit>(
-    //       () => SearchCubit(
-    //         searchByName: serviceLocator(),
-    //         searchByCriteria: serviceLocator(),
-    //       ),
-    //     );
 
     serviceLocator.registerFactory(
       () => HomeDoctorSearchCubit(searchByName: serviceLocator()),
@@ -472,9 +361,7 @@ class ServiceLocator {
       () => SpecialtyDoctorsRepository(),
     );
 
-    // serviceLocator.registerLazySingleton<FavoritesRepository>(
-    //   () => FavoritesRepository(),
-    // );
+
   }
 
   void _registerCubits() {
@@ -546,7 +433,6 @@ class ServiceLocator {
     serviceLocator.registerFactory(
       () => PaypalPaymentCubit(paypalRepository: serviceLocator()),
     );
-    // إذا أردت مستقبلاً:
-    // serviceLocator.registerFactory(() => StripePaymentProvider(stripeRepo: serviceLocator()));
+
   }
 }

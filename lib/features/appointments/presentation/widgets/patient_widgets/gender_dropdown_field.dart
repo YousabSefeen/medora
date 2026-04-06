@@ -1,23 +1,71 @@
 import 'package:animated_drop_down_form_field/animated_drop_down_form_field.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medora/core/constants/app_borders/app_borders.dart'
+    show AppBorders;
+import 'package:medora/core/constants/app_duration/app_duration.dart'
+    show AppDurations;
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
+import 'package:medora/core/constants/common_widgets/field_error_text.dart'
+    show FieldErrorText;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/enum/gender_type.dart' show GenderType;
+import 'package:medora/core/extensions/media_query_extension.dart';
 import 'package:medora/features/appointments/presentation/controller/cubit/patient_cubit.dart'
     show PatientCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/patient_state.dart'
     show PatientState;
-import 'package:medora/features/doctor_profile/presentation/widgets/form_title.dart' show FormTitle;
-
-
+import 'package:medora/features/doctor_profile/presentation/widgets/form_title.dart'
+    show FormTitle;
 
 class GenderDropdownField extends StatelessWidget {
-  final AnimatedDropDownFormFieldController controller;
+  const GenderDropdownField({super.key});
 
-  const GenderDropdownField({super.key, required this.controller});
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const FormTitle(label: AppStrings.genderLabel),
+        BlocSelector<
+          PatientCubit,
+          PatientState,
+          Tuple2<GenderType, AutovalidateMode>
+        >(
+          selector: (state) => Tuple2(state.genderType, state.validateMode),
+          builder: (context, state) {
+            final gender = state.value1;
+            final isError =
+                gender == GenderType.init &&
+                state.value2 == AutovalidateMode.always;
+
+            return _GenderDropdownView(
+              selectedGender: gender,
+              hasError: isError,
+              onChanged: (index) => context
+                  .read<PatientCubit>()
+                  .onChangeSelectedGenderIndex(index),
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _GenderDropdownView extends StatelessWidget {
+  final GenderType selectedGender;
+  final bool hasError;
+  final Function(int) onChanged;
+
+  const _GenderDropdownView({
+    required this.selectedGender,
+    required this.hasError,
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,89 +74,70 @@ class GenderDropdownField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const FormTitle(label: 'Gender'),
-        BlocSelector<PatientCubit, PatientState, GenderType>(
-          selector: (state) => state.genderType,
-          builder: (context, selectedGenderIndex) => AnimatedDropDownFormField(
-            items: _buildGenderItems(textTheme),
-            listScrollPhysics: const BouncingScrollPhysics(),
-            placeHolder: Text(
-              _getDisplayText(selectedGenderIndex),
-              style: _getTextStyle(selectedGenderIndex, textTheme),
-            ),
-            separatorWigdet: const Padding(
-              padding: EdgeInsets.symmetric(vertical: 5),
-              child: Divider(color: Colors.white38, thickness: 2),
-            ),
-            buttonPadding: const EdgeInsets.symmetric(
-              vertical: 15,
-              horizontal: 10,
-            ),
-            actionWidget: Icon(
-              Icons.arrow_drop_down_circle_sharp,
-              color: Colors.black,
-              size: 23.sp,
-            ),
-            buttonDecoration: _buildButtonDecoration(),
-            listBackgroundDecoration: _buildListDecoration(),
-            listPadding: const EdgeInsets.only(
-              left: 10,
-              right: 15,
-              top: 15,
-              bottom: 15,
-            ),
-            listMargin: EdgeInsets.only(
-              left: MediaQuery.sizeOf(context).width * 0.5,
-            ),
-            selectedItemIcon: _buildSelectedIcon(),
-            dropDownAnimationParameters: _buildAnimationParameters(),
-            controller: controller,
-            errorWidget: Text(
-              AppStrings.requiredGenderField,
-              style: textTheme.styleInputFieldError,
-            ),
-            errorBorder: Border.all(color: Colors.red, width: 1.7),
-            onChangeSelectedIndex: (int index) =>
-                context.read<PatientCubit>().onChangeSelectedGenderIndex(index),
+        AnimatedDropDownFormField(
+          items: _buildGenderItems(textTheme),
+          listScrollPhysics: const BouncingScrollPhysics(),
+          placeHolder: Text(
+            _getDisplayText(selectedGender),
+            style: _getTextStyle(selectedGender, textTheme),
+          ),
+          buttonDecoration: _buildButtonDecoration(),
+          listBackgroundDecoration: _buildListDecoration(),
+          separatorWigdet: const Padding(
+            padding: EdgeInsets.symmetric(vertical: 5),
+            child: Divider(color: Colors.white38, thickness: 2),
+          ),
+          buttonPadding: const EdgeInsets.symmetric(
+            vertical: 15,
+            horizontal: 10,
+          ),
+          actionWidget: Icon(Icons.arrow_drop_down_circle_sharp, size: 23.sp),
+          listPadding: const EdgeInsets.all(15),
+          listMargin: EdgeInsets.only(left: context.screenWidth * 0.5),
+          selectedItemIcon: _buildSelectedIcon(),
+          dropDownAnimationParameters: _buildAnimationParameters(),
+          onChangeSelectedIndex: onChanged,
+        ),
+
+        Visibility(
+          visible: hasError,
+          child: const FieldErrorText(
+            errorText: AppStrings.requiredGenderField,
           ),
         ),
       ],
     );
   }
 
-  String _getDisplayText(GenderType genderType) {
-    switch (genderType) {
-      case GenderType.init:
-        return AppStrings.genderHint;
-      case GenderType.male:
-        return AppStrings.male;
-      case GenderType.female:
-        return AppStrings.female;
-    }
-  }
+  BoxDecoration _buildButtonDecoration() => BoxDecoration(
+    color: Colors.grey.shade100,
+    borderRadius: AppBorders.defaultBorderRadius,
+    border: hasError ? AppBorders.errorBorder : AppBorders.normalBorder,
+  );
 
-  List<Widget> _buildGenderItems(TextTheme textTheme) {
-    final customTextStyle = textTheme.styleInputField.copyWith(
+  BoxDecoration _buildListDecoration() => BoxDecoration(
+    borderRadius: AppBorders.defaultBorderRadius,
+    color: Colors.black87,
+    boxShadow: const [BoxShadow(color: Colors.white12, blurRadius: 4)],
+  );
+
+  String _getDisplayText(GenderType type) => type == GenderType.init
+      ? AppStrings.genderHint
+      : (type == GenderType.male ? AppStrings.male : AppStrings.female);
+
+  TextStyle _getTextStyle(GenderType type, TextTheme theme) =>
+      type == GenderType.init ? theme.hintFieldStyle : theme.styleInputField;
+
+  List<Widget> _buildGenderItems(TextTheme theme) {
+    final style = theme.styleInputField.copyWith(
       fontWeight: FontWeight.w500,
       color: Colors.white,
     );
     return [
-      Text(AppStrings.male, style: customTextStyle),
-      Text(AppStrings.female, style: customTextStyle),
+      Text(AppStrings.male, style: style),
+      Text(AppStrings.female, style: style),
     ];
   }
-
-  BoxDecoration _buildButtonDecoration() => BoxDecoration(
-    color: Colors.grey.shade100,
-    borderRadius: BorderRadius.circular(8.r),
-    border: Border.all(color: Colors.black12, width: 1.2),
-  );
-
-  BoxDecoration _buildListDecoration() => BoxDecoration(
-    borderRadius: BorderRadius.circular(10),
-    color: Colors.black87,
-    boxShadow: const [BoxShadow(color: Colors.white12, blurRadius: 4)],
-  );
 
   Widget _buildSelectedIcon() => CircleAvatar(
     radius: 10.r,
@@ -118,15 +147,9 @@ class GenderDropdownField extends StatelessWidget {
 
   SizingDropDownAnimationParameters _buildAnimationParameters() =>
       const SizingDropDownAnimationParameters(
-        duration: Duration(milliseconds: 600),
-        reversDuration: Duration(milliseconds: 300),
+        duration: AppDurations.milliseconds_600,
         curve: Curves.ease,
+        reversDuration: AppDurations.milliseconds_600,
         reverseCurve: Curves.ease,
       );
-
-  TextStyle _getTextStyle(GenderType genderType, TextTheme textTheme) {
-    return genderType == GenderType.init
-        ? textTheme.hintFieldStyle
-        : textTheme.styleInputField;
-  }
 }

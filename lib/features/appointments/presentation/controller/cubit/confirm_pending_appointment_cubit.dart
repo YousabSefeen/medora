@@ -26,24 +26,17 @@ class ConfirmPendingAppointmentCubit
   Future<void> confirmPendingAppointment({
     required BookAppointmentEntity entity,
   }) async {
-    print(
-      'ConfirmPendingAppointmentCubit.confirmPendingAppointment vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv',
-    );
+
     final response = await confirmPendingAppointmentUseCase.call(
       _confirmAppointmentParams(entity),
     );
     response.fold(
-      (failure) {
-        print(
-          'BookAppointmentCubit.createPendingAppointment ERROR: ${failure.toString()}',
-        );
-        emit(
+      (failure) => emit(
           state.copyWith(
             confirmAppointmentState: LazyRequestState.error,
             confirmAppointmentError: failure.toString(),
           ),
-        );
-      },
+        ),
       (_) {
         emit(state.copyWith(confirmAppointmentState: LazyRequestState.loaded));
       },

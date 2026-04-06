@@ -16,8 +16,8 @@ import 'package:medora/features/appointments/presentation/controller/states/book
     show BookAppointmentState;
 import 'package:medora/features/appointments/presentation/controller/states/time_slot_state.dart'
     show TimeSlotState;
-import 'package:medora/features/appointments/presentation/data/appointment_booking_data.dart'
-    show AppointmentBookingData;
+import 'package:medora/features/appointments/presentation/ui_models/appointment_booking_ui_model.dart'
+    show AppointmentBookingUIModel;
 import 'package:medora/features/appointments/presentation/screens/patient_details_screen.dart'
     show PatientDetailsScreen;
 import 'package:medora/features/appointments/presentation/widgets/custom_widgets/adaptive_action_button.dart'
@@ -84,7 +84,7 @@ class CreateAppointmentFooterActions extends StatelessWidget {
   }
 
   void _createAppointment(BuildContext context, String selectedTimeSlot) {
-    final appointmentData = AppointmentBookingData(
+    final appointmentData = AppointmentBookingUIModel(
       doctorEntity: doctor,
 
       appointmentDate: _getSelectedDate(context),

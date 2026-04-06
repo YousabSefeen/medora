@@ -147,6 +147,13 @@ extension AppTextStyles on TextTheme {
     letterSpacing: 0.5,
   );
 
+  TextStyle get errorFieldStyle => TextStyle(
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w400,
+    color: AppColors.red,
+    letterSpacing: 0.2,
+  );
+
   TextStyle get hintFieldStyle => GoogleFonts.roboto(
     fontSize: 12.sp,
     letterSpacing: 0.5,

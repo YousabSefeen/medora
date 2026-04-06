@@ -39,6 +39,7 @@ class DoctorProfileBody extends StatelessWidget {
         'controller': doctorFieldsControllers.bioController,
         'validator': doctorFieldsValidator.validateBio,
         'maxLines': 3,
+        'textHeight': 1.5,
       },
       {
         'label': AppStrings.locationLabel,
@@ -72,6 +73,7 @@ class DoctorProfileBody extends StatelessWidget {
                   controller: field['controller'],
                   validator: field['validator'],
                   maxLines: field['maxLines'] ?? 1,
+                  textHeight: field['textHeight'] ?? 0,
                   keyboardType: field['keyboardType'] ?? TextInputType.text,
                 ),
         ),

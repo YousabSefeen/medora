@@ -3,37 +3,34 @@ import 'package:flutter/material.dart' show AutovalidateMode;
 import 'package:medora/core/enum/gender_type.dart' show GenderType;
 import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_controllers.dart'
     show PatientFieldsControllers;
-import 'package:medora/features/appointments/presentation/data/appointment_booking_data.dart' show AppointmentBookingData;
-
+import 'package:medora/features/appointments/presentation/ui_models/appointment_booking_ui_model.dart'
+    show AppointmentBookingUIModel;
 
 class PatientState extends Equatable {
-  final AppointmentBookingData? appointmentBookingData;
+  final AppointmentBookingUIModel? appointmentBookingUIModel;
   final AutovalidateMode validateMode;
   final GenderType genderType;
 
   final PatientFieldsControllers? patientFieldsControllers;
 
   const PatientState({
-    this.appointmentBookingData,
+    this.appointmentBookingUIModel,
     this.validateMode = AutovalidateMode.disabled,
     this.genderType = GenderType.init,
-
     this.patientFieldsControllers,
   });
 
   PatientState copyWith({
-    AppointmentBookingData? appointmentBookingData,
+    AppointmentBookingUIModel? appointmentBookingUIModel,
     AutovalidateMode? validateMode,
-
     GenderType? genderType,
-
     PatientFieldsControllers? patientFieldsControllers,
   }) {
     return PatientState(
-      appointmentBookingData: appointmentBookingData ?? this.appointmentBookingData,
+      appointmentBookingUIModel:
+          appointmentBookingUIModel ?? this.appointmentBookingUIModel,
       validateMode: validateMode ?? this.validateMode,
       genderType: genderType ?? this.genderType,
-
       patientFieldsControllers:
           patientFieldsControllers ?? this.patientFieldsControllers,
     );
@@ -41,10 +38,9 @@ class PatientState extends Equatable {
 
   @override
   List<Object?> get props => [
-    appointmentBookingData,
+    appointmentBookingUIModel,
     validateMode,
     genderType,
-
     patientFieldsControllers,
   ];
 }
