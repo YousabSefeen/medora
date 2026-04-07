@@ -3,8 +3,8 @@ import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/features/doctor_profile/presentation/widgets/section_title.dart'
     show SectionTitle;
-import 'package:medora/features/home/presentation/widgets/view_all_specialties.dart'
-    show ViewAllSpecialties;
+import 'package:medora/features/home/presentation/widgets/see_all_specialties.dart'
+    show SeeAllSpecialties;
 
 class SpecialtiesHeader extends StatelessWidget {
   const SpecialtiesHeader({super.key});
@@ -13,12 +13,12 @@ class SpecialtiesHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return const SliverToBoxAdapter(
       child: Padding(
-        padding: EdgeInsets.only(top: 15, bottom: 5),
+        padding: EdgeInsets.only(top: 20, bottom: 7),
         child: Row(
           children: [
             SectionTitle(title: AppStrings.doctorSpecialties),
             Spacer(),
-            ViewAllSpecialties(),
+            SeeAllSpecialties(),
             SizedBox(width: 8),
           ],
         ),

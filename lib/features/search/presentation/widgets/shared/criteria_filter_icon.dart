@@ -34,7 +34,7 @@ class CriteriaFilterIcon extends StatelessWidget {
     shape: WidgetStateProperty.all(
       RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.r),
-        side: const BorderSide(color: AppColors.fieldBorderColor),
+        side: const BorderSide(color: AppColors.black26),
       ),
     ),
     minimumSize: WidgetStateProperty.all(const Size(50, 40)),

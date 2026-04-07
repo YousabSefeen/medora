@@ -26,7 +26,7 @@ class CustomFieldContainer extends StatelessWidget {
             color: AppColors.fieldFillColor,
             borderRadius: BorderRadius.circular(8.r),
             border: Border.all(
-              color: field.hasError ? Colors.red : AppColors.fieldBorderColor,
+              color: field.hasError ? Colors.red : AppColors.black26,
               width: 1.2,
             ),
           ),

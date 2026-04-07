@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   static Color fieldFillColor = Colors.grey.shade100;
-  static const Color fieldBorderColor = Colors.black26;
+  static const Color black12 = Colors.black12;
+
+  static const Color black26 = Colors.black26;
   static const Color white = Color(0xffffffff);
   static const Color grey = Colors.grey;
   static const Color black = Color(0xff000000);
   static const Color green = Color(0xff66BB6A);
-  static const Color black12 = Colors.black12;
   static const Color greenLight = Color(0xff08CB00);
   static const Color red = Color(0xffF93827);
   static const Color darkRed = Color(0xffCE1111);

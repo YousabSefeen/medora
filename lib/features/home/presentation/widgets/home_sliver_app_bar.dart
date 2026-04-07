@@ -52,8 +52,7 @@ class HomeSliverAppBar extends StatelessWidget {
     );
   }
 
-  Positioned _buildAskNowButton() {
-    return Positioned(
+  Positioned _buildAskNowButton() => Positioned(
       left: 20,
       bottom: 15,
       child: SizedBox(
@@ -75,5 +74,4 @@ class HomeSliverAppBar extends StatelessWidget {
         ),
       ),
     );
-  }
 }

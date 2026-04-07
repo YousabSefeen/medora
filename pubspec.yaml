@@ -98,5 +98,6 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/images/specialties/
     - .env
     - .env

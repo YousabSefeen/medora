@@ -92,6 +92,12 @@ class _BottomNavScreenState extends State<BottomNavScreen>
                     child: Text(BottomNavConstants.appBarTitles[state.index]),
                   ),
                 ),
+          floatingActionButton: BottomNavSearchButton(
+            isFabHidden: state.isFabHidden,
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          bottomNavigationBar: _buildAnimatedNavigationBar(state),
           body: SafeArea(
             key: const PageStorageKey<String>('bottom_nav_screen'),
             child: NotificationListener<ScrollNotification>(
@@ -99,12 +105,6 @@ class _BottomNavScreenState extends State<BottomNavScreen>
               child: _buildBody(state.index),
             ),
           ),
-          floatingActionButton: BottomNavSearchButton(
-            isFabHidden: state.isFabHidden,
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-          bottomNavigationBar: _buildAnimatedNavigationBar(state),
         );
       },
     );

@@ -112,7 +112,7 @@ class _GenderDropdownView extends StatelessWidget {
   BoxDecoration _buildButtonDecoration() => BoxDecoration(
     color: Colors.grey.shade100,
     borderRadius: AppBorders.defaultBorderRadius,
-    border: hasError ? AppBorders.errorBorder : AppBorders.normalBorder,
+    border: hasError ? AppBorders.errorBorder : AppBorders.subtleBorder,
   );
 
   BoxDecoration _buildListDecoration() => BoxDecoration(

@@ -53,8 +53,8 @@ class _SearchTextFieldState extends State<SearchTextField> {
         filled: true,
 
         suffixIcon: ClearSearchButton(onPressed: _clearSearch),
-        border: _buildBorder(AppColors.fieldBorderColor),
-        enabledBorder: _buildBorder(AppColors.fieldBorderColor),
+        border: _buildBorder(AppColors.black26),
+        enabledBorder: _buildBorder(AppColors.black26),
         focusedBorder: _buildBorder(Colors.black26),
         errorBorder: _buildBorder(Colors.red),
         errorStyle: textTheme.styleInputFieldError,

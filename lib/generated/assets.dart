@@ -3,16 +3,12 @@ class Assets {
   Assets._();
 
   static const String imagesAiDoctor = 'assets/images/ai_doctor.png';
-  static const String imagesDentistry = 'assets/images/dentistry.png';
-  static const String imagesDermatology = 'assets/images/dermatology.png';
   static const String imagesEmptyBack = 'assets/images/empty_back.png';
   static const String imagesEmptyList = 'assets/images/empty_list.json';
   static const String imagesError = 'assets/images/error.png';
   static const String imagesErrorImage = 'assets/images/errorImage.png';
   static const String imagesFamilyMedicine =
       'assets/images/family_medicine.png';
-  static const String imagesGeneralPractice =
-      'assets/images/general_practice.png';
   static const String imagesIosStyleLoading =
       'assets/images/iosStyleLoading.json';
   static const String imagesLoading = 'assets/images/loading.gif';
@@ -22,12 +18,8 @@ class Assets {
   static const String imagesMobileWalletsLogo =
       'assets/images/mobile_wallets_logo.png';
   static const String imagesNoInternet = 'assets/images/no_internet.jpeg';
-  static const String imagesObstetricsAndGynecology =
-      'assets/images/obstetrics_and_gynecology.png';
   static const String imagesOnlineCard = 'assets/images/onlineCard.jpeg';
-  static const String imagesOphthalmology = 'assets/images/ophthalmology.png';
   static const String imagesPayPal = 'assets/images/payPal.jpeg';
-  static const String imagesPediatrics = 'assets/images/pediatrics.png';
   static const String imagesStethoscope = 'assets/images/stethoscope.png';
   static const String imagesStripe = 'assets/images/stripe.jpeg';
   static const String imagesSuccess = 'assets/images/success.json';
@@ -38,4 +30,36 @@ class Assets {
       'assets/images/uploadProfileIcons.jpeg';
   static const String imagesXMarker = 'assets/images/x_marker.json';
   static const String medora = '.env';
+  static const String specialtiesCardiology =
+      'assets/images/specialties/cardiology.png';
+  static const String specialtiesDentistry =
+      'assets/images/specialties/dentistry.png';
+  static const String specialtiesDermatology =
+      'assets/images/specialties/dermatology.png';
+  static const String specialtiesEndocrinology =
+      'assets/images/specialties/endocrinology.png';
+  static const String specialtiesGastroenterology =
+      'assets/images/specialties/gastroenterology.png';
+  static const String specialtiesGeneralPractice =
+      'assets/images/specialties/general_practice.png';
+  static const String specialtiesNeurology =
+      'assets/images/specialties/neurology.png';
+  static const String specialtiesNutrition =
+      'assets/images/specialties/nutrition.png';
+  static const String specialtiesObstetricsAndGynecology =
+      'assets/images/specialties/obstetrics_and_gynecology.png';
+  static const String specialtiesOphthalmology =
+      'assets/images/specialties/ophthalmology.png';
+  static const String specialtiesOrthopedics =
+      'assets/images/specialties/orthopedics.png';
+  static const String specialtiesOtolaryngology =
+      'assets/images/specialties/otolaryngology.png';
+  static const String specialtiesPediatrics =
+      'assets/images/specialties/pediatrics.png';
+  static const String specialtiesPhysicalTherapy =
+      'assets/images/specialties/physical_therapy.png';
+  static const String specialtiesPsychiatry =
+      'assets/images/specialties/psychiatry.png';
+  static const String specialtiesUrology =
+      'assets/images/specialties/urology.png';
 }

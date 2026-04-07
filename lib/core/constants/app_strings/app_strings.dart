@@ -371,7 +371,7 @@ class AppStrings {
   static const String popularDoctors = 'Popular Doctors';
   static const String doctorSpecialties = 'Doctor Specialties';
 
-  static const String viewAll = 'View All';
+  static const String seeAll = 'See all';
   static const String specialtiesLabel = 'Specialties';
   static const String myAppointments = 'My Appointments';
   static const String myFavoriteDoctors = 'My Favorite Doctors';
@@ -382,6 +382,9 @@ class AppStrings {
 
   static const String search = 'Search';
   static const String favorite = 'Favorite';
+  static const String medicalSpecialties = 'Medical Specialties';
+
+
 }
 
 class PaymentMethod {

@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:medora/core/animations/custom_animation_route.dart'
     show CustomAnimationRoute;
+import 'package:medora/features/doctors_specialties/presentation/screens/medical_specialties_screen.dart'
+    show MedicalSpecialtiesScreen;
 import 'package:medora/features/home/presentation/screens/bottom_nav_screen.dart'
     show BottomNavScreen;
 import 'package:medora/features/payment_gateways/paypal/presentation/views/screens/paypal_payment_screen.dart'
@@ -34,6 +36,12 @@ class AppRouter {
 
       case AppRouterNames.paypalPayment:
         return _animatedRoute(settings, const PaypalPaymentScreen());
+      case AppRouterNames.medicalSpecialties:
+        return _animatedRoute(
+          settings,
+          const MedicalSpecialtiesScreen(),
+          isFadeRoute: false,
+        );
 
       default:
         return MaterialPageRoute(
@@ -44,8 +52,16 @@ class AppRouter {
     }
   }
 
-  static AnimatedRoute _animatedRoute(RouteSettings settings, Widget screen) {
-    return AnimatedRoute(builder: (_) => screen, arguments: settings.arguments);
+  static AnimatedRoute _animatedRoute(
+    RouteSettings settings,
+    Widget screen, {
+    bool isFadeRoute = true,
+  }) {
+    return AnimatedRoute(
+      builder: (_) => screen,
+      arguments: settings.arguments,
+      isFadeRoute: isFadeRoute,
+    );
   }
 
   static Future<Null> pushNamed(

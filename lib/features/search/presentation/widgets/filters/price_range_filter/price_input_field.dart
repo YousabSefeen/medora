@@ -86,9 +86,9 @@ class _PriceInputFieldState extends State<PriceInputField> {
         hintMaxLines: 1,
         fillColor: AppColors.fieldFillColor,
         filled: true,
-        border: _buildBorder(AppColors.fieldBorderColor),
-        enabledBorder: _buildBorder(AppColors.fieldBorderColor),
-        focusedBorder: _buildBorder(AppColors.fieldBorderColor),
+        border: _buildBorder(AppColors.black26),
+        enabledBorder: _buildBorder(AppColors.black26),
+        focusedBorder: _buildBorder(AppColors.black26),
       ),
     );
   }

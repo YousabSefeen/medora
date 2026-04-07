@@ -13,11 +13,11 @@ class SectionTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: GoogleFonts.poppins(
-        fontSize: 14.sp,
+      style: GoogleFonts.caladea(
+        fontSize: 16.sp,
         color: AppColors.blueShadowHeader,
         fontWeight: FontWeight.w700,
-        letterSpacing: 0.2,
+        letterSpacing: 0.5,
       ),
     );
   }

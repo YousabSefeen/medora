@@ -1,0 +1,5 @@
+
+
+enum AppViewContext { home, medicalSpecialties }
+
+

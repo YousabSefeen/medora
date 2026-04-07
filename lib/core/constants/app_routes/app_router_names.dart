@@ -14,6 +14,7 @@ class AppRouterNames {
   static const String paypalPayment = 'paypal_payment_screen';
 
   static const String doctorProfile = 'doctor_profile_screen';
+  static const String medicalSpecialties = 'medical_specialties_screen';
 
   static const String twoScreen = 'twoScreen';
 }

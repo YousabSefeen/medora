@@ -40,7 +40,7 @@ class SpecialtyItemContent extends StatelessWidget {
     color: AppColors.white,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(8.r),
-      side: const BorderSide(color: AppColors.fieldBorderColor, width: 1.2),
+      side: const BorderSide(color: AppColors.black26, width: 1.2),
     ),
   );
 

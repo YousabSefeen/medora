@@ -9,9 +9,12 @@ class AppBorders {
   static final BorderRadius defaultBorderRadius = BorderRadius.circular(
     _defaultRadius,
   );
-
-  static final Border normalBorder = Border.all(
-    color: AppColors.fieldBorderColor,
+  static final Border faintBorder = Border.all(
+    color: AppColors.black12,
+    width: _defaultBorderWidth,
+  );
+  static final Border subtleBorder = Border.all(
+    color: AppColors.black26,
     width: _defaultBorderWidth,
   );
 
@@ -23,7 +26,7 @@ class AppBorders {
   static final OutlineInputBorder inputEnabledBorder = OutlineInputBorder(
     borderRadius: defaultBorderRadius,
     borderSide: const BorderSide(
-      color: AppColors.fieldBorderColor,
+      color: AppColors.black26,
       width: _defaultBorderWidth,
     ),
   );
