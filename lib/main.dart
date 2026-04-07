@@ -212,7 +212,7 @@ class MyApp extends StatelessWidget {
             ? const BottomNavScreen()
             : const LoginScreen(),
 
-     //  home: PatientDetailsScreen(),
+
       ),
     );
   }

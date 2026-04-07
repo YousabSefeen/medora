@@ -383,8 +383,7 @@ class AppStrings {
   static const String search = 'Search';
   static const String favorite = 'Favorite';
   static const String medicalSpecialties = 'Medical Specialties';
-
-
+  static const String notifications = 'Notifications';
 }
 
 class PaymentMethod {

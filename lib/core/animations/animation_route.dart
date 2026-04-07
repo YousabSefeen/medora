@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medora/core/constants/app_duration/app_duration.dart';
 
 class AnimatedRoute extends PageRouteBuilder {
   final WidgetBuilder builder;
@@ -29,9 +30,7 @@ class AnimatedRoute extends PageRouteBuilder {
              return ScaleTransition(scale: scale, child: child);
            }
          },
-         //     transitionDuration: AppDurations.milliseconds_800,
-         transitionDuration: const Duration(milliseconds: 650),
-         //  reverseTransitionDuration: AppDurations.milliseconds_800,
-         reverseTransitionDuration: const Duration(milliseconds: 400),
+         transitionDuration: AppDurations.milliseconds_400,
+         reverseTransitionDuration: AppDurations.milliseconds_400,
        );
 }

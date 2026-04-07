@@ -79,7 +79,8 @@ class _BottomNavScreenState extends State<BottomNavScreen>
     super.build(context);
     return BlocBuilder<BottomNavCubit, BottomNavState>(
       builder: (context, state) {
-        return Scaffold(
+        return    Scaffold(
+
           extendBody: true,
           backgroundColor: AppColors.customWhite,
 
@@ -99,7 +100,6 @@ class _BottomNavScreenState extends State<BottomNavScreen>
               FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: _buildAnimatedNavigationBar(state),
           body: SafeArea(
-            key: const PageStorageKey<String>('bottom_nav_screen'),
             child: NotificationListener<ScrollNotification>(
               onNotification: _handleScrollNotification,
               child: _buildBody(state.index),

@@ -7,6 +7,8 @@ import 'package:medora/features/doctors_specialties/presentation/screens/medical
     show MedicalSpecialtiesScreen;
 import 'package:medora/features/home/presentation/screens/bottom_nav_screen.dart'
     show BottomNavScreen;
+import 'package:medora/features/notifications/presentation/screens/notifications_screen.dart'
+    show NotificationsScreen;
 import 'package:medora/features/payment_gateways/paypal/presentation/views/screens/paypal_payment_screen.dart'
     show PaypalPaymentScreen;
 
@@ -27,7 +29,8 @@ class AppRouter {
         return _animatedRoute(settings, const RegisterScreen());
       case AppRouterNames.bottomNavScreen:
         return _animatedRoute(settings, const BottomNavScreen());
-
+      case AppRouterNames.notifications:
+        return _animatedRoute(settings, const NotificationsScreen());
       case AppRouterNames.doctorProfile:
         return _animatedRoute(settings, const DoctorProfileScreen());
 
