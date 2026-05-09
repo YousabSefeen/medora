@@ -79,9 +79,8 @@ class AuthRepository extends BaseAuthRepository {
   Future<Either<Failure, void>> logout() async {
     try {
       await FirebaseAuth.instance.signOut();
-      GoogleSignIn google = GoogleSignIn();
-
-      google.disconnect();
+      final GoogleSignIn signIn = GoogleSignIn.instance;
+      signIn.disconnect();
 
       return right(null);
     } catch (e) {

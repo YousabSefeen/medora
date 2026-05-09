@@ -39,15 +39,17 @@ class AppointmentCancellationScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: _CancelAppBar(),
-      body: BlocProvider(
-        create: (context) => serviceLocator<CancelAppointmentCubit>(),
-        child: BlocListener<CancelAppointmentCubit, CancelAppointmentState>(
-          listenWhen: (prev, curr) => prev.requestState != curr.requestState,
-          listener: (context, state) =>
-              _onStateChangeListener(context, state, appointmentId),
-          child: _CancellationBody(
-            doctorId: doctorId,
-            appointmentId: appointmentId,
+      body: SafeArea(
+        child: BlocProvider(
+          create: (context) => serviceLocator<CancelAppointmentCubit>(),
+          child: BlocListener<CancelAppointmentCubit, CancelAppointmentState>(
+            listenWhen: (prev, curr) => prev.requestState != curr.requestState,
+            listener: (context, state) =>
+                _onStateChangeListener(context, state, appointmentId),
+            child: _CancellationBody(
+              doctorId: doctorId,
+              appointmentId: appointmentId,
+            ),
           ),
         ),
       ),

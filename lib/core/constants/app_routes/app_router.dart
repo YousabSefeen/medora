@@ -5,6 +5,7 @@ import 'package:medora/core/animations/custom_animation_route.dart'
     show CustomAnimationRoute;
 import 'package:medora/features/doctors_specialties/presentation/screens/medical_specialties_screen.dart'
     show MedicalSpecialtiesScreen;
+import 'package:medora/features/gemini/presentation/screens/gemini_chat_screen.dart' show GeminiChatScreen;
 import 'package:medora/features/home/presentation/screens/bottom_nav_screen.dart'
     show BottomNavScreen;
 import 'package:medora/features/notifications/presentation/screens/notifications_screen.dart'
@@ -27,6 +28,8 @@ class AppRouter {
 
       case AppRouterNames.register:
         return _animatedRoute(settings, const RegisterScreen());
+      case AppRouterNames.geminiChat:
+        return _animatedRoute( isFadeRoute: false, settings, const GeminiChatScreen());
       case AppRouterNames.bottomNavScreen:
         return _animatedRoute(settings, const BottomNavScreen());
       case AppRouterNames.notifications:

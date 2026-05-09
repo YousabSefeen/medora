@@ -2,6 +2,7 @@
 class Assets {
   Assets._();
 
+  static const String imagesFriendlyRobot = 'assets/images/friendly_robot.png';
   static const String imagesAiDoctor = 'assets/images/ai_doctor.png';
   static const String imagesEmptyBack = 'assets/images/empty_back.png';
   static const String imagesEmptyList = 'assets/images/empty_list.json';

@@ -384,6 +384,80 @@ class AppStrings {
   static const String favorite = 'Favorite';
   static const String medicalSpecialties = 'Medical Specialties';
   static const String notifications = 'Notifications';
+
+  // Gemini Chat
+  static const String medoraAiDoctor = 'Medora AI Doctor';
+
+  // System Messages
+  static const String unableToAnalyzeImage = 'لم أتمكن من تحليل محتوى الصورة';
+  static const String noResponseFromServer = 'لم يصل رد من الخادم';
+
+  // System Instructions - Arabic
+  static const String systemInstructionArabic = '''
+أنت مساعد طبي ذكي في تطبيق للأطباء. مهمتك هي تحليل شكوى المستخدم وتحديد التخصص الطبي المناسب لها.
+التخصصات المتاحة في تطبيقنا فقط هي: %s
+
+قواعد مهمة جداً:
+1. **يجب أن ترد بنفس لغة المستخدم** - المستخدم يتحدث العربية،所以要 رد بالعربية.
+2. إذا كان التخصص المناسب موجود في القائمة: "بناءً على وصفك، ننصحك بحجز موعد في تخصص (اسم التخصص)"
+3. إذا كان التخصص غير موجود: "هذا المرض يتبع تخصص (اسم التخصص)، ولكن هذا التخصص غير متاح حالياً في التطبيق"
+4. لا تقدم تشخيصاً دوائياً، فقط وجه للتخصص المناسب.
+''';
+
+  // System Instructions - English
+  static const String systemInstructionEnglish = '''
+You are a smart medical assistant in a doctor's appointment app. Your task is to analyze the user's complaint and determine the appropriate medical specialty.
+The available specialties in our app are only: %s
+
+Very important rules:
+1. **You MUST respond in the SAME LANGUAGE as the user** - The user is speaking English, so respond in English.
+2. If the appropriate specialty is in the list: "Based on your description, we recommend booking an appointment in (specialty name) department"
+3. If the specialty is not available: "This condition falls under (specialty name), but this specialty is not currently available in the app"
+4. Do not provide medical diagnosis, only guide to the appropriate specialty.
+''';
+
+  // Image Prompts
+  static const String imageAnalysisPrompt =
+      'حلل هذه الصورة وحدد التخصص الطبي المناسب للحالة الظاهرة';
+
+  // User Names
+  static const String currentUserName = 'يوساب';
+  static const String geminiAIName = 'Gemini AI';
+
+  // Error Messages
+  static const String geminiErrorMessage = 'حدث خطأ في الاتصال بـ Gemini';
+  static const String imageSelectionError = 'حدث خطأ أثناء اختيار الصورة';
+
+  // IDs
+  static const String currentUserId = 'user1';
+  static const String geminiBotId = 'gemini_bot';
+  static const String geminiChatErrorMsg = '''⚠️ **خدمة Gemini مشغولة حالياً**
+
+خوادم Google تعاني من ضغط شديد بسبب كثرة المستخدمين.
+
+🔄 **جاري حل المشكلة تلقائياً:**
+• سيتم المحاولة باستخدام نماذج بديلة
+• انتظر 30-60 ثانية ثم حاول مرة أخرى
+
+💡 **نصيحة:** الأوقات الأقل ازدحاماً تكون في الفجر أو ساعات الليل المتأخرة''';
+
+  static const String retryNow = 'Retry Now';
+
+  static const String somethingWentWrong = 'Sorry, something went wrong';
+  static const String unexpectedError = 'An unexpected error occurred, please try again.';
+  static const String close = 'Close';
+
+
+  //static const String welcomeChatMessage =  "مرحباً! أنا ميدورا",
+  //  static const String medicalAssistantSubline =
+  //        'أنا هنا لمساعدتك في فهم أعراضك الصحية وتوجيهك للتخصص الصحيح. كيف تشعر اليوم؟';
+  static const String welcomeChatMessage = "Hi! I'm Medora";
+  static const String medicalAssistantSubline =
+      'I am your smart medical assistant. Tell me how you feel, and I will guide you to the right specialty.';
+
+  // AppBar Strings
+  static const String chatAppBarTitle = 'Medora AI Health';
+
 }
 
 class PaymentMethod {

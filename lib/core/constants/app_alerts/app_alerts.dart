@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:medora/core/animations/custom_modal_type_left_sheet.dart'
     show CustomModalTypeLeftSheet;
+import 'package:medora/core/constants/app_alerts/gemini_error_dialog.dart' show GeminiErrorDialog;
 import 'package:medora/core/constants/app_alerts/no_internet_dialog.dart'
     show NoInternetDialog;
 import 'package:medora/core/constants/app_alerts/widgets/appointment_success_dialog.dart'
@@ -290,7 +291,18 @@ class AppAlerts {
     context: context,
     errorMessage: errorMessage,
   );
+  static Future<void> showGeminiErrorDialog({
+   required BuildContext context,
+  required  String errorMessage,
+    bool showCloseButtonOnly = true,
+      void Function()? onRetryNow,
 
+  }) async => await GeminiErrorDialog.showDialog(
+    context: context,
+    errorMessage: errorMessage,
+    showCloseButtonOnly: showCloseButtonOnly,
+    onRetryNow: onRetryNow,
+  );
   static Future<void> showCustomErrorDialog(
     BuildContext context,
     String errorMessage,

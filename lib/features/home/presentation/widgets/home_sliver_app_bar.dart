@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medora/core/constants/app_routes/app_router.dart'
+    show AppRouter;
+import 'package:medora/core/constants/app_routes/app_router_names.dart'
+    show AppRouterNames;
 import 'package:medora/core/constants/app_strings/app_strings.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/features/home/presentation/constants/home_constants.dart'
@@ -37,14 +41,13 @@ class HomeSliverAppBar extends StatelessWidget {
             top: 15.h + kToolbarHeight,
             right: 10,
             left: 10,
-
           ),
           child: Stack(
             alignment: Alignment.center,
             fit: StackFit.expand,
             children: [
               Image.asset(Assets.imagesAiDoctor, fit: BoxFit.fill),
-              _buildAskNowButton(),
+              _buildAskNowButton(context),
             ],
           ),
         ),
@@ -52,26 +55,27 @@ class HomeSliverAppBar extends StatelessWidget {
     );
   }
 
-  Positioned _buildAskNowButton() => Positioned(
-      left: 20,
-      bottom: 15,
-      child: SizedBox(
-        height: 30,
-        child: ElevatedButton(
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(AppColors.lightBlue),
-            overlayColor: WidgetStateProperty.all(AppColors.grey),
-            foregroundColor: WidgetStateProperty.all(AppColors.white),
-            shape: WidgetStateProperty.all(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(200),
-                side: const BorderSide(color: Colors.white60, width: 1.5),
-              ),
+  Positioned _buildAskNowButton(BuildContext context) => Positioned(
+    left: 20,
+    bottom: 15,
+    child: SizedBox(
+      height: 30,
+      child: ElevatedButton(
+        style: ButtonStyle(
+          backgroundColor: WidgetStateProperty.all(AppColors.lightBlue),
+          overlayColor: WidgetStateProperty.all(AppColors.grey),
+          foregroundColor: WidgetStateProperty.all(AppColors.white),
+          shape: WidgetStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(200),
+              side: const BorderSide(color: Colors.white60, width: 1.5),
             ),
           ),
-          onPressed: () {},
-          child: const Text(AppStrings.askNow),
         ),
+        onPressed: () =>
+            AppRouter.pushNamed(context, AppRouterNames.geminiChat),
+        child: const Text(AppStrings.askNow),
       ),
-    );
+    ),
+  );
 }

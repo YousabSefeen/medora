@@ -2,6 +2,8 @@ class AppRouterNames {
   static const String login = 'login_screen';
 
   static const String register = 'register_screen';
+  static const String geminiChat = 'gemini_chat';
+
   static const String bottomNavScreen = 'BottomNavScreen';
   static const String emailVerification = 'EmailVerificationScreen';
 
@@ -18,5 +20,6 @@ class AppRouterNames {
   static const String notifications = 'notifications_screen';
 
   static const String twoScreen = 'twoScreen';
+
 
 }

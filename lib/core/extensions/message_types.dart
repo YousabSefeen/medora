@@ -1,0 +1,1 @@
+enum MessageTypes { text, textWithImage }

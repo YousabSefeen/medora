@@ -3,7 +3,7 @@ import 'package:medora/core/extensions/media_query_extension.dart';
 import 'package:medora/features/doctors_specialties/data/models/medical_specialty.dart'
     show MedicalSpecialty;
 import 'package:medora/features/doctors_specialties/presentation/widgets/specialty_card_item.dart'
-    show SpecialtyCard, SpecialtyCardItem;
+    show SpecialtyCardItem;
 import 'package:medora/generated/assets.dart' show Assets;
 
 class DoctorSpecialtiesSection extends StatelessWidget {

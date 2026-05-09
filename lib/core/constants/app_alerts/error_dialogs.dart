@@ -69,7 +69,7 @@ class ErrorDialogs {
       constraints: const BoxConstraints(minHeight: 130),
       child: RichText(
         text: TextSpan(
-          text: 'Error Message: ',
+          text: AppStrings.errorMessageLabel,
           style: TextStyle(
             fontSize: 15.sp,
             fontWeight: FontWeight.w600,
@@ -78,7 +78,7 @@ class ErrorDialogs {
           children: [
             TextSpan(
               text: errorMessage == ''
-                  ? 'The error was not caught in the catch case'
+                  ? AppStrings.unexpectedError
                   : errorMessage,
               style: TextStyle(
                 fontSize: 14.sp,

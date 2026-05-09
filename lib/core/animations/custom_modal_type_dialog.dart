@@ -6,6 +6,7 @@ class MyCustomModalTypeDialog extends WoltModalType {
 
   MyCustomModalTypeDialog({this.defaultMaxWidth = 0.8})
     : super(
+
         showDragHandle: false,
         transitionDuration: const Duration(milliseconds: 1500),
         reverseTransitionDuration: const Duration(milliseconds: 400),

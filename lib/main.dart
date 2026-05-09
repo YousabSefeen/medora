@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' show dotenv;
+import 'package:flutter_rating_bar/flutter_rating_bar.dart' show RatingBar;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart'
@@ -17,7 +18,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:medora/core/app_settings/controller/cubit/app_settings_cubit.dart'
     show AppSettingsCubit;
 import 'package:medora/core/constants/app_alerts/app_alerts.dart';
-import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/enum/internet_state.dart' show InternetState;
 import 'package:medora/features/appointments/presentation/controller/cubit/book_appointment_cubit.dart'
     show BookAppointmentCubit;
@@ -37,7 +37,6 @@ import 'package:medora/features/appointments/presentation/controller/cubit/time_
     show TimeSlotCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/upcoming_appointments_cubit.dart'
     show UpcomingAppointmentsCubit;
-import 'package:medora/features/appointments/presentation/screens/patient_details_screen.dart' show PatientDetailsScreen;
 import 'package:medora/features/auth/presentation/controller/cubit/login_cubit.dart'
     show LoginCubit;
 import 'package:medora/features/auth/presentation/screens/login_screen.dart'
@@ -55,7 +54,6 @@ import 'package:medora/features/payment_gateways/presentation/controller/cubit/p
     show PaymentCubit;
 import 'package:medora/features/payment_gateways/stripe/presentation/View/Screens/stripe_payment_screen.dart'
     show StripePaymentScreen;
-import 'package:medora/features/payment_gateways/transaction_process_states/payment_success/widgets/doctor_info.dart' show DoctorInfo;
 import 'package:medora/features/search/presentation/controller/cubit/home_doctor_search_cubit.dart'
     show HomeDoctorSearchCubit;
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
@@ -155,9 +153,9 @@ void main() async {
           create: (context) => serviceLocator<PaymentCubit>(),
         ),
 
-      /*  BlocProvider<CancelAppointmentCubit>(
+        BlocProvider<CancelAppointmentCubit>(
           create: (context) => serviceLocator<CancelAppointmentCubit>(),
-        ),*/
+        ),
 
         BlocProvider<RescheduleAppointmentCubit>(
           create: (context) => serviceLocator<RescheduleAppointmentCubit>(),
@@ -211,8 +209,7 @@ class MyApp extends StatelessWidget {
         home: FirebaseAuth.instance.currentUser?.uid != null
             ? const BottomNavScreen()
             : const LoginScreen(),
-
-
+        // home:   const GeminiChatScreenTwo(),
       ),
     );
   }
@@ -237,29 +234,26 @@ class FuckHome extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text('Fuck Home')),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.of(
-              MyApp.navigatorKey.currentState!.context,
-            ).push(MaterialPageRoute(builder: (_) => NewPage()));
-          },
-          child: Text('data'),
-        ),
-        /*       child:RatingBar.builder(
+        // child: ElevatedButton(
+        //   onPressed: () {
+        //     Navigator.of(
+        //       MyApp.navigatorKey.currentState!.context,
+        //     ).push(MaterialPageRoute(builder: (_) => NewPage()));
+        //   },
+        //   child: Text('data'),
+        // ),
+        child: RatingBar.builder(
           initialRating: 3,
           minRating: 1,
           direction: Axis.horizontal,
           allowHalfRating: true,
           itemCount: 5,
           itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-          itemBuilder: (context, _) => Icon(
-            Icons.star,
-            color: Colors.amber,
-          ),
+          itemBuilder: (context, _) => Icon(Icons.star, color: Colors.amber),
           onRatingUpdate: (rating) {
             print(rating);
           },
-        ),*/
+        ),
       ),
     );
   }
@@ -374,63 +368,6 @@ class TwoScreen extends StatelessWidget {
 
   void backFunc(BuildContext context) {
     //   AppRouter.pushNamedAndRemoveUntil(context, AppRouterNames.doctorListView);
-  }
-}
-
-class PPPPP extends StatelessWidget {
-  const PPPPP({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('data')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          spacing: 30,
-          children: [
-            ElevatedButton(
-              onPressed: () async {
-                final paypalTransaction = [
-                  {
-                    'amount': {'currency': 'USD', 'total': '10.00'},
-                    'description': 'Test Payment for Product X',
-                    'item_list': {
-                      'items': [
-                        {
-                          'name': 'Product X',
-                          'quantity': '1',
-                          'price': '10.00',
-                          'currency': 'USD',
-                        },
-                      ],
-                    },
-                  },
-                ];
-
-                //     context.read<PaypalPaymentCubit>().processPaypalPayment(paypalTransactionModel: paypalTransactionModel);
-
-                /*   PaypalServices paypalServices =
-                      PaypalServices(apiServices: serviceLocator());
-                  final token = await paypalServices.fetchAccessToken();
-                  final PaypalPaymentResponseModel url = await paypalServices.createPaypalPayment(
-                      paypalTransaction: PaypalTransactionModel(
-                        intent: 'sale',
-                        transactions: paypalTransaction,
-                        // هنا يجب توفير returnUrl و cancelUrl بشكل منفصل
-                        returnUrl: 'https://example.com/success', // استخدم رابط النجاح الخاص بك
-                        cancelUrl: 'https://example.com/cancel', // استخدم رابط الإلغاء الخاص بك
-                      ),
-                      accessToken: token);
-                  print('PPPPP.build  executeUrl ${url.executeUrl}');
-                  print('PPPPP.build  approvalUrl ${url.approvalUrl}');*/
-              },
-              child: Text('xxxxxxx'),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }
 

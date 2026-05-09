@@ -2,7 +2,7 @@ class PaymobErrorHandler {
   static String getErrorMessage(String? rawMessage) {
     print(rawMessage); //Invalid card number
     if (rawMessage == null || rawMessage.isEmpty) {
-      return "An unknown error occurred. Please try again.";
+      return 'An unknown error occurred. Please try again.';
     }
 
     // Decode the message

@@ -239,4 +239,18 @@ extension AppTextStyles on TextTheme {
     letterSpacing: 1,
     fontWeight: FontWeight.w500,
   );
+  TextStyle get arabicStyle => GoogleFonts.cairo(
+  wordSpacing: 1.2,
+  fontSize: 16.sp,
+  color: Colors.black,
+  fontWeight: FontWeight.w500,
+  height: 1.5,
+  );
+
+  TextStyle get linkTextStyle => TextStyle(
+    fontSize: 18.sp,
+    color: AppColors.lightBlue,
+    fontWeight: FontWeight.bold,
+    decoration: TextDecoration.none,
+  );
 }
