@@ -70,8 +70,7 @@ class CustomChat extends StatelessWidget {
     );
   }
 
-  Padding _buildEmptyChatListBuilder(BuildContext context) => Padding(
-    padding: EdgeInsets.only(top: context.screenHeight * 0.15),
+  Center _buildEmptyChatListBuilder(BuildContext context) => Center(
     child: SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -99,6 +98,7 @@ class CustomChat extends StatelessWidget {
               ),
             ),
           ),
+          SizedBox(height: context.screenHeight * 0.15),
         ],
       ),
     ),

@@ -6,8 +6,12 @@ import 'package:flutter_chat_core/flutter_chat_core.dart' as types;
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:image_picker/image_picker.dart'
     show XFile, ImagePicker, ImageSource;
+import 'package:medora/core/constants/app_routes/app_router.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
+import 'package:medora/core/mappers/specialty_mapper.dart' show SpecialtyMapper;
 import 'package:medora/core/utils/language_detector.dart' show LanguageDetector;
+import 'package:medora/features/doctors_specialties/presentation/screens/specialty_doctors_screen.dart'
+    show SpecialtyDoctorsScreen;
 import 'package:medora/features/gemini/presentation/controllers/cubit/google_gemini_cubit.dart'
     show GoogleGeminiCubit;
 import 'package:medora/features/gemini/presentation/widgets/custom_chat.dart';
@@ -157,20 +161,30 @@ class _GeminiChatScreenState extends State<GeminiChatScreen> {
   /// لعرضها كمعاينة قبل الإرسال النهائي.
   Future<void> _pickImage(BuildContext context, ImageSource source) async {
     final XFile? image = await _picker.pickImage(source: source);
-    if (image != null) {
-      if (mounted) context.read<GoogleGeminiCubit>().setSourceImage(image.path);
+    if (context.mounted && image != null) {
+      context.read<GoogleGeminiCubit>().setSourceImage(image.path);
     }
   }
 
   // دالة المنطق بداخل GeminiChatScreen
   void _handleSpecialtyNavigation(BuildContext context, String? href) {
-    if (href == null || !href.startsWith('specialty://')) return;
+    if (href == null || !href.startsWith('specialty://')){
+      log('Invalid specialty link: $href');
+      return;
+    }
+    log(' Success specialty link: $href');
 
     final idString = href.replaceFirst('specialty://', '');
     final specialtyId = int.tryParse(idString);
 
     if (specialtyId != null && specialtyId > 0) {
-      log('Navigating to specialty ID: $specialtyId');
+      log('specialtyId: $specialtyId');
+      final specialtyName = SpecialtyMapper.getEnglishName(specialtyId);
+      log('specialtyName: $specialtyName');
+      AppRouter.push(
+        context,
+        SpecialtyDoctorsScreen(specialtyName: specialtyName),
+      );
       // هنا يمكنك وضع Navigator.push أو أي منطق أعمال آخر
     }
   }
