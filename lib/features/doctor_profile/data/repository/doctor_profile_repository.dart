@@ -14,10 +14,10 @@ class DoctorProfileRepository extends DoctorProfileRepositoryBase {
   ) async {
     try {
       final uid = FirebaseAuth.instance.currentUser!.uid;
-      await FirebaseFirestore.instance
-          .collection('doctors')
-          .doc(uid)
-          .set(doctorProfile.toJson());
+      await FirebaseFirestore.instance.collection('doctors').doc(uid).set({
+        ...doctorProfile.toJson(),
+        'createdAt': FieldValue.serverTimestamp(),
+      });
       return right(null);
     } catch (e) {
       print('_saveUserDataToFirestore $e');
