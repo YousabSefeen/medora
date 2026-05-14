@@ -118,6 +118,7 @@ class _FlexibleAppBarContent extends StatelessWidget {
     heroTag: heroTag,
     imageUrl: imageUrl,
     width: double.infinity,
+    alignment: Alignment.topCenter,
   );
 
   Builder _buildDoctorName(String doctorName) => Builder(

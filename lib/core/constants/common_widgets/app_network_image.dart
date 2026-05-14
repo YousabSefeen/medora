@@ -11,6 +11,7 @@ class AppNetworkImage extends StatelessWidget {
   final double? width;
   final double? height;
   final double? imageRadius;
+  final Alignment?   alignment;
 
   const AppNetworkImage({
     super.key,
@@ -19,6 +20,7 @@ class AppNetworkImage extends StatelessWidget {
     this.width,
     this.height,
     this.imageRadius = 0,
+    this.alignment=Alignment.center,
   });
 
   @override
@@ -28,6 +30,7 @@ class AppNetworkImage extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(imageRadius!),
         child: CachedNetworkImage(
+          alignment: alignment!,
           imageUrl: imageUrl,
           fit: BoxFit.cover,
           width: width,
