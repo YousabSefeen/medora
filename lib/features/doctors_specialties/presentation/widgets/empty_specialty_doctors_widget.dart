@@ -13,11 +13,8 @@ class EmptySpecialtyDoctorsWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              Assets.imagesStethoscope,
-              height: MediaQuery.sizeOf(context).height * 0.35,
-              fit: BoxFit.cover,
-            ),
+
+            Assets.images.stethoscope.image(fit: BoxFit.cover,   height: MediaQuery.sizeOf(context).height * 0.35,),
             const SizedBox(height: 16),
             Text(
               'No $specialtyName Doctors Yet',

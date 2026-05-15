@@ -7,7 +7,8 @@ import 'package:medora/features/payment_gateways/paymob/transaction_process_stat
     show PaymobTransactionDataResultModel;
 
 import '../../../../../../../../../../../../generated/assets.dart';
-import '../../../../../../Presentation/Views/widgets/custom _image_widget.dart';
+import '../../../../../../presentation/views/widgets/payment_method_icon.dart' show PaymentMethodIcon;
+
 
 class PaymobPaymentMethodInfo extends StatelessWidget {
   final PaymobTransactionDataResultModel transactionData;
@@ -56,10 +57,13 @@ class PaymobPaymentMethodInfo extends StatelessWidget {
   }
 
   Widget _getPaymentMethodIcon() {
-    if (transactionData.sourceSubType == 'wallet') {
-      return const CustomImageWidget(image: Assets.imagesMobileWalletsLogo);
-    } else {
-      return const CustomImageWidget(image: Assets.imagesMasterCard);
-    }
+    // 1. تحديد الصورة بناءً على الشرط
+    final isWallet = transactionData.sourceSubType == 'wallet';
+    final imageProvider = isWallet
+        ? Assets.images.mobileWalletsLogo.provider()
+        : Assets.images.masterCard.provider();
+
+    // 2. إرجاع الـ Widget الموحدة
+    return PaymentMethodIcon(imageProvider: imageProvider);
   }
 }

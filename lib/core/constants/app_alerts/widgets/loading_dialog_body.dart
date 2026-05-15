@@ -2,7 +2,6 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lottie/lottie.dart';
 import 'package:medora/generated/assets.dart' show Assets;
 
 class LoadingDialogBody extends StatelessWidget {
@@ -20,8 +19,7 @@ class LoadingDialogBody extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
           ),
           padding: const EdgeInsets.all(5),
-          child: Lottie.asset(
-            Assets.imagesIosStyleLoading,
+          child: Assets.lottie.iosLoadingLottie.lottie(
             fit: BoxFit.fill,
             height: 160,
             width: 150,

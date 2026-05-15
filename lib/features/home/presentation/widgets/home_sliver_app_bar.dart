@@ -46,7 +46,8 @@ class HomeSliverAppBar extends StatelessWidget {
             alignment: Alignment.center,
             fit: StackFit.expand,
             children: [
-              Image.asset(Assets.imagesAiDoctor, fit: BoxFit.fill),
+            Assets.images.doctorAI.image(fit: BoxFit.fill),
+
               _buildAskNowButton(context),
             ],
           ),

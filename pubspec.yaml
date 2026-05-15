@@ -109,6 +109,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/lottie/
     - assets/images/specialties/
     - .env
     - .env

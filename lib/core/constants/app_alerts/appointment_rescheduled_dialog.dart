@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:lottie/lottie.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
-import 'package:medora/features/appointments/presentation/ui_models/appointment_reschedule_ui_model.dart' show AppointmentRescheduleUIModel;
-
+import 'package:medora/core/extensions/lottie_string_asset_ext.dart'
+    show LottieStringAssetExtension;
+import 'package:medora/features/appointments/presentation/ui_models/appointment_reschedule_ui_model.dart'
+    show AppointmentRescheduleUIModel;
 import 'package:medora/features/appointments/presentation/widgets/icon_with_text.dart'
     show IconWithText;
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
@@ -33,7 +34,7 @@ class AppointmentRescheduledDialog {
 
   static WoltModalSheetPage _buildSuccessModalPage(
     BuildContext context,
-      AppointmentRescheduleUIModel appointmentReschedule,
+    AppointmentRescheduleUIModel appointmentReschedule,
   ) {
     return WoltModalSheetPage(
       backgroundColor: Colors.white,
@@ -61,8 +62,7 @@ class AppointmentRescheduledDialog {
   static Widget _buildSuccessAnimation() {
     return Material(
       color: Colors.white,
-      child: Lottie.asset(
-        Assets.imagesSuccessIcon,
+      child: Assets.lottie.successLottie.lottie(
         fit: BoxFit.fill,
         height: 100.h,
       ),
@@ -106,7 +106,7 @@ class AppointmentRescheduledDialog {
 
   static Widget _buildAppointmentComparison(
     BuildContext context,
-      AppointmentRescheduleUIModel appointmentReschedule,
+    AppointmentRescheduleUIModel appointmentReschedule,
   ) {
     final textTheme = Theme.of(context).textTheme;
     final oldAppointmentStyle = _getOldAppointmentStyle(textTheme);

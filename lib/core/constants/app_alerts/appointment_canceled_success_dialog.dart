@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lottie/lottie.dart';
 import 'package:medora/core/constants/app_routes/app_router.dart'
     show AppRouter;
+import 'package:medora/core/extensions/lottie_string_asset_ext.dart'
+    show LottieStringAssetExtension;
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 import '../../../generated/assets.dart';
@@ -47,8 +48,8 @@ class AppointmentCanceledSuccessDialog {
   static Widget _buildSuccessAnimation() {
     return Material(
       color: Colors.white,
-      child: Lottie.asset(
-        Assets.imagesSuccessIcon,
+
+      child: Assets.lottie.successIconLottie.lottie(
         fit: BoxFit.fill,
         height: 100.h,
       ),

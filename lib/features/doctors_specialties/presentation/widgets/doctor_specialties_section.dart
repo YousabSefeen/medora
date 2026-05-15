@@ -32,58 +32,58 @@ abstract class MedicalSpecialtyData {
   static final List<MedicalSpecialty> specialties = [
     // 1. التخصصات الأكثر طلباً (Primary Care & Most Common)
     MedicalSpecialty(
-      image: Assets.specialtiesGeneralPractice,
+      image: Assets.images.specialties.generalPractice.path,
       name: 'General Practice',
     ),
     // طبيب عام/أسرة
-    MedicalSpecialty(image: Assets.specialtiesDentistry, name: 'Dentistry'),
+    MedicalSpecialty(image:  Assets.images.specialties.dentistry.path, name: 'Dentistry'),
     // أسنان
-    MedicalSpecialty(image: Assets.specialtiesPediatrics, name: 'Pediatrics'),
+    MedicalSpecialty(image: Assets.images.specialties.pediatrics.path,  name: 'Pediatrics'),
     // أطفال
-    MedicalSpecialty(image: Assets.specialtiesDermatology, name: 'Dermatology'),
+    MedicalSpecialty(image:  Assets.images.specialties.dermatology.path, name: 'Dermatology'),
     // جلدية
     MedicalSpecialty(
-      image: Assets.specialtiesObstetricsAndGynecology,
+      image:  Assets.images.specialties.obstetricsAndGynecology.path,
       name: 'Obstetrics and Gynecology',
     ),
     // نساء وتوليد
 
     // 2. تخصصات متوسطة الطلب (Popular Specialties)
     MedicalSpecialty(
-      image: Assets.specialtiesOphthalmology,
+      image:  Assets.images.specialties.ophthalmology.path,
       name: 'Ophthalmology',
     ),
     // رمد/عيون
-    MedicalSpecialty(image: Assets.specialtiesOrthopedics, name: 'Orthopedics'),
+    MedicalSpecialty(image:  Assets.images.specialties.orthopedics.path, name: 'Orthopedics'),
     // عظام
-    MedicalSpecialty(image: Assets.specialtiesOtolaryngology, name: 'ENT'),
+    MedicalSpecialty(image:  Assets.images.specialties.otolaryngology.path, name: 'ENT'),
     // أنف وأذن وحنجرة
-    MedicalSpecialty(image: Assets.specialtiesCardiology, name: 'Cardiology'),
+    MedicalSpecialty(image:  Assets.images.specialties.cardiology.path, name: 'Cardiology'),
     // قلب
 
     // 3. تخصصات محددة (Specific & Long-term Care)
-    MedicalSpecialty(image: Assets.specialtiesPsychiatry, name: 'Psychiatry'),
+    MedicalSpecialty(image:  Assets.images.specialties.psychiatry.path, name: 'Psychiatry'),
     // طب نفسي
-    MedicalSpecialty(image: Assets.specialtiesNeurology, name: 'Neurology'),
+    MedicalSpecialty(image: Assets.images.specialties.neurology.path, name: 'Neurology'),
     // مخ وأعصاب
     MedicalSpecialty(
-      image: Assets.specialtiesGastroenterology,
+      image: Assets.images.specialties.gastroenterology.path,
       name: 'Gastroenterology',
     ),
     // جهاز هضمي
     MedicalSpecialty(
-      image: Assets.specialtiesEndocrinology,
+      image:  Assets.images.specialties.endocrinology.path,
       name: 'Endocrinology',
     ),
     // غدد وسكري
-    MedicalSpecialty(image: Assets.specialtiesUrology, name: 'Urology'),
+    MedicalSpecialty(image:  Assets.images.specialties.urology.path, name: 'Urology'),
     // مسالك بولية
     MedicalSpecialty(
-      image: Assets.specialtiesPhysicalTherapy,
+      image:  Assets.images.specialties.physicalTherapy.path,
       name: 'Physical Therapy',
     ),
     // علاج طبيعي
-    MedicalSpecialty(image: Assets.specialtiesNutrition, name: 'Nutrition'),
+    MedicalSpecialty(image:  Assets.images.specialties.nutrition.path,   name: 'Nutrition'),
     // تغذية
   ];
 }

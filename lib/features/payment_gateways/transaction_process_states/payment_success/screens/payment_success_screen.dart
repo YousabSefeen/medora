@@ -58,6 +58,8 @@ class PaymentSuccessScreen extends StatelessWidget {
         child: Scaffold(
           backgroundColor: AppColors.lightPeriwinkle,
           floatingActionButton: const PaymentSuccessFABSection(),
+          floatingActionButtonLocation:
+          FloatingActionButtonLocation.centerFloat,
           body: SafeArea(
             child:
                 BlocBuilder<

@@ -9,8 +9,8 @@ import 'package:medora/core/enum/payment_gateways_types.dart'
 import 'package:medora/features/payment_gateways/presentation/views/widgets/phone_number_field.dart'
     show PhoneNumberField;
 
-import 'custom _image_widget.dart';
 import 'custom_animation_widget.dart';
+import 'payment_method_icon.dart';
 
 class PaymentMethodCard extends StatelessWidget {
   final TextEditingController? phoneNumberController;
@@ -50,7 +50,9 @@ class PaymentMethodCard extends StatelessWidget {
               horizontal: 10,
               vertical: 5,
             ),
-            secondary: CustomImageWidget(image: paymentMethod.logo),
+            secondary: PaymentMethodIcon(
+              imageProvider: paymentMethod.imageProvider,
+            ),
             activeColor: Colors.white,
             splashRadius: 20,
             title: _buildPaymentTitle(),

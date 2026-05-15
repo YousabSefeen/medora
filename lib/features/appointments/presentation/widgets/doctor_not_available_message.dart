@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
+import 'package:medora/core/extensions/lottie_string_asset_ext.dart'
+    show LottieStringAssetExtension;
 import 'package:medora/core/extensions/media_query_extension.dart';
 import 'package:medora/features/shared/presentation/widgets/custom_rich_text.dart'
     show CustomRichText;
@@ -34,7 +35,7 @@ class DoctorNotAvailableMessage extends StatelessWidget {
   Widget _buildLottieAnimation() {
     return Expanded(
       child: Container(
-        child: Lottie.asset(Assets.imagesXMarker, fit: BoxFit.fill),
+        child: Assets.lottie.xMarkerLottie.lottie(fit: BoxFit.fill),
       ),
     );
   }

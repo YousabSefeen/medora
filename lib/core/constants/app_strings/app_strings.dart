@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart' show ImageProvider;
 import 'package:medora/core/enum/payment_gateways_types.dart'
     show PaymentGatewaysTypes;
 
@@ -291,25 +292,25 @@ class AppStrings {
       value: PaymentGatewaysTypes.paymobCard,
       name: onlineCard,
       subtitle: 'Visa - MasterCard - Meeza',
-      logo: Assets.imagesOnlineCard,
+      imageProvider: Assets.images.onlineCard.provider(),
     ),
     PaymentMethod(
       value: PaymentGatewaysTypes.paymobMobileWallets,
       name: mobileWallets,
       subtitle: '',
-      logo: Assets.imagesMobileWalletsLogo,
+      imageProvider: Assets.images.mobileWalletsLogo.provider(),
     ),
     PaymentMethod(
       value: PaymentGatewaysTypes.stripe,
       name: stripe,
       subtitle: 'Visa - MasterCard - American Express',
-      logo: Assets.imagesStripe,
+      imageProvider: Assets.images.stripe.provider(),
     ),
     PaymentMethod(
       value: PaymentGatewaysTypes.payPal,
       name: payPal,
       subtitle: '',
-      logo: Assets.imagesPayPal,
+      imageProvider: Assets.images.payPal.provider(),
     ),
   ];
 
@@ -464,12 +465,12 @@ class PaymentMethod {
   final PaymentGatewaysTypes value;
   final String name;
   final String subtitle;
-  final String logo;
+  final ImageProvider imageProvider  ;
 
   PaymentMethod({
     required this.value,
     required this.name,
     required this.subtitle,
-    required this.logo,
+    required this.imageProvider,
   });
 }

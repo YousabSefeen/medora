@@ -75,7 +75,8 @@ class CustomChat extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(Assets.imagesFriendlyRobot, width: 0.6.sw),
+          Assets.images.friendlyRobot.image( width: 0.6.sw),
+
           SizedBox(height: 20.h),
           Text(
             AppStrings.welcomeChatMessage,

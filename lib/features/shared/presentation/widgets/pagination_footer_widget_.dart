@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart' show Lottie;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/generated/assets.dart' show Assets;
 
@@ -42,8 +41,7 @@ class PaginationFooterWidget extends StatelessWidget {
   );
 
   Center _buildLoadingMoreIndicator() => Center(
-    child: Lottie.asset(
-      Assets.imagesIosStyleLoading,
+    child: Assets.lottie.iosLoadingLottie.lottie(
       fit: BoxFit.fill,
       height: 100,
       width: 100,

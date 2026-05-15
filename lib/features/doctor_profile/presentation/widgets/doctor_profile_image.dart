@@ -61,7 +61,8 @@ class _DoctorProfileImageState extends State<DoctorProfileImage> {
               radius: 50.r,
               backgroundColor: Colors.grey.shade400,
               backgroundImage: fakeImageUrl == null
-                  ? const AssetImage(Assets.imagesUploadProfileIcons)
+             //     ? const AssetImage(Assets.imagesUploadProfileIcons)
+                  ?    Assets.images.uploadProfileIcons.provider()
                   : NetworkImage(fakeImageUrl!),
             ),
           )

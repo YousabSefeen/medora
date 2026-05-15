@@ -40,8 +40,7 @@ class _WelcomeImage extends StatelessWidget {
       height: 150.h,
       child: Padding(
         padding: const EdgeInsets.only(top: 20),
-        child: Image.asset(
-          Assets.imagesStethoscope,
+        child: Assets.images.stethoscope.image(
           height: double.infinity,
           fit: BoxFit.cover,
         ),

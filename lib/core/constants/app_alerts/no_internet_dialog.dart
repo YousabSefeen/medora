@@ -40,8 +40,8 @@ class NoInternetDialog {
     width: double.infinity,
     decoration: BoxDecoration(
       border: Border.all(color: Colors.white),
-      image: const DecorationImage(
-        image: AssetImage(Assets.imagesNoInternet),
+      image: DecorationImage(
+        image: Assets.images.noInternet.provider(),
         fit: BoxFit.scaleDown,
       ),
     ),
