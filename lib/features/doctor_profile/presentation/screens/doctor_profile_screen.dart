@@ -22,7 +22,6 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
   late final DoctorFieldsControllers doctorFieldsControllers;
 
   late final DoctorFieldsValidator doctorFieldsValidator;
-  final _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -34,7 +33,6 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
   @override
   void dispose() {
     doctorFieldsControllers.dispose();
-    _scrollController.dispose();
     super.dispose();
   }
 
@@ -43,23 +41,21 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(title: const Text(AppStrings.doctorProfileTitle)),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        controller: _scrollController,
-        child: BlocProvider<DoctorProfileCubit>(
-         create: (context)=>serviceLocator<DoctorProfileCubit>(),
-          child: BlocSelector<DoctorProfileCubit, DoctorProfileState, bool>(
-            selector: (state) => state.hasValidatedBefore,
+      body: BlocProvider<DoctorProfileCubit>(
+        create: (context) => serviceLocator<DoctorProfileCubit>(),
+        child: BlocSelector<DoctorProfileCubit, DoctorProfileState, bool>(
+          selector: (state) => state.hasValidatedBefore,
 
-            builder: (context, hasValidatedBefore) => Form(
-              key: doctorFieldsControllers.formKey,
-              autovalidateMode: hasValidatedBefore
-                  ? AutovalidateMode.always
-                  : AutovalidateMode.disabled,
-              child: DoctorProfileBody(
-                doctorFieldsControllers: doctorFieldsControllers,
-                doctorFieldsValidator: doctorFieldsValidator,
-              ),
+          builder: (context, hasValidatedBefore) => Form(
+            key: doctorFieldsControllers.formKey,
+            autovalidateMode: hasValidatedBefore
+                ? AutovalidateMode.always
+                : AutovalidateMode.disabled,
+            child: DoctorProfileBody(
+              // doctorFieldsControllers: doctorFieldsControllers,
+              // doctorFieldsValidator: doctorFieldsValidator,
+              controllers: doctorFieldsControllers,
+              validator: doctorFieldsValidator,
             ),
           ),
         ),
