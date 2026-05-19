@@ -2,6 +2,13 @@ import 'package:medora/features/doctor_profile/presentation/controller/form_cont
     show DoctorFieldsControllers;
 
 abstract class IDoctorProfileManager {
+  // Profile photo methods
+  void toggleChangePhotoExpanded();
+
+  void updatePickedImagePath(String path);
+
+  void updateOriginalImagePath(String path);
+
   // Medical specialties methods
   void toggleMedicalSpecialties(String specialty);
 

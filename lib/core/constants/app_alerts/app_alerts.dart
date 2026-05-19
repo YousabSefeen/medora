@@ -82,13 +82,15 @@ class AppAlerts {
     IconData? icon,
     required String msg,
     required Color backgroundColor,
+    Duration  displayDuration=const Duration(seconds: 2),
+    EdgeInsetsGeometry padding = const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
   }) {
     showTopSnackBar(
       padding: EdgeInsets.zero,
-      displayDuration: const Duration(seconds: 2),
+      displayDuration: displayDuration,
       Overlay.of(context),
       CustomSnackBar.show(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        padding:padding ,
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(10),

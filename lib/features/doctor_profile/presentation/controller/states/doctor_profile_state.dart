@@ -4,6 +4,12 @@ import 'package:medora/core/constants/app_strings/app_strings.dart'
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 
 class DoctorProfileState extends Equatable {
+  // Profile photo variables
+  final bool isChangePhotoExpanded;
+
+  final String pickedImagePath;
+  final String originalImagePath;
+
   // Medical specialties variables
   final List<String> selectedSpecialtiesTempList;
   final List<String> confirmedSpecialties;
@@ -27,6 +33,9 @@ class DoctorProfileState extends Equatable {
   final LazyRequestState doctorProfileState;
 
   const DoctorProfileState({
+    required this.isChangePhotoExpanded,
+    required this.pickedImagePath,
+    required this.originalImagePath,
     required this.selectedSpecialtiesTempList,
     required this.confirmedSpecialties,
     required this.allSpecialties,
@@ -43,6 +52,9 @@ class DoctorProfileState extends Equatable {
 
   factory DoctorProfileState.initial() {
     return const DoctorProfileState(
+      isChangePhotoExpanded: false,
+      pickedImagePath: '',
+      originalImagePath: '',
       selectedSpecialtiesTempList: [],
       confirmedSpecialties: [],
       allSpecialties: AppStrings.allMedicalSpecialties,
@@ -59,6 +71,9 @@ class DoctorProfileState extends Equatable {
   }
 
   DoctorProfileState copyWith({
+    bool? isChangePhotoExpanded,
+    String? pickedImagePath,
+    String? originalImagePath,
     List<String>? selectedSpecialtiesTempList,
     List<String>? confirmedSpecialties,
     List<String>? allSpecialties,
@@ -73,6 +88,10 @@ class DoctorProfileState extends Equatable {
     LazyRequestState? doctorProfileState,
   }) {
     return DoctorProfileState(
+      isChangePhotoExpanded:
+          isChangePhotoExpanded ?? this.isChangePhotoExpanded,
+      pickedImagePath: pickedImagePath ?? this.pickedImagePath,
+      originalImagePath: originalImagePath ?? this.originalImagePath,
       selectedSpecialtiesTempList:
           selectedSpecialtiesTempList ?? this.selectedSpecialtiesTempList,
       confirmedSpecialties: confirmedSpecialties ?? this.confirmedSpecialties,
@@ -91,6 +110,9 @@ class DoctorProfileState extends Equatable {
 
   @override
   List<Object?> get props => [
+    isChangePhotoExpanded,
+    pickedImagePath,
+    originalImagePath,
     selectedSpecialtiesTempList,
     confirmedSpecialties,
     allSpecialties,

@@ -136,7 +136,9 @@ class AppStrings {
 
   // Button text
   static const String reloadFavorites = 'Reload Favorites';
-  static const String saveButtonText = 'Save';
+
+  static const String submitProfileBtn = 'Submit Profile';
+  static const String profileSubmittedSuccess = 'Your profile has been submitted successfully.';
 
   static const String dR = 'Dr. ';
   static const String successMessage = 'Book Appointment Successfully';
@@ -458,6 +460,17 @@ Very important rules:
 
   // AppBar Strings
   static const String chatAppBarTitle = 'Medora AI Health';
+  static const String profilePhotoOptionsTitle = 'Profile Photo Options';
+  static const String editPhoto = 'Edit Photo';
+  static const String removePhoto = 'Remove Photo';
+  static const String changePhoto = 'Change Photo';
+  static const String camera = 'Camera';
+  static const String gallery = 'Gallery';
+
+  static const String profilePhotoRequired =
+      'Please select a profile photo first\nto complete your account setup.';
+
+
 
 }
 

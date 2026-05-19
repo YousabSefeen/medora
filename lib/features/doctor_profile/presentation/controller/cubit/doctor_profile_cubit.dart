@@ -3,23 +3,44 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
+import 'package:medora/features/doctor_profile/domain/use_cases/upload_doctor_profile_uc.dart'
+    show UploadDoctorProfileUC;
 import 'package:medora/features/doctor_profile/presentation/controller/i_doctor_profile_manager.dart'
     show IDoctorProfileManager;
-import 'package:medora/features/shared/data/models/doctor_availability_model.dart'
-    show DoctorAvailabilityModel;
-import 'package:medora/features/shared/data/models/doctor_model.dart'
-    show DoctorModel;
+import 'package:medora/features/shared/domain/entities/doctor_availability_entity.dart'
+    show DoctorAvailabilityEntity;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart';
 
-import '../../../data/repository/doctor_profile_repository.dart';
 import '../form_controllers/doctor_fields_controllers.dart';
 import '../states/doctor_profile_state.dart';
 
 class DoctorProfileCubit extends Cubit<DoctorProfileState>
     implements IDoctorProfileManager {
-  final DoctorProfileRepository doctorRepository;
+  final UploadDoctorProfileUC uploadProfileUseCase;
 
-  DoctorProfileCubit({required this.doctorRepository})
+  DoctorProfileCubit({required this.uploadProfileUseCase})
     : super(DoctorProfileState.initial());
+
+  // Profile photo methods
+  @override
+  void toggleChangePhotoExpanded() =>
+      emit(state.copyWith(isChangePhotoExpanded: !state.isChangePhotoExpanded));
+
+  @override
+  void updatePickedImagePath(String path) =>
+      emit(state.copyWith(pickedImagePath: path));
+
+  @override
+  void updateOriginalImagePath(String path) =>
+      emit(state.copyWith(originalImagePath: path));
+
+  void clearAllPhotos() => emit(
+    state.copyWith(
+      pickedImagePath: '',
+      originalImagePath: '',
+      isChangePhotoExpanded: false,
+    ),
+  );
 
   /// Medical specialties methods
   @override
@@ -156,21 +177,9 @@ class DoctorProfileCubit extends Cubit<DoctorProfileState>
   Future<void> _submitProfile({
     required DoctorFieldsControllers controllers,
   }) async {
-    final response = await doctorRepository.uploadDoctorProfile(
-      DoctorModel(
-        doctorId: FirebaseAuth.instance.currentUser!.uid,
-        imageUrl: AppStrings.images[0],
-        name: controllers.nameController.text.trim().toLowerCase(),
-        specialties: state.confirmedSpecialties,
-        bio: controllers.bioController.text.trim().toLowerCase(),
-        location: controllers.locationController.text.trim().toLowerCase(),
-        doctorAvailability: DoctorAvailabilityModel(
-          workingDays: state.confirmedDays,
-          availableFrom: state.workHoursSelected[AppStrings.from],
-          availableTo: state.workHoursSelected[AppStrings.to],
-        ),
-        fees: int.parse(controllers.feesController.text.trim()),
-      ),
+    emit(state.copyWith(doctorProfileState: LazyRequestState.loading));
+    final response = await uploadProfileUseCase.call(
+      _doctorEntity(controllers),
     );
 
     response.fold(
@@ -184,6 +193,22 @@ class DoctorProfileCubit extends Cubit<DoctorProfileState>
           emit(state.copyWith(doctorProfileState: LazyRequestState.loaded)),
     );
   }
+
+  DoctorEntity _doctorEntity(DoctorFieldsControllers controllers) =>
+      DoctorEntity(
+        doctorId: FirebaseAuth.instance.currentUser!.uid,
+        imageUrl: state.pickedImagePath,
+        name: controllers.nameController.text.trim().toLowerCase(),
+        specialties: state.confirmedSpecialties,
+        bio: controllers.bioController.text.trim().toLowerCase(),
+        location: controllers.locationController.text.trim().toLowerCase(),
+        doctorAvailability: DoctorAvailabilityEntity(
+          workingDays: state.confirmedDays,
+          availableFrom: state.workHoursSelected[AppStrings.from],
+          availableTo: state.workHoursSelected[AppStrings.to],
+        ),
+        fees: int.parse(controllers.feesController.text.trim()),
+      );
 
   @override
   void resetStates() => emit(DoctorProfileState.initial());

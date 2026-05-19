@@ -3,15 +3,16 @@ import 'package:medora/features/doctor_profile/presentation/controller/form_cont
     show DoctorFieldsValidator;
 import 'package:medora/features/doctor_profile/presentation/widgets/medical_specialties_field.dart'
     show MedicalSpecialtiesField;
-import 'package:medora/features/doctor_profile/presentation/widgets/save_button.dart'
-    show SaveButton;
+import 'package:medora/features/doctor_profile/presentation/widgets/profile_photo_picker/doctor_profile_photo_picker.dart'
+    show DoctorProfilePhotoPicker;
+import 'package:medora/features/doctor_profile/presentation/widgets/submit_profile_button.dart'
+    show SubmitProfileButton;
 import 'package:medora/features/doctor_profile/presentation/widgets/weekly_schedule_card.dart'
     show WeeklyScheduleCard;
 
 import '../../../../core/constants/app_strings/app_strings.dart';
 import '../controller/form_controllers/doctor_fields_controllers.dart';
 import 'doctor_info_field.dart';
-import 'doctor_profile_image.dart';
 
 class DoctorProfileBody extends StatelessWidget {
   final DoctorFieldsControllers doctorFieldsControllers;
@@ -61,7 +62,7 @@ class DoctorProfileBody extends StatelessWidget {
       children: [
         const Align(
           alignment: Alignment.topCenter,
-          child: DoctorProfileImage(),
+          child: DoctorProfilePhotoPicker(),
         ),
 
         ...fields.map(
@@ -79,8 +80,9 @@ class DoctorProfileBody extends StatelessWidget {
         ),
         const SizedBox(height: 5),
         const WeeklyScheduleCard(),
-
-        SaveButton(controllers: doctorFieldsControllers),
+        const SizedBox(),
+        SubmitProfileButton(controllers: doctorFieldsControllers),
+        const SizedBox(height: 50),
       ],
     );
   }

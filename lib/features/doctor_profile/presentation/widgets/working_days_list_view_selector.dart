@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
+import 'package:medora/core/extensions/media_query_extension.dart';
 
 import '../controller/cubit/doctor_profile_cubit.dart';
 import '../controller/states/doctor_profile_state.dart';
@@ -18,11 +19,10 @@ class WorkingDaysListViewSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
     return ConstrainedBox(
       constraints: BoxConstraints(
-        minHeight: screenHeight * 0.65,
-        maxHeight: screenHeight * 0.8,
+        minHeight: context.screenHeight * 0.65,
+        maxHeight: context.screenHeight * 0.8,
       ),
 
       child: BlocSelector<DoctorProfileCubit, DoctorProfileState, List<String>>(

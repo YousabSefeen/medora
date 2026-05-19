@@ -1,7 +1,7 @@
 import 'package:google_generative_ai/google_generative_ai.dart'
     show GenerativeModel, Content, GenerationConfig;
-import 'package:medora/core/constants/keys/google_gemini_keys.dart'
-    show GoogleGeminiKeys;
+import 'package:medora/core/constants/keys/app_keys.dart'
+    show AppKeys;
 
 class GeminiModelFactory {
   static GenerativeModel create({
@@ -13,7 +13,7 @@ class GeminiModelFactory {
   }) {
     return GenerativeModel(
       model: modelName,
-      apiKey: GoogleGeminiKeys.googleGeminiKey,
+      apiKey: AppKeys.googleGeminiKey,
 
       generationConfig: GenerationConfig(
         temperature: 0.1,

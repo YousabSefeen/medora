@@ -118,7 +118,7 @@ void main() async {
         BlocProvider(create: (_) => serviceLocator<BottomNavCubit>()),
         BlocProvider(create: (_) => serviceLocator<LoginCubit>()),
         BlocProvider(create: (_) => serviceLocator<RegisterCubit>()),
-        BlocProvider(create: (_) => serviceLocator<DoctorProfileCubit>()),
+     //   BlocProvider(create: (_) => serviceLocator<DoctorProfileCubit>()),
         BlocProvider(create: (_) => serviceLocator<DoctorListCubit>()),
 
         BlocProvider(create: (_) => serviceLocator<AppSettingsCubit>()),
@@ -208,6 +208,7 @@ class MyApp extends StatelessWidget {
         },
         home: FirebaseAuth.instance.currentUser?.uid != null
             ? const BottomNavScreen()
+            //  ?  const DoctorProfileScreen()
             : const LoginScreen(),
         // home:   const GeminiChatScreenTwo(),
       ),

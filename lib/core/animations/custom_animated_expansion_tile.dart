@@ -7,6 +7,7 @@ class CustomAnimatedExpansionTile extends StatelessWidget {
   final Widget child;
   final bool isExpanded;
   final void Function() onTap;
+  final Duration duration;
 
   const CustomAnimatedExpansionTile({
     super.key,
@@ -14,6 +15,7 @@ class CustomAnimatedExpansionTile extends StatelessWidget {
     required this.child,
     required this.isExpanded,
     required this.onTap,
+    this.duration = const Duration(milliseconds: 400),
   });
 
   @override
@@ -25,7 +27,8 @@ class CustomAnimatedExpansionTile extends StatelessWidget {
           title: baseChild,
           trailing: AnimatedRotation(
             turns: isExpanded ? 1 : 0,
-            duration: const Duration(milliseconds: 500),
+            // Icon rotation animation duration
+            duration: const Duration(milliseconds: 800),
             child: const CircularDropdownIcon(),
           ),
 
@@ -37,8 +40,7 @@ class CustomAnimatedExpansionTile extends StatelessWidget {
           crossFadeState: isExpanded
               ? CrossFadeState.showSecond
               : CrossFadeState.showFirst,
-          duration: const Duration(milliseconds: 800),
-
+          duration: duration,
           firstCurve: Curves.easeInOut,
           secondCurve: Curves.easeInOut,
         ),

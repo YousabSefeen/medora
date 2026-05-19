@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medora/core/services/server_locator.dart' show serviceLocator;
 import 'package:medora/features/doctor_profile/presentation/controller/cubit/doctor_profile_cubit.dart'
     show DoctorProfileCubit;
 import 'package:medora/features/doctor_profile/presentation/controller/states/doctor_profile_state.dart'
@@ -45,17 +46,20 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         controller: _scrollController,
-        child: BlocSelector<DoctorProfileCubit, DoctorProfileState, bool>(
-          selector: (state) => state.hasValidatedBefore,
+        child: BlocProvider<DoctorProfileCubit>(
+         create: (context)=>serviceLocator<DoctorProfileCubit>(),
+          child: BlocSelector<DoctorProfileCubit, DoctorProfileState, bool>(
+            selector: (state) => state.hasValidatedBefore,
 
-          builder: (context, hasValidatedBefore) => Form(
-            key: doctorFieldsControllers.formKey,
-            autovalidateMode: hasValidatedBefore
-                ? AutovalidateMode.always
-                : AutovalidateMode.disabled,
-            child: DoctorProfileBody(
-              doctorFieldsControllers: doctorFieldsControllers,
-              doctorFieldsValidator: doctorFieldsValidator,
+            builder: (context, hasValidatedBefore) => Form(
+              key: doctorFieldsControllers.formKey,
+              autovalidateMode: hasValidatedBefore
+                  ? AutovalidateMode.always
+                  : AutovalidateMode.disabled,
+              child: DoctorProfileBody(
+                doctorFieldsControllers: doctorFieldsControllers,
+                doctorFieldsValidator: doctorFieldsValidator,
+              ),
             ),
           ),
         ),

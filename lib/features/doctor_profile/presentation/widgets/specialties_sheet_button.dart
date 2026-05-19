@@ -69,13 +69,21 @@ class SpecialtiesSheetButton extends StatelessWidget {
     AppRouter.popWithKeyboardDismiss(context);
   }
 
-  void _displaySpecialtySelectionSheet(BuildContext context) =>
-      AppAlerts.showSpecialitiesBottomSheet(
-        context: context,
-        trailingNavBarWidget: _buildSearchHeader(context),
-        stickyActionBar: _buildConditionalActionBar(),
-        body: _buildFilteredSpecialtiesContent(),
-      );
+  void _displaySpecialtySelectionSheet(BuildContext context) {
+    AppAlerts.showSpecialitiesBottomSheet(
+      context: context,
+      trailingNavBarWidget: _buildSearchHeader(context),
+      stickyActionBar: BlocProvider.value(
+        value: _cubit(context),
+
+        child: _buildConditionalActionBar(),
+      ),
+      body: BlocProvider.value(
+        value: _cubit(context),
+        child: _buildFilteredSpecialtiesContent(),
+      ),
+    );
+  }
 
   Widget _buildSearchHeader(BuildContext context) => SpecialtiesSheetHeader(
     lastSearchTerm: _cubit(context).getLastSearchTerm,

@@ -54,15 +54,20 @@ class DaysSheetButton extends StatelessWidget {
   void _syncTempDaysFromConfirmed(BuildContext context) =>
       context.read<DoctorProfileCubit>().syncTempDaysFromConfirmed();
 
-  void _displayDaySelectionSheet(BuildContext context) =>
-      AppAlerts.showCustomBottomSheet(
-        context: context,
-        appBarBackgroundColor: AppColors.customWhite,
-        appBarTitle: AppStrings.workingDaysDialogTitle,
-        appBarTitleColor: AppColors.black,
-        stickyActionBar: _buildConfirmationButton(context),
-        body: const WorkingDaysListViewSelector(),
-      );
+  void _displayDaySelectionSheet(BuildContext context) {
+    final doctorProfileCubit = context.read<DoctorProfileCubit>();
+    AppAlerts.showCustomBottomSheet(
+      context: context,
+      appBarBackgroundColor: AppColors.customWhite,
+      appBarTitle: AppStrings.workingDaysDialogTitle,
+      appBarTitleColor: AppColors.black,
+      stickyActionBar: _buildConfirmationButton(context),
+      body: BlocProvider.value(
+        value: doctorProfileCubit,
+        child: const WorkingDaysListViewSelector(),
+      ),
+    );
+  }
 
   Widget _buildConfirmationButton(BuildContext context) => CustomConfirmButton(
     onPressed: () => _confirmAndCloseDaySelection(context),

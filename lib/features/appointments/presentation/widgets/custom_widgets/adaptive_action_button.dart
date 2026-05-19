@@ -9,6 +9,7 @@ class AdaptiveActionButton extends StatelessWidget {
   final bool isEnabled;
   final bool isLoading;
   final void Function() onPressed;
+  final double bottomHeight;
 
   const AdaptiveActionButton({
     super.key,
@@ -16,14 +17,14 @@ class AdaptiveActionButton extends StatelessWidget {
     required this.isEnabled,
     required this.onPressed,
     required this.isLoading,
+    this.bottomHeight = 50,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 50,
-
+      height: bottomHeight,
       child: ElevatedButton(
         onPressed: isEnabled ? onPressed : null,
         style: _buildButtonStyle(isEnabled),

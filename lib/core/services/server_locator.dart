@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart' show FirebaseFirestore;
+import 'package:dio/dio.dart' show Dio;
 import 'package:get_it/get_it.dart';
 import 'package:medora/core/payment_gateway_manager/paymob_payment/paymob_services.dart'
     show PaymobServices;
@@ -46,21 +48,36 @@ import 'package:medora/features/appointments/presentation/controller/cubit/confi
     show ConfirmPendingAppointmentCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/doctor_appointments_cubit.dart'
     show DoctorAppointmentsCubit;
-import 'package:medora/features/appointments/presentation/controller/cubit/patient_cubit.dart' show PatientCubit;
-
+import 'package:medora/features/appointments/presentation/controller/cubit/patient_cubit.dart'
+    show PatientCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/reschedule_appointment_cubit.dart'
     show RescheduleAppointmentCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/time_slot_cubit.dart'
     show TimeSlotCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/upcoming_appointments_cubit.dart'
     show UpcomingAppointmentsCubit;
-import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_controllers.dart' show PatientLocalDataSource, PatientLocalDataSourceImpl;
+import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_controllers.dart'
+    show PatientLocalDataSource, PatientLocalDataSourceImpl;
 import 'package:medora/features/doctor_list/data/data_source/doctors_list_remote_data_source.dart'
     show DoctorsListRemoteDataSource;
 import 'package:medora/features/doctor_list/domain/repository/doctor_list_repository_base.dart'
     show DoctorListRepositoryBase;
-import 'package:medora/features/doctor_list/domain/use_cases/get_doctors_list_uc.dart' show GetDoctorsListUC;
-
+import 'package:medora/features/doctor_list/domain/use_cases/get_doctors_list_uc.dart'
+    show GetDoctorsListUC;
+import 'package:medora/features/doctor_profile/data/data_source/cloudinary_remote_data_source.dart'
+    show CloudinaryRemoteDataSource;
+import 'package:medora/features/doctor_profile/data/data_source/doctor_profile_remote_data_source.dart'
+    show DoctorProfileRemoteDataSource;
+import 'package:medora/features/doctor_profile/data/data_source/doctor_profile_remote_data_source_impl.dart'
+    show DoctorProfileRemoteDataSourceImpl;
+import 'package:medora/features/doctor_profile/data/repositories/doctor_profile_repository_impl.dart'
+    show DoctorProfileRepositoryImpl;
+import 'package:medora/features/doctor_profile/domain/repository/doctor_profile_repository.dart'
+    show DoctorProfileRepository;
+import 'package:medora/features/doctor_profile/domain/use_cases/upload_doctor_profile_uc.dart'
+    show UploadDoctorProfileUC;
+import 'package:medora/features/doctor_profile/presentation/controller/cubit/doctor_profile_cubit.dart'
+    show DoctorProfileCubit;
 import 'package:medora/features/doctors_specialties/data/repository/specialty_doctors_repository.dart'
     show SpecialtyDoctorsRepository;
 import 'package:medora/features/doctors_specialties/presentation/controller/cubit/specialty_doctors_cubit.dart'
@@ -109,15 +126,14 @@ import 'package:medora/features/search/domain/use_cases/search_doctors_by_name_u
     show SearchDoctorsByNameUseCase;
 import 'package:medora/features/search/presentation/controller/cubit/home_doctor_search_cubit.dart'
     show HomeDoctorSearchCubit;
-import 'package:shared_preferences/shared_preferences.dart' show SharedPreferences;
+import 'package:shared_preferences/shared_preferences.dart'
+    show SharedPreferences;
 
 import '../../features/auth/data/repository/auth_repository.dart';
 import '../../features/auth/presentation/controller/cubit/login_cubit.dart';
 import '../../features/auth/presentation/controller/cubit/register_cubit.dart';
 import '../../features/doctor_list/data/repository/doctor_list_repository_impl.dart';
 import '../../features/doctor_list/presentation/controller/cubit/doctor_list_cubit.dart';
-import '../../features/doctor_profile/data/repository/doctor_profile_repository.dart';
-import '../../features/doctor_profile/presentation/controller/cubit/doctor_profile_cubit.dart';
 import '../app_settings/controller/cubit/app_settings_cubit.dart';
 
 final serviceLocator = GetIt.instance;
@@ -132,20 +148,65 @@ class ServiceLocator {
     favoritesInit();
     setupSearchDependencies();
     setupAppointmentsDependencies();
+    initDoctorProfileInjection();
   }
 
-  void setupAppointmentsDependencies() async{
-    // Data Sources - كما هي بدون تغيير
+  Future<void> initDoctorProfileInjection() async {
+    // 1.  (Core / External Dependencies)
+
+    if (!serviceLocator.isRegistered<Dio>()) {
+      serviceLocator.registerLazySingleton<Dio>(() => Dio());
+    }
+    if (!serviceLocator.isRegistered<FirebaseFirestore>()) {
+      serviceLocator.registerLazySingleton<FirebaseFirestore>(
+        () => FirebaseFirestore.instance,
+      );
+    }
+
+    // 2.   (Data Sources)
+    serviceLocator.registerFactory<CloudinaryRemoteDataSource>(
+      () => CloudinaryRemoteDataSource(serviceLocator<Dio>()),
+    );
+
+    serviceLocator.registerFactory<DoctorProfileRemoteDataSource>(
+      () => DoctorProfileRemoteDataSourceImpl(
+        serviceLocator<CloudinaryRemoteDataSource>(),
+        serviceLocator<FirebaseFirestore>(),
+      ),
+    );
+
+    // 3.  (Repositories)
+
+    serviceLocator.registerFactory<DoctorProfileRepository>(
+      () => DoctorProfileRepositoryImpl(
+        profileRemoteDataSource:
+            serviceLocator<DoctorProfileRemoteDataSource>(),
+      ),
+    );
+
+    // 4.   (Use Cases)
+    serviceLocator.registerFactory<UploadDoctorProfileUC>(
+      () => UploadDoctorProfileUC(
+        doctorProfileRepositoryBase: serviceLocator<DoctorProfileRepository>(),
+      ),
+    );
+
+    // 5.  (Presentation / Cubit)
+    serviceLocator.registerFactory<DoctorProfileCubit>(
+      () => DoctorProfileCubit(
+        uploadProfileUseCase: serviceLocator<UploadDoctorProfileUC>(),
+      ),
+    );
+  }
+
+  void setupAppointmentsDependencies() async {
     serviceLocator.registerLazySingleton<AppointmentRemoteDataSourceBase>(
       () => AppointmentRemoteDataSource(),
     );
 
-    // Repositories - كما هي بدون تغيير
     serviceLocator.registerLazySingleton<AppointmentRepositoryBase>(
       () => AppointmentRepositoryImpl(remoteDataSource: serviceLocator()),
     );
-
-    // Use Cases - كما هي بدون تغيير
 
     serviceLocator.registerLazySingleton<CancelAppointmentUseCase>(
       () =>
@@ -197,7 +258,6 @@ class ServiceLocator {
           DoctorAppointmentsCubit(fetchDoctorAppointmentsUS: serviceLocator()),
     );
 
-
     serviceLocator.registerFactory<ConfirmPendingAppointmentCubit>(
       () => ConfirmPendingAppointmentCubit(
         appSettingsCubit: serviceLocator(),
@@ -212,7 +272,6 @@ class ServiceLocator {
         bookAppointmentUseCase: serviceLocator(),
       ),
     );
-
 
     serviceLocator.registerFactory<UpcomingAppointmentsCubit>(
       () => UpcomingAppointmentsCubit(useCase: serviceLocator()),
@@ -243,19 +302,17 @@ class ServiceLocator {
       ),
     );
     serviceLocator.registerFactory<PatientCubit>(
-          () => PatientCubit(serviceLocator<PatientLocalDataSource>()),
+      () => PatientCubit(serviceLocator<PatientLocalDataSource>()),
     );
     final sharedPrefs = await SharedPreferences.getInstance();
     serviceLocator.registerLazySingleton(() => sharedPrefs);
 
     serviceLocator.registerLazySingleton<PatientLocalDataSource>(
-          () => PatientLocalDataSourceImpl(serviceLocator()),
+      () => PatientLocalDataSourceImpl(serviceLocator()),
     );
 
     serviceLocator.registerFactory<PaymentCubit>(() => PaymentCubit());
   }
-
-
 
   void setupDoctorsListDependencies() {
     // Data Sources
@@ -300,7 +357,6 @@ class ServiceLocator {
         searchRepositoryBase: serviceLocator(),
       ),
     );
-
 
     serviceLocator.registerFactory(
       () => HomeDoctorSearchCubit(searchByName: serviceLocator()),
@@ -353,15 +409,10 @@ class ServiceLocator {
     serviceLocator.registerLazySingleton<AuthRepository>(
       () => AuthRepository(),
     );
-    serviceLocator.registerLazySingleton<DoctorProfileRepository>(
-      () => DoctorProfileRepository(),
-    );
 
     serviceLocator.registerLazySingleton<SpecialtyDoctorsRepository>(
       () => SpecialtyDoctorsRepository(),
     );
-
-
   }
 
   void _registerCubits() {
@@ -373,10 +424,6 @@ class ServiceLocator {
 
     serviceLocator.registerFactory<RegisterCubit>(
       () => RegisterCubit(authRepository: serviceLocator()),
-    );
-
-    serviceLocator.registerFactory<DoctorProfileCubit>(
-      () => DoctorProfileCubit(doctorRepository: serviceLocator()),
     );
 
     serviceLocator.registerFactory<SpecialtyDoctorsCubit>(
@@ -433,6 +480,5 @@ class ServiceLocator {
     serviceLocator.registerFactory(
       () => PaypalPaymentCubit(paypalRepository: serviceLocator()),
     );
-
   }
 }
