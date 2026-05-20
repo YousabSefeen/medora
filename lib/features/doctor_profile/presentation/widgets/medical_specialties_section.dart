@@ -6,6 +6,8 @@ import 'package:medora/features/doctor_profile/presentation/controller/form_cont
     show DoctorFieldsValidator;
 import 'package:medora/features/doctor_profile/presentation/widgets/custom_selection_container.dart'
     show CustomSelectionContainer;
+import 'package:medora/features/doctor_profile/presentation/widgets/form_title.dart'
+    show FormTitle;
 import 'package:medora/features/doctor_profile/presentation/widgets/specialties_sheet_button.dart'
     show SpecialtiesSheetButton;
 
@@ -17,25 +19,32 @@ class MedicalSpecialtiesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<DoctorProfileCubit, DoctorProfileState, List<String>>(
-      selector: (state) => state.confirmedSpecialties,
-      builder: (context, specialties) {
-        final bool hasNoSpecialtiesSelected = specialties.isEmpty;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
 
-        return FormField<List<String>>(
-          validator: (_) => DoctorFieldsValidator().validateSpecialties(
-            hasNoSpecialtiesSelected,
-          ),
-          builder: (field) => CustomSelectionContainer(
-            isSpecialtiesField: true,
-            isEmptySelection: hasNoSpecialtiesSelected,
-            selectedItems: specialties,
-            field: field,
-            placeholderText: AppStrings.specialtiesHint,
-            selectionButton: const SpecialtiesSheetButton(),
-          ),
-        );
-      },
+      children: [
+        const FormTitle(label: AppStrings.medicalSpecialtiesLabel),
+        BlocSelector<DoctorProfileCubit, DoctorProfileState, List<String>>(
+          selector: (state) => state.confirmedSpecialties,
+          builder: (context, specialties) {
+            final bool hasNoSpecialtiesSelected = specialties.isEmpty;
+
+            return FormField<List<String>>(
+              validator: (_) => DoctorFieldsValidator().validateSpecialties(
+                hasNoSpecialtiesSelected,
+              ),
+              builder: (field) => CustomSelectionContainer(
+                isSpecialtiesField: true,
+                isEmptySelection: hasNoSpecialtiesSelected,
+                selectedItems: specialties,
+                field: field,
+                placeholderText: AppStrings.specialtiesHint,
+                selectionButton: const SpecialtiesSheetButton(),
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 }

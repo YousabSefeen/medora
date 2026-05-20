@@ -21,8 +21,7 @@ class DaysSheetButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return KeyboardVisibilityBuilder(
-      builder: (context, isKeyboardVisible) => IconButton(
-        icon: const CircularDropdownIcon(),
+      builder: (context, isKeyboardVisible) => CircularDropdownIcon(
         onPressed: () => _handleDaySelectionPress(context, isKeyboardVisible),
       ),
     );

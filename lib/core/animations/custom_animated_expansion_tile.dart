@@ -23,12 +23,13 @@ class CustomAnimatedExpansionTile extends StatelessWidget {
     return Column(
       children: [
         ListTile(
-          contentPadding: const EdgeInsets.only(left: 5, right: 10),
+          minTileHeight: 0,
+          contentPadding: const EdgeInsets.only(left: 5, right: 1),
           title: baseChild,
           trailing: AnimatedRotation(
             turns: isExpanded ? 1 : 0,
             // Icon rotation animation duration
-            duration: const Duration(milliseconds: 800),
+            duration: const Duration(milliseconds: 1000),
             child: const CircularDropdownIcon(),
           ),
 

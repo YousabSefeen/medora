@@ -52,8 +52,6 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                 ? AutovalidateMode.always
                 : AutovalidateMode.disabled,
             child: DoctorProfileBody(
-              // doctorFieldsControllers: doctorFieldsControllers,
-              // doctorFieldsValidator: doctorFieldsValidator,
               controllers: doctorFieldsControllers,
               validator: doctorFieldsValidator,
             ),

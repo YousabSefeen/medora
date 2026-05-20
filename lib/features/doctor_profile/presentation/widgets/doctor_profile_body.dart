@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:medora/features/doctor_profile/presentation/controller/form_controllers/doctor_fields_validator.dart'
     show DoctorFieldsValidator;
-import 'package:medora/features/doctor_profile/presentation/widgets/medical_specialties_field.dart'
-    show MedicalSpecialtiesField;
+import 'package:medora/features/doctor_profile/presentation/widgets/medical_specialties_section.dart'
+    show MedicalSpecialtiesSection;
 import 'package:medora/features/doctor_profile/presentation/widgets/models/profile_field_config.dart'
     show ProfileFieldConfig;
 import 'package:medora/features/doctor_profile/presentation/widgets/profile_photo_picker/doctor_profile_photo_picker.dart'
@@ -16,80 +16,6 @@ import '../../../../core/constants/app_strings/app_strings.dart';
 import '../controller/form_controllers/doctor_fields_controllers.dart';
 import 'doctor_info_field.dart';
 
-/*class DoctorProfileBody extends StatelessWidget {
-  final DoctorFieldsControllers doctorFieldsControllers;
-  final DoctorFieldsValidator doctorFieldsValidator;
-
-  const DoctorProfileBody({
-    super.key,
-    required this.doctorFieldsControllers,
-    required this.doctorFieldsValidator,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> fields = [
-      {
-        'label': AppStrings.nameLabel,
-        'hint': AppStrings.nameHint,
-        'controller': doctorFieldsControllers.nameController,
-        'validator': doctorFieldsValidator.validateName,
-      },
-      {'label': AppStrings.medicalSpecialtiesLabel},
-      {
-        'label': AppStrings.bioLabel,
-        'hint': AppStrings.bioHint,
-        'controller': doctorFieldsControllers.bioController,
-        'validator': doctorFieldsValidator.validateBio,
-        'maxLines': 3,
-        'textHeight': 1.5,
-      },
-      {
-        'label': AppStrings.locationLabel,
-        'hint': AppStrings.locationHint,
-        'controller': doctorFieldsControllers.locationController,
-        'validator': doctorFieldsValidator.validateLocation,
-      },
-      {
-        'label': AppStrings.feesLabel,
-        'hint': AppStrings.feesHint,
-        'controller': doctorFieldsControllers.feesController,
-        'validator': doctorFieldsValidator.validateFees,
-        'keyboardType': TextInputType.number,
-      },
-    ];
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: 20,
-      children: [
-        const Align(
-          alignment: Alignment.topCenter,
-          child: DoctorProfilePhotoPicker(),
-        ),
-
-        ...fields.map(
-          (field) => field['label'] == AppStrings.medicalSpecialtiesLabel
-              ? const MedicalSpecialtiesField()
-              : DoctorInfoField(
-                  label: field['label'],
-                  hintText: field['hint'],
-                  controller: field['controller'],
-                  validator: field['validator'],
-                  maxLines: field['maxLines'] ?? 1,
-                  textHeight: field['textHeight'] ?? 0,
-                  keyboardType: field['keyboardType'] ?? TextInputType.text,
-                ),
-        ),
-        const SizedBox(height: 5),
-        const WeeklyScheduleCard(),
-        const SizedBox(),
-        SubmitProfileButton(controllers: doctorFieldsControllers),
-        const SizedBox(height: 50),
-      ],
-    );
-  }
-}*/
-
 class DoctorProfileBody extends StatelessWidget {
   final DoctorFieldsControllers controllers;
   final DoctorFieldsValidator validator;
@@ -99,6 +25,8 @@ class DoctorProfileBody extends StatelessWidget {
     required this.controllers,
     required this.validator,
   });
+
+  static SizedBox _buildSizedBox() => const SizedBox(height: 20);
 
   @override
   Widget build(BuildContext context) {
@@ -124,19 +52,20 @@ class DoctorProfileBody extends StatelessWidget {
     ];
 
     return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      physics: const BouncingScrollPhysics(),
       children: [
-        const SizedBox(height: 20),
+        _buildSizedBox(),
         const Align(
           alignment: Alignment.topCenter,
           child: DoctorProfilePhotoPicker(),
         ),
-        const SizedBox(height: 20),
+        _buildSizedBox(),
 
         ...fieldConfigs.map((config) => _buildField(config)),
 
         const WeeklyScheduleCard(),
-        const SizedBox(height: 20),
+        _buildSizedBox(),
         SubmitProfileButton(controllers: controllers),
         const SizedBox(height: 50),
       ],
@@ -144,7 +73,7 @@ class DoctorProfileBody extends StatelessWidget {
   }
 
   Widget _buildField(ProfileFieldConfig config) {
-    if (config.isSpecialty) return const MedicalSpecialtiesField();
+    if (config.isSpecialty) return const MedicalSpecialtiesSection();
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),

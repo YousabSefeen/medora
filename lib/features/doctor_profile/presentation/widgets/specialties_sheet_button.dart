@@ -25,8 +25,7 @@ class SpecialtiesSheetButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return KeyboardVisibilityBuilder(
-      builder: (context, visible) => IconButton(
-        icon: const CircularDropdownIcon(),
+      builder: (context, visible) => CircularDropdownIcon(
         onPressed: () => _handleSpecialtySelectionPress(context, visible),
       ),
     );

@@ -37,7 +37,7 @@ class AppStrings {
   static const String medicalSpecialtiesLabel = 'Medical Specialties';
   static const String bioLabel = 'Bio';
   static const String locationLabel = 'Location';
-  static const String weeklySchedule = 'Weekly Schedule:';
+  static const String weeklySchedule = 'Weekly Schedule';
   static const String workingDays = 'Working Days';
   static const String defaultHint = 'Tap to select';
   static const String workingDaysHint = ' $defaultHint days';
@@ -102,7 +102,6 @@ class AppStrings {
   static const String workHours = 'Work Hours';
   static const String from = 'FROM';
   static const String to = 'TO';
-
   static const String availableFrom = 'Available From';
 
   static const String availableTo = 'Available To';
@@ -469,7 +468,6 @@ Very important rules:
 
   static const String profilePhotoRequired =
       'Please select a profile photo first\nto complete your account setup.';
-
 
 
 }

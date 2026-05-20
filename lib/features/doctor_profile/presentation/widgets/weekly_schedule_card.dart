@@ -30,9 +30,7 @@ class WeeklyScheduleCard extends StatelessWidget {
           child: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SectionTitle(title: AppStrings.workingDays),
               WorkingDaysSection(),
-              SectionTitle(title: AppStrings.workHours),
               WorkHoursSection(),
             ],
           ),

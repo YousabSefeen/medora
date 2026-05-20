@@ -8,6 +8,8 @@ import 'package:medora/features/doctor_profile/presentation/widgets/custom_selec
     show CustomSelectionContainer;
 import 'package:medora/features/doctor_profile/presentation/widgets/days_sheet_button.dart'
     show DaysSheetButton;
+import 'package:medora/features/doctor_profile/presentation/widgets/section_title.dart'
+    show SectionTitle;
 
 import '../controller/cubit/doctor_profile_cubit.dart';
 import '../controller/states/doctor_profile_state.dart';
@@ -17,26 +19,35 @@ class WorkingDaysSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<DoctorProfileCubit, DoctorProfileState, List<String>>(
-      selector: (state) => state.confirmedDays,
-      builder: (context, days) {
-        final hasNoDaysSelected = days.isEmpty;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 2,
+      children: [
+        const SectionTitle(title: AppStrings.workingDays),
 
-        return FormField<List<String>>(
-          validator: (_) =>
-              DoctorFieldsValidator().validateWorkingDays(hasNoDaysSelected),
-          builder: (field) {
-            return CustomSelectionContainer(
-              isSpecialtiesField: false,
-              isEmptySelection: hasNoDaysSelected,
-              selectedItems: days,
-              field: field,
-              placeholderText: AppStrings.workingDaysHint,
-              selectionButton: const DaysSheetButton(),
+        BlocSelector<DoctorProfileCubit, DoctorProfileState, List<String>>(
+          selector: (state) => state.confirmedDays,
+          builder: (context, days) {
+            final hasNoDaysSelected = days.isEmpty;
+
+            return FormField<List<String>>(
+              validator: (_) => DoctorFieldsValidator().validateWorkingDays(
+                hasNoDaysSelected,
+              ),
+              builder: (field) {
+                return CustomSelectionContainer(
+                  isSpecialtiesField: false,
+                  isEmptySelection: hasNoDaysSelected,
+                  selectedItems: days,
+                  field: field,
+                  placeholderText: AppStrings.workingDaysHint,
+                  selectionButton: const DaysSheetButton(),
+                );
+              },
             );
           },
-        );
-      },
+        ),
+      ],
     );
   }
 }
