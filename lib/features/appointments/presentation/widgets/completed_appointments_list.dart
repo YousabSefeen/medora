@@ -54,6 +54,8 @@ class _CompletedAppointmentsListState extends State<CompletedAppointmentsList>
   Widget build(BuildContext context) {
     super.build(context);
     return BlocBuilder<CompletedAppointmentsCubit, CompletedAppointmentsState>(
+      buildWhen: (previous, current) =>
+          previous.requestState != current.requestState||previous.isLoadingMore,
       builder: (context, state) {
         return buildPaginationBody(context, state);
       },

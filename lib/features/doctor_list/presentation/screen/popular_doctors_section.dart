@@ -44,6 +44,10 @@ class _PopularDoctorsSectionState extends State<PopularDoctorsSection>
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DoctorListCubit, DoctorListState>(
+
+      buildWhen: (previous, current) =>
+          previous.isLoadingMore != current.isLoadingMore ||
+          previous.requestState != current.requestState,
       builder: (context, state) {
         return buildPaginationBody(context, state);
       },

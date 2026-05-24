@@ -2,17 +2,12 @@ import 'package:equatable/equatable.dart';
 
 class BottomNavState extends Equatable {
   final int index;
-  final bool isFabHidden;
 
-  const BottomNavState({required this.index, this.isFabHidden = false});
+  const BottomNavState({required this.index});
 
-  BottomNavState copyWith({int? index, bool? isFabHidden}) {
-    return BottomNavState(
-      index: index ?? this.index,
-      isFabHidden: isFabHidden ?? this.isFabHidden,
-    );
-  }
+  BottomNavState copyWith({int? index}) =>
+      BottomNavState(index: index ?? this.index);
 
   @override
-  List<Object?> get props => [index, isFabHidden];
+  List<Object?> get props => [index];
 }

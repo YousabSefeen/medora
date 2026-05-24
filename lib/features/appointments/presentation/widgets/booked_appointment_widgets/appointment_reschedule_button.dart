@@ -110,6 +110,9 @@ class _RescheduleConfirmationButton extends StatelessWidget {
       listenWhen: _shouldListenToStateChanges,
       listener: _handleRescheduleResponse,
       child: BlocBuilder<TimeSlotCubit, TimeSlotState>(
+        buildWhen: (previous, current) =>
+            previous.selectedDateFormatted != current.selectedDateFormatted ||
+            previous.selectedTimeSlot != current.selectedTimeSlot,
         builder: (context, timeSlotState) {
           final isEnabled = _isTimeSlotSelected(timeSlotState);
 

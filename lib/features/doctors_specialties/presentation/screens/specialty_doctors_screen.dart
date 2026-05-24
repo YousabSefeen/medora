@@ -43,6 +43,8 @@ class SpecialtyDoctorsScreen extends StatelessWidget {
                   serviceLocator<SpecialtyDoctorsCubit>()
                     ..getDoctorsBySpecialty(specialtyName: specialtyName),
               child: BlocBuilder<SpecialtyDoctorsCubit, SpecialtyDoctorsStates>(
+                buildWhen: (prev, curr) =>
+                    prev.specialtyDoctorsState != curr.specialtyDoctorsState,
                 builder: (context, state) {
                   switch (state.specialtyDoctorsState) {
                     case RequestState.initial:

@@ -3,15 +3,7 @@ import 'package:medora/features/home/presentation/controller/states/bottom_nav_s
     show BottomNavState;
 
 class BottomNavCubit extends Cubit<BottomNavState> {
-  // الحالة الأولية لـ Cubit
   BottomNavCubit() : super(const BottomNavState(index: 0));
 
-  // دالة لتغيير فهرس العنصر المحدد
   void changeTabIndex(int newIndex) => emit(state.copyWith(index: newIndex));
-
-  // دالة لإخفاء الزر العائم
-  void hideFab() => emit(state.copyWith(isFabHidden: true));
-
-  // دالة لإظهار الزر العائم
-  void showFab() => emit(state.copyWith(isFabHidden: false));
 }

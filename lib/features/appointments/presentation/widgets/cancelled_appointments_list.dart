@@ -53,6 +53,8 @@ class _CancelledAppointmentsListState extends State<CancelledAppointmentsList>
   Widget build(BuildContext context) {
     super.build(context);
     return BlocBuilder<CancelledAppointmentsCubit, CancelledAppointmentsState>(
+      buildWhen: (previous, current) =>
+          previous.requestState != current.requestState||previous.isLoadingMore!=current.isLoadingMore,
       builder: (context, state) {
         return buildPaginationBody(context, state);
       },

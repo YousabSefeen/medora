@@ -60,13 +60,5 @@ class DateTimeFormatter {
   static String convertDateToNameDay({required DateTime date}) =>
       DateFormat.EEEE('en_US').format(date);
 
-  static String convertTimeToString({required DateTime time}) {
-    // تحويل الوقت الي (DateTime Type)
 
-    final DateTime time = DateFormat('hh:mm a').parse('12:00 AM');
-    //  ومن ثم يجب تحويله مرة اخرة الي (String Type ) للحصول علي الوقت كسلسلة نصية
-
-    final timeString = DateFormat.jm().format(DateTime.parse(time.toString()));
-    return timeString;
-  }
 }

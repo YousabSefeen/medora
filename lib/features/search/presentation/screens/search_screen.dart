@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocProvider;
+import 'package:medora/core/constants/app_strings/app_strings.dart'
+    show AppStrings;
 import 'package:medora/core/services/server_locator.dart' show serviceLocator;
 import 'package:medora/features/home/presentation/widgets/home_screen_padding.dart'
     show HomeScreenPadding;
@@ -9,6 +11,8 @@ import 'package:medora/features/search/presentation/widgets/search_app_bar_secti
     show SearchAppBarSection;
 import 'package:medora/features/search/presentation/widgets/search_content_section.dart'
     show SearchContentSection;
+
+import 'package:medora/features/shared/presentation/widgets/page_sliver_header.dart' show PageSliverHeader;
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
@@ -25,7 +29,11 @@ class SearchScreen extends StatelessWidget {
       child: const HomeScreenPadding(
         child: CustomScrollView(
           physics: BouncingScrollPhysics(),
-          slivers: [SearchAppBarSection(), SearchContentSection()],
+          slivers: [
+            PageSliverHeader(title: AppStrings.search),
+            SearchAppBarSection(),
+            SearchContentSection(),
+          ],
         ),
       ),
     );

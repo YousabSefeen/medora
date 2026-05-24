@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medora/core/constants/app_routes/app_router.dart'
     show AppRouter;
-import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/features/appointments/presentation/screens/create_appointment_screen.dart'
     show CreateAppointmentScreen;
 import 'package:medora/features/shared/domain/entities/doctor_entity.dart'
@@ -19,18 +18,20 @@ class DoctorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 8.h),
-      child: InkWell(
-        highlightColor: Colors.grey,
-        splashColor: Colors.grey,
-        borderRadius: BorderRadius.circular(12.r),
-        overlayColor: const WidgetStatePropertyAll(AppColors.softBlue),
-        onTap: () =>
-            AppRouter.push(context, CreateAppointmentScreen(doctor: doctor)),
-        child: DoctorBasicInfo(
-          doctor: doctor,
-          config: DoctorCardConfig.defaultConfig(),
+    return RepaintBoundary(
+      key:ValueKey(doctor.doctorId),
+      child: Card(
+        margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 8.h),
+        child: InkWell(
+          highlightColor: Colors.grey,
+          splashColor: Colors.grey,
+          borderRadius: BorderRadius.circular(12.r),
+          onTap: () =>
+              AppRouter.push(context, CreateAppointmentScreen(doctor: doctor)),
+          child: DoctorBasicInfo(
+            doctor: doctor,
+            config: DoctorCardConfig.defaultConfig(),
+          ),
         ),
       ),
     );

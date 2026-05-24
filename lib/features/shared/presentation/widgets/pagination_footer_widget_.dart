@@ -22,7 +22,7 @@ class PaginationFooterWidget extends StatelessWidget {
       return _buildLoadingMoreIndicator();
     }
 
-    if (!hasMore && doctorsList.isNotEmpty && doctorsList.length > 8) {
+    if (!hasMore && doctorsList.isNotEmpty && doctorsList.length > 10) {
       return _buildNoMoreDataMessage(context);
     }
 
@@ -41,10 +41,13 @@ class PaginationFooterWidget extends StatelessWidget {
   );
 
   Center _buildLoadingMoreIndicator() => Center(
-    child: Assets.lottie.iosLoadingLottie.lottie(
-      fit: BoxFit.fill,
-      height: 100,
-      width: 100,
+    child: Padding(
+      padding: const EdgeInsets.only(bottom: 25.0),
+      child: Assets.lottie.iosLoadingLottie.lottie(
+        fit: BoxFit.fill,
+        height: 100,
+        width: 100,
+      ),
     ),
   );
 }

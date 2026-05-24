@@ -23,7 +23,6 @@ import 'package:medora/features/payment_gateways/transaction_process_states/paym
 import 'package:medora/features/payment_gateways/transaction_process_states/payment_success/widgets/custom_payment_success_message.dart';
 import 'package:medora/features/payment_gateways/transaction_process_states/payment_success/widgets/payment_success_fab_section.dart';
 
-
 class PaymentSuccessScreen extends StatelessWidget {
   final PaymentGatewaysTypes paymentMethod;
   final PaymobTransactionDataResultModel? paymobResponse;
@@ -59,13 +58,18 @@ class PaymentSuccessScreen extends StatelessWidget {
           backgroundColor: AppColors.lightPeriwinkle,
           floatingActionButton: const PaymentSuccessFABSection(),
           floatingActionButtonLocation:
-          FloatingActionButtonLocation.centerFloat,
+              FloatingActionButtonLocation.centerFloat,
           body: SafeArea(
             child:
                 BlocBuilder<
                   ConfirmPendingAppointmentCubit,
                   ConfirmPendingAppointmentState
-                >(builder: (context, state) => _mapStateToWidget(state)),
+                >(
+                  buildWhen: (prev, curr) =>
+                      prev.confirmAppointmentState !=
+                      curr.confirmAppointmentState,
+                  builder: (context, state) => _mapStateToWidget(state),
+                ),
           ),
         ),
       ),

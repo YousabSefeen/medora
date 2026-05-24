@@ -231,6 +231,10 @@ class _SubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CancelAppointmentCubit, CancelAppointmentState>(
+      buildWhen: (prev, curr) =>
+          prev.requestState != curr.requestState ||
+          curr.selectedCancellationReason.isNotEmpty,
+
       builder: (context, state) {
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 30.w),

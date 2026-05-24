@@ -11,7 +11,7 @@ class DoctorListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.only(bottom: 10),
       sliver: SliverList.builder(
         itemCount: doctorList.length,
         itemBuilder: (context, index) => DoctorCard(doctor: doctorList[index]),

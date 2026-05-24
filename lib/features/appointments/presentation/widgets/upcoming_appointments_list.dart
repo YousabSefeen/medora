@@ -33,10 +33,8 @@ class _UpcomingAppointmentsListState extends State<UpcomingAppointmentsList>
   @override
   bool get wantKeepAlive => true;
 
-
-
   @override
-  Widget buildDataCard(ClientAppointmentsEntity appointment,int index) {
+  Widget buildDataCard(ClientAppointmentsEntity appointment, int index) {
     return GestureDetector(
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute(
@@ -55,9 +53,10 @@ class _UpcomingAppointmentsListState extends State<UpcomingAppointmentsList>
   Widget build(BuildContext context) {
     super.build(context);
     return BlocBuilder<UpcomingAppointmentsCubit, UpcomingAppointmentsState>(
-      builder: (context, state) {
-        return buildPaginationBody(context, state);
-      },
+      buildWhen: (previous, current) =>
+          previous.requestState != current.requestState ||
+          previous.dataList != current.dataList,
+      builder: (context, state) => buildPaginationBody(context, state),
     );
   }
 }

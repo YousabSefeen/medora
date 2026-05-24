@@ -22,6 +22,8 @@ class SearchResultsHandler extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SearchCubit, SearchStates>(
+      buildWhen: (previous, current) =>
+          previous.searchResultsState != current.searchResultsState,
       builder: (context, searchState) =>
           _buildSearchResults(searchState, context),
     );

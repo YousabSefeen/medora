@@ -68,7 +68,6 @@ import 'core/constants/themes/app_light_theme.dart';
 import 'core/services/server_locator.dart';
 import 'features/auth/presentation/controller/cubit/register_cubit.dart';
 import 'features/doctor_list/presentation/controller/cubit/doctor_list_cubit.dart';
-import 'features/doctor_profile/presentation/controller/cubit/doctor_profile_cubit.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -113,12 +112,12 @@ void main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => serviceLocator<HomeDoctorSearchCubit>()),
-        BlocProvider(create: (_) => serviceLocator<FavoritesCubit>()),
+        BlocProvider(create: (_) => serviceLocator<FavoritesCubit>()..getFavoritesDoctors()),
 
         BlocProvider(create: (_) => serviceLocator<BottomNavCubit>()),
         BlocProvider(create: (_) => serviceLocator<LoginCubit>()),
         BlocProvider(create: (_) => serviceLocator<RegisterCubit>()),
-     //   BlocProvider(create: (_) => serviceLocator<DoctorProfileCubit>()),
+        //   BlocProvider(create: (_) => serviceLocator<DoctorProfileCubit>()),
         BlocProvider(create: (_) => serviceLocator<DoctorListCubit>()),
 
         BlocProvider(create: (_) => serviceLocator<AppSettingsCubit>()),
