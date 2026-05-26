@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocProvider, BlocBuilder;
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
+import 'package:medora/core/di/injection_container.dart' show sl;
 import 'package:medora/core/enum/request_state.dart' show RequestState;
 import 'package:medora/core/services/server_locator.dart' show serviceLocator;
 import 'package:medora/features/doctors_specialties/presentation/controller/cubit/specialty_doctors_cubit.dart'
@@ -40,7 +41,7 @@ class SpecialtyDoctorsScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             sliver: BlocProvider(
               create: (context) =>
-                  serviceLocator<SpecialtyDoctorsCubit>()
+              sl<SpecialtyDoctorsCubit>()
                     ..getDoctorsBySpecialty(specialtyName: specialtyName),
               child: BlocBuilder<SpecialtyDoctorsCubit, SpecialtyDoctorsStates>(
                 buildWhen: (prev, curr) =>

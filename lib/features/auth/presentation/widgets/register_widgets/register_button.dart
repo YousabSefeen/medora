@@ -62,7 +62,7 @@ class RegisterButton extends StatelessWidget {
           ),
         );
       } else {
-        AppAlerts.showErrorSnackBar(context, errorMessage);
+        AppAlerts.showSnackBar(context, errorMessage);
       }
       _resetRegisterStates(context);
     });
@@ -79,7 +79,7 @@ class RegisterButton extends StatelessWidget {
     final errorMsg = cubit.validateAndCacheInputs(registerControllers);
 
     if (errorMsg != null) {
-      AppAlerts.showErrorSnackBar(context, errorMsg);
+      AppAlerts.showSnackBar(context, errorMsg);
     } else {
       cubit.register();
     }

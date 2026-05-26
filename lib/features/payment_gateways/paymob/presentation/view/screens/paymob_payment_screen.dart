@@ -4,6 +4,7 @@ import 'package:medora/core/constants/app_routes/app_router.dart'
     show AppRouter;
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
+import 'package:medora/core/di/injection_container.dart' show sl;
 import 'package:medora/core/enum/payment_gateways_types.dart'
     show PaymentGatewaysTypes;
 import 'package:medora/core/enum/web_view_status.dart' show WebViewStatus;
@@ -39,7 +40,7 @@ class _PaymobPaymentScreenState extends State<PaymobPaymentScreen>
 
   @override
   void initializePayment() {
-    _paymentCubit = serviceLocator<PaymobPaymentCubit>()
+    _paymentCubit = sl<PaymobPaymentCubit>()
       ..createPaymentIntent(
         selectedPaymentMethod: widget.selectedPaymentMethod,
         totalPrice: PaymobPaymentScreen.defaultTotalPrice,

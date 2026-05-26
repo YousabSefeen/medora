@@ -42,7 +42,7 @@ class LoginButton extends StatelessWidget {
     final errorMsg = cubit.validateAndCacheInputs(loginControllers);
 
     if (errorMsg != null) {
-      AppAlerts.showErrorSnackBar(context, errorMsg);
+      AppAlerts.showSnackBar(context, errorMsg);
     } else {
       cubit.login();
     }
@@ -60,7 +60,7 @@ class LoginButton extends StatelessWidget {
           );
           _resetLoginStates(context);
         } else if (loginStatus == LazyRequestState.error) {
-          AppAlerts.showErrorSnackBar(
+          AppAlerts.showSnackBar(
             context,
             context.read<LoginCubit>().state.loginError ??
                 AppStrings.unknownError,

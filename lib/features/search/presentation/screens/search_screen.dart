@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocProvider;
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
+import 'package:medora/core/di/injection_container.dart' show sl;
 import 'package:medora/core/services/server_locator.dart' show serviceLocator;
 import 'package:medora/features/home/presentation/widgets/home_screen_padding.dart'
     show HomeScreenPadding;
@@ -23,8 +24,8 @@ class SearchScreen extends StatelessWidget {
     // and prevent shared instance issues with bottom sheets
     return BlocProvider(
       create: (_) => SearchCubit(
-        searchByName: serviceLocator(),
-        searchByCriteria: serviceLocator(),
+        searchByName: sl(),
+        searchByCriteria: sl(),
       ),
       child: const HomeScreenPadding(
         child: CustomScrollView(

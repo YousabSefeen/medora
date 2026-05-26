@@ -180,7 +180,7 @@ class AppStrings {
       'Appointments cannot be scheduled for past dates. '
       'Please select today\'s date or a future date.';
 
-  static const String toggleFavoriteErrorMsg = 'Failed to update favorites';
+  static const String toggleFavoriteErrorMsg = 'Unable to update favorites. Please try again.';
 
   // static String noInternetConnection='No Internet Connection';
   // static const String kNoInternetBookingErrorMessage =

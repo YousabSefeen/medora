@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart' show FirebaseFirestore;
 import 'package:dio/dio.dart' show Dio;
+import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth;
 import 'package:get_it/get_it.dart';
 import 'package:medora/core/payment_gateway_manager/paymob_payment/paymob_services.dart'
     show PaymobServices;
@@ -89,10 +90,10 @@ import 'package:medora/features/favorites/data/data_source/favorites_remote_data
 import 'package:medora/features/favorites/data/favorites_repository_impl/favorites_repository_impl.dart';
 import 'package:medora/features/favorites/domain/favorites_repository_base/favorites_repository_base.dart'
     show FavoritesRepositoryBase;
+import 'package:medora/features/favorites/domain/use_cases/get_favorite_ids_uc.dart'
+    show GetFavoriteIdsUc;
 import 'package:medora/features/favorites/domain/use_cases/get_favorites_doctors_use_case.dart'
     show GetFavoritesDoctorsUseCase;
-import 'package:medora/features/favorites/domain/use_cases/is_doctor_favorite_use_case.dart'
-    show IsDoctorFavoriteUseCase;
 import 'package:medora/features/favorites/domain/use_cases/toggle_favorite_use_case.dart'
     show ToggleFavoriteUseCase;
 import 'package:medora/features/favorites/presentation/controller/cubit/favorites_cubit.dart'
@@ -136,7 +137,7 @@ import '../../features/doctor_list/data/repository/doctor_list_repository_impl.d
 import '../../features/doctor_list/presentation/controller/cubit/doctor_list_cubit.dart';
 import '../app_settings/controller/cubit/app_settings_cubit.dart';
 
-final serviceLocator = GetIt.instance;
+/*final serviceLocator = GetIt.instance;
 
 class ServiceLocator {
   void init() {
@@ -367,10 +368,13 @@ class ServiceLocator {
     /// RemoteDataSource/BaseHomeRepository/Use Case/ Bloc
 
     // Todo RemoteDataSource
-
-    serviceLocator.registerLazySingleton<FavoritesRemoteDataSourceBase>(
-      () => FavoritesRemoteDataSource(),
+    serviceLocator.registerLazySingleton(
+      () => FirebaseAuth.instance.currentUser!.uid,
     );
+    serviceLocator.registerLazySingleton<FavoritesRemoteDataSourceBase>(
+      () => FavoritesRemoteDataSource(firestore: serviceLocator(),      // سيجلب الـ FirebaseFirestore
+        userId: serviceLocator<String>(), // سيجلب الـ userId المسجل أعلاه),
+    ));
 
     //Todo BaseHomeRepository
 
@@ -383,9 +387,7 @@ class ServiceLocator {
     //Todo Use Case
 
     ///favorites
-    serviceLocator.registerLazySingleton(
-      () => IsDoctorFavoriteUseCase(favoritesRepositoryBase: serviceLocator()),
-    );
+
     serviceLocator.registerLazySingleton(
       () =>
           GetFavoritesDoctorsUseCase(favoritesRepositoryBase: serviceLocator()),
@@ -393,14 +395,16 @@ class ServiceLocator {
     serviceLocator.registerLazySingleton(
       () => ToggleFavoriteUseCase(favoritesRepositoryBase: serviceLocator()),
     );
-
+    serviceLocator.registerLazySingleton(
+      () => GetFavoriteIdsUc(favoritesRepositoryBase: serviceLocator()),
+    );
     //Todo Bloc
 
     serviceLocator.registerFactory(
       () => FavoritesCubit(
-        isDoctorFavoriteUseCase: serviceLocator(),
         getFavoritesDoctorsUseCase: serviceLocator(),
         toggleFavoriteUseCase: serviceLocator(),
+        getFavoriteIdsUc: serviceLocator(),
       ),
     );
   }
@@ -481,4 +485,4 @@ class ServiceLocator {
       () => PaypalPaymentCubit(paypalRepository: serviceLocator()),
     );
   }
-}
+}*/

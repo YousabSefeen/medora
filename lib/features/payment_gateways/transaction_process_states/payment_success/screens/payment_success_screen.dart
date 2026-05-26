@@ -7,6 +7,7 @@ import 'package:medora/core/constants/app_routes/app_router.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/core/constants/themes/app_colors.dart';
+import 'package:medora/core/di/injection_container.dart' show sl;
 import 'package:medora/core/enum/lazy_request_state.dart';
 import 'package:medora/core/enum/payment_gateways_types.dart';
 import 'package:medora/core/extensions/media_query_extension.dart';
@@ -52,7 +53,7 @@ class PaymentSuccessScreen extends StatelessWidget {
       onPopInvokedWithResult: (didPop, _) => _onBackPress(context, didPop),
       child: BlocProvider<ConfirmPendingAppointmentCubit>(
         create: (context) =>
-            serviceLocator<ConfirmPendingAppointmentCubit>()
+        sl<ConfirmPendingAppointmentCubit>()
               ..confirmPendingAppointment(entity: appointmentEntity),
         child: Scaffold(
           backgroundColor: AppColors.lightPeriwinkle,

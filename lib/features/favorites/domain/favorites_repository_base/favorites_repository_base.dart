@@ -4,7 +4,7 @@ import 'package:medora/core/error/failure.dart';
 import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
 
 abstract class FavoritesRepositoryBase {
-  Future<Either<Failure, bool>> isDoctorFavorite(String doctorId);
+  Future<Either<Failure, List<String>>> getFavoriteIds();
 
   Future<Either<Failure, List<DoctorEntity>>> getFavoritesDoctors();
 

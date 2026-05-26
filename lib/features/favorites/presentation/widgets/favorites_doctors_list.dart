@@ -35,6 +35,8 @@ class _FavoritesDoctorsListState extends State<FavoritesDoctorsList> {
 
   Future<void> _getAllFavoritesDoctors() async {
     if (!_isFavoritesLoadedBefore) {
+      print('5555555555555555555555555555555555555555555555555555');
+      print('_FavoritesDoctorsListState._getAllFavoritesDoctors');
       await _loadFavoritesDoctors();
     }
     _isFavoritesLoadedBefore = true;
@@ -46,8 +48,10 @@ class _FavoritesDoctorsListState extends State<FavoritesDoctorsList> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FavoritesCubit, FavoritesStates>(
+      buildWhen: (previous, current) =>
+          previous.listLoadingState != current.listLoadingState|| previous.favoriteIds != current.favoriteIds,
       builder: (context, state) {
-        switch (state.favoritesListState) {
+        switch (state.listLoadingState) {
           case LazyRequestState.lazy:
           case LazyRequestState.loading:
             return const SliverLoadingList(height: 150);
@@ -56,7 +60,7 @@ class _FavoritesDoctorsListState extends State<FavoritesDoctorsList> {
 
           case LazyRequestState.error:
             return ErrorRetryWidget(
-              errorMessage: state.favoritesListError,
+              errorMessage: state.listError,
               retryButtonText: AppStrings.reloadFavorites,
 
               onRetry: () async => await _loadFavoritesDoctors(),
@@ -67,10 +71,10 @@ class _FavoritesDoctorsListState extends State<FavoritesDoctorsList> {
   }
 
   Widget _buildFavoritesContent(FavoritesStates state) {
-    if (state.favoritesDoctorsList.isEmpty) {
+    if (state.favoriteDoctors.isEmpty) {
       return _buildEmptyFavoritesView();
     } else {
-      return _buildFavoritesListView(state.favoritesDoctorsList);
+      return _buildFavoritesListView(state.favoriteDoctors);
     }
   }
 

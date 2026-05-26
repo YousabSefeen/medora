@@ -70,13 +70,32 @@ class AppAlerts {
     );
   }
 
-  static void showErrorSnackBar(BuildContext context, String errorMessage) {
+/*  static void showErrorSnackBar(BuildContext context, String errorMessage) {
     //  ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(AppAlertWidgets.errorSnackBar(errorMessage));
+  }*/
+  static void showSnackBar(BuildContext context, String errorMessage) {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              duration: const Duration(seconds: 2),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              content: Text(
+                errorMessage,
+                textAlign: TextAlign.center,
+                style: Theme.of(
+                  context,
+                ).textTheme.mediumWhiteBold.copyWith(fontSize: 15.sp),
+              ),
+              backgroundColor: AppColors.red,
+            ),
+          );
   }
-
   static void showTopSnackBarAlert({
     required BuildContext context,
     IconData? icon,

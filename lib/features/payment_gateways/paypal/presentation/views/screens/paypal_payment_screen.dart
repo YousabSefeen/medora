@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medora/core/constants/app_routes/app_router.dart'
     show AppRouter;
+import 'package:medora/core/di/injection_container.dart' show sl;
 import 'package:medora/core/enum/payment_gateways_types.dart'
     show PaymentGatewaysTypes;
 import 'package:medora/core/enum/web_view_status.dart' show WebViewStatus;
@@ -30,7 +31,7 @@ class _PaypalPaymentScreenState extends State<PaypalPaymentScreen>
 
   @override
   void initializePayment() {
-    _paymentCubit = serviceLocator<PaypalPaymentCubit>()..createPaymentIntent();
+    _paymentCubit = sl<PaypalPaymentCubit>()..createPaymentIntent();
   }
 
   @override

@@ -18,6 +18,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:medora/core/app_settings/controller/cubit/app_settings_cubit.dart'
     show AppSettingsCubit;
 import 'package:medora/core/constants/app_alerts/app_alerts.dart';
+import 'package:medora/core/di/injection_container.dart' show sl, ServiceLocator;
 import 'package:medora/core/enum/internet_state.dart' show InternetState;
 import 'package:medora/features/appointments/presentation/controller/cubit/book_appointment_cubit.dart'
     show BookAppointmentCubit;
@@ -111,63 +112,63 @@ void main() async {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => serviceLocator<HomeDoctorSearchCubit>()),
-        BlocProvider(create: (_) => serviceLocator<FavoritesCubit>()..getFavoritesDoctors()),
+        BlocProvider(create: (_) => sl<HomeDoctorSearchCubit>()),
+        BlocProvider(create: (_) => sl<FavoritesCubit>()..fetchFavoriteIds()),
 
-        BlocProvider(create: (_) => serviceLocator<BottomNavCubit>()),
-        BlocProvider(create: (_) => serviceLocator<LoginCubit>()),
-        BlocProvider(create: (_) => serviceLocator<RegisterCubit>()),
-        //   BlocProvider(create: (_) => serviceLocator<DoctorProfileCubit>()),
-        BlocProvider(create: (_) => serviceLocator<DoctorListCubit>()),
+        BlocProvider(create: (_) => sl<BottomNavCubit>()),
+        BlocProvider(create: (_) => sl<LoginCubit>()),
+        BlocProvider(create: (_) => sl<RegisterCubit>()),
+        //   BlocProvider(create: (_) => sl<DoctorProfileCubit>()),
+        BlocProvider(create: (_) => sl<DoctorListCubit>()),
 
-        BlocProvider(create: (_) => serviceLocator<AppSettingsCubit>()),
+        BlocProvider(create: (_) => sl<AppSettingsCubit>()),
 
-        // BlocProvider(create: (_) => serviceLocator<SearchCubit>()),
+        // BlocProvider(create: (_) => sl<SearchCubit>()),
 
         //Payment Gateways
-        BlocProvider(create: (_) => serviceLocator<PaymobPaymentCubit>()),
+        BlocProvider(create: (_) => sl<PaymobPaymentCubit>()),
 
         ///xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         ///xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
         // BlocProvider<FetchClientAppointmentsCubit>(
-        //   create: (context) => serviceLocator<FetchClientAppointmentsCubit>(),
+        //   create: (context) => sl<FetchClientAppointmentsCubit>(),
         // ),
         BlocProvider<DoctorAppointmentsCubit>(
-          create: (context) => serviceLocator<DoctorAppointmentsCubit>(),
+          create: (context) => sl<DoctorAppointmentsCubit>(),
         ),
         BlocProvider<TimeSlotCubit>(
-          create: (context) => serviceLocator<TimeSlotCubit>(),
+          create: (context) => sl<TimeSlotCubit>(),
         ),
 
         BlocProvider<BookAppointmentCubit>(
-          create: (context) => serviceLocator<BookAppointmentCubit>(),
+          create: (context) => sl<BookAppointmentCubit>(),
         ),
 
         BlocProvider<PatientCubit>(
-          create: (context) => serviceLocator<PatientCubit>(),
+          create: (context) => sl<PatientCubit>(),
         ),
 
         BlocProvider<PaymentCubit>(
-          create: (context) => serviceLocator<PaymentCubit>(),
+          create: (context) => sl<PaymentCubit>(),
         ),
 
         BlocProvider<CancelAppointmentCubit>(
-          create: (context) => serviceLocator<CancelAppointmentCubit>(),
+          create: (context) => sl<CancelAppointmentCubit>(),
         ),
 
         BlocProvider<RescheduleAppointmentCubit>(
-          create: (context) => serviceLocator<RescheduleAppointmentCubit>(),
+          create: (context) => sl<RescheduleAppointmentCubit>(),
         ),
 
         BlocProvider<UpcomingAppointmentsCubit>(
-          create: (context) => serviceLocator<UpcomingAppointmentsCubit>(),
+          create: (context) => sl<UpcomingAppointmentsCubit>(),
         ),
         BlocProvider<CompletedAppointmentsCubit>(
-          create: (context) => serviceLocator<CompletedAppointmentsCubit>(),
+          create: (context) => sl<CompletedAppointmentsCubit>(),
         ),
         BlocProvider<CancelledAppointmentsCubit>(
-          create: (context) => serviceLocator<CancelledAppointmentsCubit>(),
+          create: (context) => sl<CancelledAppointmentsCubit>(),
         ),
       ],
       child: const MyApp(),

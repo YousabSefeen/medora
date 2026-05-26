@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth;
+import 'package:medora/core/constants/firestore_constants/firestore_constants.dart'
+    show FirestoreConstants;
 import 'package:medora/features/favorites/data/data_source/favorites_remote_data_source_base.dart'
     show FavoritesRemoteDataSourceBase;
 import 'package:medora/features/shared/data/models/doctor_model.dart'
@@ -11,15 +12,17 @@ class FavoritesRemoteDataSource extends FavoritesRemoteDataSourceBase {
   final FirebaseFirestore _firestore;
   final String _userId;
 
-  FavoritesRemoteDataSource({String? userId, FirebaseFirestore? firestore})
-    : _userId = userId ?? FirebaseAuth.instance.currentUser!.uid,
-      _firestore = firestore ?? FirebaseFirestore.instance;
+  FavoritesRemoteDataSource({
+    required FirebaseFirestore firestore,
+    required String userId,
+  }) : _firestore = firestore,
+       _userId = userId;
 
   @override
   Future<void> addDoctorToFavorites(String doctorId) async {
     try {
       await _firestore
-          .collection('users')
+          .collection(FirestoreConstants.usersCollection)
           .doc(_userId)
           .collection('favorites')
           .doc(doctorId)
@@ -85,23 +88,6 @@ class FavoritesRemoteDataSource extends FavoritesRemoteDataSourceBase {
           .get();
 
   @override
-  Future<bool> isDoctorFavorite(String doctorId) async {
-    try {
-      final doc = await _firestore
-          .collection('users')
-          .doc(_userId)
-          .collection('favorites')
-          .doc(doctorId)
-          .get();
-
-      return doc.exists;
-    } catch (e) {
-      _logError('isDoctorFavorite', e);
-      rethrow;
-    }
-  }
-
-  @override
   Future<void> removeDoctorFromFavorites(String doctorId) async {
     try {
       await _firestore
@@ -118,5 +104,21 @@ class FavoritesRemoteDataSource extends FavoritesRemoteDataSourceBase {
 
   void _logError(String methodName, dynamic error) {
     print('FavoritesRemoteDataSource.$methodName ERROR: $error');
+  }
+
+  @override
+  Future<List<String>> getFavoriteIds() async {
+    try {
+      final snapshot = await _firestore
+          .collection('users')
+          .doc(_userId)
+          .collection('favorites')
+          .get();
+
+      return snapshot.docs.map((doc) => doc.id).toList();
+    } catch (e) {
+      _logError('getFavoriteIds', e);
+      rethrow;
+    }
   }
 }

@@ -11,12 +11,21 @@ class FavoritesRepositoryImpl extends FavoritesRepositoryBase {
   final FavoritesRemoteDataSourceBase favoritesRemoteDataSourceBase;
 
   FavoritesRepositoryImpl({required this.favoritesRemoteDataSourceBase});
+  @override
+  Future<Either<Failure, List<String>>> getFavoriteIds() async{
 
+    try {
+      final favoriteIds = await favoritesRemoteDataSourceBase.getFavoriteIds();
+      return right(favoriteIds);
+    } catch (error) {
+      return Left(ServerFailure(catchError: error));
+    }
+  }
   @override
   Future<Either<Failure, void>> addDoctorToFavorites(String doctorId) async {
     try {
       await favoritesRemoteDataSourceBase.addDoctorToFavorites(doctorId);
-      return right(null);
+       return right(null);
     } catch (error) {
       return Left(ServerFailure(catchError: error));
     }
@@ -33,16 +42,7 @@ class FavoritesRepositoryImpl extends FavoritesRepositoryBase {
     }
   }
 
-  @override
-  Future<Either<Failure, bool>> isDoctorFavorite(String doctorId) async {
-    try {
-      final isDoctorFavorite = await favoritesRemoteDataSourceBase
-          .isDoctorFavorite(doctorId);
-      return right(isDoctorFavorite);
-    } catch (error) {
-      return Left(ServerFailure(catchError: error));
-    }
-  }
+
 
   @override
   Future<Either<Failure, void>> removeDoctorFromFavorites(

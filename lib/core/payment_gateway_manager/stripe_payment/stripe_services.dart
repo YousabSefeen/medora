@@ -126,19 +126,23 @@ class StripeServices {
     /* final CreateUserModel responseUser =
         await createUserInStripeDashboard(createUserModel: createUserModel);*/
 
-    final PaymentIntentModel responsePaymentIntent = await createPaymentIntent(
-      totalPrice: totalPrice,
-    );
+    try {
+      final PaymentIntentModel responsePaymentIntent = await createPaymentIntent(
+        totalPrice: totalPrice,
+      );
 
-    final EphemeralKeyModel ephemeralKey = await getEphemeralKeys(
-      customerId: StripeKeys.customerId,
-    );
+      final EphemeralKeyModel ephemeralKey = await getEphemeralKeys(
+        customerId: StripeKeys.customerId,
+      );
 
-    await initPaymentSheet(
-      paymentIntentClientSecret: responsePaymentIntent.clientSecret!,
-      ephemeralKeyModel: ephemeralKey,
-    );
+      await initPaymentSheet(
+        paymentIntentClientSecret: responsePaymentIntent.clientSecret!,
+        ephemeralKeyModel: ephemeralKey,
+      );
 
-    await presentPaymentSheet();
+      await presentPaymentSheet();
+    }   catch (e) {
+      print('StripeServices.makePayment Error: $e');
+    }
   }
 }

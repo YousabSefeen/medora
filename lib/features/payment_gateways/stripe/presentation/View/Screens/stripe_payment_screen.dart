@@ -7,6 +7,7 @@ import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/core/constants/common_widgets/custom_loading_text.dart'
     show CustomLoadingText;
+import 'package:medora/core/di/injection_container.dart' show sl;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 import 'package:medora/core/enum/payment_gateways_types.dart'
     show PaymentGatewaysTypes;
@@ -43,7 +44,7 @@ class StripePaymentScreen extends StatelessWidget {
         ),
         body: BlocProvider(
           create: (context) =>
-              serviceLocator<StripePaymentCubit>()..processStripePayment(
+          sl<StripePaymentCubit>()..processStripePayment(
                 totalPrice: 100,
                 createUserModel: StripeDummyDataService.createUserModel,
               ),

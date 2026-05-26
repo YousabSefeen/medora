@@ -6,61 +6,63 @@ import 'package:medora/core/constants/app_duration/app_duration.dart'
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
+import 'package:medora/features/favorites/domain/use_cases/get_favorite_ids_uc.dart'
+    show GetFavoriteIdsUc;
 import 'package:medora/features/favorites/domain/use_cases/get_favorites_doctors_use_case.dart'
     show GetFavoritesDoctorsUseCase;
-import 'package:medora/features/favorites/domain/use_cases/is_doctor_favorite_use_case.dart'
-    show IsDoctorFavoriteUseCase;
 import 'package:medora/features/favorites/domain/use_cases/toggle_favorite_use_case.dart'
     show ToggleFavoriteUseCase;
 import 'package:medora/features/favorites/domain/value_objects/toggle_favorite_parameters.dart'
     show ToggleFavoriteParameters;
 import 'package:medora/features/favorites/presentation/controller/states/favorites_states.dart'
     show FavoritesStates;
-
-import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
-
-import '../../../../../core/error/failure.dart' show Failure;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart'
+    show DoctorEntity;
 
 class FavoritesCubit extends Cubit<FavoritesStates> {
-  final IsDoctorFavoriteUseCase isDoctorFavoriteUseCase;
   final GetFavoritesDoctorsUseCase getFavoritesDoctorsUseCase;
   final ToggleFavoriteUseCase toggleFavoriteUseCase;
+  final GetFavoriteIdsUc getFavoriteIdsUc;
 
   FavoritesCubit({
-    required this.isDoctorFavoriteUseCase,
     required this.getFavoritesDoctorsUseCase,
     required this.toggleFavoriteUseCase,
+    required this.getFavoriteIdsUc,
   }) : super(const FavoritesStates());
 
-  Future<void> getFavoritesDoctors() async {
-    final result = await getFavoritesDoctorsUseCase(const NoParams());
+  Future<void> fetchFavoriteIds() async {
+    // Prevent redundant network requests if data is already cached
+    if (state.favoriteIds.isNotEmpty) return;
 
+    final result = await getFavoriteIdsUc(const NoParams());
     result.fold(
-      (failure) => _handleFavoritesListError(failure),
-      (favoritesList) => _handleFavoritesListSuccess(favoritesList),
+      (failure) =>
+          emit(state.copyWith(idsLoadingState: LazyRequestState.error)),
+      (ids) => emit(
+        state.copyWith(
+          idsLoadingState: LazyRequestState.loaded,
+          favoriteIds: ids.toSet(),
+        ),
+      ),
     );
   }
 
-  void _handleFavoritesListError(Failure failure) => emit(
-    state.copyWith(
-      favoritesListState: LazyRequestState.error,
-      favoritesListError: failure.toString(),
-    ),
-  );
-
-  void _handleFavoritesListSuccess(List<DoctorEntity> favoritesList) => emit(
-    state.copyWith(
-      favoritesDoctorsList: favoritesList,
-      favoritesListState: LazyRequestState.loaded,
-    ),
-  );
-
-  Future<void> checkDoctorFavoriteStatus({required String doctorId}) async {
-    final result = await isDoctorFavoriteUseCase(doctorId);
-
+  Future<void> getFavoritesDoctors() async {
+    emit(state.copyWith(listLoadingState: LazyRequestState.loading));
+    final result = await getFavoritesDoctorsUseCase(const NoParams());
     result.fold(
-      (failure) => _handleFavoriteCheckError(failure),
-      (isFavorite) => _handleFavoriteCheckSuccess(doctorId, isFavorite),
+      (failure) => emit(
+        state.copyWith(
+          listLoadingState: LazyRequestState.error,
+          listError: failure.toString(),
+        ),
+      ),
+      (list) => emit(
+        state.copyWith(
+          listLoadingState: LazyRequestState.loaded,
+          favoriteDoctors: list,
+        ),
+      ),
     );
   }
 
@@ -77,112 +79,43 @@ class FavoritesCubit extends Cubit<FavoritesStates> {
       ),
     );
 
-    result.fold(
-      (failure) => _onToggleFailure(isFavorite, doctorInfo),
-      (success) => _onToggleSuccess(isFavorite, doctorInfo),
-    );
+    result.fold((failure) {
+      emit(
+        state.copyWith(
+          toggleState: LazyRequestState.error,
+          toggleError: AppStrings.toggleFavoriteErrorMsg,
+        ),
+      );
+      _rollbackUpdate(isFavorite, doctorInfo);
+    }, (success) => emit(state.copyWith(toggleState: LazyRequestState.loaded)));
   }
 
-  void _onToggleFailure(bool isFavorite, DoctorEntity doctorInfo) {
-    emit(
-      state.copyWith(
-        toggleFavoriteState: LazyRequestState.error,
-        toggleFavoriteError: AppStrings.toggleFavoriteErrorMsg,
-      ),
-    );
-    _rollbackWithDelay(isFavorite, doctorInfo);
-  }
+  void clearToggleState() =>
+      emit(state.copyWith(toggleState: LazyRequestState.lazy));
 
-  // ========== PRIVATE METHODS ========== //
+  // ========== PRIVATE LOGIC ========== //
 
   void _applyOptimisticUpdates(bool isFavorite, DoctorEntity doctorInfo) {
-    final updatedFavorites = _updateFavoriteDoctorsSet(
-      doctorId: doctorInfo.doctorId!,
-      shouldBeFavorite: !isFavorite,
-    );
-
-    final updatedList = _getUpdatedFavoritesList(
-      isFavorite: isFavorite,
-      doctorInfo: doctorInfo,
-    );
-
-    emit(
-      state.copyWith(
-        favoriteDoctorsSet: updatedFavorites,
-        favoritesDoctorsList: updatedList,
-      ),
-    );
-  }
-
-  Set<String> _updateFavoriteDoctorsSet({
-    required String doctorId,
-    required bool shouldBeFavorite,
-  }) {
-    final updated = Set<String>.from(state.favoriteDoctorsSet);
-
-    if (shouldBeFavorite) {
-      updated.add(doctorId);
-    } else {
-      updated.remove(doctorId);
-    }
-
-    return updated;
-  }
-
-  /// Get the updated favorites list
-  List<DoctorEntity> _getUpdatedFavoritesList({
-    required bool isFavorite,
-    required DoctorEntity doctorInfo,
-  }) {
-    final updatedList = List<DoctorEntity>.from(state.favoritesDoctorsList);
-    final index = updatedList.indexWhere(
-      (doctor) => doctor.doctorId == doctorInfo.doctorId,
-    );
-
+    final updatedIds = Set<String>.from(state.favoriteIds);
     if (isFavorite) {
-      if (index != -1) {
-        updatedList.removeAt(index);
-      }
+      updatedIds.remove(doctorInfo.doctorId);
     } else {
-      if (index == -1) {
-        updatedList.insert(0, doctorInfo);
-      }
+      updatedIds.add(doctorInfo.doctorId!);
     }
 
-    return updatedList;
+    final updatedList = List<DoctorEntity>.from(state.favoriteDoctors);
+    if (isFavorite) {
+      updatedList.removeWhere((d) => d.doctorId == doctorInfo.doctorId);
+    } else {
+      updatedList.insert(0, doctorInfo);
+    }
+
+    emit(state.copyWith(favoriteIds: updatedIds, favoriteDoctors: updatedList));
   }
 
-  /// Rolling back updates after a delay period
-  void _rollbackWithDelay(bool originalState, DoctorEntity doctorInfo) =>
+  void _rollbackUpdate(bool originalIsFavorite, DoctorEntity doctorInfo) =>
       Future.delayed(
         AppDurations.milliseconds_500,
-        () => _applyOptimisticUpdates(!originalState, doctorInfo),
+        () => _applyOptimisticUpdates(!originalIsFavorite, doctorInfo),
       );
-
-  /// Handling the successful switch to the favorites
-  void _onToggleSuccess(bool isFavorite, DoctorEntity doctorInfo) =>
-      emit(state.copyWith(toggleFavoriteState: LazyRequestState.loaded));
-
-  /// Handling favorites verification errors
-  void _handleFavoriteCheckError(Failure failure) => emit(
-    state.copyWith(
-      requestState: LazyRequestState.error,
-
-      /// error: failure.message,
-    ),
-  );
-
-  void _handleFavoriteCheckSuccess(String doctorId, bool isFavorite) {
-    final updatedFavorites = _updateFavoriteDoctorsSet(
-      doctorId: doctorId,
-      shouldBeFavorite: isFavorite,
-    );
-
-    emit(
-      state.copyWith(
-        requestState: LazyRequestState.loaded,
-        favoriteDoctorsSet: updatedFavorites,
-      ),
-    );
-  }
 }

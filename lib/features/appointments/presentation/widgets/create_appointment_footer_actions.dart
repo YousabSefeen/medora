@@ -16,10 +16,10 @@ import 'package:medora/features/appointments/presentation/controller/states/book
     show BookAppointmentState;
 import 'package:medora/features/appointments/presentation/controller/states/time_slot_state.dart'
     show TimeSlotState;
-import 'package:medora/features/appointments/presentation/ui_models/appointment_booking_ui_model.dart'
-    show AppointmentBookingUIModel;
 import 'package:medora/features/appointments/presentation/screens/patient_details_screen.dart'
     show PatientDetailsScreen;
+import 'package:medora/features/appointments/presentation/ui_models/appointment_booking_ui_model.dart'
+    show AppointmentBookingUIModel;
 import 'package:medora/features/appointments/presentation/widgets/custom_widgets/adaptive_action_button.dart'
     show AdaptiveActionButton;
 import 'package:medora/features/favorites/presentation/widgets/toggle_favorite_button.dart'
@@ -66,7 +66,7 @@ class CreateAppointmentFooterActions extends StatelessWidget {
         return Row(
           spacing: 15,
           children: [
-            ToggleFavoriteButton(doctorInfo: doctor, iconSize: 30),
+            ToggleFavoriteButton(doctorInfo: doctor),
 
             Expanded(
               child: AdaptiveActionButton(

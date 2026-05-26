@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:animated_drop_down_form_field/animated_drop_down_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:medora/core/enum/gender_type.dart';
 import 'package:shared_preferences/shared_preferences.dart'
@@ -8,26 +7,9 @@ import 'package:shared_preferences/shared_preferences.dart'
 
 import '../../../../../core/base/disposable.dart';
 
-// class PatientFieldsControllers implements Disposable {
-//   final formKey = GlobalKey<FormState>();
-//   final nameController = TextEditingController();
-//   final genderController = AnimatedDropDownFormFieldController();
-//   final ageController = TextEditingController();
-//   final problemController = TextEditingController();
-//
-//   @override
-//   void dispose() {
-//     nameController.dispose();
-//     genderController.dispose();
-//     ageController.dispose();
-//     problemController.dispose();
-//   }
-// }
-
 class PatientFieldsControllers implements Disposable {
   final formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
-
 
   final ageController = TextEditingController();
   final problemController = TextEditingController();
@@ -38,7 +20,6 @@ class PatientFieldsControllers implements Disposable {
       'age': ageController.text,
       'problem': problemController.text,
       'gender': genderType.name,
-
     };
   }
 
@@ -49,12 +30,11 @@ class PatientFieldsControllers implements Disposable {
     problemController.text = data['problem'] ?? '';
     if (data['gender'] != null) {
       genderType = GenderType.values.firstWhere(
-            (e) => e.name == data['gender'],
+        (e) => e.name == data['gender'],
         orElse: () => GenderType.init,
       );
+    }
   }
-  }
-
 
   @override
   void dispose() {

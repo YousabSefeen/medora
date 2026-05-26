@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medora/core/di/injection_container.dart' show sl;
 import 'package:medora/core/services/server_locator.dart' show serviceLocator;
 import 'package:medora/features/doctor_profile/presentation/controller/cubit/doctor_profile_cubit.dart'
     show DoctorProfileCubit;
@@ -42,7 +43,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(title: const Text(AppStrings.doctorProfileTitle)),
       body: BlocProvider<DoctorProfileCubit>(
-        create: (context) => serviceLocator<DoctorProfileCubit>(),
+        create: (context) => sl<DoctorProfileCubit>(),
         child: BlocSelector<DoctorProfileCubit, DoctorProfileState, bool>(
           selector: (state) => state.hasValidatedBefore,
 

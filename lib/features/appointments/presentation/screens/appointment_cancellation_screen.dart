@@ -9,6 +9,7 @@ import 'package:medora/core/constants/app_strings/app_strings.dart'
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/constants/themes/app_text_styles.dart'
     show AppTextStyles;
+import 'package:medora/core/di/injection_container.dart' show sl;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 import 'package:medora/core/extensions/theme_extension.dart'
     show ThemeExtension;
@@ -41,7 +42,7 @@ class AppointmentCancellationScreen extends StatelessWidget {
       appBar: _CancelAppBar(),
       body: SafeArea(
         child: BlocProvider(
-          create: (context) => serviceLocator<CancelAppointmentCubit>(),
+          create: (context) => sl<CancelAppointmentCubit>(),
           child: BlocListener<CancelAppointmentCubit, CancelAppointmentState>(
             listenWhen: (prev, curr) => prev.requestState != curr.requestState,
             listener: (context, state) =>
