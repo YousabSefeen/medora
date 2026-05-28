@@ -1,82 +1,83 @@
 import 'package:flutter/material.dart' show AutovalidateMode;
 import 'package:flutter_bloc/flutter_bloc.dart' show Cubit;
+import 'package:medora/core/base_use_case/base_use_case.dart' show NoParams;
 import 'package:medora/core/enum/gender_type.dart' show GenderType;
+import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 import 'package:medora/core/extensions/string_extensions.dart'
     show StringExtension;
+import 'package:medora/features/appointments/domain/entities/patient_entity.dart'
+    show PatientEntity;
+import 'package:medora/features/appointments/domain/use_cases/get_cached_patient_data_use_case.dart'
+    show GetCachedPatientDataUseCase;
+import 'package:medora/features/appointments/domain/use_cases/save_patient_data_use_case.dart'
+    show SavePatientDataUseCase;
 import 'package:medora/features/appointments/presentation/controller/cubit/patient_state.dart'
     show PatientState;
-import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_controllers.dart'
-    show PatientFieldsControllers, PatientLocalDataSource;
-import 'package:medora/features/appointments/presentation/ui_models/appointment_booking_ui_model.dart'
-    show AppointmentBookingUIModel;
+import 'package:medora/features/appointments/presentation/widgets/patient_widgets/patient_fields_controllers.dart'
+    show PatientFieldsControllers;
 
 class PatientCubit extends Cubit<PatientState> {
-  final PatientLocalDataSource _localDataSource;
+  final SavePatientDataUseCase savePatientDataUseCase;
+  final GetCachedPatientDataUseCase getCachedPatientDataUseCase;
 
-  PatientCubit(this._localDataSource) : super(const PatientState()) {
-    // Call the autofill function once the Cubit is created
-    _autoFillSavedData();
-  }
+  PatientCubit({
+    required this.savePatientDataUseCase,
+    required this.getCachedPatientDataUseCase,
+  }) : super(const PatientState());
 
   void setControllers(PatientFieldsControllers controllers) =>
       emit(state.copyWith(patientFieldsControllers: controllers));
 
-  void loadSavedPatientData() {
-    final savedData = _localDataSource.getPatientFields();
-    if (savedData != null && state.patientFieldsControllers != null) {
-      state.patientFieldsControllers!.fromMap(savedData);
-    }
-  }
+  void getCachedPatientData() async {
+    emit(state.copyWith(getPatientDataState: LazyRequestState.loading));
+    final result = await getCachedPatientDataUseCase.call(const NoParams());
 
-  void _savePatientDataToLocal() async {
-    final data = state.patientFieldsControllers?.toMap(state.genderType);
-    if (data != null) {
-      await _localDataSource.savePatientFields(data);
-    }
-  }
+    result.fold(
+      (failure) {
+        emit(state.copyWith(getPatientDataState: LazyRequestState.error));
+      },
+      (patient) {
+        if (patient != null) {
+          state.patientFieldsControllers!.nameController.text = patient.name;
+          state.patientFieldsControllers!.ageController.text = patient.age;
+          state.patientFieldsControllers!.problemController.text =
+              patient.problem;
 
-  void _autoFillSavedData() {
-    final Map<String, dynamic>? savedData = _localDataSource.getPatientFields();
-
-    if (savedData != null) {
-      state.patientFieldsControllers?.fromMap(savedData);
-
-      if (savedData['gender'] != null) {
-        final savedGender = GenderType.values.firstWhere(
-          (e) => e.name == savedData['gender'],
-          orElse: () => GenderType.init,
-        );
-
-        emit(state.copyWith(genderType: savedGender));
-      }
-    }
-  }
-
-
-
-  void cacheSelectedDoctorAndCreatePendingAppointment(
-    AppointmentBookingUIModel appointmentDataView,
-  ) {
-    emit(state.copyWith(appointmentBookingUIModel: appointmentDataView));
+          emit(
+            state.copyWith(
+              getPatientDataState: LazyRequestState.loaded,
+              genderType: patient.gender,
+            ),
+          );
+        }
+      },
+    );
   }
 
   void cachePatientData({required PatientFieldsControllers formControllers}) {
-    _savePatientDataToLocal();
     emit(state.copyWith(patientFieldsControllers: formControllers));
+    _savePatientData();
   }
 
-  PatientFieldsControllers get getPatientData =>
-      state.patientFieldsControllers!;
+  Future<void> _savePatientData() async {
+    if (state.patientFieldsControllers == null) return;
+
+    final patientEntity = PatientEntity(
+      name: state.patientFieldsControllers!.nameController.text,
+      age: state.patientFieldsControllers!.ageController.text,
+      problem: state.patientFieldsControllers!.problemController.text,
+      gender: state.genderType,
+    );
+
+    await savePatientDataUseCase.call((patientEntity));
+  }
 
   void changeValidateMode() =>
       emit(state.copyWith(validateMode: AutovalidateMode.always));
 
   void onChangeSelectedGenderIndex(int index) {
-    if (index == 0) {
-      emit(state.copyWith(genderType: GenderType.male));
-    } else {
-      emit(state.copyWith(genderType: GenderType.female));
-    }
+    final gender = index == 0 ? GenderType.male : GenderType.female;
+    emit(state.copyWith(genderType: gender));
   }
 
   String get patientName =>

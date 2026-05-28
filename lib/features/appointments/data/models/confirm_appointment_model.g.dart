@@ -7,8 +7,8 @@ part of 'confirm_appointment_model.dart';
 // **************************************************************************
 
 ConfirmAppointmentModel _$ConfirmAppointmentModelFromJson(
-    Map<String, dynamic> json,
-    ) => ConfirmAppointmentModel(
+  Map<String, dynamic> json,
+) => ConfirmAppointmentModel(
   patientName: json['patientName'] as String,
   patientGender: json['patientGender'] as String,
   patientAge: json['patientAge'] as String,
@@ -19,8 +19,8 @@ ConfirmAppointmentModel _$ConfirmAppointmentModelFromJson(
 );
 
 Map<String, dynamic> _$ConfirmAppointmentModelToJson(
-    ConfirmAppointmentModel instance,
-    ) => <String, dynamic>{
+  ConfirmAppointmentModel instance,
+) => <String, dynamic>{
   'patientName': instance.patientName,
   'patientGender': instance.patientGender,
   'patientAge': instance.patientAge,

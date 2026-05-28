@@ -21,6 +21,10 @@ class ServiceLocator {
     // 1. تسجيل الخدمات الأساسية الخارجية
     await _initCore();
 
+    // 3. تسجيل خدمات الـ Core (Auth, Payments, Settings)
+    await initAuthDependencies();
+    await initPaymentsDependencies();
+    await initAppSettingsDependencies();
     // 2. تسجيل الـ Features (التي قمنا بإنشائها)
     await initDoctorsListDependencies();
     await initSearchDependencies();
@@ -28,10 +32,6 @@ class ServiceLocator {
     await initAppointmentsDependencies();
     await initDoctorProfileDependencies();
 
-    // 3. تسجيل خدمات الـ Core (Auth, Payments, Settings)
-    await initAuthDependencies();
-    await initPaymentsDependencies();
-    await initAppSettingsDependencies();
   }
 
   Future<void> _initCore() async {

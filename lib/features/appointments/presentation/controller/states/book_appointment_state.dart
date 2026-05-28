@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart' show Equatable;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
-import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_controllers.dart'
-    show PatientFieldsControllers;
+
 import 'package:medora/features/appointments/presentation/ui_models/appointment_booking_ui_model.dart'
     show AppointmentBookingUIModel;
+import 'package:medora/features/appointments/presentation/widgets/patient_widgets/patient_fields_controllers.dart' show PatientFieldsControllers;
 
 
 class BookAppointmentState extends Equatable {

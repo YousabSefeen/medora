@@ -10,11 +10,13 @@ abstract class Failure {
   final Object catchError;
 
   Failure({required this.catchError});
+  String get errorMessage;
 }
 
 class ServerFailure extends Failure {
   ServerFailure({required super.catchError});
 
+  @override
   String get errorMessage {
     if (catchError is FirebaseAuthException) {
       final errorCode = (catchError as FirebaseAuthException).code;
@@ -29,35 +31,24 @@ class ServerFailure extends Failure {
   }
 
   @override
-  String toString() {
-    return errorMessage;
-  }
+  String toString() => errorMessage;
 }
 
-/// Old
-/*class AuthException {
-  static String getMsgFromErrorCode({required String errorCode}) {
-    switch (errorCode) {
-      case "INVALID_LOGIN_CREDENTIALS":
-        return "Invalid login credentials, please make sure of the email address and the password";
 
-      case "invalid-email":
-        return "Your email address appears to be malformed.";
+class LocalFailure extends Failure {
+  LocalFailure({required super.catchError});
 
-      case "wrong-password":
-        return "Your password is wrong.";
-      case "user-not-found":
-        return "User with this email doesn't exist.";
-      case "user-disabled":
-        return "User with this email has been disabled.";
-      case "too-many-requests":
-        return "Too many requests. Try again later";
-      case "operation-not-allowed":
-        return "Message for operation not allowed";
-      case "email-already-in-use":
-        return "Already created an account in this Email, if is you, you can try Login.";
-      default:
-        return errorCode;
+  @override
+  String get errorMessage {
+    if (catchError is FormatException) {
+      return 'Data formatting error occurred while reading local data.';
+    } else if (catchError is FileSystemException) {
+      return 'Unable to access device storage. Please check your permissions.';
+    } else {
+      return 'An unexpected error occurred while accessing local storage: ${catchError.toString()}';
     }
   }
-}*/
+
+  @override
+  String toString() => errorMessage;
+}

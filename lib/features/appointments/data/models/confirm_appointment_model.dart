@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:medora/features/appointments/domain/entities/book_appointment_entity.dart' show BookAppointmentEntity;
 
 part 'confirm_appointment_model.g.dart';
 

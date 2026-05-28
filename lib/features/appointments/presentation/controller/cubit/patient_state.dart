@@ -1,12 +1,14 @@
 import 'package:equatable/equatable.dart' show Equatable;
 import 'package:flutter/material.dart' show AutovalidateMode;
 import 'package:medora/core/enum/gender_type.dart' show GenderType;
-import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_controllers.dart'
-    show PatientFieldsControllers;
+import 'package:medora/core/enum/lazy_request_state.dart';
 import 'package:medora/features/appointments/presentation/ui_models/appointment_booking_ui_model.dart'
     show AppointmentBookingUIModel;
+import 'package:medora/features/appointments/presentation/widgets/patient_widgets/patient_fields_controllers.dart'
+    show PatientFieldsControllers;
 
 class PatientState extends Equatable {
+  final LazyRequestState getPatientDataState;
   final AppointmentBookingUIModel? appointmentBookingUIModel;
   final AutovalidateMode validateMode;
   final GenderType genderType;
@@ -14,6 +16,7 @@ class PatientState extends Equatable {
   final PatientFieldsControllers? patientFieldsControllers;
 
   const PatientState({
+    this.getPatientDataState = LazyRequestState.lazy,
     this.appointmentBookingUIModel,
     this.validateMode = AutovalidateMode.disabled,
     this.genderType = GenderType.init,
@@ -21,12 +24,14 @@ class PatientState extends Equatable {
   });
 
   PatientState copyWith({
+    LazyRequestState? getPatientDataState,
     AppointmentBookingUIModel? appointmentBookingUIModel,
     AutovalidateMode? validateMode,
     GenderType? genderType,
     PatientFieldsControllers? patientFieldsControllers,
   }) {
     return PatientState(
+      getPatientDataState: getPatientDataState ?? this.getPatientDataState,
       appointmentBookingUIModel:
           appointmentBookingUIModel ?? this.appointmentBookingUIModel,
       validateMode: validateMode ?? this.validateMode,
@@ -38,6 +43,7 @@ class PatientState extends Equatable {
 
   @override
   List<Object?> get props => [
+    getPatientDataState,
     appointmentBookingUIModel,
     validateMode,
     genderType,

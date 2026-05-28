@@ -3,6 +3,8 @@ import 'package:medora/features/appointments/domain/entities/client_appointments
     show ClientAppointmentsEntity;
 import 'package:medora/features/appointments/domain/entities/doctor_appointment_entity.dart'
     show DoctorAppointmentEntity;
+import 'package:medora/features/appointments/domain/entities/patient_entity.dart'
+    show PatientEntity;
 import 'package:medora/features/shared/domain/entities/paginated_data_response.dart'
     show PaginatedDataResponse;
 import 'package:medora/features/shared/domain/entities/pagination_parameters.dart'
@@ -39,8 +41,6 @@ abstract class AppointmentRepositoryBase {
     required Map<String, dynamic> queryParams,
   });
 
-  //New
-
   Future<Either<Failure, String>> bookAppointment({
     required Map<String, dynamic> queryParams,
   });
@@ -48,4 +48,10 @@ abstract class AppointmentRepositoryBase {
   Future<Either<Failure, void>> confirmAppointment({
     required Map<String, dynamic> queryParams,
   });
+
+  Future<Either<Failure, void>> savePatientData(PatientEntity patient);
+
+  Future<Either<Failure, PatientEntity?>> getCachedPatientData();
+
+  Future<Either<Failure, void>> clearCachedPatientData();
 }

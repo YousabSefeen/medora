@@ -1,22 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medora/core/constants/app_strings/app_strings.dart'
-    show AppStrings;
-import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
-import 'package:medora/features/appointments/presentation/controller/cubit/patient_cubit.dart';
-import 'package:medora/features/appointments/presentation/controller/cubit/patient_state.dart'
-    show PatientState;
-import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_controllers.dart'
-    show PatientFieldsControllers;
-import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_validator.dart'
-    show PatientFieldsValidator;
-import 'package:medora/features/appointments/presentation/widgets/patient_widgets/gender_dropdown_field.dart'
-    show GenderDropdownField;
-import 'package:medora/features/appointments/presentation/widgets/patient_widgets/proceed_to_pay_button.dart'
-    show ProceedToPayButton;
-import 'package:medora/features/doctor_profile/presentation/widgets/doctor_info_field.dart'
-    show DoctorInfoField;
-
 /// Screen for entering patient personal information before completing appointment booking
 ///
 /// This screen represents the second step in the appointment booking process where the user enters:
@@ -29,6 +10,25 @@ import 'package:medora/features/doctor_profile/presentation/widgets/doctor_info_
 ///
 ///
 ///
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medora/core/constants/app_strings/app_strings.dart'
+    show AppStrings;
+import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
+import 'package:medora/features/appointments/presentation/controller/cubit/patient_cubit.dart';
+import 'package:medora/features/appointments/presentation/controller/cubit/patient_state.dart'
+    show PatientState;
+import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_validator.dart'
+    show PatientFieldsValidator;
+import 'package:medora/features/appointments/presentation/widgets/patient_widgets/gender_dropdown_field.dart'
+    show GenderDropdownField;
+import 'package:medora/features/appointments/presentation/widgets/patient_widgets/patient_fields_controllers.dart'
+    show PatientFieldsControllers;
+import 'package:medora/features/appointments/presentation/widgets/patient_widgets/proceed_to_pay_button.dart'
+    show ProceedToPayButton;
+import 'package:medora/features/doctor_profile/presentation/widgets/doctor_info_field.dart'
+    show DoctorInfoField;
+import 'package:shared_preferences/shared_preferences.dart' show SharedPreferences;
 
 class PatientDetailsScreen extends StatefulWidget {
   const PatientDetailsScreen({super.key});
@@ -50,9 +50,8 @@ class _PatientDetailsScreenState extends State<PatientDetailsScreen> {
     // --- الربط السحري هنا ---
     // نقوم بإخبار الـ Cubit بالـ Controllers الجديدة
     // ثم نطلب منه تحميل البيانات المحفوظة إليها
-    final cubit = context.read<PatientCubit>();
-    cubit.setControllers(_formControllers);
-    cubit.loadSavedPatientData();
+
+    //context.read<PatientCubit>().setControllers(_formControllers);
   }
 
   @override
@@ -67,7 +66,12 @@ class _PatientDetailsScreenState extends State<PatientDetailsScreen> {
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: AppBar(title: const Text(AppStrings.patientDetails)),
-      body: _buildFormContent(),
+      body: BlocProvider.value(
+        value: context.read<PatientCubit>()
+          ..getCachedPatientData()
+          ..setControllers(_formControllers),
+        child: _buildFormContent(),
+      ),
     );
   }
 

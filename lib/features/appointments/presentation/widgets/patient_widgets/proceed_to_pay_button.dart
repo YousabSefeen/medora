@@ -4,7 +4,7 @@ import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/enum/gender_type.dart' show GenderType;
 import 'package:medora/features/appointments/presentation/controller/cubit/patient_cubit.dart'
     show PatientCubit;
-import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_controllers.dart'
+import 'package:medora/features/appointments/presentation/widgets/patient_widgets/patient_fields_controllers.dart'
     show PatientFieldsControllers;
 import 'package:medora/features/appointments/presentation/widgets/payment_selection_sheet.dart'
     show PaymentSelectionSheet;
@@ -43,6 +43,8 @@ class ProceedToPayButton extends StatelessWidget {
           patientCubit.cachePatientData(formControllers: formControllers);
           _openPaymentMethodSelection(context);
         }
+
+
       },
     );
   }

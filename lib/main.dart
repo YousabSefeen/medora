@@ -83,7 +83,8 @@ void main() async {
 
   Bloc.observer = MyBlocObserver();
 
-  ServiceLocator().init();
+  final serviceLocator = ServiceLocator();
+  await serviceLocator.init(); // هذه الدالة يجب أن تستدعي initAppointmentsDependencies
 
   if (!kIsWeb) {
     final tempDir = await getTemporaryDirectory();
