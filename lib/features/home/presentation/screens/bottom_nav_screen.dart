@@ -30,7 +30,6 @@ class _BottomNavScreenState extends State<BottomNavScreen>
 
   late AnimationController _hideBottomBarAnimationController;
 
-  // نستخدم ValueNotifier للتحكم في الـ FAB بدون إعادة بناء الشاشة
   final ValueNotifier<bool> _isFabVisible = ValueNotifier(true);
 
   @override
