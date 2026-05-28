@@ -84,9 +84,7 @@ class _BottomNavScreenState extends State<BottomNavScreen>
       body: SafeArea(
         child: NotificationListener<ScrollNotification>(
           onNotification: _handleScrollNotification,
-          // الـ Body فقط هو الذي يحتاج لمراقبة الـ Cubit
           child: BlocBuilder<BottomNavCubit, BottomNavState>(
-            /// CCCCC
             buildWhen: (prev, curr) => prev.index != curr.index,
             builder: (context, state) => _buildBody(state.index),
           ),
@@ -101,29 +99,29 @@ class _BottomNavScreenState extends State<BottomNavScreen>
   }
 
   Widget _buildAnimatedNavigationBar() => RepaintBoundary(
-      child: BlocBuilder<BottomNavCubit, BottomNavState>(
-        buildWhen: (prev, curr) => prev.index != curr.index,
-        builder: (context, state) {
-          return AnimatedBottomNavigationBar.builder(
-            itemCount: BottomNavConstants.iconList.length,
-            tabBuilder: (int index, bool isActive) => BottomNavTab(
-              iconData: BottomNavConstants.iconList[index],
-              title: BottomNavConstants.titles[index],
-              isActive: isActive,
-            ),
-            backgroundColor: AppColors.softBlue,
-            activeIndex: state.index,
-            onTap: (index) =>
-                context.read<BottomNavCubit>().changeTabIndex(index),
-            hideAnimationController: _hideBottomBarAnimationController,
-            gapLocation: GapLocation.center,
-            notchSmoothness: NotchSmoothness.defaultEdge,
-            leftCornerRadius: 32,
-            rightCornerRadius: 32,
-          );
-        },
-      ),
-    );
+    child: BlocBuilder<BottomNavCubit, BottomNavState>(
+      buildWhen: (prev, curr) => prev.index != curr.index,
+      builder: (context, state) {
+        return AnimatedBottomNavigationBar.builder(
+          itemCount: BottomNavConstants.iconList.length,
+          tabBuilder: (int index, bool isActive) => BottomNavTab(
+            iconData: BottomNavConstants.iconList[index],
+            title: BottomNavConstants.titles[index],
+            isActive: isActive,
+          ),
+          backgroundColor: AppColors.softBlue,
+          activeIndex: state.index,
+          onTap: (index) =>
+              context.read<BottomNavCubit>().changeTabIndex(index),
+          hideAnimationController: _hideBottomBarAnimationController,
+          gapLocation: GapLocation.center,
+          notchSmoothness: NotchSmoothness.defaultEdge,
+          leftCornerRadius: 32,
+          rightCornerRadius: 32,
+        );
+      },
+    ),
+  );
 }
 
 class _BuildAppBar extends StatelessWidget implements PreferredSizeWidget {

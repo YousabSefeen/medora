@@ -11,11 +11,14 @@ import 'package:medora/core/di/injection_container.dart' show sl;
 import 'package:medora/core/enum/lazy_request_state.dart';
 import 'package:medora/core/enum/payment_gateways_types.dart';
 import 'package:medora/core/extensions/media_query_extension.dart';
-import 'package:medora/core/services/server_locator.dart';
 import 'package:medora/features/appointments/presentation/controller/cubit/book_appointment_cubit.dart';
 import 'package:medora/features/appointments/presentation/controller/cubit/confirm_pending_appointment_cubit.dart';
 import 'package:medora/features/appointments/presentation/controller/cubit/patient_cubit.dart';
+import 'package:medora/features/appointments/presentation/controller/cubit/upcoming_appointments_cubit.dart'
+    show UpcomingAppointmentsCubit;
 import 'package:medora/features/appointments/presentation/controller/states/confirm_pending_appointment_state.dart';
+import 'package:medora/features/home/presentation/controller/cubits/bottom_nav_cubit.dart'
+    show BottomNavCubit;
 import 'package:medora/features/home/presentation/screens/bottom_nav_screen.dart';
 import 'package:medora/features/payment_gateways/paymob/transaction_process_states/data/models/paymob_transaction_data_result_model.dart';
 import 'package:medora/features/payment_gateways/transaction_process_states/payment_success/widgets/appointment_details_success_card.dart';
@@ -53,11 +56,14 @@ class PaymentSuccessScreen extends StatelessWidget {
       onPopInvokedWithResult: (didPop, _) => _onBackPress(context, didPop),
       child: BlocProvider<ConfirmPendingAppointmentCubit>(
         create: (context) =>
-        sl<ConfirmPendingAppointmentCubit>()
+            sl<ConfirmPendingAppointmentCubit>()
               ..confirmPendingAppointment(entity: appointmentEntity),
         child: Scaffold(
+          appBar: AppBar(backgroundColor: AppColors.lightPeriwinkle),
           backgroundColor: AppColors.lightPeriwinkle,
-          floatingActionButton: const PaymentSuccessFABSection(),
+          floatingActionButton: PaymentSuccessFABSection(
+            onDonePressed: () => _navigatorToUpcomingAppointmentsList(context),
+          ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
           body: SafeArea(
@@ -77,6 +83,12 @@ class PaymentSuccessScreen extends StatelessWidget {
     );
   }
 
+  void _navigatorToUpcomingAppointmentsList(BuildContext context) {
+    context.read<UpcomingAppointmentsCubit>().refreshData();
+    context.read<BottomNavCubit>().changeTabIndex(1);
+    AppRouter.pushAndRemoveUntil(context, const BottomNavScreen());
+  }
+
   Widget _mapStateToWidget(ConfirmPendingAppointmentState state) {
     return switch (state.confirmAppointmentState) {
       LazyRequestState.loading => const Center(
@@ -92,7 +104,7 @@ class PaymentSuccessScreen extends StatelessWidget {
 
   void _onBackPress(BuildContext context, bool didPop) {
     if (!didPop) {
-      AppRouter.pushAndRemoveUntil(context, const BottomNavScreen());
+      _navigatorToUpcomingAppointmentsList(context);
     }
   }
 }
