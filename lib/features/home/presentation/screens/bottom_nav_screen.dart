@@ -122,27 +122,3 @@ class _BottomNavScreenState extends State<BottomNavScreen>
     ),
   );
 }
-
-class _BuildAppBar extends StatelessWidget implements PreferredSizeWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<BottomNavCubit, BottomNavState>(
-      buildWhen: (prev, curr) => prev.index != curr.index,
-      builder: (context, state) {
-        if (state.index == 0) {
-          return PreferredSize(preferredSize: Size.zero, child: Container());
-        }
-        return AppBar(
-          backgroundColor: AppColors.customWhite,
-          title: Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Text(BottomNavConstants.appBarTitles[state.index]),
-          ),
-        );
-      },
-    );
-  }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-}
