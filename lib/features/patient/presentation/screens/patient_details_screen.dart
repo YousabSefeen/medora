@@ -15,20 +15,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
-import 'package:medora/features/appointments/presentation/controller/cubit/patient_cubit.dart';
-import 'package:medora/features/appointments/presentation/controller/cubit/patient_state.dart'
-    show PatientState;
 import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_validator.dart'
     show PatientFieldsValidator;
-import 'package:medora/features/appointments/presentation/widgets/patient_widgets/gender_dropdown_field.dart'
+import 'package:medora/features/patient/presentation/controllers/cubit/patient_cubit.dart';
+import 'package:medora/features/patient/presentation/controllers/state/patient_state.dart'
+    show PatientState;
+import 'package:medora/features/patient/presentation/widgets/gender_dropdown_field.dart'
     show GenderDropdownField;
-import 'package:medora/features/appointments/presentation/widgets/patient_widgets/patient_fields_controllers.dart'
+import 'package:medora/features/patient/presentation/widgets/patient_fields_controllers.dart'
     show PatientFieldsControllers;
-import 'package:medora/features/appointments/presentation/widgets/patient_widgets/proceed_to_pay_button.dart'
+import 'package:medora/features/patient/presentation/widgets/proceed_to_pay_button.dart'
     show ProceedToPayButton;
-import 'package:medora/features/doctor_profile/presentation/widgets/doctor_info_field.dart'
-    show DoctorInfoField;
-import 'package:shared_preferences/shared_preferences.dart' show SharedPreferences;
+import 'package:medora/features/shared/presentation/widgets/labeled_text_field.dart'
+    show LabeledTextField;
 
 class PatientDetailsScreen extends StatefulWidget {
   const PatientDetailsScreen({super.key});
@@ -103,7 +102,7 @@ class _PatientDetailsScreenState extends State<PatientDetailsScreen> {
     ),
   );
 
-  Widget _buildNameField() => DoctorInfoField(
+  Widget _buildNameField() => LabeledTextField(
     label: AppStrings.fullNameLabel,
     hintText: AppStrings.fullNameHint,
     controller: _formControllers.nameController,
@@ -112,7 +111,7 @@ class _PatientDetailsScreenState extends State<PatientDetailsScreen> {
 
   Widget _buildGenderField() => const GenderDropdownField();
 
-  Widget _buildAgeField() => DoctorInfoField(
+  Widget _buildAgeField() => LabeledTextField(
     label: AppStrings.yourAgeLabel,
     hintText: AppStrings.ageHint,
     controller: _formControllers.ageController,
@@ -120,7 +119,7 @@ class _PatientDetailsScreenState extends State<PatientDetailsScreen> {
     validator: _formValidator.validateAge,
   );
 
-  Widget _buildProblemField() => DoctorInfoField(
+  Widget _buildProblemField() => LabeledTextField(
     textHeight: 1.5,
     maxLines: 4,
     label: AppStrings.problemLabel,

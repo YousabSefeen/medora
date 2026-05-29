@@ -15,8 +15,8 @@ import 'package:medora/features/appointments/data/data_source/appointment_remote
     show AppointmentRemoteDataSourceBase;
 import 'package:medora/features/appointments/data/repository/appointment_repository_impl.dart'
     show AppointmentRepositoryImpl;
-import 'package:medora/features/appointments/domain/repository/appointment_repository_base.dart'
-    show AppointmentRepositoryBase;
+import 'package:medora/features/appointments/domain/repository/appointment_repository.dart'
+    show AppointmentRepository;
 import 'package:medora/features/appointments/domain/use_cases/book_appointment_use_case.dart'
     show BookAppointmentUseCase;
 import 'package:medora/features/appointments/domain/use_cases/cancel_appointment_use_case.dart'
@@ -49,7 +49,7 @@ import 'package:medora/features/appointments/presentation/controller/cubit/confi
     show ConfirmPendingAppointmentCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/doctor_appointments_cubit.dart'
     show DoctorAppointmentsCubit;
-import 'package:medora/features/appointments/presentation/controller/cubit/patient_cubit.dart'
+import 'package:medora/features/patient/presentation/controllers/cubit/patient_cubit.dart'
     show PatientCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/reschedule_appointment_cubit.dart'
     show RescheduleAppointmentCubit;
@@ -242,7 +242,7 @@ class ServiceLocator {
     );
 
     serviceLocator.registerLazySingleton<FetchUpcomingAppointmentUC>(
-      () => FetchUpcomingAppointmentUC(repository: serviceLocator()),
+      () => FetchUpcomingAppointmentUC(repositories: serviceLocator()),
     );
     serviceLocator.registerLazySingleton<FetchCompletedAppointmentUC>(
       () => FetchCompletedAppointmentUC(
@@ -250,7 +250,7 @@ class ServiceLocator {
       ),
     );
     serviceLocator.registerLazySingleton<FetchCancelledAppointmentUC>(
-      () => FetchCancelledAppointmentUC(repository: serviceLocator()),
+      () => FetchCancelledAppointmentUC(repositories: serviceLocator()),
     );
 
     serviceLocator.registerFactory<DoctorAppointmentsCubit>(
@@ -328,7 +328,7 @@ class ServiceLocator {
 
     // Use Cases
     serviceLocator.registerLazySingleton<GetDoctorsListUC>(
-      () => GetDoctorsListUC(repository: serviceLocator()),
+      () => GetDoctorsListUC(repositories: serviceLocator()),
     );
 
     serviceLocator.registerFactory<DoctorListCubit>(

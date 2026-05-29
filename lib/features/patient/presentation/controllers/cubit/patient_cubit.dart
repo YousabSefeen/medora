@@ -5,15 +5,15 @@ import 'package:medora/core/enum/gender_type.dart' show GenderType;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 import 'package:medora/core/extensions/string_extensions.dart'
     show StringExtension;
-import 'package:medora/features/appointments/domain/entities/patient_entity.dart'
+import 'package:medora/features/patient/domain/entities/patient_entity.dart'
     show PatientEntity;
-import 'package:medora/features/appointments/domain/use_cases/get_cached_patient_data_use_case.dart'
+import 'package:medora/features/patient/domain/use_cases/get_cached_patient_data_use_case.dart'
     show GetCachedPatientDataUseCase;
-import 'package:medora/features/appointments/domain/use_cases/save_patient_data_use_case.dart'
+import 'package:medora/features/patient/domain/use_cases/save_patient_data_use_case.dart'
     show SavePatientDataUseCase;
-import 'package:medora/features/appointments/presentation/controller/cubit/patient_state.dart'
+import 'package:medora/features/patient/presentation/controllers/state/patient_state.dart'
     show PatientState;
-import 'package:medora/features/appointments/presentation/widgets/patient_widgets/patient_fields_controllers.dart'
+import 'package:medora/features/patient/presentation/widgets/patient_fields_controllers.dart'
     show PatientFieldsControllers;
 
 class PatientCubit extends Cubit<PatientState> {

@@ -4,9 +4,9 @@ import 'package:medora/core/constants/app_borders/app_borders.dart'
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 
-import 'form_title.dart';
+import '../../../doctor_profile/presentation/widgets/form_title.dart';
 
-class DoctorInfoField extends StatelessWidget {
+class LabeledTextField extends StatelessWidget {
   final String? label;
   final TextEditingController? controller;
   final TextInputType keyboardType;
@@ -19,7 +19,7 @@ class DoctorInfoField extends StatelessWidget {
 
   final double? textHeight;
 
-  const DoctorInfoField({
+  const LabeledTextField({
     super.key,
     this.label,
     this.controller,

@@ -11,6 +11,7 @@ import 'package:medora/features/doctor_list/di/doctors_list_injection.dart' show
 import 'package:medora/features/doctor_profile/di/doctor_profile_injection.dart' show initDoctorProfileDependencies;
 import 'package:medora/features/favorites/di/favorites_injection.dart'
     show initFavoritesDependencies;
+import 'package:medora/features/patient/di/patient_injection.dart' show initPatientDependencies;
 import 'package:medora/features/search/di/search_injection.dart' show initSearchDependencies;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,6 +31,7 @@ class ServiceLocator {
     await initSearchDependencies();
     await initFavoritesDependencies();
     await initAppointmentsDependencies();
+    await initPatientDependencies();
     await initDoctorProfileDependencies();
 
   }

@@ -14,9 +14,9 @@ import 'package:medora/core/constants/common_widgets/field_error_text.dart'
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/enum/gender_type.dart' show GenderType;
 import 'package:medora/core/extensions/media_query_extension.dart';
-import 'package:medora/features/appointments/presentation/controller/cubit/patient_cubit.dart'
+import 'package:medora/features/patient/presentation/controllers/cubit/patient_cubit.dart'
     show PatientCubit;
-import 'package:medora/features/appointments/presentation/controller/cubit/patient_state.dart'
+import 'package:medora/features/patient/presentation/controllers/state/patient_state.dart'
     show PatientState;
 import 'package:medora/features/doctor_profile/presentation/widgets/form_title.dart'
     show FormTitle;

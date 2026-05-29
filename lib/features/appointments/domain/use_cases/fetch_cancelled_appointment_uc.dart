@@ -2,8 +2,8 @@ import 'package:dartz/dartz.dart';
 import 'package:medora/core/error/failure.dart';
 import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart'
     show ClientAppointmentsEntity;
-import 'package:medora/features/appointments/domain/repository/appointment_repository_base.dart'
-    show AppointmentRepositoryBase;
+import 'package:medora/features/appointments/domain/repository/appointment_repository.dart'
+    show AppointmentRepository;
 import 'package:medora/features/shared/domain/entities/paginated_data_response.dart'
     show PaginatedDataResponse;
 import 'package:medora/features/shared/domain/entities/pagination_parameters.dart'
@@ -15,7 +15,7 @@ import 'package:medora/features/shared/domain/use_cases/base_pagination_use_case
 
 class FetchCancelledAppointmentUC
     extends BasePaginationUseCase<ClientAppointmentsEntity> {
-  final AppointmentRepositoryBase repository;
+  final AppointmentRepository repository;
 
   FetchCancelledAppointmentUC({required this.repository});
 

@@ -3,12 +3,12 @@ import 'package:medora/core/base_use_case/base_use_case.dart' show BaseUseCase;
 import 'package:medora/core/error/failure.dart';
 import 'package:medora/features/appointments/domain/params/confirm_appointment_params.dart'
     show ConfirmAppointmentParams;
-import 'package:medora/features/appointments/domain/repository/appointment_repository_base.dart'
-    show AppointmentRepositoryBase;
+import 'package:medora/features/appointments/domain/repository/appointment_repository.dart'
+    show AppointmentRepository;
 
 class ConfirmAppointmentUseCase
     extends BaseUseCase<void, ConfirmAppointmentParams> {
-  final AppointmentRepositoryBase appointmentRepositoryBase;
+  final AppointmentRepository appointmentRepositoryBase;
 
   ConfirmAppointmentUseCase({required this.appointmentRepositoryBase});
 

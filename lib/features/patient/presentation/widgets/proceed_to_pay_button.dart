@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/enum/gender_type.dart' show GenderType;
-import 'package:medora/features/appointments/presentation/controller/cubit/patient_cubit.dart'
+import 'package:medora/features/patient/presentation/controllers/cubit/patient_cubit.dart'
     show PatientCubit;
-import 'package:medora/features/appointments/presentation/widgets/patient_widgets/patient_fields_controllers.dart'
+import 'package:medora/features/patient/presentation/widgets/patient_fields_controllers.dart'
     show PatientFieldsControllers;
 import 'package:medora/features/appointments/presentation/widgets/payment_selection_sheet.dart'
     show PaymentSelectionSheet;
 
-import '../../../../../core/constants/app_alerts/app_alerts.dart';
-import '../../../../../core/constants/app_routes/app_router.dart';
-import '../../../../../core/constants/app_strings/app_strings.dart';
-import '../custom_widgets/adaptive_action_button.dart';
+import '../../../../core/constants/app_alerts/app_alerts.dart';
+import '../../../../core/constants/app_routes/app_router.dart';
+import '../../../../core/constants/app_strings/app_strings.dart';
+import '../../../appointments/presentation/widgets/custom_widgets/adaptive_action_button.dart';
 
 // Payment processing button responsible for opening payment method selection screen
 // and managing appointment booking state and routing to appropriate payment gateways

@@ -2,12 +2,12 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:medora/core/base_use_case/base_use_case.dart' show BaseUseCase;
 import 'package:medora/core/error/failure.dart';
-import 'package:medora/features/appointments/domain/repository/appointment_repository_base.dart'
-    show AppointmentRepositoryBase;
+import 'package:medora/features/appointments/domain/repository/appointment_repository.dart'
+    show AppointmentRepository;
 
 class RescheduleAppointmentUseCase
     extends BaseUseCase<void, RescheduleAppointmentParams> {
-  final AppointmentRepositoryBase appointmentRepositoryBase;
+  final AppointmentRepository appointmentRepositoryBase;
 
   RescheduleAppointmentUseCase({required this.appointmentRepositoryBase});
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medora/features/doctor_profile/presentation/widgets/doctor_info_field.dart';
+import 'package:medora/features/shared/presentation/widgets/labeled_text_field.dart';
 import 'package:medora/features/search/presentation/controller/cubit/search_cubit.dart'
     show SearchCubit;
 import 'package:medora/features/search/presentation/controller/states/search_states.dart'
@@ -36,7 +36,7 @@ class _LocationFilterFieldState extends State<LocationFilterField> {
       listener: (context, state) =>
           locationController.text = state.draftDoctorLocation ?? '',
 
-      child: DoctorInfoField(
+      child: LabeledTextField(
         isDense: true,
         controller: locationController,
 

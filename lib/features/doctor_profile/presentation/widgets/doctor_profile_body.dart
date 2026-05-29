@@ -14,7 +14,7 @@ import 'package:medora/features/doctor_profile/presentation/widgets/weekly_sched
 
 import '../../../../core/constants/app_strings/app_strings.dart';
 import '../controller/form_controllers/doctor_fields_controllers.dart';
-import 'doctor_info_field.dart';
+import '../../../shared/presentation/widgets/labeled_text_field.dart';
 
 class DoctorProfileBody extends StatelessWidget {
   final DoctorFieldsControllers controllers;
@@ -77,7 +77,7 @@ class DoctorProfileBody extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
-      child: DoctorInfoField(
+      child: LabeledTextField(
         label: config.label,
         hintText: config.hint,
         controller: config.controller,

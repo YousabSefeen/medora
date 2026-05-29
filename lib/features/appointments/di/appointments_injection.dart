@@ -1,13 +1,11 @@
-import 'package:get_it/get_it.dart';
 import 'package:medora/features/appointments/data/data_source/appointment_remote_data_source.dart'
     show AppointmentRemoteDataSource;
 import 'package:medora/features/appointments/data/data_source/appointment_remote_data_source_base.dart'
     show AppointmentRemoteDataSourceBase;
-import 'package:medora/features/appointments/data/data_source/patient_local_data_source.dart' show PatientLocalDataSource, PatientLocalDataSourceImpl;
 import 'package:medora/features/appointments/data/repository/appointment_repository_impl.dart'
     show AppointmentRepositoryImpl;
-import 'package:medora/features/appointments/domain/repository/appointment_repository_base.dart'
-    show AppointmentRepositoryBase;
+import 'package:medora/features/appointments/domain/repository/appointment_repository.dart'
+    show AppointmentRepository;
 import 'package:medora/features/appointments/domain/use_cases/book_appointment_use_case.dart'
     show BookAppointmentUseCase;
 import 'package:medora/features/appointments/domain/use_cases/cancel_appointment_use_case.dart'
@@ -26,12 +24,8 @@ import 'package:medora/features/appointments/domain/use_cases/fetch_doctor_appoi
     show FetchDoctorAppointmentsUseCase;
 import 'package:medora/features/appointments/domain/use_cases/fetch_upcoming_appointment_uc.dart'
     show FetchUpcomingAppointmentUC;
-import 'package:medora/features/appointments/domain/use_cases/get_cached_patient_data_use_case.dart'
-    show GetCachedPatientDataUseCase;
 import 'package:medora/features/appointments/domain/use_cases/reschedule_appointment_use_case.dart'
     show RescheduleAppointmentUseCase;
-import 'package:medora/features/appointments/domain/use_cases/save_patient_data_use_case.dart'
-    show SavePatientDataUseCase;
 import 'package:medora/features/appointments/presentation/controller/cubit/book_appointment_cubit.dart'
     show BookAppointmentCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/cancel_appointment_cubit.dart'
@@ -44,7 +38,6 @@ import 'package:medora/features/appointments/presentation/controller/cubit/confi
     show ConfirmPendingAppointmentCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/doctor_appointments_cubit.dart'
     show DoctorAppointmentsCubit;
-import 'package:medora/features/appointments/presentation/controller/cubit/patient_cubit.dart' show PatientCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/reschedule_appointment_cubit.dart'
     show RescheduleAppointmentCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/time_slot_cubit.dart'
@@ -54,26 +47,18 @@ import 'package:medora/features/appointments/presentation/controller/cubit/upcom
 
 import '../../../core/di/injection_container.dart' show sl;
 
-
-
-
-
 Future<void> initAppointmentsDependencies() async {
   // 1. Data Source
   sl.registerLazySingleton<AppointmentRemoteDataSourceBase>(
     () => AppointmentRemoteDataSource(),
   );
-  sl.registerLazySingleton<PatientLocalDataSource>(
-        () => PatientLocalDataSourceImpl( sl()), // sl() سيجلب الـ SharedPreferences المسجل مسبقاً
-  );
+
   // 2. Repository
-  sl.registerLazySingleton<AppointmentRepositoryBase>(
-    () => AppointmentRepositoryImpl(remoteDataSource: sl(), patientLocalDataSource:  sl()),
+  sl.registerLazySingleton<AppointmentRepository>(
+    () => AppointmentRepositoryImpl(remoteDataSource: sl()),
   );
 
-  // 3. Use Cases (مجموعة المواعيد)
-  sl.registerLazySingleton(() => SavePatientDataUseCase(appointmentRepositoryBase: sl()));
-  sl.registerLazySingleton(() => GetCachedPatientDataUseCase(appointmentRepositoryBase: sl()));
+  // 3. Use Cases
 
   sl.registerLazySingleton(
     () => CancelAppointmentUseCase(appointmentRepositoryBase: sl()),
@@ -133,13 +118,5 @@ Future<void> initAppointmentsDependencies() async {
       appSettingsCubit: sl(),
       rescheduleAppointmentUseCase: sl(),
     ),
-  );
-
-  /// يحتاج الي تعديل
-
-
-
-  sl.registerFactory<PatientCubit>(
-        () => PatientCubit(  savePatientDataUseCase: sl(), getCachedPatientDataUseCase: sl()),
   );
 }

@@ -30,7 +30,7 @@ import 'package:medora/features/appointments/presentation/controller/cubit/compl
     show CompletedAppointmentsCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/doctor_appointments_cubit.dart'
     show DoctorAppointmentsCubit;
-import 'package:medora/features/appointments/presentation/controller/cubit/patient_cubit.dart'
+import 'package:medora/features/patient/presentation/controllers/cubit/patient_cubit.dart'
     show PatientCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/reschedule_appointment_cubit.dart'
     show RescheduleAppointmentCubit;

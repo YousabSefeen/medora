@@ -1,8 +1,6 @@
-
-
-
 import 'dart:convert';
-import 'package:medora/features/appointments/data/models/patient_model.dart';
+
+import 'package:medora/features/patient/data/models/patient_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class PatientLocalDataSource {

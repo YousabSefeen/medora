@@ -1,8 +1,6 @@
-
-
 import 'package:json_annotation/json_annotation.dart';
-import 'package:medora/features/appointments/domain/entities/patient_entity.dart';
 import 'package:medora/core/enum/gender_type.dart';
+import 'package:medora/features/patient/domain/entities/patient_entity.dart';
 
 part 'patient_model.g.dart';
 
@@ -13,12 +11,7 @@ class PatientModel extends PatientEntity {
     required String age,
     required String problem,
     required GenderType gender,
-  }) : super(
-    name: name,
-    age: age,
-    problem: problem,
-    gender: gender,
-  );
+  }) : super(name: name, age: age, problem: problem, gender: gender);
 
   // تحويل من JSON
   factory PatientModel.fromJson(Map<String, dynamic> json) =>
@@ -46,5 +39,3 @@ class PatientModel extends PatientEntity {
     );
   }
 }
-
-

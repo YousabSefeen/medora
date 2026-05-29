@@ -1,29 +1,21 @@
 import 'package:dartz/dartz.dart';
 import 'package:medora/core/error/failure.dart'
-    show Failure, ServerFailure, LocalFailure;
-import 'package:medora/features/appointments/data/data_source/patient_local_data_source.dart';
-import 'package:medora/features/appointments/data/models/patient_model.dart'
-    show PatientModel;
+    show Failure, ServerFailure;
 import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart'
     show ClientAppointmentsEntity;
-import 'package:medora/features/appointments/domain/entities/patient_entity.dart';
 import 'package:medora/features/shared/domain/entities/paginated_data_response.dart'
     show PaginatedDataResponse;
 import 'package:medora/features/shared/domain/entities/pagination_parameters.dart'
     show PaginationParameters;
 
 import '../../domain/entities/doctor_appointment_entity.dart';
-import '../../domain/repository/appointment_repository_base.dart';
+import '../../domain/repository/appointment_repository.dart';
 import '../data_source/appointment_remote_data_source_base.dart';
 
-class AppointmentRepositoryImpl extends AppointmentRepositoryBase {
+class AppointmentRepositoryImpl extends AppointmentRepository {
   final AppointmentRemoteDataSourceBase remoteDataSource;
-  final PatientLocalDataSource patientLocalDataSource;
 
-  AppointmentRepositoryImpl({
-    required this.remoteDataSource,
-    required this.patientLocalDataSource,
-  });
+  AppointmentRepositoryImpl({required this.remoteDataSource});
 
   @override
   Future<Either<Failure, List<DoctorAppointmentEntity>>>
@@ -160,37 +152,6 @@ class AppointmentRepositoryImpl extends AppointmentRepositoryBase {
       return right(response);
     } catch (e) {
       return left(ServerFailure(catchError: e));
-    }
-  }
-
-  @override
-  Future<Either<Failure, PatientEntity?>> getCachedPatientData() async {
-    try {
-      final patient = patientLocalDataSource.getCachedPatientData();
-      return Right(patient);
-    } catch (e) {
-      return Left(LocalFailure(catchError: e));
-    }
-  }
-
-  @override
-  Future<Either<Failure, void>> savePatientData(PatientEntity patient) async {
-    try {
-      final patientModel = PatientModel.fromEntity(patient);
-      await patientLocalDataSource.cachePatientData(patientModel);
-      return const Right(null);
-    } catch (e) {
-      return Left(LocalFailure(catchError: e));
-    }
-  }
-
-  @override
-  Future<Either<Failure, void>> clearCachedPatientData() async {
-    try {
-      await patientLocalDataSource.clearCachedPatientData();
-      return const Right(null);
-    } catch (e) {
-      return Left(LocalFailure(catchError: e));
     }
   }
 }

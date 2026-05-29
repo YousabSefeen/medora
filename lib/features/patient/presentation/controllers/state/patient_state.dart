@@ -4,7 +4,7 @@ import 'package:medora/core/enum/gender_type.dart' show GenderType;
 import 'package:medora/core/enum/lazy_request_state.dart';
 import 'package:medora/features/appointments/presentation/ui_models/appointment_booking_ui_model.dart'
     show AppointmentBookingUIModel;
-import 'package:medora/features/appointments/presentation/widgets/patient_widgets/patient_fields_controllers.dart'
+import 'package:medora/features/patient/presentation/widgets/patient_fields_controllers.dart'
     show PatientFieldsControllers;
 
 class PatientState extends Equatable {

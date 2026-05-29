@@ -13,7 +13,7 @@ import 'package:medora/core/enum/payment_gateways_types.dart';
 import 'package:medora/core/extensions/media_query_extension.dart';
 import 'package:medora/features/appointments/presentation/controller/cubit/book_appointment_cubit.dart';
 import 'package:medora/features/appointments/presentation/controller/cubit/confirm_pending_appointment_cubit.dart';
-import 'package:medora/features/appointments/presentation/controller/cubit/patient_cubit.dart';
+import 'package:medora/features/patient/presentation/controllers/cubit/patient_cubit.dart';
 import 'package:medora/features/appointments/presentation/controller/cubit/upcoming_appointments_cubit.dart'
     show UpcomingAppointmentsCubit;
 import 'package:medora/features/appointments/presentation/controller/states/confirm_pending_appointment_state.dart';
