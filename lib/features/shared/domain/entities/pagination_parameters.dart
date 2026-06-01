@@ -5,7 +5,7 @@ class PaginationParameters extends Equatable {
 
   final int limit;
 
-  const PaginationParameters({this.lastDocument, this.limit = 10});
+  const PaginationParameters({this.lastDocument, this.limit = 15});
 
   @override
   List<Object?> get props => [lastDocument, limit];
