@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart' show DateFormat;
+import 'package:medora/core/constants/firestore_constants/firestore_constants.dart'
+    show FirestoreConstants;
 import 'package:medora/core/enum/appointment_status.dart';
 import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart'
     show ClientAppointmentsEntity;
@@ -17,16 +18,13 @@ import 'appointment_remote_data_source_base.dart';
 
 class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
   final FirebaseFirestore _firestore;
-  final FirebaseAuth _auth;
-
-  static const String _appointmentsCollection = 'appointments';
-  static const String _doctorsCollection = 'doctors';
+  final String _userId;
 
   AppointmentRemoteDataSource({
-    FirebaseFirestore? firestore,
-    FirebaseAuth? auth,
-  }) : _firestore = firestore ?? FirebaseFirestore.instance,
-       _auth = auth ?? FirebaseAuth.instance;
+    required FirebaseFirestore firestore,
+    required String userId,
+  }) : _firestore = firestore,
+       _userId = userId;
 
   // -------------------------------------------------------------
   // 1. PAGINATION METHODS - بنفس نمط DoctorsList
@@ -65,11 +63,8 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
     required PaginationParameters parameters,
   }) async {
     try {
-      final clientId = _getCurrentUserId();
-
       // 1. جلب المواعيد مع Pagination
       final querySnapshot = await _fetchPaginatedAppointments(
-        clientId: clientId,
         status: status,
         parameters: parameters,
       );
@@ -106,13 +101,12 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> _fetchPaginatedAppointments({
-    required String clientId,
     required String status,
     required PaginationParameters parameters,
   }) async {
     Query<Map<String, dynamic>> query = _firestore
-        .collection(_appointmentsCollection)
-        .where('clientId', isEqualTo: clientId);
+        .collection(FirestoreConstants.appointmentsCollection)
+        .where('clientId', isEqualTo: _userId);
 
     if (status == AppointmentStatus.confirmed.name) {
       query = query.where(
@@ -176,7 +170,7 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
     if (doctorIds.isEmpty) return {};
 
     final snapshot = await _firestore
-        .collection(_doctorsCollection)
+        .collection(FirestoreConstants.doctorsCollection)
         .where(FieldPath.documentId, whereIn: doctorIds)
         .get();
 
@@ -236,25 +230,27 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
           'dd/MM/yyyy hh:mm a',
         ).parse('$extractAppointmentDate $extractAppointmentTime'),
       );
-      final appointmentRef = _firestore.collection('appointments').doc();
+      final appointmentRef = _firestore
+          .collection(FirestoreConstants.appointmentsCollection)
+          .doc();
       final appointmentId = appointmentRef.id;
       final data = {
         ...queryParams,
-        'clientId': _getCurrentUserId(),
+        'clientId': _userId,
         'appointmentStatus': AppointmentStatus.pendingPayment.name,
         'appointmentId': appointmentId,
         'appointmentTimestamp': appointmentTimestamp,
-        'createdAt': FieldValue.serverTimestamp(),
-        'expiresAt': Timestamp.fromDate(
+        FirestoreConstants.fieldCreatedAt: FieldValue.serverTimestamp(),
+        FirestoreConstants.fieldExpiresAt: Timestamp.fromDate(
           DateTime.now().add(const Duration(minutes: 12)),
         ),
       };
 
       await appointmentRef.set(data);
       await _firestore
-          .collection('doctors')
+          .collection(FirestoreConstants.doctorsCollection)
           .doc(queryParams['doctorId'])
-          .collection('appointments')
+          .collection(FirestoreConstants.appointmentsCollection)
           .doc(appointmentId)
           .set(data);
       return appointmentId;
@@ -300,9 +296,9 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
   }) async {
     try {
       final snapshot = await _firestore
-          .collection('doctors')
+          .collection(FirestoreConstants.doctorsCollection)
           .doc(doctorId)
-          .collection('appointments')
+          .collection(FirestoreConstants.appointmentsCollection)
           .get();
 
       return snapshot.docs.map(_convertToDoctorAppointment).toList();
@@ -321,7 +317,7 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
       final date = queryParams['date'] as String;
 
       final snapshot = await _firestore
-          .collection('appointments')
+          .collection(FirestoreConstants.appointmentsCollection)
           .where('doctorId', isEqualTo: doctorId)
           .where('appointmentDate', isEqualTo: date)
           .get();
@@ -398,11 +394,14 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
 
     try {
       await Future.wait([
-        _firestore.collection('appointments').doc(appointmentId).delete(),
         _firestore
-            .collection('doctors')
+            .collection(FirestoreConstants.appointmentsCollection)
+            .doc(appointmentId)
+            .delete(),
+        _firestore
+            .collection(FirestoreConstants.doctorsCollection)
             .doc(doctorId)
-            .collection('appointments')
+            .collection(FirestoreConstants.appointmentsCollection)
             .doc(appointmentId)
             .delete(),
       ]);
@@ -423,12 +422,6 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
       'appointmentId': doc.id,
       'appointmentModel': doc.data(),
     });
-  }
-
-  String _getCurrentUserId() {
-    final user = _auth.currentUser;
-    if (user == null) throw Exception('User not authenticated');
-    return user.uid;
   }
 
   Future<void> _updateAppointment({
@@ -453,7 +446,7 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
     Map<String, dynamic> updates,
   ) {
     return _firestore
-        .collection('appointments')
+        .collection(FirestoreConstants.appointmentsCollection)
         .doc(appointmentId)
         .update(updates);
   }
@@ -464,9 +457,9 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
     Map<String, dynamic> updates,
   ) {
     return _firestore
-        .collection('doctors')
+        .collection(FirestoreConstants.doctorsCollection)
         .doc(doctorId)
-        .collection('appointments')
+        .collection(FirestoreConstants.appointmentsCollection)
         .doc(appointmentId)
         .update(updates);
   }

@@ -12,5 +12,6 @@ abstract class FirestoreConstants {
 
   // (Field Names)
   static const String fieldCreatedAt = 'createdAt';
+  static const String fieldExpiresAt = 'expiresAt';
   static const String fieldIsFavorite = 'isFavorite';
 }
