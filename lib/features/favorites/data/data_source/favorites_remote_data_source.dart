@@ -19,14 +19,67 @@ class FavoritesRemoteDataSource extends FavoritesRemoteDataSourceBase {
        _userId = userId;
 
   @override
+  Future<List<DoctorEntity>> getFavoritesDoctors() async {
+    try {
+      final favoritesSnapshot = await _getFavoritesSnapshot();
+      if (favoritesSnapshot.docs.isEmpty) return [];
+
+      final orderedIds = favoritesSnapshot.docs.map((doc) => doc.id).toList();
+
+      // تقسيم الأي دي إلى دفعات (30 لكل دفعة) لتفادي حدود Firestore
+      final chunks = _chunkList(orderedIds, 30);
+      final List<DoctorModel> allDoctors = [];
+
+      for (var chunk in chunks) {
+        final querySnapshot = await _firestore
+            .collection(FirestoreConstants.doctorsCollection)
+            .where(FieldPath.documentId, whereIn: chunk)
+            .get();
+
+        allDoctors.addAll(
+          querySnapshot.docs.map(
+            (doc) => DoctorModel.fromJson({'doctorId': doc.id, ...doc.data()}),
+          ),
+        );
+      }
+
+      return _mapToOrderedEntities(allDoctors, orderedIds);
+    } catch (e) {
+      _logError('getFavoritesDoctors', e);
+      rethrow;
+    }
+  }
+
+  // دالة مساعدة لترتيب البيانات بناءً على الترتيب الأصلي في المفضلة
+  List<DoctorEntity> _mapToOrderedEntities(
+    List<DoctorModel> doctors,
+    List<String> orderedIds,
+  ) {
+    final doctorsMap = {for (var doc in doctors) doc.doctorId: doc};
+
+    return orderedIds
+        .where((id) => doctorsMap.containsKey(id))
+        .map((id) => doctorsMap[id]!.toEntity())
+        .toList();
+  }
+
+  // دالة تقسيم القوائم (Chunks) لتفادي حد الـ 30 عنصر
+  List<List<T>> _chunkList<T>(List<T> list, int size) {
+    List<List<T>> chunks = [];
+    for (int i = 0; i < list.length; i += size) {
+      chunks.add(
+        list.sublist(i, i + size > list.length ? list.length : i + size),
+      );
+    }
+    return chunks;
+  }
+
+  @override
   Future<void> addDoctorToFavorites(String doctorId) async {
     try {
-      await _firestore
-          .collection(FirestoreConstants.usersCollection)
-          .doc(_userId)
-          .collection('favorites')
-          .doc(doctorId)
-          .set({'addedAt': FieldValue.serverTimestamp()});
+      await _favoritesCollection().doc(doctorId).set({
+        FirestoreConstants.fieldCreatedAt: FieldValue.serverTimestamp(),
+      });
     } catch (e) {
       _logError('addDoctorToFavorites', e);
       rethrow;
@@ -34,91 +87,38 @@ class FavoritesRemoteDataSource extends FavoritesRemoteDataSourceBase {
   }
 
   @override
-  Future<List<DoctorEntity>> getFavoritesDoctors() async {
-    try {
-      final favoritesSnapshot = await _getFavoritesSnapshot();
-
-      if (favoritesSnapshot.docs.isEmpty) {
-        return [];
-      }
-
-      // Get the sorted list of IDs
-      final orderedDoctorIds = favoritesSnapshot.docs
-          .map((doc) => doc.id)
-          .toList();
-
-      final favoriteDoctors = await _getFavoriteDoctors(orderedDoctorIds);
-
-      // Create a map for quick search
-      final doctorsMap = <String, DoctorModel>{};
-      for (var doc in favoriteDoctors.docs) {
-        doctorsMap[doc.id] = DoctorModel.fromJson({
-          'doctorId': doc.id,
-          ...doc.data(),
-        });
-      }
-
-      // Rebuild the list in the original order
-      final List<DoctorModel> doctorList = [];
-      for (var doctorId in orderedDoctorIds) {
-        if (doctorsMap.containsKey(doctorId)) {
-          doctorList.add(doctorsMap[doctorId]!);
-        }
-      }
-      return doctorList.map((doctor) => doctor.toEntity()).toList();
-    } catch (e) {
-      _logError('getFavoritesDoctors', e);
-      rethrow;
-    }
-  }
-
-  Future<QuerySnapshot<Map<String, dynamic>>> _getFavoriteDoctors(
-    List<String> orderedDoctorIds,
-  ) async => await _firestore
-      .collection('doctors')
-      .where(FieldPath.documentId, whereIn: orderedDoctorIds)
-      .get();
-
-  Future<QuerySnapshot<Map<String, dynamic>>> _getFavoritesSnapshot() async =>
-      await _firestore
-          .collection('users')
-          .doc(_userId)
-          .collection('favorites')
-          .orderBy('addedAt', descending: true)
-          .get();
-
-  @override
   Future<void> removeDoctorFromFavorites(String doctorId) async {
     try {
-      await _firestore
-          .collection('users')
-          .doc(_userId)
-          .collection('favorites')
-          .doc(doctorId)
-          .delete();
+      await _favoritesCollection().doc(doctorId).delete();
     } catch (e) {
       _logError('removeDoctorFromFavorites', e);
       rethrow;
     }
   }
 
-  void _logError(String methodName, dynamic error) {
-    print('FavoritesRemoteDataSource.$methodName ERROR: $error');
-  }
-
   @override
   Future<List<String>> getFavoriteIds() async {
     try {
-      final snapshot = await _firestore
-          .collection('users')
-          .doc(_userId)
-          .collection('favorites')
-          .get();
-
+      final snapshot = await _favoritesCollection().get();
       return snapshot.docs.map((doc) => doc.id).toList();
     } catch (e) {
       _logError('getFavoriteIds', e);
       rethrow;
     }
+  }
+
+  // دوال مساعدة لتقليل التكرار
+  CollectionReference<Map<String, dynamic>> _favoritesCollection() => _firestore
+      .collection(FirestoreConstants.usersCollection)
+      .doc(_userId)
+      .collection(FirestoreConstants.favoritesCollection);
+
+  Future<QuerySnapshot<Map<String, dynamic>>> _getFavoritesSnapshot() async =>
+      await _favoritesCollection()
+          .orderBy(FirestoreConstants.fieldCreatedAt, descending: true)
+          .get();
+
+  void _logError(String methodName, dynamic error) {
+    print('FavoritesRemoteDataSource.$methodName ERROR: $error');
   }
 }
