@@ -50,7 +50,7 @@ import '../../../core/di/injection_container.dart' show sl;
 Future<void> initAppointmentsDependencies() async {
   // 1. Data Source
   sl.registerLazySingleton<AppointmentRemoteDataSourceBase>(
-    () => AppointmentRemoteDataSource(),
+    () => AppointmentRemoteDataSource(firestore:  sl(), userId: sl()),
   );
 
   // 2. Repository
