@@ -468,6 +468,10 @@ Very important rules:
 
   static const String profilePhotoRequired =
       'Please select a profile photo first\nto complete your account setup.';
+  static const String favoritesEmptyTitle = 'No favorite doctors yet';
+  static const String favoritesEmptyDescription =
+      "You haven't saved any doctors to your favorites list. Browse through the doctor list, find the right specialist, and save them for quick access next time.";
+  static const String doctorsBrowse = 'Doctors browse';
 
 
 }

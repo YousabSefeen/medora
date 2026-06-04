@@ -239,12 +239,13 @@ extension AppTextStyles on TextTheme {
     letterSpacing: 1,
     fontWeight: FontWeight.w500,
   );
+
   TextStyle get arabicStyle => GoogleFonts.cairo(
-  wordSpacing: 1.2,
-  fontSize: 16.sp,
-  color: Colors.black,
-  fontWeight: FontWeight.w500,
-  height: 1.5,
+    wordSpacing: 1.2,
+    fontSize: 16.sp,
+    color: Colors.black,
+    fontWeight: FontWeight.w500,
+    height: 1.5,
   );
 
   TextStyle get linkTextStyle => TextStyle(
@@ -252,5 +253,21 @@ extension AppTextStyles on TextTheme {
     color: AppColors.lightBlue,
     fontWeight: FontWeight.bold,
     decoration: TextDecoration.none,
+  );
+
+  TextStyle get headlineMediumEx => GoogleFonts.poppins(
+    textStyle: TextStyle(
+      color: Colors.black,
+      fontSize: 20.sp,
+      fontWeight: FontWeight.w700,
+    ),
+  );
+
+
+  TextStyle get bodyMediumEx => TextStyle(
+    color: Colors.black54,
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w400,
+    height: 1.5,
   );
 }
