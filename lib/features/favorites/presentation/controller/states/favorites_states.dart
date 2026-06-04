@@ -1,107 +1,61 @@
-import 'package:equatable/equatable.dart';
-import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
-import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
+import 'package:medora/core/enum/request_state.dart' show RequestState;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart'
+    show DoctorEntity;
+import 'package:medora/features/shared/presentation/controllers/state/base_pagination_state.dart'
+    show BasePaginationState;
 
-/*class FavoritesStates extends Equatable {
-  final LazyRequestState favoritesListState;
-  final String favoritesListError;
-  final List<DoctorEntity> favoritesDoctorsList;
-  final Set<String> favoriteDoctorsSet;
-
-  final LazyRequestState toggleFavoriteState;
-  final String toggleFavoriteError;
-  final LazyRequestState requestState;
-
-  const FavoritesStates({
-    this.favoritesListState = LazyRequestState.loading,
-    this.favoritesListError = '',
-    this.favoritesDoctorsList = const [],
-    this.favoriteDoctorsSet = const {},
-    this.toggleFavoriteState = LazyRequestState.loading,
-    this.toggleFavoriteError = '',
-    this.requestState = LazyRequestState.lazy,
-  });
-
-  FavoritesStates copyWith({
-    LazyRequestState? favoritesListState,
-    String? favoritesListError,
-    List<DoctorEntity>? favoritesDoctorsList,
-    Set<String>? favoriteDoctorsSet,
-
-    LazyRequestState? toggleFavoriteState,
-    String? toggleFavoriteError,
-    LazyRequestState? requestState,
-  }) {
-    return FavoritesStates(
-      favoritesListState: favoritesListState ?? this.favoritesListState,
-      favoritesListError: favoritesListError ?? this.favoritesListError,
-      favoritesDoctorsList: favoritesDoctorsList ?? this.favoritesDoctorsList,
-      favoriteDoctorsSet: favoriteDoctorsSet ?? this.favoriteDoctorsSet,
-
-      toggleFavoriteState: toggleFavoriteState ?? this.toggleFavoriteState,
-      toggleFavoriteError: toggleFavoriteError ?? this.toggleFavoriteError,
-      requestState: requestState ?? this.requestState,
-    );
-  }
-
-  @override
-  List<Object?> get props => [
-    favoritesListState,
-    favoritesListError,
-    favoritesDoctorsList,
-    favoriteDoctorsSet,
-    toggleFavoriteState,
-    toggleFavoriteError,
-    requestState,
-  ];
-}*/
-class FavoritesStates extends Equatable {
-  // للتحكم في جلب الـ IDs
-  final LazyRequestState idsLoadingState;
+class FavoritesState extends BasePaginationState<DoctorEntity> {
   final Set<String> favoriteIds;
+  final RequestState idsLoadingState;
+  final RequestState toggleState;
 
-  // للتحكم في جلب قائمة الأطباء المفضلة بالكامل
-  final LazyRequestState listLoadingState;
-  final String listError;
-  final List<DoctorEntity> favoriteDoctors;
-
-  // للتحكم في عملية التبديل (Toggle)
-  final LazyRequestState toggleState;
-  final String toggleError;
-
-  const FavoritesStates({
-    this.idsLoadingState = LazyRequestState.loading,
+  const FavoritesState({
+    super.dataList,
+    super.requestState,
+    super.failureMessage,
+    super.isLoadingMore,
+    super.hasMore,
+    super.lastDocument,
+    super.isLoadedBefore,
     this.favoriteIds = const {},
-    this.listLoadingState = LazyRequestState.loading,
-    this.listError = '',
-    this.favoriteDoctors = const [],
-    this.toggleState = LazyRequestState.loaded,
-    this.toggleError = '',
+    this.idsLoadingState = RequestState.loaded,
+    this.toggleState = RequestState.loaded,
   });
 
-  FavoritesStates copyWith({
-    LazyRequestState? idsLoadingState,
+  @override
+  FavoritesState copyWith({
+    List<DoctorEntity>? dataList,
+    RequestState? requestState,
+    String? failureMessage,
+    bool? isLoadingMore,
+    bool? hasMore,
+    dynamic lastDocument,
+    bool? isLoadedBefore,
     Set<String>? favoriteIds,
-    LazyRequestState? listLoadingState,
-    String? listError,
-    List<DoctorEntity>? favoriteDoctors,
-    LazyRequestState? toggleState,
-    String? toggleError,
+    RequestState? idsLoadingState,
+    RequestState? toggleState,
   }) {
-    return FavoritesStates(
-      idsLoadingState: idsLoadingState ?? this.idsLoadingState,
+    return FavoritesState(
+      dataList: dataList ?? this.dataList,
+      requestState: requestState ?? this.requestState,
+      failureMessage: failureMessage ?? this.failureMessage,
+      isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+      hasMore: hasMore ?? this.hasMore,
+      lastDocument: lastDocument ?? this.lastDocument,
+      isLoadedBefore: isLoadedBefore ?? this.isLoadedBefore,
       favoriteIds: favoriteIds ?? this.favoriteIds,
-      listLoadingState: listLoadingState ?? this.listLoadingState,
-      listError: listError ?? this.listError,
-      favoriteDoctors: favoriteDoctors ?? this.favoriteDoctors,
+      idsLoadingState: idsLoadingState ?? this.idsLoadingState,
       toggleState: toggleState ?? this.toggleState,
-      toggleError: toggleError ?? this.toggleError,
     );
   }
 
+  bool isFavorite(String doctorId) => favoriteIds.contains(doctorId);
+
   @override
   List<Object?> get props => [
-    idsLoadingState, favoriteIds, listLoadingState, listError,
-    favoriteDoctors, toggleState, toggleError,
+    ...super.props, // هذا يضمن جلب خصائص الأب تلقائياً
+    favoriteIds,
+    idsLoadingState,
+    toggleState,
   ];
 }

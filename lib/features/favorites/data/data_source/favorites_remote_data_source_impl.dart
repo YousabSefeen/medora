@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:medora/core/constants/firestore_constants/firestore_constants.dart'
     show FirestoreConstants;
-import 'package:medora/features/favorites/data/data_source/favorites_remote_data_source_base.dart'
-    show FavoritesRemoteDataSourceBase;
+import 'package:medora/features/favorites/data/data_source/favorites_remote_data_source.dart'
+    show FavoritesRemoteDataSource;
 import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
 import 'package:medora/features/shared/domain/entities/doctor_entity.dart'
@@ -12,11 +12,11 @@ import 'package:medora/features/shared/domain/entities/paginated_data_response.d
 import 'package:medora/features/shared/domain/entities/pagination_parameters.dart'
     show PaginationParameters;
 
-class FavoritesRemoteDataSource extends FavoritesRemoteDataSourceBase {
+class FavoritesRemoteDataSourceImpl extends FavoritesRemoteDataSource {
   final FirebaseFirestore _firestore;
   final String _userId;
 
-  FavoritesRemoteDataSource({
+  FavoritesRemoteDataSourceImpl({
     required FirebaseFirestore firestore,
     required String userId,
   }) : _firestore = firestore,
@@ -117,7 +117,6 @@ class FavoritesRemoteDataSource extends FavoritesRemoteDataSourceBase {
         FirestoreConstants.fieldCreatedAt: FieldValue.serverTimestamp(),
       });
     } catch (e) {
-      _logError('addDoctorToFavorites', e);
       rethrow;
     }
   }
@@ -127,12 +126,7 @@ class FavoritesRemoteDataSource extends FavoritesRemoteDataSourceBase {
     try {
       await _favoritesCollection().doc(doctorId).delete();
     } catch (e) {
-      _logError('removeDoctorFromFavorites', e);
       rethrow;
     }
-  }
-
-  void _logError(String methodName, dynamic error) {
-    print('FavoritesRemoteDataSource.$methodName ERROR: $error');
   }
 }

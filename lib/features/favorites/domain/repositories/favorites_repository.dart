@@ -7,7 +7,7 @@ import 'package:medora/features/shared/domain/entities/paginated_data_response.d
 import 'package:medora/features/shared/domain/entities/pagination_parameters.dart'
     show PaginationParameters;
 
-abstract class FavoritesRepositoryBase {
+abstract class FavoritesRepository {
   Future<Either<Failure, List<String>>> getFavoriteIds();
 
   Future<Either<Failure, PaginatedDataResponse<DoctorEntity>>>

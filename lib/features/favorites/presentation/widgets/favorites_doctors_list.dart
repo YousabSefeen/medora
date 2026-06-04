@@ -1,90 +1,58 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medora/core/constants/app_strings/app_strings.dart';
-import 'package:medora/core/constants/common_widgets/content_unavailable_widget.dart'
-    show ContentUnavailableWidget;
-import 'package:medora/core/constants/common_widgets/error_retry_widget.dart'
-    show ErrorRetryWidget;
-import 'package:medora/core/constants/common_widgets/sliver_loading%20_list.dart'
-    show SliverLoadingList;
-import 'package:medora/core/enum/lazy_request_state.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder;
 import 'package:medora/features/favorites/presentation/controller/cubit/favorites_cubit.dart'
     show FavoritesCubit;
 import 'package:medora/features/favorites/presentation/controller/states/favorites_states.dart'
-    show FavoritesStates;
+    show FavoritesState;
+import 'package:medora/features/favorites/presentation/widgets/favorites_empty_list.dart'
+    show FavoritesEmptyList;
 import 'package:medora/features/shared/domain/entities/doctor_entity.dart'
     show DoctorEntity;
-import 'package:medora/features/shared/presentation/widgets/doctor_list_view.dart'
-    show DoctorListView;
+import 'package:medora/features/shared/presentation/screens/sliver_pagination_screen_mixin.dart'
+    show SliverPaginationScreenMixin;
+import 'package:medora/features/shared/presentation/widgets/doctor_card.dart'
+    show DoctorCard;
 
 class FavoritesDoctorsList extends StatefulWidget {
-  const FavoritesDoctorsList({super.key});
+  final ScrollController scrollController;
+
+  const FavoritesDoctorsList({super.key, required this.scrollController});
 
   @override
   State<FavoritesDoctorsList> createState() => _FavoritesDoctorsListState();
 }
 
-class _FavoritesDoctorsListState extends State<FavoritesDoctorsList> {
+class _FavoritesDoctorsListState extends State<FavoritesDoctorsList>
+    with
+        SliverPaginationScreenMixin<
+          DoctorEntity,
+          FavoritesState,
+          FavoritesCubit,
+
+          FavoritesDoctorsList
+        > {
   @override
-  initState() {
-    _getAllFavoritesDoctors();
+  void initState() {
+    // Connecting the external controller (Important: before super.initState())
+    attachScrollController(widget.scrollController);
     super.initState();
   }
 
-  static bool _isFavoritesLoadedBefore = false;
+  @override
+  Widget buildEmptyWidget() => const FavoritesEmptyList();
 
-  Future<void> _getAllFavoritesDoctors() async {
-    if (!_isFavoritesLoadedBefore) {
-      print('5555555555555555555555555555555555555555555555555555');
-      print('_FavoritesDoctorsListState._getAllFavoritesDoctors');
-      await _loadFavoritesDoctors();
-    }
-    _isFavoritesLoadedBefore = true;
-  }
-
-  Future<void> _loadFavoritesDoctors() async =>
-      await context.read<FavoritesCubit>().getFavoritesDoctors();
+  @override
+  Widget buildDataCard(DoctorEntity doctor, int index) =>
+      DoctorCard(doctor: doctor);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FavoritesCubit, FavoritesStates>(
+    return BlocBuilder<FavoritesCubit, FavoritesState>(
       buildWhen: (previous, current) =>
-          previous.listLoadingState != current.listLoadingState|| previous.favoriteIds != current.favoriteIds,
-      builder: (context, state) {
-        switch (state.listLoadingState) {
-          case LazyRequestState.lazy:
-          case LazyRequestState.loading:
-            return const SliverLoadingList(height: 150);
-          case LazyRequestState.loaded:
-            return _buildFavoritesContent(state);
-
-          case LazyRequestState.error:
-            return ErrorRetryWidget(
-              errorMessage: state.listError,
-              retryButtonText: AppStrings.reloadFavorites,
-
-              onRetry: () async => await _loadFavoritesDoctors(),
-            );
-        }
-      },
+          previous.isLoadingMore != current.isLoadingMore ||
+          previous.requestState != current.requestState ||
+          previous.favoriteIds != current.favoriteIds,
+      builder: (context, state) => buildPaginationBody(context, state),
     );
   }
-
-  Widget _buildFavoritesContent(FavoritesStates state) {
-    if (state.favoriteDoctors.isEmpty) {
-      return _buildEmptyFavoritesView();
-    } else {
-      return _buildFavoritesListView(state.favoriteDoctors);
-    }
-  }
-
-  Widget _buildEmptyFavoritesView() => const SliverFillRemaining(
-    hasScrollBody: false,
-    child: ContentUnavailableWidget(
-      description: AppStrings.noFavoritesDoctorsFoundMessage,
-    ),
-  );
-
-  Widget _buildFavoritesListView(List<DoctorEntity> doctors) =>
-      DoctorListView(doctorList: doctors);
 }

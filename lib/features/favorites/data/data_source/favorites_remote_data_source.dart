@@ -3,7 +3,7 @@ import 'package:medora/features/shared/domain/entities/paginated_data_response.d
 import 'package:medora/features/shared/domain/entities/pagination_parameters.dart'
     show PaginationParameters;
 
-abstract class FavoritesRemoteDataSourceBase {
+abstract class FavoritesRemoteDataSource {
   Future<List<String>> getFavoriteIds();
 
   Future<PaginatedDataResponse> getFavoritesDoctors(
