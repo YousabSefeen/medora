@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
-import 'package:medora/core/constants/common_widgets/content_unavailable_widget.dart'
-    show ContentUnavailableWidget;
 import 'package:medora/core/constants/common_widgets/error_retry_widget.dart'
     show ErrorRetryWidget;
 import 'package:medora/core/constants/common_widgets/sliver_loading%20_list.dart'
@@ -72,9 +70,7 @@ mixin SliverPaginationScreenMixin<
     onRetry: () => context.read<C>().fetchInitialList(),
   );
 
-  Widget buildEmptyWidget() => const ContentUnavailableWidget(
-    description: AppStrings.emptyUpcomingAppointmentsMessage,
-  );
+  Widget buildEmptyWidget();
 
   // Logic for counting the number of items (List + Footer)
   int _calculateItemCount(S state) {
@@ -117,12 +113,12 @@ mixin SliverPaginationScreenMixin<
     return SliverList.builder(
       itemCount: _calculateItemCount(state),
       itemBuilder: (context, index) {
-        // إذا كان الفهرس يشير إلى عنصر الـ footer
+        // If the index exceeds the list length, render the pagination footer
         if (index >= state.dataList.length) {
           return _buildPaginationFooter(state);
         }
 
-        // عرض عنصر البيانات
+        // Otherwise, render the specific data card item
         return buildDataCard(state.dataList[index], index);
       },
     );
