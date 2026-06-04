@@ -37,14 +37,17 @@ class _PopularDoctorsSectionState extends State<PopularDoctorsSection>
   }
 
   @override
-  Widget buildDataCard(DoctorEntity doctor, int index) {
-    return DoctorCard(doctor: doctor);
-  }
+  Widget buildEmptyWidget() => const SliverFillRemaining(
+    child: Text('No Data', style: TextStyle(color: Colors.red, fontSize: 25)),
+  );
+
+  @override
+  Widget buildDataCard(DoctorEntity doctor, int index) =>
+      DoctorCard(doctor: doctor);
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DoctorListCubit, DoctorListState>(
-
       buildWhen: (previous, current) =>
           previous.isLoadingMore != current.isLoadingMore ||
           previous.requestState != current.requestState,
