@@ -8,7 +8,6 @@ import 'package:medora/core/di/injection_container.dart' show sl;
 import 'package:medora/core/enum/payment_gateways_types.dart'
     show PaymentGatewaysTypes;
 import 'package:medora/core/enum/web_view_status.dart' show WebViewStatus;
-import 'package:medora/core/services/server_locator.dart' show serviceLocator;
 import 'package:medora/features/payment_gateways/paymob/presentation/controller/cubit/paymob_payment_cubit.dart'
     show PaymobPaymentCubit;
 import 'package:medora/features/payment_gateways/paymob/presentation/controller/states/paymob_payment_state.dart'

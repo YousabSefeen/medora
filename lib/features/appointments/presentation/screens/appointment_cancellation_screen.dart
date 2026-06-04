@@ -13,7 +13,6 @@ import 'package:medora/core/di/injection_container.dart' show sl;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 import 'package:medora/core/extensions/theme_extension.dart'
     show ThemeExtension;
-import 'package:medora/core/services/server_locator.dart' show serviceLocator;
 import 'package:medora/features/appointments/presentation/controller/cubit/cancel_appointment_cubit.dart'
     show CancelAppointmentCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/cancelled_appointments_cubit.dart'

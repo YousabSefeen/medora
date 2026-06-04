@@ -15,7 +15,6 @@ import 'package:medora/core/payment_gateway_manager/payment_helper/payment_navig
     show PaymentNavigationHelper;
 import 'package:medora/core/payment_gateway_manager/stripe_payment/stripe_dummy_data_service.dart'
     show StripeDummyDataService;
-import 'package:medora/core/services/server_locator.dart' show serviceLocator;
 import 'package:medora/features/payment_gateways/stripe/presentation/controller/cubit/stripe_payment_cubit.dart'
     show StripePaymentCubit;
 import 'package:medora/features/payment_gateways/stripe/presentation/controller/states/stripe_payment_state.dart'
@@ -43,11 +42,11 @@ class StripePaymentScreen extends StatelessWidget {
           ),
         ),
         body: BlocProvider(
-          create: (context) =>
-          sl<StripePaymentCubit>()..processStripePayment(
-                totalPrice: 100,
-                createUserModel: StripeDummyDataService.createUserModel,
-              ),
+          create: (context) => sl<StripePaymentCubit>()
+            ..processStripePayment(
+              totalPrice: 100,
+              createUserModel: StripeDummyDataService.createUserModel,
+            ),
           child:
               BlocSelector<
                 StripePaymentCubit,

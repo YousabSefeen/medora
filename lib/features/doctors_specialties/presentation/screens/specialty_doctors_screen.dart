@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart' show BlocProvider, BlocBuilder;
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/di/injection_container.dart' show sl;
 import 'package:medora/core/enum/request_state.dart' show RequestState;
-import 'package:medora/core/services/server_locator.dart' show serviceLocator;
 import 'package:medora/features/doctors_specialties/presentation/controller/cubit/specialty_doctors_cubit.dart'
     show SpecialtyDoctorsCubit;
 import 'package:medora/features/doctors_specialties/presentation/controller/states/specialty_doctors_states.dart'
