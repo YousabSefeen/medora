@@ -16,13 +16,12 @@ import 'package:medora/features/appointments/presentation/screens/create_appoint
 import 'package:medora/features/search/presentation/controller/cubit/home_doctor_search_cubit.dart'
     show HomeDoctorSearchCubit;
 import 'package:medora/features/search/presentation/controller/states/home_doctor_search_states.dart';
-import 'package:medora/features/shared/data/models/doctor_model.dart'
-    show DoctorModel;
-import 'package:medora/features/shared/domain/entities/doctor_entity.dart' show DoctorEntity;
-import 'package:medora/features/shared/presentation/widgets/home_search_doctor_card.dart'
-    show HomeSearchDoctorCard;
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart'
+    show DoctorEntity;
 import 'package:medora/features/shared/presentation/widgets/empty_search_list_results.dart'
     show EmptySearchListResult;
+import 'package:medora/features/shared/presentation/widgets/home_search_doctor_card.dart'
+    show HomeSearchDoctorCard;
 
 class DoctorSearchField extends StatelessWidget {
   final bool isExpanded;
@@ -196,7 +195,7 @@ class DoctorSearchField extends StatelessWidget {
 
   HomeSearchDoctorCard _buildSuggestionItem(
     BuildContext context,
-      DoctorEntity doctor,
+    DoctorEntity doctor,
   ) => HomeSearchDoctorCard(doctor: doctor);
 
   void _handleDoctorSelection(DoctorEntity doctor, BuildContext context) =>
