@@ -1,5 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart'
     show FirebaseFirestore, Query, DocumentSnapshot, QuerySnapshot;
+import 'package:medora/core/constants/firestore_constants/firestore_constants.dart'
+    show FirestoreConstants;
+import 'package:medora/features/doctor_list/data/data_sources/doctors_list_remote_data_source.dart'
+    show DoctorsListRemoteDataSource;
 import 'package:medora/features/shared/data/models/doctor_model.dart'
     show DoctorModel;
 import 'package:medora/features/shared/domain/entities/doctor_entity.dart';
@@ -8,24 +12,20 @@ import 'package:medora/features/shared/domain/entities/paginated_data_response.d
 import 'package:medora/features/shared/domain/entities/pagination_parameters.dart'
     show PaginationParameters;
 
-abstract class DoctorsListRemoteDataSourceBase {
-  Future<PaginatedDataResponse> getDoctorsList(PaginationParameters parameters);
-}
-
-class DoctorsListRemoteDataSource extends DoctorsListRemoteDataSourceBase {
+class DoctorsListRemoteDataSourceImpl extends DoctorsListRemoteDataSource {
   final FirebaseFirestore _firestore;
 
-  DoctorsListRemoteDataSource({FirebaseFirestore? firestore})
-    : _firestore = firestore ?? FirebaseFirestore.instance;
+  DoctorsListRemoteDataSourceImpl({required FirebaseFirestore firestore})
+    : _firestore = firestore;
 
   @override
   Future<PaginatedDataResponse<DoctorEntity>> getDoctorsList(
     PaginationParameters parameters,
   ) async {
     Query query = _firestore
-        .collection('doctors')
+        .collection(FirestoreConstants.doctorsCollection)
         .limit(parameters.limit)
-        .orderBy('createdAt', descending: true);
+        .orderBy(FirestoreConstants.fieldCreatedAt, descending: true);
 
     if (parameters.lastDocument != null) {
       query = query.startAfterDocument(

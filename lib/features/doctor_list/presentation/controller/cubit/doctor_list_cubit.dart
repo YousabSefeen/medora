@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:medora/features/doctor_list/domain/use_cases/get_doctors_list_uc.dart'
-    show GetDoctorsListUC;
+import 'package:medora/features/doctor_list/domain/use_cases/fetch_doctors_list_use_case.dart'
+    show FetchDoctorsListUseCase;
 import 'package:medora/features/doctor_list/presentation/controller/states/doctor_list_state.dart'
     show DoctorListState;
 import 'package:medora/features/shared/domain/entities/doctor_entity.dart'
@@ -16,7 +16,7 @@ import '../../../../../core/error/failure.dart' show Failure;
 
 class DoctorListCubit
     extends BasePaginationCubit<DoctorEntity, DoctorListState> {
-  final GetDoctorsListUC useCase;
+  final FetchDoctorsListUseCase useCase;
 
   DoctorListCubit({required this.useCase}) : super(const DoctorListState());
 

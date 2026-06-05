@@ -1,4 +1,3 @@
-import 'package:dartz/dartz.dart' show Either;
 import 'package:medora/features/shared/domain/entities/doctor_entity.dart'
     show DoctorEntity;
 import 'package:medora/features/shared/domain/entities/paginated_data_response.dart'
@@ -6,10 +5,8 @@ import 'package:medora/features/shared/domain/entities/paginated_data_response.d
 import 'package:medora/features/shared/domain/entities/pagination_parameters.dart'
     show PaginationParameters;
 
-import '../../../../core/error/failure.dart' show Failure;
-
-abstract class DoctorListRepositoryBase {
-  Future<Either<Failure, PaginatedDataResponse<DoctorEntity>>> getDoctorsList({
-    required PaginationParameters parameters,
-  });
+abstract class DoctorsListRemoteDataSource {
+  Future<PaginatedDataResponse<DoctorEntity>> getDoctorsList(
+    PaginationParameters parameters,
+  );
 }
