@@ -7,6 +7,7 @@ import 'package:medora/core/constants/app_routes/app_router.dart'
     show AppRouter;
 import 'package:medora/core/constants/app_strings/app_strings.dart';
 import 'package:medora/core/constants/themes/app_colors.dart';
+import 'package:medora/core/di/injection_container.dart' show sl;
 import 'package:medora/core/enum/lazy_request_state.dart';
 import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart'
     show ClientAppointmentsEntity;
@@ -106,24 +107,29 @@ class _RescheduleConfirmationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<RescheduleAppointmentCubit, RescheduleAppointmentState>(
-      listenWhen: _shouldListenToStateChanges,
-      listener: _handleRescheduleResponse,
-      child: BlocBuilder<TimeSlotCubit, TimeSlotState>(
-        buildWhen: (previous, current) =>
-            previous.selectedDateFormatted != current.selectedDateFormatted ||
-            previous.selectedTimeSlot != current.selectedTimeSlot,
-        builder: (context, timeSlotState) {
-          final isEnabled = _isTimeSlotSelected(timeSlotState);
+    return BlocProvider<RescheduleAppointmentCubit>(
+      create: (context) => sl<RescheduleAppointmentCubit>(),
+      child:
+          BlocListener<RescheduleAppointmentCubit, RescheduleAppointmentState>(
+            listenWhen: _shouldListenToStateChanges,
+            listener: _handleRescheduleResponse,
+            child: BlocBuilder<TimeSlotCubit, TimeSlotState>(
+              buildWhen: (previous, current) =>
+                  previous.selectedDateFormatted !=
+                      current.selectedDateFormatted ||
+                  previous.selectedTimeSlot != current.selectedTimeSlot,
+              builder: (context, timeSlotState) {
+                final isEnabled = _isTimeSlotSelected(timeSlotState);
 
-          return AdaptiveActionButton(
-            title: AppStrings.confirmReschedule,
-            isEnabled: isEnabled,
-            isLoading: _isRescheduleLoading(context),
-            onPressed: () => _executeReschedule(context, timeSlotState),
-          );
-        },
-      ),
+                return AdaptiveActionButton(
+                  title: AppStrings.confirmReschedule,
+                  isEnabled: isEnabled,
+                  isLoading: _isRescheduleLoading(context),
+                  onPressed: () => _executeReschedule(context, timeSlotState),
+                );
+              },
+            ),
+          ),
     );
   }
 

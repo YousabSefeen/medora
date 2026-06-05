@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medora/core/di/injection_container.dart' show sl;
 import 'package:medora/core/enum/payment_gateways_types.dart'
     show PaymentGatewaysTypes;
 import 'package:medora/features/appointments/presentation/widgets/pay_now_button.dart'
@@ -43,16 +44,19 @@ class _PaymentSelectionSheetState extends State<PaymentSelectionSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<PaymentCubit, PaymentState, PaymentGatewaysTypes>(
-      selector: (state) => state.selectedPaymentMethod,
-      builder: (context, selectedPaymentMethod) => Column(
-        children: [
-          PaymentMethodListView(
-            selectedPaymentMethod: selectedPaymentMethod,
-            phoneNumberController: phoneNumberController,
-          ),
-          PayNowButton(phoneNumberController: phoneNumberController),
-        ],
+    return BlocProvider(
+      create: (context) => sl<PaymentCubit>(),
+      child: BlocSelector<PaymentCubit, PaymentState, PaymentGatewaysTypes>(
+        selector: (state) => state.selectedPaymentMethod,
+        builder: (context, selectedPaymentMethod) => Column(
+          children: [
+            PaymentMethodListView(
+              selectedPaymentMethod: selectedPaymentMethod,
+              phoneNumberController: phoneNumberController,
+            ),
+            PayNowButton(phoneNumberController: phoneNumberController),
+          ],
+        ),
       ),
     );
   }
