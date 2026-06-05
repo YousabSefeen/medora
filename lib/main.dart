@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:developer' as developer;
 
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -9,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' show dotenv;
-import 'package:flutter_rating_bar/flutter_rating_bar.dart' show RatingBar;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart'
@@ -18,7 +15,8 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:medora/core/app_settings/controller/cubit/app_settings_cubit.dart'
     show AppSettingsCubit;
 import 'package:medora/core/constants/app_alerts/app_alerts.dart';
-import 'package:medora/core/di/injection_container.dart' show sl, ServiceLocator;
+import 'package:medora/core/di/injection_container.dart'
+    show sl, ServiceLocator;
 import 'package:medora/core/enum/internet_state.dart' show InternetState;
 import 'package:medora/features/appointments/presentation/controller/cubit/book_appointment_cubit.dart'
     show BookAppointmentCubit;
@@ -30,10 +28,6 @@ import 'package:medora/features/appointments/presentation/controller/cubit/compl
     show CompletedAppointmentsCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/doctor_appointments_cubit.dart'
     show DoctorAppointmentsCubit;
-import 'package:medora/features/patient/presentation/controllers/cubit/patient_cubit.dart'
-    show PatientCubit;
-import 'package:medora/features/appointments/presentation/controller/cubit/reschedule_appointment_cubit.dart'
-    show RescheduleAppointmentCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/time_slot_cubit.dart'
     show TimeSlotCubit;
 import 'package:medora/features/appointments/presentation/controller/cubit/upcoming_appointments_cubit.dart'
@@ -49,33 +43,23 @@ import 'package:medora/features/home/presentation/controller/cubits/bottom_nav_c
     show BottomNavCubit;
 import 'package:medora/features/home/presentation/screens/bottom_nav_screen.dart'
     show BottomNavScreen;
-import 'package:medora/features/payment_gateways/paymob/presentation/controller/cubit/paymob_payment_cubit.dart'
-    show PaymobPaymentCubit;
-import 'package:medora/features/payment_gateways/presentation/controller/cubit/payment_cubit.dart'
-    show PaymentCubit;
-import 'package:medora/features/payment_gateways/stripe/presentation/View/Screens/stripe_payment_screen.dart'
-    show StripePaymentScreen;
-import 'package:medora/features/search/presentation/controller/cubit/home_doctor_search_cubit.dart'
-    show HomeDoctorSearchCubit;
+import 'package:medora/features/patient/presentation/controllers/cubit/patient_cubit.dart'
+    show PatientCubit;
+import 'package:medora/features/search/presentation/controller/cubit/home_doctor_search_cubit.dart' show HomeDoctorSearchCubit;
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
-import 'package:time_range/time_range.dart';
-import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 import 'Core/payment_gateway_manager/stripe_payment/stripe_keys.dart';
 import 'core/app_settings/controller/states/app_settings_states.dart';
 import 'core/base/my_bloc_observer.dart';
 import 'core/constants/app_routes/app_router.dart';
 import 'core/constants/themes/app_light_theme.dart';
-import 'core/services/server_locator.dart';
 import 'features/auth/presentation/controller/cubit/register_cubit.dart';
 import 'features/doctor_list/presentation/controller/cubit/doctor_list_cubit.dart';
 import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // debugPaintLayerBordersEnabled = true;  // رسم حدود الـ layers
-  // debugRepaintRainbowEnabled = true;     // ألوان عند إعادة الرسم
-  await initializeDateFormatting('en_US');
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -84,7 +68,7 @@ void main() async {
   Bloc.observer = MyBlocObserver();
 
   final serviceLocator = ServiceLocator();
-  await serviceLocator.init(); // هذه الدالة يجب أن تستدعي initAppointmentsDependencies
+  await serviceLocator.init();
 
   if (!kIsWeb) {
     final tempDir = await getTemporaryDirectory();
@@ -105,6 +89,7 @@ void main() async {
         : HydratedStorageDirectory((await getTemporaryDirectory()).path),
   );
   await Future.wait([
+    initializeDateFormatting('en_US'),
     Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
     dotenv.load(fileName: '.env'),
   ]);
@@ -114,52 +99,30 @@ void main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => sl<HomeDoctorSearchCubit>()),
+
         BlocProvider(create: (_) => sl<FavoritesCubit>()..fetchFavoriteIds()),
 
         BlocProvider(create: (_) => sl<BottomNavCubit>()),
         BlocProvider(create: (_) => sl<LoginCubit>()),
         BlocProvider(create: (_) => sl<RegisterCubit>()),
-        //   BlocProvider(create: (_) => sl<DoctorProfileCubit>()),
+
         BlocProvider(create: (_) => sl<DoctorListCubit>()),
 
         BlocProvider(create: (_) => sl<AppSettingsCubit>()),
 
-        // BlocProvider(create: (_) => sl<SearchCubit>()),
-
-        //Payment Gateways
-        BlocProvider(create: (_) => sl<PaymobPaymentCubit>()),
-
-        ///xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        ///xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-        // BlocProvider<FetchClientAppointmentsCubit>(
-        //   create: (context) => sl<FetchClientAppointmentsCubit>(),
-        // ),
         BlocProvider<DoctorAppointmentsCubit>(
           create: (context) => sl<DoctorAppointmentsCubit>(),
         ),
-        BlocProvider<TimeSlotCubit>(
-          create: (context) => sl<TimeSlotCubit>(),
-        ),
+        BlocProvider<TimeSlotCubit>(create: (context) => sl<TimeSlotCubit>()),
 
         BlocProvider<BookAppointmentCubit>(
           create: (context) => sl<BookAppointmentCubit>(),
         ),
 
-        BlocProvider<PatientCubit>(
-          create: (context) => sl<PatientCubit>(),
-        ),
-
-        BlocProvider<PaymentCubit>(
-          create: (context) => sl<PaymentCubit>(),
-        ),
+        BlocProvider<PatientCubit>(create: (context) => sl<PatientCubit>()),
 
         BlocProvider<CancelAppointmentCubit>(
           create: (context) => sl<CancelAppointmentCubit>(),
-        ),
-
-        BlocProvider<RescheduleAppointmentCubit>(
-          create: (context) => sl<RescheduleAppointmentCubit>(),
         ),
 
         BlocProvider<UpcomingAppointmentsCubit>(
@@ -209,9 +172,7 @@ class MyApp extends StatelessWidget {
         },
         home: FirebaseAuth.instance.currentUser?.uid != null
             ? const BottomNavScreen()
-            //  ?  const DoctorProfileScreen()
             : const LoginScreen(),
-        // home:   const GeminiChatScreenTwo(),
       ),
     );
   }
@@ -225,446 +186,5 @@ class MyApp extends StatelessWidget {
     } else if (internetState == InternetState.connected) {
       AppAlerts.showInternetAlert(context, true);
     }
-  }
-}
-
-class FuckHome extends StatelessWidget {
-  const FuckHome({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Fuck Home')),
-      body: Center(
-        // child: ElevatedButton(
-        //   onPressed: () {
-        //     Navigator.of(
-        //       MyApp.navigatorKey.currentState!.context,
-        //     ).push(MaterialPageRoute(builder: (_) => NewPage()));
-        //   },
-        //   child: Text('data'),
-        // ),
-        child: RatingBar.builder(
-          initialRating: 3,
-          minRating: 1,
-          direction: Axis.horizontal,
-          allowHalfRating: true,
-          itemCount: 5,
-          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-          itemBuilder: (context, _) => Icon(Icons.star, color: Colors.amber),
-          onRatingUpdate: (rating) {
-            print(rating);
-          },
-        ),
-      ),
-    );
-  }
-}
-
-class CustomSlider extends StatefulWidget {
-  const CustomSlider({super.key});
-
-  @override
-  State<CustomSlider> createState() => _CustomSliderState();
-}
-
-class _CustomSliderState extends State<CustomSlider> {
-  double _value = 50;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-
-          children: [
-            Text('CustomSlider'),
-            Slider(
-              min: 50,
-              max: 100,
-              onChanged: (value) {
-                print('_CustomSliderState.build value $value');
-
-                setState(() {
-                  _value = value;
-                });
-              },
-              value: _value,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class OneScreen extends StatelessWidget {
-  const OneScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          spacing: 50,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => StripePaymentScreen(),
-                  ),
-                );
-              },
-              child: Text('Check'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class TwoScreen extends StatelessWidget {
-  static const route = 'TwoScreen';
-
-  const TwoScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, result) {
-        if (!didPop) {
-          backFunc(context);
-        }
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          leading: BackButton(onPressed: () => backFunc(context)),
-          title: const Text('TwoScreen'),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            spacing: 50,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  AppRouter.pop(
-                    context,
-                    returnValue:
-                        'AppRouterNames.paymobPayment AppRouterNames.paymobPayment AppRouterNames.paymobPayment AppRouterNames.paymobPaymentXXXXXXXXXX',
-                  );
-                },
-                child: Text('Check'),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  void backFunc(BuildContext context) {
-    //   AppRouter.pushNamedAndRemoveUntil(context, AppRouterNames.doctorListView);
-  }
-}
-
-class FirestoreTestScreen extends StatefulWidget {
-  const FirestoreTestScreen({super.key});
-
-  @override
-  State<FirestoreTestScreen> createState() => _FirestoreTestScreenState();
-}
-
-class _FirestoreTestScreenState extends State<FirestoreTestScreen> {
-  List<ConnectivityResult> _connectionStatus = [ConnectivityResult.none];
-  final Connectivity _connectivity = Connectivity();
-  late StreamSubscription<List<ConnectivityResult>> _connectivitySubscription;
-
-  @override
-  void initState() {
-    super.initState();
-    initConnectivity();
-
-    _connectivitySubscription = _connectivity.onConnectivityChanged.listen(
-      _updateConnectionStatus,
-    );
-  }
-
-  @override
-  void dispose() {
-    _connectivitySubscription.cancel();
-    super.dispose();
-  }
-
-  var xxx;
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initConnectivity() async {
-    late List<ConnectivityResult> result;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      result = await _connectivity.checkConnectivity();
-      xxx = result;
-    } on PlatformException catch (e) {
-      developer.log('Couldn\'t check connectivity status', error: e);
-      return;
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) {
-      return Future.value(null);
-    }
-
-    return _updateConnectionStatus(result);
-  }
-
-  Future<void> _updateConnectionStatus(List<ConnectivityResult> result) async {
-    setState(() {
-      _connectionStatus = result;
-    });
-    // ignore: avoid_print
-    print('Connectivity changed: $_connectionStatus');
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Firestore اختبار")),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-
-          children: [
-            Text('data', style: TextStyle(fontSize: 30, color: Colors.black)),
-            ElevatedButton(
-              onPressed: () {
-                print('_FirestoreTestScreenState.build ${xxx}');
-              },
-              child: Text('data'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class NewPage extends StatelessWidget {
-  const NewPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('data')),
-      body: Center(
-        child: BlocBuilder<AppSettingsCubit, AppSettingsStates>(
-          builder: (context, state) => Column(
-            spacing: 30,
-            children: [
-              Container(
-                height: 100,
-                width: 100,
-                color: state.internetState == InternetState.connected
-                    ? Colors.amber
-                    : Colors.blueAccent,
-                child: Text('data'),
-              ),
-              ElevatedButton(onPressed: () {}, child: Text('xxxxxxxxxxxx')),
-              ElevatedButton(
-                onPressed: () {
-                  WoltModalSheet.show<void>(
-                    context: context,
-                    barrierDismissible: true,
-                    pageListBuilder: (modalSheetContext) {
-                      final textTheme = Theme.of(context).textTheme;
-                      return [
-                        WoltModalSheetPage(
-                          hasSabGradient: false,
-                          stickyActionBar: Padding(
-                            padding: const EdgeInsets.all(20),
-                            child: Column(
-                              children: [
-                                // Container(
-                                //   height: 200,
-                                //   width: 200,color: Colors.amber,
-                                // ),
-                                //  const SizedBox(height: 8),
-                                //  Container(
-                                //    height: 200,
-                                //    width: 200,color: Colors.deepOrange,
-                                //  ),
-                              ],
-                            ),
-                          ),
-                          topBarTitle: Text(
-                            'Pagination',
-                            style: textTheme.titleSmall,
-                          ),
-                          isTopBarLayerAlwaysVisible: true,
-                          trailingNavBarWidget: IconButton(
-                            padding: const EdgeInsets.all(20),
-                            icon: const Icon(Icons.close, color: Colors.black),
-                            onPressed: Navigator.of(modalSheetContext).pop,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            child: Column(
-                              children: [
-                                Container(
-                                  height: 200,
-                                  width: 200,
-                                  color: Colors.amber,
-                                ),
-                                const SizedBox(height: 8),
-                                Container(
-                                  height: 200,
-                                  width: 200,
-                                  color: Colors.deepOrange,
-                                ),
-                                Text('''
-              Pagination involves a sequence of screens the user navigates sequentially. We chose a lateral motion for these transitions. When proceeding forward, the next screen emerges from the right; moving backward, the screen reverts to its original position. We felt that sliding the next screen entirely from the right could be overly distracting. As a result, we decided to move and fade in the next page using 30% of the modal side.
-              '''),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ];
-                    },
-                    onModalDismissedWithBarrierTap: () {
-                      debugPrint('Closed modal sheet with barrier tap');
-                      Navigator.of(context).pop();
-                    },
-                  );
-                },
-                child: Text('data'),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  static const orange = Color(0xFFFE9A75);
-  static const dark = Color(0xFF333A47);
-  static const double leftPadding = 50;
-
-  final _defaultTimeRange = TimeRangeResult(
-    const TimeOfDay(hour: 8, minute: 00),
-    const TimeOfDay(hour: 22, minute: 00),
-  );
-  TimeRangeResult? _timeRange;
-
-  @override
-  void initState() {
-    super.initState();
-    _timeRange = _defaultTimeRange;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 16, left: leftPadding),
-              child: Text(
-                'Opening Times',
-                style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: dark,
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            TimeRange(
-              fromTitle: const Text(
-                'FROM',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: dark,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              toTitle: const Text(
-                'TO',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: dark,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              titlePadding: leftPadding,
-              textStyle: const TextStyle(
-                fontWeight: FontWeight.normal,
-                color: dark,
-              ),
-              activeTextStyle: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: orange,
-              ),
-              borderColor: dark,
-              activeBorderColor: dark,
-              backgroundColor: Colors.transparent,
-              activeBackgroundColor: dark,
-              firstTime: const TimeOfDay(hour: 8, minute: 00),
-              lastTime: const TimeOfDay(hour: 20, minute: 00),
-              initialRange: _timeRange,
-              timeStep: 60,
-              timeBlock: 60,
-              onRangeCompleted: (range) => setState(() => _timeRange = range),
-              onFirstTimeSelected: (startHour) {},
-            ),
-            const SizedBox(height: 30),
-            if (_timeRange != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0, left: leftPadding),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Selected Range: ${_timeRange!.start.format(context)} - ${_timeRange!.end.format(context)}',
-                      style: const TextStyle(fontSize: 20, color: dark),
-                    ),
-                    const SizedBox(height: 20),
-                    MaterialButton(
-                      onPressed: () =>
-                          setState(() => _timeRange = _defaultTimeRange),
-                      color: orange,
-                      child: const Text('Default'),
-                    ),
-                  ],
-                ),
-              ),
-
-            ElevatedButton(
-              onPressed: () {
-                print('_HomePageState.build');
-              },
-              child: Text('data'),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }
