@@ -354,17 +354,23 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
     final appointmentId = queryParams['appointmentId'] as String;
     final appointmentDate = queryParams['appointmentDate'] as String;
     final appointmentTime = queryParams['appointmentTime'] as String;
-
+    final appointmentTimestamp = Timestamp.fromDate(
+      DateFormat(
+        'dd/MM/yyyy hh:mm a',
+      ).parse('$appointmentDate $appointmentTime'),
+    );
     final updates = {
       'appointmentDate': appointmentDate,
       'appointmentTime': appointmentTime,
       'appointmentStatus': AppointmentStatus.confirmed.name,
+      'appointmentTimestamp': appointmentTimestamp,
     };
 
     return await _updateAppointment(
       doctorId: doctorId,
       appointmentId: appointmentId,
       updates: updates,
+
       operationName: 'rescheduleAppointment',
     );
   }
