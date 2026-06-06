@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart' show DateFormat;
 import 'package:medora/features/shared/domain/entities/doctor_entity.dart';
 
 class ClientAppointmentsEntity extends Equatable {
@@ -70,4 +71,15 @@ class ClientAppointmentsEntity extends Equatable {
     appointmentStatus,
     doctorEntity,
   ];
+}
+extension AppointmentParsing on ClientAppointmentsEntity {
+  DateTime get dateTime {
+    try {
+      return DateFormat(
+        'dd/MM/yyyy hh:mm a',
+      ).parse('$appointmentDate $appointmentTime');
+    } catch (e) {
+      return DateTime.now();
+    }
+  }
 }
