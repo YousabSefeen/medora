@@ -11,6 +11,8 @@ import 'package:medora/core/constants/app_strings/app_strings.dart';
 import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/enum/navigation_source.dart' show NavigationSource;
+import 'package:medora/core/extensions/media_query_extension.dart'
+    show MediaQueryExtension;
 import 'package:medora/features/appointments/presentation/screens/create_appointment_screen.dart'
     show CreateAppointmentScreen;
 import 'package:medora/features/search/presentation/controller/cubit/home_doctor_search_cubit.dart'
@@ -48,7 +50,7 @@ class DoctorSearchField extends StatelessWidget {
           constraints: const BoxConstraints(),
           debounceDuration: AppDurations.milliseconds_700,
           decorationBuilder: (BuildContext context, Widget? widget) =>
-              _buildDecorationBuilder(isFelledEmpty, widget),
+              _buildDecorationBuilder(context, isFelledEmpty, widget),
           emptyBuilder: _buildEmptyBuilder,
 
           suggestionsCallback: (pattern) =>
@@ -77,28 +79,26 @@ class DoctorSearchField extends StatelessWidget {
     );
   }
 
-  Container _buildDecorationBuilder(bool isFelledEmpty, Widget? widget) =>
-      Container(
-        decoration: BoxDecoration(
-          color: AppColors.customWhite,
-          borderRadius: BorderRadius.circular(12.r),
-          boxShadow: isFelledEmpty ? [] : _buildBoxShadow(),
-        ),
-        child: widget,
-      );
-
-  List<BoxShadow> _buildBoxShadow() => const [
-    BoxShadow(
-      color: AppColors.softBlue,
-      spreadRadius: 1,
-      blurRadius: 2,
-      offset: Offset(0, 1),
+  Container _buildDecorationBuilder(
+    BuildContext context,
+    bool isFelledEmpty,
+    Widget? widget,
+  ) => Container(
+    padding: const EdgeInsets.only(top: 15),
+    height: context.screenHeight * 0.6,
+    decoration: BoxDecoration(
+      color: Colors.grey.shade100,
+      borderRadius: BorderRadius.circular(12.r),
+      border: Border.all(color: Colors.black54),
     ),
-  ];
+    child: widget,
+  );
 
   Widget _buildEmptyBuilder(BuildContext context) => Container(
-    height: MediaQuery.sizeOf(context).height * 0.5,
-    color: Colors.white,
+    width: double.infinity,
+    constraints: BoxConstraints(
+      maxHeight: MediaQuery.sizeOf(context).height * 0.6,
+    ),
     child: const EmptySearchListResult(),
   );
 
@@ -207,6 +207,8 @@ class DoctorSearchField extends StatelessWidget {
         ),
       );
 
-  Widget _buildLoadingIndicator(BuildContext context) =>
-      const LinearProgressIndicator(color: Colors.amber);
+  Padding _buildLoadingIndicator(BuildContext context) => const Padding(
+    padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 5),
+    child: LinearProgressIndicator(color: Colors.amber),
+  );
 }
