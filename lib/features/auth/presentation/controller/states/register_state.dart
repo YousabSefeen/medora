@@ -1,3 +1,4 @@
+/*
 import 'package:equatable/equatable.dart';
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 
@@ -67,3 +68,4 @@ class RegisterState extends Equatable {
     isAuthGoogle,
   ];
 }
+*/

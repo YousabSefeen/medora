@@ -1,3 +1,4 @@
+/*
 import 'package:equatable/equatable.dart';
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 
@@ -33,3 +34,4 @@ class LoginState extends Equatable {
   @override
   List<Object?> get props => [isPasswordVisible, loginStatus, loginError];
 }
+*/

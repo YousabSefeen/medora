@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import '../../../../../core/base/disposable.dart' show Disposable;
 
 class LoginControllers implements Disposable {
+  final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 

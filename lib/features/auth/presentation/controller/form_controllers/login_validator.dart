@@ -1,27 +1,35 @@
-import 'login_controllers.dart';
-
-class LoginValidator {
-  static final LoginValidator _instance = LoginValidator._internal();
-
-  factory LoginValidator() => _instance;
-
-  LoginValidator._internal();
-
-  String? validateInputs(LoginControllers c) {
-    final email = c.emailController.text.trim();
-    final password = c.passwordController.text;
-
-    if ([email, password].any((e) => e.isEmpty)) {
-      return 'Please fill all fields';
-    }
-
-    if (!email.contains('@') || !email.contains('.')) {
-      return 'Enter a valid email';
-    }
-    if (password.length < 6) {
-      return 'Password must be at least 6 characters';
-    }
-
-    return null;
-  }
-}
+// class LoginValidator {
+//   static const String _warningEmoji = '⚠️';
+//
+//   static String _formatError(String message) {
+//     return '$_warningEmoji  $message';
+//   }
+//
+//   static String? validateEmail(String? value) {
+//     final cleanedValue = value?.trim() ?? '';
+//
+//     if (cleanedValue.isEmpty) {
+//       return _formatError('Please enter your email address');
+//     }
+//
+//     if (!cleanedValue.contains('@')) {
+//       return _formatError('Please enter a valid email address');
+//     }
+//
+//     return null;
+//   }
+//
+//   static String? validatePassword(String? value) {
+//     final cleanedValue = value?.trim() ?? '';
+//
+//     if (cleanedValue.isEmpty) {
+//       return _formatError('Please enter your password');
+//     }
+//
+//     if (cleanedValue.length < 6) {
+//       return _formatError('Password must be at least 6 characters');
+//     }
+//
+//     return null;
+//   }
+// }

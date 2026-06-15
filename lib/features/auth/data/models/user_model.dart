@@ -1,29 +1,20 @@
-import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:medora/features/auth/domain/entities/user_entity.dart';
 
 part 'user_model.g.dart';
 
 @JsonSerializable()
-class UserModel extends Equatable {
-  final String name;
-  final String phone;
-  final String email;
-  final String role;
-  final String createdAt;
-
+class UserModel extends UserEntity {
   const UserModel({
-    required this.name,
-    required this.phone,
-    required this.email,
-    required this.role,
-    required this.createdAt,
+    required super.name,
+    required super.phone,
+    required super.email,
+    required super.role,
+    required super.createdAt,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
-
-  @override
-  List<Object?> get props => [name, phone, email, role, createdAt];
 }

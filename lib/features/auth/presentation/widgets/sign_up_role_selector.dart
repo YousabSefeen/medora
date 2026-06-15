@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medora/features/auth/presentation/controller/form_controllers/register_controllers.dart' show RegisterControllers;
 
-import '../../../../../core/constants/themes/app_colors.dart';
-import '../../../../../core/enum/user_type.dart';
-import '../../controller/cubit/register_cubit.dart';
-import '../../controller/states/register_state.dart';
+import '../../../../core/constants/themes/app_colors.dart';
+import '../../../../core/enum/user_type.dart';
+import '../controller/cubit/register_cubit.dart';
+import '../controller/states/register_state.dart';
 
-class RegisterRoleSelector extends StatelessWidget {
-  const RegisterRoleSelector({super.key});
-
+class SignUpRoleSelector extends StatelessWidget {
+  final TextEditingController roleController;
+    SignUpRoleSelector({super.key, required this.roleController});
+    final ValueNotifier<UserType> _userType = ValueNotifier<UserType>(UserType.client);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -28,31 +30,35 @@ class RegisterRoleSelector extends StatelessWidget {
             ),
           ),
           SizedBox(height: 10.h),
-          BlocSelector<RegisterCubit, RegisterState, UserType>(
-            selector: (state) => state.userType,
-            builder: (context, userType) => Row(
-              children: [
-                Expanded(
-                  child: _RoleOption(
-                    title: 'Client',
-                    isActive: userType == UserType.client,
-                    onTap: () => context.read<RegisterCubit>().toggleUserType(
-                      UserType.client,
+          ValueListenableBuilder<UserType>(
+              valueListenable: _userType,
+              builder: (context, userType, child) {
+                return Row(
+                  children: [
+                    Expanded(
+                      child: _RoleOption(
+                        title: 'Client',
+                        isActive: userType == UserType.client,
+                        onTap: () {
+                          _userType.value = UserType.client;
+                         roleController.text = 'client';
+                        },
+                      ),
                     ),
-                  ),
-                ),
-                SizedBox(width: 20.w),
-                Expanded(
-                  child: _RoleOption(
-                    title: 'Doctor',
-                    isActive: userType == UserType.doctor,
-                    onTap: () => context.read<RegisterCubit>().toggleUserType(
-                      UserType.doctor,
+                    SizedBox(width: 20.w),
+                    Expanded(
+                      child: _RoleOption(
+                        title: 'Doctor',
+                        isActive: userType == UserType.doctor,
+                        onTap: () {
+                          _userType.value = UserType.doctor;
+                          roleController.text = 'doctor';
+                        },
+                      ),
                     ),
-                  ),
-                ),
-              ],
-            ),
+                  ],
+                );
+              }
           ),
         ],
       ),

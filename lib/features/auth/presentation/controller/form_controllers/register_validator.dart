@@ -43,3 +43,4 @@ class RegisterValidator {
     return null;
   }
 }
+// خاص بشاشة الـ Register فقط

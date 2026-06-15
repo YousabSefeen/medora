@@ -1,3 +1,4 @@
+/*
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/enum/lazy_request_state.dart';
@@ -48,3 +49,4 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<void> logout() async => await authRepository.logout();
 }
+*/
