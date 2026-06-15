@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medora/core/constants/app_routes/app_router.dart';
+import 'package:medora/core/constants/app_routes/app_router_names.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 
 import '../../themes/app_colors.dart';
@@ -29,28 +31,7 @@ class AppAlertWidgets {
     );
   }
 
-  static SnackBar registerSnackBar({
-    required Widget content,
-    required String errorMessage,
-  }) {
-    final emailAlreadyInUseError =
-        'This email address is already in use. If it’s your account, try logging in.';
-    final isValidEmailMessage = errorMessage != emailAlreadyInUseError;
 
-    return SnackBar(
-      backgroundColor: AppColors.red,
-      margin: const EdgeInsets.all(7),
-      padding: const EdgeInsets.all(8),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      elevation: 20,
-      dismissDirection: DismissDirection.horizontal,
-      behavior: SnackBarBehavior.floating,
-      duration: isValidEmailMessage
-          ? const Duration(seconds: 2)
-          : const Duration(seconds: 20),
-      content: content,
-    );
-  }
 
   static Widget successDialogContent(String message) {
     return Container(

@@ -263,11 +263,56 @@ extension AppTextStyles on TextTheme {
     ),
   );
 
-
   TextStyle get bodyMediumEx => TextStyle(
     color: Colors.black54,
     fontSize: 14.sp,
     fontWeight: FontWeight.w400,
     height: 1.5,
+  );
+
+  // 1. للنصوص الترحيبية أو العناوين الفرعية (مثل Welcome back!)
+  TextStyle get headerSubtitle => GoogleFonts.poppins(
+    fontSize: 22.sp,
+    color: Colors.white70,
+    fontWeight: FontWeight.w400,
+  );
+
+  // 2. للعنوان الرئيسي (مثل MediLink)
+  TextStyle get headerTitle => GoogleFonts.poppins(
+    fontSize: 36.sp,
+    color: Colors.white,
+    fontWeight: FontWeight.bold,
+    height: 2,
+  );
+
+  // 3. لنصوص الوصف والشرح (مثل وصف التطبيق في كلا الشاشتين)
+  TextStyle get headerDescription => GoogleFonts.poppins(
+    fontSize: 16.sp,
+    color: Colors.white70,
+    fontWeight: FontWeight.w400,
+    height: 1.5,
+  );
+
+  TextStyle get authButton => GoogleFonts.poppins(
+    textStyle: TextStyle(
+      color: Colors.white,
+      fontSize: 16.sp,
+
+      fontWeight: FontWeight.w600,
+      letterSpacing: 0.5,
+    ),
+  );
+
+  TextStyle get forgotButton => TextStyle(
+    color: Colors.blue,
+    fontSize: 13.sp,
+    fontWeight: FontWeight.w500,
+    letterSpacing: 0.5,
+  );
+
+  TextStyle get authFieldTitle => TextStyle(
+    color: Colors.white,
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w500,
   );
 }

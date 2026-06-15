@@ -4,7 +4,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:medora/core/animations/custom_modal_type_left_sheet.dart'
     show CustomModalTypeLeftSheet;
-import 'package:medora/core/constants/app_alerts/gemini_error_dialog.dart' show GeminiErrorDialog;
+import 'package:medora/core/constants/app_alerts/gemini_error_dialog.dart'
+    show GeminiErrorDialog;
 import 'package:medora/core/constants/app_alerts/no_internet_dialog.dart'
     show NoInternetDialog;
 import 'package:medora/core/constants/app_alerts/widgets/appointment_success_dialog.dart'
@@ -16,8 +17,10 @@ import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
-import 'package:medora/features/appointments/presentation/ui_models/appointment_reschedule_ui_model.dart' show AppointmentRescheduleUIModel;
-
+import 'package:medora/features/appointments/presentation/ui_models/appointment_reschedule_ui_model.dart'
+    show AppointmentRescheduleUIModel;
+import 'package:medora/features/auth/presentation/widgets/auth_error_snack_bar_content.dart';
+import 'package:medora/features/auth/presentation/widgets/email_already_in_use_snack_bar_content.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
@@ -70,46 +73,44 @@ class AppAlerts {
     );
   }
 
-/*  static void showErrorSnackBar(BuildContext context, String errorMessage) {
-    //  ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(AppAlertWidgets.errorSnackBar(errorMessage));
-  }*/
   static void showSnackBar(BuildContext context, String errorMessage) {
-      ScaffoldMessenger.of(context).removeCurrentSnackBar();
-      ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              duration: const Duration(seconds: 2),
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              content: Text(
-                errorMessage,
-                textAlign: TextAlign.center,
-                style: Theme.of(
-                  context,
-                ).textTheme.mediumWhiteBold.copyWith(fontSize: 15.sp),
-              ),
-              backgroundColor: AppColors.red,
-            ),
-          );
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 2),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        content: Text(
+          errorMessage,
+          textAlign: TextAlign.center,
+          style: Theme.of(
+            context,
+          ).textTheme.mediumWhiteBold.copyWith(fontSize: 15.sp),
+        ),
+        backgroundColor: AppColors.red,
+      ),
+    );
   }
+
   static void showTopSnackBarAlert({
     required BuildContext context,
     IconData? icon,
     required String msg,
     required Color backgroundColor,
-    Duration  displayDuration=const Duration(seconds: 2),
-    EdgeInsetsGeometry padding = const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+    Duration displayDuration = const Duration(seconds: 2),
+    EdgeInsetsGeometry padding = const EdgeInsets.symmetric(
+      horizontal: 10,
+      vertical: 15,
+    ),
   }) {
     showTopSnackBar(
       padding: EdgeInsets.zero,
       displayDuration: displayDuration,
       Overlay.of(context),
       CustomSnackBar.show(
-        padding:padding ,
+        padding: padding,
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(10),
@@ -132,16 +133,50 @@ class AppAlerts {
     );
   }
 
-  static void showRegisterErrorSnackBar({
+  static void showAuthErrorSnackBar(BuildContext context, String errorMessage) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        elevation: 1,
+        behavior: SnackBarBehavior.floating,
+        duration: AppDurations.seconds_5,
+
+        backgroundColor: Colors.grey.shade900,
+        padding: EdgeInsets.zero,
+        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.r),
+          side: const BorderSide(color: AppColors.red),
+        ),
+        content: AuthErrorSnackBarContent(errorMessage: errorMessage),
+      ),
+    );
+  }
+
+  static void showEmailAlreadyInUseSnackBar({
     required BuildContext context,
-    required Widget content,
-    required String errorMessage,
+
+    required void Function() onSignInPressed,
+    required void Function() onDismissPressed,
   }) {
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
     ScaffoldMessenger.of(context).showSnackBar(
-      AppAlertWidgets.registerSnackBar(
-        content: content,
-        errorMessage: errorMessage,
+      SnackBar(
+        elevation: 0,
+        behavior: SnackBarBehavior.floating,
+        duration: AppDurations.seconds_10,
+
+        backgroundColor: Colors.grey.shade900,
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+        padding: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.r),
+          side: const BorderSide(color: AppColors.red),
+        ),
+        content: EmailAlreadyInUseSnackBarContent(
+          onSignInPressed: onSignInPressed,
+          onDismissPressed: onDismissPressed,
+        ),
       ),
     );
   }
@@ -312,18 +347,19 @@ class AppAlerts {
     context: context,
     errorMessage: errorMessage,
   );
-  static Future<void> showGeminiErrorDialog({
-   required BuildContext context,
-  required  String errorMessage,
-    bool showCloseButtonOnly = true,
-      void Function()? onRetryNow,
 
+  static Future<void> showGeminiErrorDialog({
+    required BuildContext context,
+    required String errorMessage,
+    bool showCloseButtonOnly = true,
+    void Function()? onRetryNow,
   }) async => await GeminiErrorDialog.showDialog(
     context: context,
     errorMessage: errorMessage,
     showCloseButtonOnly: showCloseButtonOnly,
     onRetryNow: onRetryNow,
   );
+
   static Future<void> showCustomErrorDialog(
     BuildContext context,
     String errorMessage,

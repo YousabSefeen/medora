@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:medora/core/animations/custom_animation_route.dart'
     show CustomAnimationRoute;
+import 'package:medora/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:medora/features/doctors_specialties/presentation/screens/medical_specialties_screen.dart'
     show MedicalSpecialtiesScreen;
 import 'package:medora/features/gemini/presentation/screens/gemini_chat_screen.dart' show GeminiChatScreen;
@@ -14,8 +15,7 @@ import 'package:medora/features/payment_gateways/paypal/presentation/views/scree
     show PaypalPaymentScreen;
 
 import '../../../features/appointments/presentation/screens/booked_appointments_screen.dart';
-import '../../../features/auth/presentation/screens/login_screen.dart';
-import '../../../features/auth/presentation/screens/register_screen.dart';
+import '../../../features/auth/presentation/screens/sign_in_screen.dart';
 import '../../../features/doctor_profile/presentation/screens/doctor_profile_screen.dart';
 import '../../animations/animation_route.dart';
 import 'app_router_names.dart';
@@ -23,11 +23,11 @@ import 'app_router_names.dart';
 class AppRouter {
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case AppRouterNames.login:
-        return _animatedRoute(settings, const LoginScreen());
+      case AppRouterNames.signIn:
+        return _animatedRoute(settings, const SignInScreen());
 
-      case AppRouterNames.register:
-        return _animatedRoute(settings, const RegisterScreen());
+      case AppRouterNames.signUp:
+        return _animatedRoute(settings, const SignUpScreen());
       case AppRouterNames.geminiChat:
         return _animatedRoute( isFadeRoute: false, settings, const GeminiChatScreen());
       case AppRouterNames.bottomNavScreen:

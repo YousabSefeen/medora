@@ -31,11 +31,11 @@ class AppColors {
   static const Color customWhite = Color(0xffEEF5FF);
   static const Color lightPeriwinkle =   Color(0xffC0C9EE);
   static const List<Color> gradientAnimationColor = [
-    AppColors.darkBlue,
-    AppColors.darkBlue,
+    Color(0xff001F3F),
+    Color(0xff001F3F),
     Color(0xff7C93C3),
     Color(0xff7C93C3),
-    AppColors.darkBlue,
+    Color(0xff001F3F),
   ];
 
   static const List<Color> borderGradientAnimationColor = [
@@ -67,4 +67,9 @@ class AppColors {
     white,
     white,
   ];
+  static const Color primaryButtonBlue = Color(0xFF3B5998);
+  static const Color primaryColor = Color(0xFF0A192F);
+  static const Color authContainerColor =Color(0xFF172A45);
+  static const Color authErrorColor = Color(0xFFFF8A8A);
+
 }

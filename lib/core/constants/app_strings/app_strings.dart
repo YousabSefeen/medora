@@ -20,15 +20,33 @@ class AppStrings {
     //girl
     'https://i.pinimg.com/736x/96/6a/ac/966aacaf096747852a12f9e33f926b96.jpg',
   ];
+// نصوص الـ SignInHeader
+  static const String signInWelcomeBack = 'Welcome back!';
+  static const String appName = 'MediLink';
+  static const String signInDescription = 'Access your appointments and connect with trusted healthcare professionals.';
 
+  // نصوص الـ SignUpHeader
+  // ملاحظة: بما أن اسم التطبيق مكرر، يمكنك إعادة استخدام متغير appName
+  static const String signUpDescription = 'Join Medilink to easily find and book\nappointments with the right specialists.';
   // Titles
-  static const String login = 'Login';
+  static const String forgotPassword = 'Forgot Password?';
+
   static const String email = 'Email';
+  static const String emailHint = 'ahmed.f@email.com';
+  static const String userNameHint =  'Ahmed Fathi';
+  static const String phoneNumber = 'Phone Number';
+  static const String phoneNumberHint = '+201234567890';
   static const String password = 'Password';
-  static const String register = 'Register';
-  static const String registerNow = '$register now';
+  static const String passwordHint =  '••••••••••••';
+  static const String dontHaveAccountText = "Don't have an account?";
+  static const String alreadyHaveAccountText = 'Already have an account?';
+  static const String registerNow =  'Register Now';
+  static const String signIn =  'Sign In';
+  static const String signUp =  'Sign Up';
+  static const String signOut =  'Sign Out';
+  static const String dismiss = 'DISMISS';
   static const String emailAlreadyInUseError =
-      'This email address is already in use. If it’s your account, try logging in.';
+      'This email address is already in use. If it’s your account, please sign in.';
   static const String unknownError = 'Unknown error occurred.';
   static const String doctorProfileTitle = 'Doctor Profile';
 
@@ -137,7 +155,8 @@ class AppStrings {
   static const String reloadFavorites = 'Reload Favorites';
 
   static const String submitProfileBtn = 'Submit Profile';
-  static const String profileSubmittedSuccess = 'Your profile has been submitted successfully.';
+  static const String profileSubmittedSuccess =
+      'Your profile has been submitted successfully.';
 
   static const String dR = 'Dr. ';
   static const String successMessage = 'Book Appointment Successfully';
@@ -180,7 +199,8 @@ class AppStrings {
       'Appointments cannot be scheduled for past dates. '
       'Please select today\'s date or a future date.';
 
-  static const String toggleFavoriteErrorMsg = 'Unable to update favorites. Please try again.';
+  static const String toggleFavoriteErrorMsg =
+      'Unable to update favorites. Please try again.';
 
   // static String noInternetConnection='No Internet Connection';
   // static const String kNoInternetBookingErrorMessage =
@@ -446,9 +466,9 @@ Very important rules:
   static const String retryNow = 'Retry Now';
 
   static const String somethingWentWrong = 'Sorry, something went wrong';
-  static const String unexpectedError = 'An unexpected error occurred, please try again.';
+  static const String unexpectedError =
+      'An unexpected error occurred, please try again.';
   static const String close = 'Close';
-
 
   //static const String welcomeChatMessage =  "مرحباً! أنا ميدورا",
   //  static const String medicalAssistantSubline =
@@ -472,7 +492,9 @@ Very important rules:
   static const String favoritesEmptyDescription =
       "You haven't saved any doctors to your favorites list. Browse through the doctor list, find the right specialist, and save them for quick access next time.";
   static const String doctorsBrowse = 'Doctors browse';
+  static const String userName = 'User Name';
 
+  static const String confirmPassword = 'Confirm Password';
 
 }
 
@@ -480,7 +502,7 @@ class PaymentMethod {
   final PaymentGatewaysTypes value;
   final String name;
   final String subtitle;
-  final ImageProvider imageProvider  ;
+  final ImageProvider imageProvider;
 
   PaymentMethod({
     required this.value,
