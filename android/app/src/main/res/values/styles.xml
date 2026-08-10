@@ -15,4 +15,12 @@
     <style name="NormalTheme" parent="Theme.MaterialComponents">
         <item name="android:windowBackground">?android:colorBackground</item>
     </style>
+    <style name="FacebookActivityTheme" parent="@style/com_facebook_activity_theme">
+        <item name="colorAccent">#80000000</item>
+        <item name="colorPrimary">#80000000</item>
+
+        <item name="android:windowBackground">#80000000</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 </resources>

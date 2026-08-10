@@ -1,0 +1,9 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.example.medora",
+    "sha256_cert_fingerprints":
+    ["41:ee:16:69:9f:7e:70:5a:0e:82:d5:d7:25:d3:79:e2:d7:a6:64:6e:20:51:ca:10:73:78:65:bc:ef:d3:4f:ef"]
+  }
+}]
