@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:medora/core/animations/animated_gradient_background.dart';
-import 'package:medora/core/constants/app_alerts/app_alerts.dart'
-    show AppAlerts;
-import 'package:medora/core/constants/app_routes/app_router.dart'
-    show AppRouter;
+import 'package:medora/core/constants/app_alerts/app_alerts.dart';
 import 'package:medora/core/constants/app_routes/app_router_names.dart';
-import 'package:medora/core/constants/app_strings/app_strings.dart'
-    show AppStrings;
+import 'package:medora/core/constants/app_strings/app_strings.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
+import 'package:medora/core/enum/auth_provider_type.dart';
+import 'package:medora/core/extensions/context_extension.dart';
 import 'package:medora/core/extensions/media_query_extension.dart';
 import 'package:medora/core/extensions/theme_extension.dart';
 import 'package:medora/features/auth/domain/params/sign_in_params.dart';
 import 'package:medora/features/auth/presentation/controller/cubit/auth_cubit.dart';
 import 'package:medora/features/auth/presentation/controller/form_controllers/auth_validator.dart';
-import 'package:medora/features/auth/presentation/controller/form_controllers/login_controllers.dart'
-    show LoginControllers;
+import 'package:medora/features/auth/presentation/controller/form_controllers/login_controllers.dart';
 import 'package:medora/features/auth/presentation/controller/states/auth_state.dart';
-import 'package:medora/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:medora/features/auth/presentation/widgets/auth_action_button.dart';
 import 'package:medora/features/auth/presentation/widgets/auth_card.dart';
+import 'package:medora/features/auth/presentation/widgets/auth_footer.dart';
 import 'package:medora/features/auth/presentation/widgets/auth_form_field.dart';
 import 'package:medora/features/auth/presentation/widgets/obscure_text_visibility_button.dart';
 import 'package:medora/features/auth/presentation/widgets/sign_in_header.dart';
+import 'package:medora/features/shared/presentation/widgets/custom_circular_progress.dart';
 
 import '../../../../core/constants/themes/app_colors.dart';
 
@@ -33,8 +34,9 @@ class SignInScreen extends StatefulWidget {
   State<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
-  late final LoginControllers loginControllers;
+class _SignInScreenState extends State<SignInScreen>
+    with SingleTickerProviderStateMixin {
+  late final LoginControllers _signInControllers;
 
   String? registeredUserEmail;
   final ValueNotifier<AutovalidateMode> _autoValidateMode =
@@ -43,41 +45,18 @@ class _SignInScreenState extends State<SignInScreen> {
     true,
   );
 
-  void _initializeTextControllers() => loginControllers = LoginControllers();
-
-  void _setEmailFromRegisterRoute() => Future.microtask(() {
-    if (!mounted) return;
-    registeredUserEmail = ModalRoute.of(context)?.settings.arguments as String?;
-    loginControllers.emailController.text = registeredUserEmail ?? '';
-  });
-
   @override
   void initState() {
     super.initState();
 
-    _initializeTextControllers();
-    _setEmailFromRegisterRoute();
+    _signInControllers = LoginControllers();
   }
 
   @override
   void dispose() {
-    loginControllers.dispose();
+    _signInControllers.dispose();
     _obscurePasswordNotifier.dispose();
     super.dispose();
-  }
-
-  void _submitForm() {
-    FocusManager.instance.primaryFocus?.unfocus();
-
-    _autoValidateMode.value = AutovalidateMode.always;
-    if (loginControllers.formKey.currentState!.validate()) {
-      context.read<AuthCubit>().signIn(
-        SignInParams(
-          email: loginControllers.emailController.text,
-          password: loginControllers.passwordController.text,
-        ),
-      );
-    }
   }
 
   @override
@@ -86,9 +65,10 @@ class _SignInScreenState extends State<SignInScreen> {
       backgroundColor: AppColors.primaryColor,
       resizeToAvoidBottomInset: false,
       body: BlocListener<AuthCubit, AuthState>(
-        listenWhen: (previous, current) =>
-            current is AuthFailure || current is SignInSuccess,
+        listenWhen: _listenWhen,
+
         listener: _handleSignInListenerStates,
+
         child: AnimatedGradientBackground(
           child: SafeArea(
             child: Padding(
@@ -99,7 +79,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 builder: (context, constraints) => SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
                   child: Form(
-                    key: loginControllers.formKey,
+                    key: _signInControllers.formKey,
                     autovalidateMode: _autoValidateMode.value,
                     child: ConstrainedBox(
                       constraints: BoxConstraints(
@@ -116,9 +96,9 @@ class _SignInScreenState extends State<SignInScreen> {
                               children: [
                                 // Email Field
                                 AuthFormField(
-                                  isSignUp: false,
                                   title: AppStrings.email,
-                                  controller: loginControllers.emailController,
+                                  controller:
+                                      _signInControllers.emailController,
                                   hintText: AppStrings.emailHint,
                                   prefixIcon: Icons.mail_outline,
                                   obscureText: false,
@@ -130,10 +110,9 @@ class _SignInScreenState extends State<SignInScreen> {
                                   valueListenable: _obscurePasswordNotifier,
                                   builder: (context, obscureText, child) =>
                                       AuthFormField(
-                                        isSignUp: false,
                                         title: AppStrings.password,
-                                        controller:
-                                            loginControllers.passwordController,
+                                        controller: _signInControllers
+                                            .passwordController,
                                         hintText: AppStrings.passwordHint,
                                         prefixIcon: Icons.lock_outline,
                                         obscureText: obscureText,
@@ -155,9 +134,10 @@ class _SignInScreenState extends State<SignInScreen> {
                                 Align(
                                   alignment: Alignment.centerRight,
                                   child: TextButton(
-                                    onPressed: () {},
+                                    onPressed: () =>
+                                        _navigatorToPasswordRecovery(context),
                                     child: Text(
-                                      AppStrings.forgotPassword,
+                                      '${AppStrings.forgotPassword}?',
                                       style: context.textTheme.forgotButton,
                                     ),
                                   ),
@@ -165,52 +145,45 @@ class _SignInScreenState extends State<SignInScreen> {
                                 const SizedBox(height: 12),
                                 // Login Button
                                 AuthActionButton(
-                                  onPressed: _submitForm,
+                                  onPressed: () => _submitForm(context),
+
                                   child:
                                       BlocSelector<AuthCubit, AuthState, bool>(
-                                        selector: (state) =>
-                                            state is AuthLoading,
-                                        builder: (context, isLoading) {
-                                          return isLoading
-                                              ? const CircularProgressIndicator(
-                                                  color: Colors.white,
-                                                )
-                                              : Text(
-                                                  AppStrings.signIn,
-                                                  style: context
-                                                      .textTheme
-                                                      .authButton,
-                                                );
+                                        selector: (AuthState state) {
+                                          return state is AuthLoading &&
+                                              state.providerType ==
+                                                  AuthProviderType.email;
                                         },
+                                        builder: (context, isLoading) =>
+                                            isLoading
+                                            ? const CustomCircularProgress()
+                                            : Text(
+                                                AppStrings.signIn,
+                                                style: context
+                                                    .textTheme
+                                                    .authButton,
+                                              ),
                                       ),
                                 ),
 
-                                const SizedBox(height: 24),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      AppStrings.dontHaveAccountText,
-                                      style: context.textTheme.forgotButton
-                                          .copyWith(color: Colors.white60),
+                                AuthFooter(
+                                  isSignInScreen: true,
+
+                                  onGoogleSignIn: () => _signIn(
+                                    context: context,
+                                    params: const SignInParams(
+                                      providerType: AuthProviderType.google,
                                     ),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                //   const NewRegisterScreen(),
-                                                const SignUpScreen(),
-                                          ),
-                                        );
-                                      },
-                                      child: Text(
-                                        AppStrings.signUp,
-                                        style: context.textTheme.forgotButton,
-                                      ),
+                                  ),
+                                  onFacebookSignIn: () => _signIn(
+                                    context: context,
+                                    params: const SignInParams(
+                                      providerType: AuthProviderType.facebook,
                                     ),
-                                  ],
+                                  ),
+
+                                  onNavigateToSignUp: () =>
+                                      _navigateToSignUp(context),
                                 ),
                               ],
                             ),
@@ -228,14 +201,65 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  void _handleSignInListenerStates(BuildContext context, AuthState state) {
-    if (state is SignInSuccess) {
-      AppRouter.pushNamedAndRemoveUntil(
-        context,
-        AppRouterNames.bottomNavScreen,
+  void _submitForm(BuildContext context) {
+    FocusManager.instance.primaryFocus?.unfocus();
+
+    _autoValidateMode.value = AutovalidateMode.always;
+    if (_signInControllers.formKey.currentState!.validate()) {
+      final params = SignInParams(
+        providerType: AuthProviderType.email,
+        email: _signInControllers.emailController.text.trim(),
+        password: _signInControllers.passwordController.text.trim(),
       );
-    } else if (state is AuthFailure) {
+      _signIn(context: context, params: params);
+    }
+  }
+
+  void _signIn({required BuildContext context, required SignInParams params}) =>
+      context.read<AuthCubit>().signIn(params: params);
+
+  void _navigateToSignUp(BuildContext context) =>
+      context.push(AppRouterNames.signUp).then((signUpResult) {
+        if (!mounted) return;
+
+        if (signUpResult is String && signUpResult.isNotEmpty) {
+          _signInControllers.emailController.text = signUpResult;
+        }
+      });
+
+  bool _listenWhen(AuthState _, AuthState current) =>
+      current is AuthLoading ||
+      current is AuthSuccess ||
+      current is AuthFailure;
+
+  void _navigatorToPasswordRecovery(BuildContext context) async {
+    await context.ensureKeyboardIsClosed();
+
+    if (context.mounted) {
+      context.push(
+        AppRouterNames.forgetPassword,
+        extra: {
+          'email': _signInControllers.emailController.text.trim(),
+          'currentPage': 0,
+        },
+      );
+    }
+  }
+
+  void _handleSignInListenerStates(BuildContext context, AuthState state) {
+    if (state is AuthFailure) {
+      if (state.providerType == AuthProviderType.google ||
+          state.providerType == AuthProviderType.facebook) {
+        context.pop();
+      }
       AppAlerts.showAuthErrorSnackBar(context, state.errorMessage);
+    } else if (state is AuthLoading) {
+      if (state.providerType == AuthProviderType.google ||
+          state.providerType == AuthProviderType.facebook) {
+        AppAlerts.showCircularProgressIndicatorLoadingDialog(context);
+      }
+    } else if (state is AuthSuccess) {
+      context.go(AppRouterNames.bottomNav);
     }
   }
 }

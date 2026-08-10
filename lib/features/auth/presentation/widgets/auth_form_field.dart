@@ -13,7 +13,8 @@ class AuthFormField extends StatelessWidget {
   final TextInputType keyboardType;
   final Widget? suffixIcon;
   final String? Function(String?)? validator;
-  final bool? isSignUp;
+  final double? titleFontSize;
+  final double? verticalPadding;
 
   const AuthFormField({
     super.key,
@@ -25,7 +26,8 @@ class AuthFormField extends StatelessWidget {
     required this.keyboardType,
     this.suffixIcon,
     this.validator,
-    this.isSignUp = true,
+    this.titleFontSize = 14.0,
+    this.verticalPadding = 14.0,
   });
 
   @override
@@ -38,7 +40,7 @@ class AuthFormField extends StatelessWidget {
           child: Text(
             title,
             style: context.textTheme.extraLargeWhiteBold.copyWith(
-              fontSize: isSignUp == false ? 14.sp : 11.sp,
+              fontSize:titleFontSize!.sp,
               letterSpacing: 0.5,
               fontWeight: FontWeight.w700,
             ),
@@ -67,7 +69,7 @@ class AuthFormField extends StatelessWidget {
             fillColor: const Color(0xFF0A192F).withValues(alpha: 0.5),
             prefixIcon: Icon(prefixIcon, color: Colors.white60, size: 20.sp),
             suffixIcon: suffixIcon,
-            contentPadding: const EdgeInsets.symmetric(vertical: 14),
+            contentPadding: EdgeInsets.symmetric(vertical: verticalPadding!),
 
             errorStyle: TextStyle(
               color: AppColors.authErrorColor,
@@ -81,7 +83,7 @@ class AuthFormField extends StatelessWidget {
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Colors.white12, width: 1.2),
+              borderSide: const BorderSide(color: Colors.white24, width: 1.2),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),

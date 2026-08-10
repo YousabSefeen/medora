@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:medora/core/animations/animated_gradient_background.dart';
 import 'package:medora/core/constants/app_alerts/app_alerts.dart';
-import 'package:medora/core/constants/app_routes/app_router.dart';
 import 'package:medora/core/constants/app_routes/app_router_names.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart';
 import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
+import 'package:medora/core/enum/auth_provider_type.dart';
 import 'package:medora/core/extensions/theme_extension.dart';
 import 'package:medora/features/auth/domain/params/sign_up_params.dart';
 import 'package:medora/features/auth/presentation/controller/cubit/auth_cubit.dart';
@@ -16,9 +17,11 @@ import 'package:medora/features/auth/presentation/controller/form_controllers/re
 import 'package:medora/features/auth/presentation/controller/states/auth_state.dart';
 import 'package:medora/features/auth/presentation/widgets/auth_action_button.dart';
 import 'package:medora/features/auth/presentation/widgets/auth_card.dart';
+import 'package:medora/features/auth/presentation/widgets/auth_footer.dart';
 import 'package:medora/features/auth/presentation/widgets/auth_form_field.dart';
 import 'package:medora/features/auth/presentation/widgets/obscure_text_visibility_button.dart';
 import 'package:medora/features/auth/presentation/widgets/sign_up_header.dart';
+import 'package:medora/features/shared/presentation/widgets/custom_circular_progress.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -28,9 +31,8 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  late final RegisterControllers _controllers;
+  late final RegisterControllers _signUpControllers;
 
-  void _initializeTextControllers() => _controllers = RegisterControllers();
   final ValueNotifier<bool> _obscurePasswordNotifier = ValueNotifier<bool>(
     true,
   );
@@ -40,43 +42,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   void initState() {
-    _initializeTextControllers();
+    _signUpControllers = RegisterControllers();
 
     super.initState();
   }
 
   @override
   void dispose() {
-    _controllers.dispose();
+    _signUpControllers.dispose();
     super.dispose();
   }
 
-  void _submitForm() {
-    FocusManager.instance.primaryFocus?.unfocus();
-
-    setState(() {
-      _autoValidateMode = AutovalidateMode.always;
-    });
-    if (_controllers.formKey.currentState!.validate()) {
-      context.read<AuthCubit>().signUp(
-        SignUpParams(
-          name: _controllers.userNameController.text.trim(),
-          phone: _controllers.phoneController.text.trim(),
-          email: _controllers.emailController.text.trim(),
-          password: _controllers.passwordController.text.trim(),
-          role: _controllers.roleController.text.trim(),
-        ),
-      );
-    }
-  }
+  final double titleFontSize = 11.0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       body: BlocListener<AuthCubit, AuthState>(
-        listenWhen: (previous, current) =>
-            current is AuthFailure || current is SignInSuccess,
+        listenWhen: _listenWhen,
         listener: _handleSignUpListenerStates,
         child: AnimatedGradientBackground(
           child: SafeArea(
@@ -84,7 +68,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               physics: const BouncingScrollPhysics(),
               padding: EdgeInsets.only(bottom: 30.h),
               child: Form(
-                key: _controllers.formKey,
+                key: _signUpControllers.formKey,
                 autovalidateMode: _autoValidateMode,
                 child: Column(
                   spacing: 10,
@@ -96,7 +80,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         children: [
                           AuthFormField(
                             title: AppStrings.userName,
-                            controller: _controllers.userNameController,
+                            titleFontSize: titleFontSize,
+                            controller: _signUpControllers.userNameController,
                             hintText: AppStrings.userNameHint,
                             prefixIcon: Icons.person_outline,
                             obscureText: false,
@@ -105,7 +90,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           AuthFormField(
                             title: AppStrings.phoneNumber,
-                            controller: _controllers.phoneController,
+                            titleFontSize: titleFontSize,
+                            controller: _signUpControllers.phoneController,
                             hintText: AppStrings.phoneNumberHint,
                             prefixIcon: Icons.phone_outlined,
                             obscureText: false,
@@ -114,7 +100,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           AuthFormField(
                             title: AppStrings.email,
-                            controller: _controllers.emailController,
+                            titleFontSize: titleFontSize,
+                            controller: _signUpControllers.emailController,
                             hintText: AppStrings.emailHint,
                             prefixIcon: Icons.mail_outline,
                             obscureText: false,
@@ -126,7 +113,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             builder: (context, obscureText, child) =>
                                 AuthFormField(
                                   title: AppStrings.password,
-                                  controller: _controllers.passwordController,
+                                  titleFontSize: titleFontSize,
+                                  controller:
+                                      _signUpControllers.passwordController,
                                   hintText: AppStrings.passwordHint,
                                   prefixIcon: Icons.lock_outline,
                                   obscureText: obscureText,
@@ -135,9 +124,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                                   suffixIcon: ObscureTextVisibilityButton(
                                     isObscured: obscureText,
-                                    onTap: () =>
-                                        _obscurePasswordNotifier.value =
-                                            !_obscurePasswordNotifier.value,
+                                    onTap: _togglePasswordVisibility,
                                   ),
                                 ),
                           ),
@@ -147,23 +134,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             builder: (context, obscureText, child) =>
                                 AuthFormField(
                                   title: AppStrings.confirmPassword,
-                                  controller:
-                                      _controllers.confirmPasswordController,
+                                  titleFontSize: titleFontSize,
+                                  controller: _signUpControllers
+                                      .confirmPasswordController,
                                   hintText: AppStrings.passwordHint,
                                   prefixIcon: Icons.lock_outline,
                                   obscureText: obscureText,
                                   keyboardType: TextInputType.text,
-                                  validator: (value) =>
-                                      AuthValidator.validateConfirmPassword(
-                                        value,
-                                        _controllers.passwordController.text,
-                                      ),
+                                  validator: _validateConfirmPassword,
                                   suffixIcon: ObscureTextVisibilityButton(
                                     isObscured: obscureText,
-                                    onTap: () =>
-                                        _obscureConfirmPasswordNotifier.value =
-                                            !_obscureConfirmPasswordNotifier
-                                                .value,
+                                    onTap: _toggleConfirmPasswordVisibility,
                                   ),
                                 ),
                           ),
@@ -175,9 +156,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               selector: (state) => state is AuthLoading,
                               builder: (context, isLoading) {
                                 return isLoading
-                                    ? const CircularProgressIndicator(
-                                        color: Colors.white,
-                                      )
+                                    ? const CustomCircularProgress()
                                     : Text(
                                         AppStrings.signUp,
                                         style: context.textTheme.authButton,
@@ -186,23 +165,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                           ),
                           const SizedBox(height: 24),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                AppStrings.alreadyHaveAccountText,
-                                style: context.textTheme.forgotButton.copyWith(
-                                  color: Colors.white60,
-                                ),
+                          AuthFooter(
+                            isSignInScreen: false,
+                            onGoogleSignIn: () => _signUp(
+                              params: const SignUpParams(
+                                providerType: AuthProviderType.google,
                               ),
-                              TextButton(
-                                onPressed: () => AppRouter.pop(context),
-                                child: Text(
-                                  AppStrings.signIn,
-                                  style: context.textTheme.forgotButton,
-                                ),
+                            ),
+                            onFacebookSignIn: () => _signUp(
+                              params: const SignUpParams(
+                                providerType: AuthProviderType.facebook,
                               ),
-                            ],
+                            ),
+
+                            onNavigateToSignIn: () => context.pop(),
                           ),
                         ],
                       ),
@@ -217,31 +193,72 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+  String? _validateConfirmPassword(String? value) =>
+      AuthValidator.validateConfirmPassword(
+        value,
+        _signUpControllers.passwordController.text,
+      );
+
+  void _togglePasswordVisibility() =>
+      _obscurePasswordNotifier.value = !_obscurePasswordNotifier.value;
+
+  void _toggleConfirmPasswordVisibility() =>
+      _obscureConfirmPasswordNotifier.value =
+          !_obscureConfirmPasswordNotifier.value;
+
+  void _submitForm() {
+    FocusManager.instance.primaryFocus?.unfocus();
+
+    setState(() {
+      _autoValidateMode = AutovalidateMode.always;
+    });
+    if (_signUpControllers.formKey.currentState!.validate()) {
+      final params = SignUpParams(
+        name: _signUpControllers.userNameController.text.trim(),
+        phone: _signUpControllers.phoneController.text.trim(),
+        email: _signUpControllers.emailController.text.trim(),
+        password: _signUpControllers.passwordController.text.trim(),
+        providerType: AuthProviderType.email,
+      );
+      _signUp(params: params);
+    }
+  }
+
+  void _signUp({required SignUpParams params}) =>
+      context.read<AuthCubit>().signUp(params: params);
+
+  bool _listenWhen(AuthState previous, AuthState current) =>
+      current is AuthLoading ||
+      current is AuthSuccess ||
+      current is AuthFailure;
+
   void _handleSignUpListenerStates(BuildContext context, AuthState state) {
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    if (state is SignUpSuccess) {
-      AppRouter.pushNamedAndRemoveUntil(
-        context,
-        AppRouterNames.bottomNavScreen,
-      );
+    if (state is AuthSuccess) {
+      context.go(AppRouterNames.bottomNav);
     } else if (state is AuthFailure) {
       if (state.errorMessage == AppStrings.emailAlreadyInUseError) {
-        AppAlerts.showEmailAlreadyInUseSnackBar(
-          context: context,
-          onSignInPressed: () {
-            _hideCurrentSnackBar(context);
-            AppRouter.pushNamedAndRemoveUntil(
-              context,
-              AppRouterNames.signIn,
-              arguments: _controllers.emailController.text.trim(),
-            );
-          },
-          onDismissPressed: () => _hideCurrentSnackBar(context),
-        );
+        _showEmailInUseDialog(context);
       } else {
         AppAlerts.showAuthErrorSnackBar(context, state.errorMessage);
       }
     }
+  }
+
+  void _showEmailInUseDialog(BuildContext context) {
+    AppAlerts.showEmailAlreadyInUseSnackBar(
+      context: context,
+      onSignInPressed: () {
+        _hideCurrentSnackBar(context);
+        _navigateBackWithEmail(context);
+      },
+      onDismissPressed: () => _hideCurrentSnackBar(context),
+    );
+  }
+
+  void _navigateBackWithEmail(BuildContext context) {
+    final currentEmail = _signUpControllers.emailController.text;
+    context.pop(currentEmail);
   }
 
   void _hideCurrentSnackBar(BuildContext context) =>

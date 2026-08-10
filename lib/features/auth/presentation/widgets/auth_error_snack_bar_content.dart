@@ -39,12 +39,15 @@ class AuthErrorSnackBarContent extends StatelessWidget {
           const SizedBox(width: 10),
 
           Expanded(
-            child: Text(
-              errorMessage,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 13.sp,
-                height: 1.4,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3),
+              child: Text(
+                errorMessage,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 13.sp,
+                  height: 1.4,
+                ),
               ),
             ),
           ),
