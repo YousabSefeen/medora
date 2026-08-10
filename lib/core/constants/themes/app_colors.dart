@@ -18,7 +18,6 @@ class AppColors {
   static const Color blueAccent = Colors.blueAccent;
 
   static const Color customBlue = Color(0xff427D9D);
-  static const Color softBlue = Color(0xff5682B1);
 
   //old
   //static const Color softBlue =   Color(0xff7C93C3);
@@ -29,6 +28,7 @@ class AppColors {
   static const Color customDarkBlue = Color(0xff164863);
   static const Color customGreen = Colors.greenAccent;
   static const Color customWhite = Color(0xffEEF5FF);
+  static const Color customBlueGrey =  Color(0xFF64748B);
   static const Color lightPeriwinkle =   Color(0xffC0C9EE);
   static const List<Color> gradientAnimationColor = [
     Color(0xff001F3F),
@@ -67,6 +67,9 @@ class AppColors {
     white,
     white,
   ];
+  static const Color softBlue = Color(0xff5682B1);
+
+  static const Color blueGray = Color(0xff7C93C3);
   static const Color primaryButtonBlue = Color(0xFF3B5998);
   static const Color primaryColor = Color(0xFF0A192F);
   static const Color authContainerColor =Color(0xFF172A45);

@@ -20,30 +20,42 @@ class AppStrings {
     //girl
     'https://i.pinimg.com/736x/96/6a/ac/966aacaf096747852a12f9e33f926b96.jpg',
   ];
-// نصوص الـ SignInHeader
+
+  // نصوص الـ SignInHeader
   static const String signInWelcomeBack = 'Welcome back!';
   static const String appName = 'MediLink';
-  static const String signInDescription = 'Access your appointments and connect with trusted healthcare professionals.';
+  static const String signInDescription =
+      'Access your appointments and connect with trusted healthcare professionals.';
 
   // نصوص الـ SignUpHeader
   // ملاحظة: بما أن اسم التطبيق مكرر، يمكنك إعادة استخدام متغير appName
-  static const String signUpDescription = 'Join Medilink to easily find and book\nappointments with the right specialists.';
-  // Titles
-  static const String forgotPassword = 'Forgot Password?';
+  static const String signUpDescription =
+      'Join Medilink to easily find and book\nappointments with the right specialists.';
 
+  // Titles
+  static const String forgotPassword = 'Forgot password';
+  static const String forgotPasswordSubTitle =
+      'Enter your email address below to reset your password.';
+  static const String resetPassword = 'Reset password';
+  static const String resetPasswordSubTitle =
+      'Create a strong password that has at least 8 characters long.';
   static const String email = 'Email';
   static const String emailHint = 'ahmed.f@email.com';
-  static const String userNameHint =  'Ahmed Fathi';
+  static const String userNameHint = 'Ahmed Fathi';
   static const String phoneNumber = 'Phone Number';
   static const String phoneNumberHint = '+201234567890';
   static const String password = 'Password';
-  static const String passwordHint =  '••••••••••••';
+  static const String passwordHint = '••••••••••••';
   static const String dontHaveAccountText = "Don't have an account?";
   static const String alreadyHaveAccountText = 'Already have an account?';
-  static const String registerNow =  'Register Now';
-  static const String signIn =  'Sign In';
-  static const String signUp =  'Sign Up';
-  static const String signOut =  'Sign Out';
+  static const String registerNow = 'Register Now';
+  static const String signIn = 'Sign In';
+  static const String signUp = 'Sign Up';
+  static const String orSignInWith = 'OR SIGN IN WITH';
+
+  static const String orSignUpWith = 'OR SIGN Up WITH';
+
+  static const String signOut = 'Sign Out';
   static const String dismiss = 'DISMISS';
   static const String emailAlreadyInUseError =
       'This email address is already in use. If it’s your account, please sign in.';
@@ -286,14 +298,28 @@ class AppStrings {
   ];
   static const String bookAgain = 'Book Again';
   static const String leaveAReview = 'Leave a Review';
-  static const String emptyUpcomingAppointmentsMessage =
-      'No upcoming appointments.\nSchedule your next visit when you’re ready.';
 
-  static const String emptyCompletedAppointmentsMessage =
-      'No completed appointments yet.\nYour past visits will show up here.';
 
-  static const String emptyCancelledAppointmentsMessage =
-      'No cancelled appointments.\nAny cancelled visits will appear here.';
+
+  static const String upcomingTitle = 'No upcoming appointments';
+  static const String upcomingSubtitle =
+      'Schedule your next medical visit when you’re ready.';
+  static const String completedTitle = 'No completed appointments';
+  static const String completedSubtitle =
+      'Your history of finished medical visits appear here. ';
+  static const String canceledTitle = 'No canceled appointments';
+  static const String canceledSubtitle =
+      'Your history of canceled medical visits will appear here.';
+
+  static const String fullyBookedTitle = 'All slots are taken';
+  static const String fullyBookedSubtitle =
+      'This day is completely booked. please select another date to schedule your appointment.';
+  static const String notWorkingDayTitle = 'Doctor is off today';
+  static const String notWorkingDaySubtitle = 'The doctor does not work on this day. Please select one of the working days above.';
+  static const String pastDateTitle = 'Invalid date selected';
+  static const String pastDateSubtitle = 'You cannot book appointments in the past. Please select today\'s date or a future date.';
+
+
 
   //TODO payment_gateways
 
@@ -335,21 +361,6 @@ class AppStrings {
     ),
   ];
 
-  static String messageBack =
-      'You have canceled the payment, and the transaction was not completed.';
-
-  // Errors
-  static const paymentCancelledError = 'Payment cancelled by user.';
-  static const paymentCancelledMsg = 'Payment cancelled. Please try again';
-
-  static const String paymentFailedDescription =
-      "We couldn't process your payment. Please:\n"
-      '• Check your payment details\n'
-      '• Try another payment method\n'
-      '• Ensure sufficient balance';
-
-  static const String paymentFailedError = 'Payment failed. Please try again.';
-
   static const String specialties = 'Specialties';
   static const String apply = 'Apply';
   static const String reset = 'Reset';
@@ -359,8 +370,9 @@ class AppStrings {
   static const String reloadDoctors = 'Reload Doctors';
 
   static const String noMoreDoctorsMsg = 'No more doctors to load...';
-  static const String selectTime = 'Select Time';
-  static const String selectDate = 'Select Date';
+
+  static const String chooseDate = 'Choose Date';
+  static const String chooseTime = 'Choose Time';
 
   static const String total = 'Total: ';
   static const String dateLabel = 'Date';
@@ -496,6 +508,56 @@ Very important rules:
 
   static const String confirmPassword = 'Confirm Password';
 
+  // شاشة نجاح إرسال البريد الإلكتروني (Email Sent Success Screen)
+  static const String checkYourEmail = 'Check your email';
+  static const String secureLinkSent =
+      'We have sent a secure password reset link to:\n';
+  static const String redirectGuideline =
+      'Please click the link in the email to be automatically redirected to create your new password.';
+  static const String openEmailApp = 'Open Email App';
+  static const String didntReceiveEmail = "Didn't receive the email? ";
+  static const String resendAvailableIn = 'Resend available in: ';
+  static const String resend = 'Resend';
+
+  // نافذة تنبيه عدم وجود تطبيق بريد (No Email App Dialog)
+  static const String emailAppNotFound = 'Email App Not Found';
+  static const String noEmailAppDescription =
+      "We couldn't find any email apps installed on your device. Please open your mailbox manually to access the password reset link.";
+  static const String ok = 'OK';
+  static const String continueButton = 'Continue';
+  static const String passwordResetSuccess = 'Password updated successfully!';
+
+  static const String resendVerificationSuccessWithSpamCheck =
+      'Verification email resent. Please check your inbox (including spam folder).';
+  static const String resendVerificationFailed =
+      'Failed to resend verification email. Please try again later.';
+  static const String phoneRecoverySubtitle =
+      'Enter your registered email address. We will automatically fetch your account and send a verification code to your registered phone number.';
+  static const String emailOrPatientEmailLabel = 'Email / Patient Email';
+  static const String emailRequiredValidation = 'Please enter your email';
+  static const String continueWithPhoneVerification =
+      'Continue & Send Phone OTP';
+  static const String otpSentSuccess =
+      '🚀 Account found and OTP sent successfully!';
+  static const String appNameTitle = 'Medora - Password Recovery';
+
+  static const String verifyAndResetTitle = 'Identity Verification & Reset';
+  static const String verifyingEmailPrefix = 'Verifying email: ';
+  static const String otpCodeLabel = '6-Digit OTP Code';
+  static const String otpValidationWarning =
+      'Please enter the full 6-digit OTP code';
+  static const String newPasswordLabel = 'New Password';
+  static const String passwordLengthValidation =
+      'Password must be at least 6 characters';
+  static const String updateAndConfirmButton = 'Update & Confirm Password';
+  static const String passwordResetSuccessMessage =
+      '🎉 Success! OTP verified and password updated successfully.';
+  static const String errorPrefix = '⚠️ Error: ';
+
+  static const String phoneNumberHintField = 'Please enter your phone number';
+
+  /// ✅ نص خطأ لرقم الهاتف غير صالح
+  static const String invalidPhoneNumber = 'Invalid phone number';
 }
 
 class PaymentMethod {

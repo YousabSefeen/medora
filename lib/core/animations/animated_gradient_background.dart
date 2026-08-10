@@ -19,10 +19,10 @@ class _AnimatedGradientBackgroundState extends State<AnimatedGradientBackground>
   late Animation<Alignment> _startAlignmentAnimation;
   late Animation<Alignment> _endAlignmentAnimation;
 
-  _initializeAnimatedGradient() {
+  void _initializeAnimatedGradient() {
     _gradientAnimationController = AnimationController(
       vsync: this,
-      duration: AppDurations.seconds_10,
+      duration: AppDurations.seconds_5,
     );
     _startAlignmentAnimation = TweenSequence<Alignment>([
       TweenSequenceItem(
@@ -102,9 +102,6 @@ class _AnimatedGradientBackgroundState extends State<AnimatedGradientBackground>
 
   @override
   Widget build(BuildContext context) {
-    print(
-      '_AnimatedGradientBackgroundState extends State<AnimatedGradientBackground>',
-    );
     final deviceSize = MediaQuery.sizeOf(context);
     return AnimatedBuilder(
       animation: _gradientAnimationController,
@@ -113,7 +110,7 @@ class _AnimatedGradientBackgroundState extends State<AnimatedGradientBackground>
         width: deviceSize.width,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: _startAlignmentAnimation.value,
+            begin: _startAlignmentAnimation.value * 10,
             end: _endAlignmentAnimation.value,
             colors: AppColors.gradientAnimationColor,
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:medora/core/constants/app_routes/app_router.dart'
     show AppRouter;
 import 'package:medora/core/extensions/lottie_string_asset_ext.dart'
@@ -18,7 +19,7 @@ class AppointmentCanceledSuccessDialog {
       modalTypeBuilder: (_) => MyCustomModalTypeDialog(),
       barrierDismissible: true,
       pageListBuilder: (_) => [_buildSuccessModalPage(context)],
-      onModalDismissedWithBarrierTap: () => Navigator.of(context).pop(),
+      onModalDismissedWithBarrierTap: () => context.pop(),
     );
   }
 
@@ -48,7 +49,6 @@ class AppointmentCanceledSuccessDialog {
   static Widget _buildSuccessAnimation() {
     return Material(
       color: Colors.white,
-
       child: Assets.lottie.successIconLottie.lottie(
         fit: BoxFit.fill,
         height: 100.h,
@@ -88,7 +88,7 @@ class AppointmentCanceledSuccessDialog {
             textAlign: TextAlign.center,
           ),
           ElevatedButton(
-            onPressed: () => AppRouter.pop(context),
+            onPressed: () =>context.pop(),
             style: const ButtonStyle(
               padding: WidgetStatePropertyAll(
                 EdgeInsets.symmetric(horizontal: 80, vertical: 15),

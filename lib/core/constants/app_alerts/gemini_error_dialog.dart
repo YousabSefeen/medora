@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:medora/core/constants/app_routes/app_router.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/extensions/theme_extension.dart'
@@ -139,7 +140,7 @@ class GeminiErrorDialog {
     );
   }
 
-  static void _navigatorPop(BuildContext context) => AppRouter.pop(context);
+  static void _navigatorPop(BuildContext context) =>context.pop();
 
   static Widget _buildCloseButton(BuildContext context) => Align(
     alignment: Alignment.centerRight,

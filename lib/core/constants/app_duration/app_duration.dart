@@ -12,8 +12,11 @@ class AppDurations {
   static const Duration milliseconds_1200 = Duration(milliseconds: 1200);
   static const Duration milliseconds_1500 = Duration(milliseconds: 1500);
   static const Duration seconds_1 = Duration(seconds: 1);
+  static const Duration seconds_2 = Duration(seconds: 2);
   static const Duration seconds_3 = Duration(seconds: 3);
   static const Duration seconds_5= Duration(seconds: 5);
+  static const Duration seconds_7= Duration(seconds:7);
   static const Duration fadeInUpDuration = Duration(seconds: 1);
   static const Duration seconds_10 = Duration(seconds: 10);
+  static const Duration minutes_1 = Duration(minutes: 1);
 }

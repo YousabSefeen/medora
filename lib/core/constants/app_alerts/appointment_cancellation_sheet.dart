@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
@@ -21,7 +22,7 @@ class AppointmentCancellationSheet {
       pageListBuilder: (modalSheetContext) => [
         _buildConfirmationPage(context, onCancelPressed, onConfirmPressed),
       ],
-      onModalDismissedWithBarrierTap: () => _handleBarrierTap(context),
+      onModalDismissedWithBarrierTap: () =>context.pop(),
     );
   }
 
@@ -137,7 +138,7 @@ class AppointmentCancellationSheet {
         height: 50.h,
         child: ElevatedButton(
           style: _cancelButtonStyle(),
-          onPressed: onPressed ?? () => Navigator.of(context).pop(),
+          onPressed: onPressed ?? () =>context.pop(),
           child: const Text(AppStrings.cancel),
         ),
       ),
@@ -173,10 +174,9 @@ class AppointmentCancellationSheet {
     );
   }
 
-  static ButtonStyle _confirmButtonStyle() {
-    return ButtonStyle(
+  static ButtonStyle _confirmButtonStyle() => ButtonStyle(
       backgroundColor: const WidgetStatePropertyAll(AppColors.darkBlue),
-      foregroundColor: WidgetStatePropertyAll(AppColors.white),
+      foregroundColor: const WidgetStatePropertyAll(AppColors.white),
       shape: WidgetStatePropertyAll(
         RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.r),
@@ -184,10 +184,6 @@ class AppointmentCancellationSheet {
         ),
       ),
     );
-  }
 
-  static void _handleBarrierTap(BuildContext context) {
-    debugPrint('Cancellation sheet dismissed by tapping barrier');
-    Navigator.of(context).pop();
-  }
+
 }

@@ -29,6 +29,9 @@ class DioFailure {
           return 'No internet connection';
         case DioExceptionType.unknown:
           return 'An error occurred,Please try again';
+        case DioExceptionType.transformTimeout:
+          // TODO: Handle this case.
+          throw UnimplementedError();
       }
     }
 

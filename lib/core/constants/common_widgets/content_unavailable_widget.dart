@@ -1,56 +1,65 @@
+/*
 import 'package:flutter/material.dart';
-import 'package:medora/core/constants/themes/app_text_styles.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/extensions/lottie_string_asset_ext.dart'
     show LottieStringAssetExtension;
-
-import '../../../../generated/assets.dart';
+import 'package:medora/core/extensions/media_query_extension.dart';
 
 class ContentUnavailableWidget extends StatelessWidget {
-  final bool? isExpandedHeight;
-  final String description;
+  final String imagePath;
+  final String title;
+  final String subtitle;
 
   const ContentUnavailableWidget({
     super.key,
-    this.isExpandedHeight = true,
-    required this.description,
+    required this.imagePath,
+    required this.title,
+    required this.subtitle,
   });
 
   @override
   Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.sizeOf(context);
-    final height = isExpandedHeight!
-        ? deviceSize.height * 0.5
-        : deviceSize.height * 0.25;
-    final width = deviceSize.width * 0.8;
     return Center(
       child: SizedBox(
-        height: height,
-        width: width,
+        height: context.screenHeight * 0.25,
+        width: context.screenWidth * 0.8,
         child: Column(
-          children: [
-            _buildLottieAnimation(),
-            _buildMessageText(context, description),
-          ],
+          children: [_buildLottieAnimation(), _buildMessageText(context)],
         ),
       ),
     );
   }
 
-  Widget _buildLottieAnimation() => Expanded(
-    child: Container(
-      child: Assets.lottie.emptyListLottie.lottie(fit: BoxFit.cover),
-    ),
-  );
+  Expanded _buildLottieAnimation() =>
+      Expanded(child: imagePath.lottie(fit: BoxFit.cover));
 
-  Widget _buildMessageText(BuildContext context, String description) =>
-      Expanded(
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 10, left: 5, right: 5),
+  Widget _buildMessageText(BuildContext context) {
+    final baseTextStyle = TextStyle(
+      color: AppColors.darkBlue,
+      height: 1.9,
+      fontSize: 16.sp,
+      fontWeight: FontWeight.w700,
+    );
+
+    return Column(
+      children: [
+        Text(title, style: baseTextStyle, textAlign: TextAlign.center),
+        const SizedBox(height: 5),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(
-            description,
-            style: Theme.of(context).textTheme.smallOrangeMedium,
+            subtitle,
+            style: baseTextStyle.copyWith(
+              color: AppColors.customBlueGrey,
+              fontSize: 11.sp,
+              fontWeight: FontWeight.w500,
+            ),
             textAlign: TextAlign.center,
           ),
         ),
-      );
+      ],
+    );
+  }
 }
+*/

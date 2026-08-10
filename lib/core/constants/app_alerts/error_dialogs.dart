@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:medora/core/constants/app_alerts/widgets/try_again_button.dart'
     show TryAgainButton;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
@@ -15,53 +16,54 @@ class ErrorDialogs {
     required BuildContext context,
     required String errorMessage,
   }) => WoltModalSheet.show(
-      context: context,
-      modalTypeBuilder: (_) => MyCustomModalTypeDialog(),
-      barrierDismissible: true,
-      pageListBuilder: (_) => [
-        WoltModalSheetPage(
-          backgroundColor: Colors.white,
-          hasSabGradient: false,
-          topBarTitle: const SizedBox.shrink(),
-          topBar: _buildTopBar(context),
-          navBarHeight: 130,
+    context: context,
+    modalTypeBuilder: (_) => MyCustomModalTypeDialog(),
+    barrierDismissible: true,
+    pageListBuilder: (_) => [
+      WoltModalSheetPage(
+        backgroundColor: Colors.white,
+        hasSabGradient: false,
+        topBarTitle: const SizedBox.shrink(),
+        topBar: _buildTopBar(context),
+        navBarHeight: 130,
 
-          child: _buildErrorBody(context, errorMessage),
-          stickyActionBar: const TryAgainButton(backgroundColor: AppColors.red),
-          isTopBarLayerAlwaysVisible: true,
-        ),
-      ],
-      onModalDismissedWithBarrierTap: () => Navigator.of(context).pop(),
-    );
+        child: _buildErrorBody(context, errorMessage),
+        stickyActionBar: const TryAgainButton(backgroundColor: AppColors.red),
+        isTopBarLayerAlwaysVisible: true,
+      ),
+    ],
+
+    onModalDismissedWithBarrierTap: () => context.pop(),
+  );
 
   static Widget _buildTopBar(BuildContext context) => Container(
-      padding: const EdgeInsets.symmetric(horizontal: 5),
-      alignment: Alignment.center,
-      color: AppColors.red,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircleAvatar(
-            backgroundColor: Colors.white,
-            radius: 25.r,
-            child: FaIcon(
-              FontAwesomeIcons.xmark,
-              size: 40.sp,
-              color: AppColors.red,
-            ),
+    padding: const EdgeInsets.symmetric(horizontal: 5),
+    alignment: Alignment.center,
+    color: AppColors.red,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CircleAvatar(
+          backgroundColor: Colors.white,
+          radius: 25.r,
+          child: FaIcon(
+            FontAwesomeIcons.xmark,
+            size: 40.sp,
+            color: AppColors.red,
           ),
-          const SizedBox(height: 10),
-          FittedBox(
-            child: Text(
-              AppStrings.oops,
-              style: Theme.of(
-                context,
-              ).textTheme.dialogTitleStyle.copyWith(fontSize: 18.sp),
-            ),
+        ),
+        const SizedBox(height: 10),
+        FittedBox(
+          child: Text(
+            AppStrings.oops,
+            style: Theme.of(
+              context,
+            ).textTheme.dialogTitleStyle.copyWith(fontSize: 18.sp),
           ),
-        ],
-      ),
-    );
+        ),
+      ],
+    ),
+  );
 
   static Widget _buildErrorBody(BuildContext context, String errorMessage) {
     return Container(

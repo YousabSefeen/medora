@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:medora/core/payment_gateway_manager/stripe_payment/stripe_keys.dart'
     show StripeKeys;
+import 'package:medora/core/services/logger_service.dart';
 import 'package:medora/features/payment_gateways/stripe/data/models/create_user_model.dart'
     show CreateUserModel;
 import 'package:medora/features/payment_gateways/stripe/data/models/payment_intent_model.dart'
@@ -127,9 +128,8 @@ class StripeServices {
         await createUserInStripeDashboard(createUserModel: createUserModel);*/
 
     try {
-      final PaymentIntentModel responsePaymentIntent = await createPaymentIntent(
-        totalPrice: totalPrice,
-      );
+      final PaymentIntentModel responsePaymentIntent =
+          await createPaymentIntent(totalPrice: totalPrice);
 
       final EphemeralKeyModel ephemeralKey = await getEphemeralKeys(
         customerId: StripeKeys.customerId,
@@ -141,8 +141,9 @@ class StripeServices {
       );
 
       await presentPaymentSheet();
-    }   catch (e) {
-      print('StripeServices.makePayment Error: $e');
+    } catch (e) {
+      AppLogger.error('Stripe Payment Error $e');
+      rethrow;
     }
   }
 }

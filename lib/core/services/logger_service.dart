@@ -1,10 +1,11 @@
-
-
+import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
 class AppLogger {
   // إنشاء نسخة ثابتة (Singleton)
   static final Logger _logger = Logger(
+    // kReleaseMode تضمن عدم طباعة أي شأن عند بناء النسخة النهائية للمتجر
+    filter: kReleaseMode ? ProductionFilter() : DevelopmentFilter(),
     printer: PrettyPrinter(
       methodCount: 1,         // عدد أسطر الكود التي تظهر في الـ stack trace
       errorMethodCount: 5,    // عدد الأسطر في حالة وجود خطأ

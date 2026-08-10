@@ -1,54 +1,66 @@
+// ============================================================
+// 📦 features/auth/data/exceptions/auth_exception.dart
+// ============================================================
+
+import 'package:medora/core/constants/app_strings/app_errors_strings.dart';
+
 class AuthException {
   static String getMsgFromErrorCode({required String errorCode}) {
     switch (errorCode) {
-      // Login Errors
       case 'invalid-credential':
       case 'INVALID_LOGIN_CREDENTIALS':
-        return 'Invalid login credentials. Please check your email and password.';
+        return AppErrorsStrings.invalidCredentials;
 
       case 'user-not-found':
-        return 'No account found for this email address.';
+        return AppErrorsStrings.userNotFound;
 
       case 'wrong-password':
-        return 'The password you entered is incorrect.';
+        return AppErrorsStrings.wrongPassword;
 
       case 'user-disabled':
-        return 'This user account has been disabled.';
+        return AppErrorsStrings.userDisabled;
 
       case 'too-many-requests':
-        return 'Too many attempts. Please try again later.';
+        return AppErrorsStrings.tooManyRequests;
 
-      // Sign up Errors
       case 'email-already-in-use':
-        return 'This email address is already in use. If it’s your account, try logging in.';
+        return AppErrorsStrings.emailAlreadyInUse;
 
       case 'invalid-email':
-        return 'The email address format is invalid.';
+        return AppErrorsStrings.invalidEmail;
 
       case 'operation-not-allowed':
-        return 'This operation is not allowed. Please contact support.';
+        return AppErrorsStrings.operationNotAllowed;
 
       case 'weak-password':
-        return 'The password is too weak. Please use at least 6 characters.';
+        return AppErrorsStrings.weakPassword;
 
-      // General or Connectivity Errors
       case 'network-request-failed':
-        return 'Network error. Please check your internet connection and try again.';
+        return AppErrorsStrings.networkRequestFailed;
 
       case 'internal-error':
-        return 'An internal error occurred. Please try again later.';
+        return AppErrorsStrings.internalError;
 
       case 'missing-email':
-        return 'Email address is required.';
+        return AppErrorsStrings.missingEmail;
 
       case 'missing-password':
-        return 'Password is required.';
+        return AppErrorsStrings.missingPassword;
 
       case 'invalid-api-key':
-        return 'Invalid API key. Please check your Firebase configuration.';
+        return AppErrorsStrings.invalidApiKey;
+
+      case 'account-exists-with-different-credential':
+        return AppErrorsStrings.accountExistsWithDifferentCredential;
+
+      case 'expired-action-code':
+        return AppErrorsStrings.expiredActionCode;
+
+      case 'invalid-action-code':
+        return AppErrorsStrings.invalidActionCode;
 
       default:
-        return 'An unexpected error occurred: $errorCode';
+        return '${AppErrorsStrings.unexpectedError} (Error code: $errorCode)';
     }
   }
 }

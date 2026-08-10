@@ -2,6 +2,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medora/core/constants/common_widgets/elevated_blue_button.dart'
     show ElevatedBlueButton;
@@ -38,7 +39,8 @@ class AppointmentSuccessDialog {
           onCancelPressed,
         ),
       ],
-      onModalDismissedWithBarrierTap: () => Navigator.of(context).pop(),
+
+      onModalDismissedWithBarrierTap: () => context.pop(),
     );
   }
 

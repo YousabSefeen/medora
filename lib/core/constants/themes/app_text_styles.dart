@@ -13,20 +13,6 @@ extension AppTextStyles on TextTheme {
     height: 1,
   );
 
-  // Original: headlineSmall (DoctorAvailabilityTimeFields)
-  TextStyle get mediumWhiteBold => TextStyle(
-    color: Colors.white,
-    fontSize: 17.sp,
-    fontWeight: FontWeight.w700,
-  );
-
-  // Original: labelMedium (CustomDateTimeLine)
-  TextStyle get smallWhiteRegular => TextStyle(
-    fontSize: 12.sp,
-    color: Colors.white,
-    fontWeight: FontWeight.w400,
-  );
-
   TextStyle get dateTimeBlackStyle => TextStyle(
     color: Colors.black,
     fontSize: 13.sp,
@@ -196,6 +182,12 @@ extension AppTextStyles on TextTheme {
     letterSpacing: 0.5,
   );
 
+  TextStyle get robotoMediumStyle => GoogleFonts.roboto(
+    fontSize: 10.sp,
+    fontWeight: FontWeight.w500,
+    color: Colors.white,
+  );
+
   TextStyle get robotoBoldStyle => GoogleFonts.roboto(
     textStyle: TextStyle(
       fontSize: 20.sp,
@@ -232,13 +224,6 @@ extension AppTextStyles on TextTheme {
     ),
   );
 
-  TextStyle get caladeaMediumLight => GoogleFonts.caladea(
-    color: Colors.white,
-    fontSize: 18.sp,
-
-    letterSpacing: 1,
-    fontWeight: FontWeight.w500,
-  );
 
   TextStyle get arabicStyle => GoogleFonts.cairo(
     wordSpacing: 1.2,
@@ -297,7 +282,6 @@ extension AppTextStyles on TextTheme {
     textStyle: TextStyle(
       color: Colors.white,
       fontSize: 16.sp,
-
       fontWeight: FontWeight.w600,
       letterSpacing: 0.5,
     ),
@@ -311,8 +295,60 @@ extension AppTextStyles on TextTheme {
   );
 
   TextStyle get authFieldTitle => TextStyle(
+    color: Colors.white60,
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w400,
+  );
+
+  // 🌟 الستيلات المستخرجة حديثاً لشاشات الـ Auth والاستعادة:
+
+  // للـ Main Headers الكبيرة باللون الأبيض
+  TextStyle get largeWhiteBold => TextStyle(
+    fontSize: 24.sp,
+    fontWeight: FontWeight.bold,
     color: Colors.white,
+  );
+
+  // للنصوص الوصفية الأساسية باللون الرمادي الفاتح
+  TextStyle get mediumLightGreyRegular => TextStyle(
     fontSize: 14.sp,
+    fontWeight: FontWeight.w400,
+    color: const Color(0xffE0E0E0),
+    height: 1.5,
+  );
+
+  // للنصوص الوصفية العريضة (مثل بريد المستخدم البارز)
+  TextStyle get mediumLightGreyBold => TextStyle(
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w700,
+    color: const Color(0xffE0E0E0),
+    height: 1.5,
+  );
+
+  // للنصوص الإرشادية بلون التنبيه (Amber/Gold)
+  TextStyle get smallAmberMedium => TextStyle(
+    fontSize: 13.sp,
+    color: const Color(0xffFFB300),
     fontWeight: FontWeight.w500,
+  );
+
+  // للنصوص الفرعية الخفيفة باللون الرمادي الشفاف (مثل سطر العبد التنازلي)
+  TextStyle get mediumWhite60Regular => TextStyle(
+    color: Colors.grey.shade300,
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w400,
+  );
+
+  TextStyle get mediumWhiteBold16 => TextStyle(
+    fontSize: 16.sp,
+    color: Colors.white,
+    fontWeight: FontWeight.bold,
+  );
+
+  TextStyle get overlayNotificationStyle => TextStyle(
+    fontSize: 13.sp,
+    color: Colors.white,
+    fontWeight: FontWeight.w500,
+    height: 1.5,
   );
 }

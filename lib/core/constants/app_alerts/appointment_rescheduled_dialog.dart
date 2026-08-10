@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/extensions/lottie_string_asset_ext.dart'
     show LottieStringAssetExtension;
@@ -12,7 +13,6 @@ import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 import '../../../generated/assets.dart';
 import '../../animations/custom_modal_type_dialog.dart';
-import '../app_routes/app_router.dart';
 import '../app_strings/app_strings.dart';
 import '../themes/app_colors.dart';
 
@@ -28,7 +28,8 @@ class AppointmentRescheduledDialog {
       pageListBuilder: (_) => [
         _buildSuccessModalPage(context, appointmentReschedule),
       ],
-      onModalDismissedWithBarrierTap: () => Navigator.of(context).pop(),
+
+      onModalDismissedWithBarrierTap: () => context.pop(),
     );
   }
 
@@ -62,7 +63,7 @@ class AppointmentRescheduledDialog {
   static Widget _buildSuccessAnimation() {
     return Material(
       color: Colors.white,
-      child: Assets.lottie.successLottie.lottie(
+      child: Assets.lottie.successIconLottie.lottie(
         fit: BoxFit.fill,
         height: 100.h,
       ),
@@ -89,7 +90,7 @@ class AppointmentRescheduledDialog {
       child: Builder(
         builder: (innerContext) {
           return ElevatedButton(
-            onPressed: () => AppRouter.pop(innerContext),
+            onPressed: () => innerContext.pop(),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.softBlue,
               foregroundColor: Colors.white,

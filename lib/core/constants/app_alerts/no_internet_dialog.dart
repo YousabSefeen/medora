@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:medora/core/constants/app_alerts/widgets/try_again_button.dart'
     show TryAgainButton;
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
@@ -29,9 +30,7 @@ class NoInternetDialog {
             isTopBarLayerAlwaysVisible: true,
           ),
         ],
-        onModalDismissedWithBarrierTap: () {
-          Navigator.of(context).pop();
-        },
+        onModalDismissedWithBarrierTap:()=>context.pop(),
       );
 
   static Container _buildTopBar(BuildContext context) => Container(

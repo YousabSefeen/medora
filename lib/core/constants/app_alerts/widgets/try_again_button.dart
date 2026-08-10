@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../app_routes/app_router.dart';
 import '../../app_strings/app_strings.dart';
@@ -15,7 +16,7 @@ class TryAgainButton extends StatelessWidget {
       height: 45,
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () => AppRouter.pop(context),
+        onPressed: () => context.pop(),
         style: ElevatedButton.styleFrom(
           backgroundColor: backgroundColor,
           foregroundColor: Colors.white,

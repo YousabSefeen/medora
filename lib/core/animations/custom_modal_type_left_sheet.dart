@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class CustomModalTypeLeftSheet extends WoltModalType {
-  CustomModalTypeLeftSheet()
-    : super(
-        barrierDismissible: false,
-        dismissDirection: WoltModalDismissDirection.none,
-        transitionDuration: const Duration(milliseconds: 600),
-        reverseTransitionDuration: const Duration(milliseconds: 600),
-      );
+  final ShapeBorder? shape;
+
+  CustomModalTypeLeftSheet({
+    this.shape = const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(16)),
+    ),
+  }) : super(
+         barrierDismissible: false,
+         dismissDirection: WoltModalDismissDirection.none,
+         transitionDuration: const Duration(milliseconds: 600),
+         reverseTransitionDuration: const Duration(milliseconds: 600),
+         shapeBorder: shape!,
+       );
 
   @override
   String routeLabel(BuildContext context) {
