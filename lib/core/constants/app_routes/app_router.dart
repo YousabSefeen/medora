@@ -36,16 +36,16 @@ class AppRouter {
   static final GoRouter router = GoRouter(
     navigatorKey: _rootNavigatorKey,
 
-    // initialLocation: FirebaseAuth.instance.currentUser?.uid != null
-    //     ? AppRouterNames.bottomNav
-    //     : AppRouterNames.signIn,
-    initialLocation: AppRouterNames.screenOne,
+    initialLocation: FirebaseAuth.instance.currentUser?.uid != null
+        ? AppRouterNames.bottomNav
+        : AppRouterNames.signIn,
+
     routes: [
       GoRoute(
-        path: AppRouterNames.screenOne,
+        path: AppRouterNames.testScreen,
 
         pageBuilder: (context, state) =>
-            _buildAnimatedPage(state: state, child: const NextScreen()),
+            _buildAnimatedPage(state: state, child: const TestScreen()),
       ),   GoRoute(
         path: AppRouterNames.signIn,
 
@@ -127,7 +127,7 @@ class AppRouter {
           );
         },
       ),
-      //vvvvvvvvvvvvv
+
       GoRoute(
         path: AppRouterNames.appointmentDetails,
         pageBuilder: (context, state) {

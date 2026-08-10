@@ -24,6 +24,5 @@ class AppRouterNames {
   static const String appointmentCancellation = '/appointment_cancellation';
   static const String createAppointment = '/create_appointment';
   static const String specialtyDoctors = '/specialty_doctors';
-  static const String screenOne = '/screenOne';
-  static const String screenTwo = '/screenTwo';
+  static const String testScreen = '/testScreen';
 }
