@@ -3,8 +3,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
-import 'package:lottie/src/composition.dart';
 import 'package:lottie/src/lottie_builder.dart';
+import 'package:lottie/src/composition.dart';
 
 class Assets {
   Assets._();
@@ -18,6 +18,12 @@ class $AssetsSvgGen {
   const $AssetsSvgGen();
 
   final SvgGenImage appLogo = const SvgGenImage('assets/svg/app_logo.svg');
+  final SvgGenImage facebookLogo = const SvgGenImage(
+    'assets/svg/facebook_logo.svg',
+  );
+  final SvgGenImage googleLogo = const SvgGenImage(
+    'assets/svg/google_logo.svg',
+  );
 }
 
 class $AssetsImagesGen {
@@ -124,18 +130,23 @@ class $AssetsSpecialtiesGen {
 class $AssetsLottieGen {
   const $AssetsLottieGen();
 
-  final String emptyListLottie = 'assets/lottie/emptyListLottie.json';
+  final LottieGenImage checkEmail = const LottieGenImage(
+    'assets/lottie/checkEmail.json',
+  );
+  final String emptyListLarge = 'assets/lottie/empty-list-large.json';
+  final String emptyListMain = 'assets/lottie/empty-list-main.json';
+  final LottieGenImage forgetPassword = const LottieGenImage(
+    'assets/lottie/forgetPassword.json',
+  );
   final LottieGenImage iosLoadingLottie = const LottieGenImage(
     'assets/lottie/iosLoadingLottie.json',
   );
-  final LottieGenImage loadingIOSLottie = const LottieGenImage(
-    'assets/lottie/loadingIOSLottie.json',
-  );
-  final String locationLottie = 'assets/lottie/locationLottie.json';
   final String noFavoriteDoctors = 'assets/lottie/no_favorite_doctors.json';
+  final LottieGenImage resetPassword = const LottieGenImage(
+    'assets/lottie/resetPassword.json',
+  );
   final String successIconLottie = 'assets/lottie/successIconLottie.json';
-  final String successLottie = 'assets/lottie/successLottie.json';
-  final String xMarkerLottie = 'assets/lottie/xMarkerLottie.json';
+  final String xMarker = 'assets/lottie/x_marker.json';
 }
 
 class AssetGenImage {
