@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:medora/core/animations/animated_gradient_background.dart';
 import 'package:medora/core/constants/app_alerts/app_alerts.dart';
 import 'package:medora/core/constants/app_routes/app_router_names.dart';
