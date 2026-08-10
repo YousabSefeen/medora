@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class QuantityControlButton extends StatelessWidget {
   final void Function() onPressed;
-  final IconData icon;
+  final FaIconData icon;
   final bool? isDeleteButton;
 
   const QuantityControlButton({

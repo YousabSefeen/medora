@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:medora/core/constants/app_routes/app_router.dart'
     show AppRouter;
 import 'package:medora/core/constants/app_routes/app_router_names.dart'
@@ -74,7 +75,7 @@ class HomeSliverAppBar extends StatelessWidget {
           ),
         ),
         onPressed: () =>
-            AppRouter.pushNamed(context, AppRouterNames.geminiChat),
+         context.push(AppRouterNames.geminiChat),
         child: const Text(AppStrings.askNow),
       ),
     ),

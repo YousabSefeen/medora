@@ -1,31 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart'
-    show BlocSelector, BlocConsumer, ReadContext;
-import 'package:medora/core/constants/app_alerts/app_alerts.dart'
-    show AppAlerts;
-import 'package:medora/core/constants/app_routes/app_router.dart'
-    show AppRouter;
-import 'package:medora/core/constants/app_strings/app_strings.dart'
-    show AppStrings;
-import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
-import 'package:medora/features/appointments/presentation/controller/cubit/book_appointment_cubit.dart'
-    show BookAppointmentCubit;
-import 'package:medora/features/appointments/presentation/controller/cubit/time_slot_cubit.dart'
-    show TimeSlotCubit;
-import 'package:medora/features/appointments/presentation/controller/states/book_appointment_state.dart'
-    show BookAppointmentState;
-import 'package:medora/features/appointments/presentation/controller/states/time_slot_state.dart'
-    show TimeSlotState;
-import 'package:medora/features/patient/presentation/screens/patient_details_screen.dart'
-    show PatientDetailsScreen;
-import 'package:medora/features/appointments/presentation/ui_models/appointment_booking_ui_model.dart'
-    show AppointmentBookingUIModel;
-import 'package:medora/features/appointments/presentation/widgets/custom_widgets/adaptive_action_button.dart'
-    show AdaptiveActionButton;
-import 'package:medora/features/favorites/presentation/widgets/toggle_favorite_button.dart'
-    show ToggleFavoriteButton;
-import 'package:medora/features/shared/domain/entities/doctor_entity.dart'
-    show DoctorEntity;
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:medora/core/constants/app_alerts/app_alerts.dart';
+import 'package:medora/core/constants/app_routes/app_router_names.dart';
+import 'package:medora/core/constants/app_strings/app_strings.dart';
+import 'package:medora/core/enum/lazy_request_state.dart';
+import 'package:medora/features/appointments/presentation/controller/cubit/book_appointment_cubit.dart';
+import 'package:medora/features/appointments/presentation/controller/cubit/time_slot_cubit.dart';
+import 'package:medora/features/appointments/presentation/controller/states/book_appointment_state.dart';
+import 'package:medora/features/appointments/presentation/controller/states/time_slot_state.dart';
+import 'package:medora/features/appointments/presentation/ui_models/appointment_booking_ui_model.dart';
+import 'package:medora/features/appointments/presentation/widgets/custom_widgets/adaptive_action_button.dart';
+import 'package:medora/features/favorites/presentation/widgets/toggle_favorite_button.dart';
+import 'package:medora/features/shared/domain/entities/doctor_entity.dart';
 
 class CreateAppointmentFooterActions extends StatelessWidget {
   final DoctorEntity doctor;
@@ -67,9 +54,9 @@ class CreateAppointmentFooterActions extends StatelessWidget {
           spacing: 15,
           children: [
             ToggleFavoriteButton(doctorInfo: doctor),
-
             Expanded(
               child: AdaptiveActionButton(
+                bottomHeight: 45,
                 title: AppStrings.bookAppointment,
                 isEnabled: isEnabled,
                 isLoading: state.bookingStatus == LazyRequestState.loading,
@@ -119,11 +106,11 @@ class CreateAppointmentFooterActions extends StatelessWidget {
       context.read<TimeSlotCubit>().state.selectedDateFormatted!;
 
   void _navigateToPatientScreen(BuildContext context) =>
-      AppRouter.push(context, const PatientDetailsScreen());
+      context.push(AppRouterNames.patientDetails);
 
   void _showErrorDialog(BuildContext context, String? errorMessage) {
     if (errorMessage != null) {
-      AppAlerts.showErrorDialog(context, errorMessage);
+      AppAlerts.showCustomErrorDialog(context, errorMessage);
     }
   }
 }

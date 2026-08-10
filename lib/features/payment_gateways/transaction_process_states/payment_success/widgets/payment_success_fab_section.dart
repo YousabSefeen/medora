@@ -22,9 +22,9 @@ class PaymentSuccessFABSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 150,
+      height: 110.h,
       padding: const EdgeInsets.only(
-        top: 25,
+        top: 15,
         left: _horizontalSpacing,
         right: _horizontalSpacing,
       ),

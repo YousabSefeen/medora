@@ -70,7 +70,7 @@ class DoctorInfoFooter extends StatelessWidget {
 }
 
 class _InfoRowItem extends StatelessWidget {
-  final IconData icon;
+  final FaIconData icon;
   final double iconSize;
   final Color iconColor;
   final String label;
@@ -103,6 +103,7 @@ class _InfoRowItem extends StatelessWidget {
                 label,
                 style: context.textTheme.mediumPlaypenBold.copyWith(
                   fontSize: textSize,
+
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,

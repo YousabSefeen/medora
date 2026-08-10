@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart'
     show FaIcon, FontAwesomeIcons;
+import 'package:go_router/go_router.dart';
 import 'package:medora/core/constants/app_routes/app_router.dart';
 import 'package:medora/core/constants/common_widgets/app_network_image.dart'
     show AppNetworkImage;
@@ -53,7 +54,7 @@ class CreateAppointmentAppBar extends StatelessWidget {
         size: 16.sp,
       ),
     ),
-    onPressed: () => AppRouter.popWithKeyboardDismiss(context),
+    onPressed: () => context.pop(),
   );
 }
 

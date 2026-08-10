@@ -88,7 +88,7 @@ class _GeminiChatComposerState extends State<GeminiChatComposer> {
           sigmaX: 0,
           left: 2,
           right: 0,
-          attachmentGap: 0,
+        //  attachmentGap: 0,
 
           backgroundColor: AppColors.white,
           allowEmptyMessage: sourceImage == '' ? false : true,
@@ -110,7 +110,7 @@ class _GeminiChatComposerState extends State<GeminiChatComposer> {
             ),
           ),
           sendIconColor: AppColors.green,
-          attachmentWidget: Row(
+          attachmentIcon: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               IconButton(

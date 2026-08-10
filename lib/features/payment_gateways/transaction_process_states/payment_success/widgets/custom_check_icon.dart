@@ -23,7 +23,7 @@ class CustomCheckIcon extends StatelessWidget {
       child: CircleAvatar(
         radius: 40.r,
         backgroundColor: const Color(0xff34A853),
-        child: Icon(FontAwesomeIcons.check, color: Colors.white, size: 45.sp),
+        child: FaIcon(FontAwesomeIcons.check, color: Colors.white, size: 45.sp),
       ),
     );
   }

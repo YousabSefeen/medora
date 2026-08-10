@@ -1,8 +1,9 @@
 import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medora/core/constants/app_routes/app_router.dart'
-    show AppRouter;
+import 'package:go_router/go_router.dart';
+import 'package:medora/core/constants/app_routes/app_router_names.dart';
+import 'package:medora/core/constants/app_strings/app_errors_strings.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/core/constants/common_widgets/custom_loading_text.dart'
@@ -11,22 +12,21 @@ import 'package:medora/core/di/injection_container.dart' show sl;
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 import 'package:medora/core/enum/payment_gateways_types.dart'
     show PaymentGatewaysTypes;
-import 'package:medora/core/payment_gateway_manager/payment_helper/payment_navigation_helper.dart'
-    show PaymentNavigationHelper;
 import 'package:medora/core/payment_gateway_manager/stripe_payment/stripe_dummy_data_service.dart'
     show StripeDummyDataService;
 import 'package:medora/features/payment_gateways/stripe/presentation/controller/cubit/stripe_payment_cubit.dart'
     show StripePaymentCubit;
 import 'package:medora/features/payment_gateways/stripe/presentation/controller/states/stripe_payment_state.dart'
     show StripePaymentState;
-import 'package:medora/features/payment_gateways/transaction_process_states/payment_success/screens/payment_success_screen.dart'
-    show PaymentSuccessScreen;
 
 class StripePaymentScreen extends StatelessWidget {
   const StripePaymentScreen({super.key});
 
-  void _popWithPaymentCancelledResult(BuildContext context) =>
-      PaymentNavigationHelper.popWithPaymentCancelledResult(context);
+  void _popWithPaymentCancelledResult(BuildContext context) {
+    if (context.mounted) {
+      context.pop(AppErrorsStrings.paymentCanceled);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,12 +89,12 @@ class StripePaymentScreen extends StatelessWidget {
     });
   }
 
-  void _handlePaymentSuccess(BuildContext context) =>
-      AppRouter.pushAndRemoveUntil(
-        context,
-        const PaymentSuccessScreen(paymentMethod: PaymentGatewaysTypes.stripe),
-      );
+  void _handlePaymentSuccess(BuildContext context) {
+    final extra = {'paymentMethod': PaymentGatewaysTypes.stripe};
+
+    context.go(AppRouterNames.paymentSuccess, extra: extra);
+  }
 
   void _handlePaymentError(BuildContext context, String errorMessage) =>
-      Navigator.pop(context, errorMessage);
+      context.pop(errorMessage);
 }

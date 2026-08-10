@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:medora/core/constants/app_routes/app_router_names.dart';
+import 'package:medora/core/extensions/appointment_filter.dart';
 import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart';
-import 'package:medora/features/appointments/presentation/controller/cubit/completed_appointments_cubit.dart'
-    show CompletedAppointmentsCubit;
-import 'package:medora/features/appointments/presentation/controller/states/completed_appointments_state.dart'
-    show CompletedAppointmentsState;
-import 'package:medora/features/appointments/presentation/screens/appointment_details_screen.dart'
-    show AppointmentDetailsScreen;
-import 'package:medora/features/shared/presentation/screens/pagination_screen_mixin.dart'
-    show PaginationScreenMixin;
+import 'package:medora/features/appointments/presentation/controller/cubit/completed_appointments_cubit.dart';
+import 'package:medora/features/appointments/presentation/controller/states/completed_appointments_state.dart';
+import 'package:medora/features/shared/presentation/screens/pagination_screen_mixin.dart';
 
 import '../../../../core/enum/appointment_status.dart';
 import 'appointment_card.dart';
@@ -33,16 +31,11 @@ class _CompletedAppointmentsListState extends State<CompletedAppointmentsList>
   @override
   bool get wantKeepAlive => true;
 
-
   @override
   Widget buildDataCard(ClientAppointmentsEntity appointment, int index) {
     return GestureDetector(
-      onTap: () => Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) =>
-              AppointmentDetailsScreen(appointment: appointment),
-        ),
-      ),
+      onTap: () =>
+          context.push(AppRouterNames.appointmentDetails, extra: appointment),
       child: AppointmentCard(
         appointmentStatus: AppointmentStatus.completed,
         appointment: appointment,
@@ -55,10 +48,13 @@ class _CompletedAppointmentsListState extends State<CompletedAppointmentsList>
     super.build(context);
     return BlocBuilder<CompletedAppointmentsCubit, CompletedAppointmentsState>(
       buildWhen: (previous, current) =>
-          previous.requestState != current.requestState||previous.isLoadingMore,
-      builder: (context, state) {
-        return buildPaginationBody(context, state);
-      },
+          previous.requestState != current.requestState ||
+          previous.isLoadingMore,
+      builder: (context, state) => buildPaginationBody(
+        appointmentFilter: AppointmentFilter.completed,
+        context: context,
+        state: state,
+      ),
     );
   }
 }

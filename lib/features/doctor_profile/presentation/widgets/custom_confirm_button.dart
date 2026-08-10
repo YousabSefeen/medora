@@ -12,27 +12,29 @@ class CustomConfirmButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-      height: 45,
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.softBlue,
-          foregroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
+    return Material(
+      color: Colors.white,
+      child: Container(
+        height: 45,
+        width: double.infinity,
+        margin: const EdgeInsets.all(10),
+        child: ElevatedButton(
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.softBlue,
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.r),
+            ),
           ),
-        ),
-        child: Text(
-          AppStrings.confirm,
-          style: GoogleFonts.poppins(
-            color: Colors.white,
-            fontSize: 17.sp,
-
-            fontWeight: FontWeight.w700,
-            letterSpacing: 2,
+          child: Text(
+            AppStrings.confirm,
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+              fontSize: 17.sp,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 2,
+            ),
           ),
         ),
       ),

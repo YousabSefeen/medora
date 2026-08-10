@@ -1,28 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocSelector;
-import 'package:font_awesome_flutter/font_awesome_flutter.dart'
-    show FontAwesomeIcons;
+import 'package:go_router/go_router.dart';
 import 'package:medora/core/constants/app_alerts/app_alerts.dart'
     show AppAlerts;
-import 'package:medora/core/constants/app_routes/app_router.dart'
-    show AppRouter;
+import 'package:medora/core/constants/app_duration/app_duration.dart';
+import 'package:medora/core/constants/app_routes/app_router_names.dart';
+import 'package:medora/core/constants/app_strings/app_errors_strings.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
-import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/enum/payment_gateways_types.dart'
     show PaymentGatewaysTypes;
+import 'package:medora/core/services/overlay_notification_service.dart';
 import 'package:medora/features/appointments/presentation/widgets/custom_widgets/adaptive_action_button.dart'
     show AdaptiveActionButton;
-import 'package:medora/features/payment_gateways/paymob/presentation/view/screens/paymob_payment_screen.dart'
-    show PaymobPaymentScreen;
-import 'package:medora/features/payment_gateways/paypal/presentation/views/screens/paypal_payment_screen.dart'
-    show PaypalPaymentScreen;
 import 'package:medora/features/payment_gateways/presentation/controller/cubit/payment_cubit.dart'
     show PaymentCubit;
 import 'package:medora/features/payment_gateways/presentation/controller/state/payment_state.dart'
     show PaymentState;
-import 'package:medora/features/payment_gateways/stripe/presentation/View/Screens/stripe_payment_screen.dart'
-    show StripePaymentScreen;
 
 class PayNowButton extends StatelessWidget {
   final TextEditingController phoneNumberController;
@@ -84,14 +78,13 @@ class PayNowButton extends StatelessWidget {
   /// Show phone number validation error message
   void _showPhoneValidationError(BuildContext context) {
     final errorMessage = phoneNumberController.text.isEmpty
-        ? 'Please enter your phone number'
-        : 'Invalid phone number';
-
-    AppAlerts.showTopSnackBarAlert(
+        ? AppStrings.phoneNumberHintField
+        : AppStrings.invalidPhoneNumber;
+    OverlayNotificationService.show(
       context: context,
-      msg: errorMessage,
-      backgroundColor: AppColors.red,
-      icon: FontAwesomeIcons.xmark,
+      message: errorMessage,
+      type: SnackBarType.error,
+      snackBarBehaviorType: SnackBarBehaviorType.top,
     );
   }
 
@@ -130,30 +123,31 @@ class PayNowButton extends StatelessWidget {
     BuildContext context,
     PaymentGatewaysTypes paymentMethod,
   ) {
-    //xxxx _resetAppointmentState(context);
-    AppRouter.push(
-      context,
-      PaymobPaymentScreen(
-        selectedPaymentMethod: paymentMethod,
-        phoneNumber: phoneNumberController.text,
-      ),
-      onResult: (value) => _handlePaymentResult(context, value),
-    );
+    final extra = {
+      'selectedPaymentMethod': paymentMethod,
+      'phoneNumber': phoneNumberController.text.trim(),
+    };
+    context.push(AppRouterNames.paymobPayment, extra: extra).then((value) {
+      if (!context.mounted || value == null) return;
+      _handlePaymentResult(context, value);
+    });
   }
 
   /// Route to PayPal payment screen
-  void _navigateToPaypalPayment(BuildContext context) => AppRouter.push(
-    context,
-    const PaypalPaymentScreen(),
-    onResult: (value) => _handlePaymentResult(context, value),
-  );
+  void _navigateToPaypalPayment(BuildContext context) {
+    context.push(AppRouterNames.paypalPayment).then((value) {
+      if (!context.mounted || value == null) return;
+      _handlePaymentResult(context, value);
+    });
+  }
 
   /// Route to Stripe payment screen
-  void _navigateToStripePayment(BuildContext context) => AppRouter.push(
-    context,
-    const StripePaymentScreen(),
-    onResult: (value) => _handlePaymentResult(context, value),
-  );
+  void _navigateToStripePayment(BuildContext context) {
+    context.push(AppRouterNames.stripePayment).then((value) {
+      if (!context.mounted || value == null) return;
+      _handlePaymentResult(context, value);
+    });
+  }
 
   /// Process payment result from different gateways and handle navigation back
   ///
@@ -178,15 +172,14 @@ class PayNowButton extends StatelessWidget {
   /// Note: Successful payments complete the flow and don't return to this screen
   void _handlePaymentResult(BuildContext context, dynamic result) {
     if (result == null) return;
-
     Future.delayed(const Duration(milliseconds: 600), () {
       if (!context.mounted) return;
 
       switch (result) {
-        case AppStrings.paymentCancelledError:
+        case AppErrorsStrings.paymentCanceled:
           _showPaymentCancelledAlert(context);
           break;
-        case AppStrings.paymentFailedError:
+        case AppErrorsStrings.paymentFailedError:
           _showPaymentFailedDialog(context);
           break;
         default:
@@ -198,18 +191,22 @@ class PayNowButton extends StatelessWidget {
 
   /// Show payment cancellation alert
   void _showPaymentCancelledAlert(BuildContext context) =>
-      AppAlerts.showTopSnackBarAlert(
+      OverlayNotificationService.show(
         context: context,
-        msg: AppStrings.paymentCancelledMsg,
-        backgroundColor: Colors.orange,
-        icon: Icons.error_outline_sharp,
+        message: AppErrorsStrings.paymentCanceled,
+        type: SnackBarType.warning,
+        snackBarBehaviorType: SnackBarBehaviorType.top,
+        duration: AppDurations.seconds_5,
       );
 
   /// Show payment failure dialog
   void _showPaymentFailedDialog(BuildContext context) =>
-      AppAlerts.showErrorDialog(context, AppStrings.paymentFailedDescription);
+      AppAlerts.showCustomErrorDialog(
+        context,
+        AppErrorsStrings.paymentFailedDescription,
+      );
 
   /// Show generic error dialog
   void _showGenericErrorDialog(BuildContext context, String error) =>
-      AppAlerts.showErrorDialog(context, error);
+      AppAlerts.showCustomErrorDialog(context, error);
 }

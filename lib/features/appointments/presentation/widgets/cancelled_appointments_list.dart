@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:medora/core/constants/app_routes/app_router_names.dart';
+import 'package:medora/core/extensions/appointment_filter.dart';
 import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart';
 import 'package:medora/features/appointments/presentation/controller/cubit/cancelled_appointments_cubit.dart'
     show CancelledAppointmentsCubit;
 import 'package:medora/features/appointments/presentation/controller/states/cancelled_appointments_state.dart'
     show CancelledAppointmentsState;
-import 'package:medora/features/appointments/presentation/screens/appointment_details_screen.dart'
-    show AppointmentDetailsScreen;
 import 'package:medora/features/shared/presentation/screens/pagination_screen_mixin.dart'
     show PaginationScreenMixin;
 
@@ -36,12 +37,8 @@ class _CancelledAppointmentsListState extends State<CancelledAppointmentsList>
   @override
   Widget buildDataCard(ClientAppointmentsEntity appointment, int index) {
     return GestureDetector(
-      onTap: () => Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) =>
-              AppointmentDetailsScreen(appointment: appointment),
-        ),
-      ),
+      onTap: () =>
+          context.push(AppRouterNames.appointmentDetails, extra: appointment),
       child: AppointmentCard(
         appointmentStatus: AppointmentStatus.cancelled,
         appointment: appointment,
@@ -54,10 +51,13 @@ class _CancelledAppointmentsListState extends State<CancelledAppointmentsList>
     super.build(context);
     return BlocBuilder<CancelledAppointmentsCubit, CancelledAppointmentsState>(
       buildWhen: (previous, current) =>
-          previous.requestState != current.requestState||previous.isLoadingMore!=current.isLoadingMore,
-      builder: (context, state) {
-        return buildPaginationBody(context, state);
-      },
+          previous.requestState != current.requestState ||
+          previous.isLoadingMore != current.isLoadingMore,
+      builder: (context, state) => buildPaginationBody(
+        appointmentFilter: AppointmentFilter.canceled,
+        context: context,
+        state: state,
+      ),
     );
   }
 }

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medora/core/constants/themes/app_colors.dart';
+import 'package:go_router/go_router.dart';
+import 'package:medora/core/constants/app_duration/app_duration.dart';
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
+import 'package:medora/core/services/overlay_notification_service.dart';
 import 'package:medora/features/appointments/presentation/widgets/custom_widgets/adaptive_action_button.dart'
     show AdaptiveActionButton;
 import 'package:medora/features/doctor_profile/presentation/controller/states/doctor_profile_state.dart'
     show DoctorProfileState;
 
 import '../../../../core/constants/app_alerts/app_alerts.dart';
-import '../../../../core/constants/app_routes/app_router.dart';
 import '../../../../core/constants/app_routes/app_router_names.dart';
 import '../../../../core/constants/app_strings/app_strings.dart';
 import '../controller/cubit/doctor_profile_cubit.dart';
@@ -59,12 +60,11 @@ class SubmitProfileButton extends StatelessWidget {
   }
 
   void _showProfilePhotoRequiredAlert(BuildContext context) =>
-      AppAlerts.showTopSnackBarAlert(
+      OverlayNotificationService.show(
         context: context,
-        displayDuration: const Duration(seconds: 4),
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-        msg: AppStrings.profilePhotoRequired,
-        backgroundColor: AppColors.red,
+        message: AppStrings.profilePhotoRequired,
+        type: SnackBarType.error,
+        snackBarBehaviorType: SnackBarBehaviorType.top,
       );
 
   void _handleDoctorProfileState(
@@ -75,7 +75,7 @@ class SubmitProfileButton extends StatelessWidget {
       _showSuccessDialogAfterDelay(context);
       _navigateToDoctorListAfterDelay(context);
     } else if (state.doctorProfileState == LazyRequestState.error) {
-      AppAlerts.showErrorDialog(
+      AppAlerts.showCustomErrorDialog(
         context,
         state.doctorProfileError ?? AppStrings.defaultErrorMessage,
       );
@@ -83,11 +83,11 @@ class SubmitProfileButton extends StatelessWidget {
   }
 
   // Dismisses the keyboard if it's currently open.
-  void _dismissKeyboard() => AppRouter.dismissKeyboard();
+  void _dismissKeyboard() => FocusManager.instance.primaryFocus?.unfocus();
 
   // - Shows success dialog
   void _showSuccessDialogAfterDelay(BuildContext context) =>
-      Future.delayed(const Duration(milliseconds: 600), () {
+      Future.delayed(AppDurations.milliseconds_600, () {
         if (!context.mounted) return;
         AppAlerts.showAppointmentSuccessDialog(
           context: context,
@@ -97,11 +97,8 @@ class SubmitProfileButton extends StatelessWidget {
 
   // - Navigates to doctor list screen
   void _navigateToDoctorListAfterDelay(BuildContext context) =>
-      Future.delayed(const Duration(milliseconds: 2000), () {
+      Future.delayed(AppDurations.seconds_2, () {
         if (!context.mounted) return;
-        AppRouter.pushNamedAndRemoveUntil(
-          context,
-          AppRouterNames.bottomNavScreen,
-        );
+        context.go(AppRouterNames.bottomNav);
       });
 }

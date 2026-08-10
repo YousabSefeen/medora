@@ -1,56 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart'
-    show KeyboardVisibilityBuilder;
-import 'package:medora/core/constants/app_alerts/app_alerts.dart'
-    show AppAlerts;
-import 'package:medora/core/constants/app_routes/app_router.dart'
-    show AppRouter;
+
+import 'package:go_router/go_router.dart';
+import 'package:medora/core/constants/app_alerts/app_alerts.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart';
 import 'package:medora/core/constants/themes/app_colors.dart';
-import 'package:medora/core/enum/search_type.dart' show SearchType;
-import 'package:medora/features/search/presentation/controller/cubit/search_cubit.dart'
-    show SearchCubit;
-import 'package:medora/features/search/presentation/controller/states/search_states.dart'
-    show SearchStates;
-import 'package:medora/features/search/presentation/widgets/filter_sheet_content.dart'
-    show FilterSheetContent;
-import 'package:medora/features/search/presentation/widgets/shared/criteria_filter_icon.dart'
-    show CriteriaFilterIcon;
+import 'package:medora/core/enum/search_type.dart';
+import 'package:medora/core/extensions/context_extension.dart';
+import 'package:medora/features/search/presentation/controller/cubit/search_cubit.dart';
+import 'package:medora/features/search/presentation/controller/states/search_states.dart';
+import 'package:medora/features/search/presentation/widgets/filter_sheet_content.dart';
+import 'package:medora/features/search/presentation/widgets/shared/criteria_filter_icon.dart';
 
 class SearchFilterSheetButton extends StatelessWidget {
   const SearchFilterSheetButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return KeyboardVisibilityBuilder(
-      builder: (context, isKeyboardVisible) =>
-          BlocSelector<SearchCubit, SearchStates, SearchType>(
-            selector: (state) => state.searchType,
-            builder: (context, searchType) => CriteriaFilterIcon(
-              isSearchingByCriteria: searchType == SearchType.byCriteria,
-              onPressed: () {
-                if (isKeyboardVisible) {
-                  _dismissKeyboardThenShowFilterBottomSheet(context);
-                } else {
-                  _showFilterSheet(context);
-                }
-              },
-            ),
-          ),
+    return BlocSelector<SearchCubit, SearchStates, SearchType>(
+      selector: (state) => state.searchType,
+      builder: (context, searchType) => CriteriaFilterIcon(
+        isSearchingByCriteria: searchType == SearchType.byCriteria,
+        onPressed: () => _showFilterSheet(context),
+      ),
     );
   }
 
-  void _dismissKeyboardThenShowFilterBottomSheet(BuildContext context) {
-    AppRouter.dismissKeyboard();
-
-    Future.delayed(const Duration(milliseconds: 300), () {
-      if (!context.mounted) return;
-      _showFilterSheet(context);
-    });
-  }
-
   void _showFilterSheet(BuildContext context) {
+    context.ensureKeyboardIsClosed();
     _synchronizeFilters(context);
     _showSheet(context);
   }
@@ -59,7 +36,7 @@ class SearchFilterSheetButton extends StatelessWidget {
       context.read<SearchCubit>().synchronizeDraftFiltersWithConfirmed();
 
   void _showSheet(BuildContext context) => AppAlerts.showLeftSheet(
-    onCancelPressed: () => Navigator.of(context).pop(),
+    onCancelPressed: () => context.pop(),
     context: context,
     appBarBackgroundColor: AppColors.white,
     appBarTitle: AppStrings.filterSearch,

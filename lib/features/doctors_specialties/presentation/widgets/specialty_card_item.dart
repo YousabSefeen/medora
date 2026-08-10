@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:medora/core/constants/app_borders/app_borders.dart';
-import 'package:medora/core/constants/app_routes/app_router.dart'
-    show AppRouter;
+import 'package:medora/core/constants/app_routes/app_router_names.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/enum/app_view_context.dart' show AppViewContext;
@@ -10,8 +10,6 @@ import 'package:medora/core/enum/medical_specialty_view_styles.dart'
     show MedicalSpecialtyViewStyles;
 import 'package:medora/features/doctors_specialties/data/models/medical_specialty.dart'
     show MedicalSpecialty;
-import 'package:medora/features/doctors_specialties/presentation/screens/specialty_doctors_screen.dart'
-    show SpecialtyDoctorsScreen;
 
 class SpecialtyCardItem extends StatelessWidget {
   final MedicalSpecialty specialty;
@@ -80,8 +78,6 @@ class SpecialtyCardItem extends StatelessWidget {
         : textWidget;
   }
 
-  void _navigateToSpecialtyDoctors(BuildContext context) => AppRouter.push(
-    context,
-    SpecialtyDoctorsScreen(specialtyName: specialty.name),
-  );
+  void _navigateToSpecialtyDoctors(BuildContext context) =>
+      context.push(AppRouterNames.specialtyDoctors, extra: specialty.name);
 }

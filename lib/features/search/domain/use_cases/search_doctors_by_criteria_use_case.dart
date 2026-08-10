@@ -18,7 +18,7 @@ class SearchDoctorsByCriteriaUseCase
 
   @override
   Future<Either<Failure, List<DoctorEntity>>> call(
-    SearchFilters params,
+    SearchFilters email,
   ) async =>
-      await searchRepositoryBase.searchDoctorsByCriteria(filters: params);
+      await searchRepositoryBase.searchDoctorsByCriteria(filters: email);
 }

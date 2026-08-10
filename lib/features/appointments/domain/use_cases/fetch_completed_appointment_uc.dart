@@ -19,10 +19,10 @@ class FetchCompletedAppointmentUC
 
   @override
   Future<Either<Failure, PaginatedDataResponse<ClientAppointmentsEntity>>> call(
-    PaginationParameters parameters,
+    PaginationParameters email,
   ) async {
     return await appointmentRepositoryBase.fetchCompletedAppointments(
-      parameters: parameters,
+      parameters: email,
     );
   }
 }

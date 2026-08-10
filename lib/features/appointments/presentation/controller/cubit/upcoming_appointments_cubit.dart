@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart'
-    show ClientAppointmentsEntity;
+    show ClientAppointmentsEntity, AppointmentParsing;
 import 'package:medora/features/appointments/domain/use_cases/fetch_upcoming_appointment_uc.dart'
     show FetchUpcomingAppointmentUC;
 import 'package:medora/features/appointments/presentation/controller/states/upcoming_appointments_state.dart'
@@ -36,6 +36,8 @@ class UpcomingAppointmentsCubit
     required String newDate,
     required String newTime,
   }) {
+    if (state.dataList.isEmpty) return;
+
     final updatedList = state.dataList.map((appointment) {
       if (appointment.appointmentId == appointmentId) {
         return appointment.copyWith(
@@ -46,14 +48,36 @@ class UpcomingAppointmentsCubit
       return appointment;
     }).toList();
 
+    _sortAppointments(updatedList);
     emit(state.copyWith(dataList: updatedList));
   }
 
   void removeAppointmentLocally({required String appointmentId}) {
-    final updatedList = state.dataList
-        .where((appointment) => appointment.appointmentId != appointmentId)
-        .toList();
+    if (state.dataList.isEmpty) return;
+    final updatedList = List<ClientAppointmentsEntity>.from(
+      state.dataList,
+    )..removeWhere((appointment) => appointment.appointmentId == appointmentId);
 
     emit(state.copyWith(dataList: updatedList));
+  }
+
+  void addAppointmentLocally({
+    required ClientAppointmentsEntity clientAppointment,
+  }) {
+    if (state.dataList.isEmpty) return;
+
+    final updatedList = List<ClientAppointmentsEntity>.from(state.dataList)
+      ..add(clientAppointment);
+    _sortAppointments(updatedList);
+    emit(state.copyWith(dataList: updatedList));
+  }
+
+  void _sortAppointments(List<ClientAppointmentsEntity> list) {
+    list.sort((a, b) {
+      final dateTimeA = a.dateTime;
+      final dateTimeB = b.dateTime;
+
+      return dateTimeA.compareTo(dateTimeB);
+    });
   }
 }

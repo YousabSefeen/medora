@@ -93,7 +93,7 @@ class _GenderDropdownView extends StatelessWidget {
           ),
           actionWidget: Icon(Icons.arrow_drop_down_circle_sharp, size: 23.sp),
           listPadding: const EdgeInsets.all(15),
-          listMargin: EdgeInsets.only(left: context.screenWidth * 0.5),
+        //  listMargin: EdgeInsets.only(left: context.screenWidth * 0.5),
           selectedItemIcon: _buildSelectedIcon(),
           dropDownAnimationParameters: _buildAnimationParameters(),
           onChangeSelectedIndex: onChanged,

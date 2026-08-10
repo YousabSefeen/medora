@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medora/core/constants/app_routes/app_router.dart'
-    show AppRouter;
+import 'package:go_router/go_router.dart';
+import 'package:medora/core/constants/app_routes/app_router_names.dart';
 import 'package:medora/core/di/injection_container.dart' show sl;
 import 'package:medora/core/enum/payment_gateways_types.dart'
     show PaymentGatewaysTypes;
@@ -14,8 +14,6 @@ import 'package:medora/features/payment_gateways/shared/actual_web_view_controll
     show ActualWebViewControllerNavigator;
 import 'package:medora/features/payment_gateways/shared/screens/web_view_payment_screen_mixin.dart'
     show WebViewPaymentScreenMixin;
-import 'package:medora/features/payment_gateways/transaction_process_states/payment_success/screens/payment_success_screen.dart'
-    show PaymentSuccessScreen;
 
 class PaypalPaymentScreen extends StatefulWidget {
   const PaypalPaymentScreen({super.key});
@@ -46,13 +44,12 @@ class _PaypalPaymentScreenState extends State<PaypalPaymentScreen>
   @override
   void handlePaymentSuccess(dynamic successData) {
     if (mounted) {
-      AppRouter.pushAndRemoveUntil(
-        context,
-        PaymentSuccessScreen(
-          paymentMethod: PaymentGatewaysTypes.payPal,
-          paypalEmail: successData,
-        ),
-      );
+      final extra = {
+        'paymentMethod': PaymentGatewaysTypes.payPal,
+        'paypalResponse': successData,
+      };
+
+      context.go(AppRouterNames.paymentSuccess, extra: extra);
     }
   }
 
@@ -66,7 +63,7 @@ class _PaypalPaymentScreenState extends State<PaypalPaymentScreen>
       child: BlocConsumer<PaypalPaymentCubit, PaypalPaymentState>(
         listener: (context, state) {
           if (shouldShowError(state)) {
-            handleErrorState();
+            handleErrorState(state.webViewErrorMessage);
           } else if (shouldSetupWebView(state)) {
             setupWebView();
           } else if (state.webViewStatus == WebViewStatus.success) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:medora/core/constants/app_alerts/app_alerts.dart'
     show AppAlerts;
 import 'package:medora/core/constants/app_strings/app_strings.dart'
@@ -82,7 +83,7 @@ class AppointmentCancellationScreen extends StatelessWidget {
       message: AppStrings.cancelledSuccessfullyMsg,
     );
 
-    if (context.mounted) Navigator.pop(context);
+    if (context.mounted) context.pop();
   }
 
   void _handleError(BuildContext context, String message) {
@@ -105,7 +106,7 @@ class _CancelAppBar extends StatelessWidget implements PreferredSizeWidget {
     ),
     actions: [
       IconButton(
-        onPressed: () => Navigator.pop(context),
+        onPressed: () => context.pop(),
         icon: const FaIcon(FontAwesomeIcons.xmark, color: Colors.black),
       ),
     ],

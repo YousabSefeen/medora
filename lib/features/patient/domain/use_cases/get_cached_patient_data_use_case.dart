@@ -14,7 +14,7 @@ class GetCachedPatientDataUseCase
   GetCachedPatientDataUseCase({required this.patientRepository});
 
   @override
-  Future<Either<Failure, PatientEntity?>> call(NoParams params) async {
+  Future<Either<Failure, PatientEntity?>> call(NoParams email) async {
     return await patientRepository.getCachedPatientData();
   }
 }

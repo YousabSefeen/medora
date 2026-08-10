@@ -7,7 +7,7 @@ import 'package:medora/core/utils/date_time_formatter.dart'
 import 'package:medora/core/utils/time_slot_helper.dart' show TimeSlotHelper;
 import 'package:medora/features/appointments/domain/params/fetch_booked_time_slots_params.dart' show FetchBookedTimeSlotsParams;
 import 'package:medora/features/appointments/domain/use_cases/fetch_booked_time_slots_use_case.dart'
-    show FetchBookedTimeSlotsUseCase, FetchBookedTimeSlotsParams;
+    show FetchBookedTimeSlotsUseCase  ;
 import 'package:medora/features/appointments/presentation/controller/states/time_slot_state.dart'
     show TimeSlotState;
 import 'package:medora/features/shared/models/doctor_schedule_model.dart'
@@ -74,7 +74,7 @@ class TimeSlotCubit extends Cubit<TimeSlotState> {
 
     final status = isWorking
         ? AppointmentAvailabilityStatus.available
-        : AppointmentAvailabilityStatus.doctorNotWorkingOnSelectedDate;
+        : AppointmentAvailabilityStatus.notWorkingDay;
 
     emit(state.copyWith(availabilityStatus: status));
     return isWorking;

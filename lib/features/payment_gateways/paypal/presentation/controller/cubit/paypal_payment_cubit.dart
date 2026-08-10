@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medora/core/constants/app_strings/app_strings.dart'
-    show AppStrings;
+import 'package:medora/core/constants/app_strings/app_errors_strings.dart';
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 import 'package:medora/core/enum/web_view_status.dart' show WebViewStatus;
 import 'package:medora/core/payment_gateway_manager/paypal_payment/paypal_keys.dart'
@@ -62,11 +61,11 @@ class PaypalPaymentCubit extends Cubit<PaypalPaymentState> {
         );
       },
       (paypalPaymentIntentResponse) => emit(
-          state.copyWith(
-            paymentIntentResponse: paypalPaymentIntentResponse,
-            paymentIntentState: LazyRequestState.loaded,
-          ),
+        state.copyWith(
+          paymentIntentResponse: paypalPaymentIntentResponse,
+          paymentIntentState: LazyRequestState.loaded,
         ),
+      ),
     );
   }
 
@@ -122,7 +121,7 @@ class PaypalPaymentCubit extends Cubit<PaypalPaymentState> {
   }
 
   void _processCancelledPayment() =>
-      _emitWebViewError(AppStrings.paymentCancelledError);
+      _emitWebViewError(AppErrorsStrings.paymentCanceled);
 
   Future<void> _executePaypalPayment({required String payerId}) async {
     final responseEither = await paypalRepository.executePaypalPayment(
@@ -131,7 +130,7 @@ class PaypalPaymentCubit extends Cubit<PaypalPaymentState> {
       accessToken: state.paymentIntentResponse!.accessToken,
     );
     responseEither.fold((failure) => _emitWebViewError(failure.toString()), (
-      result,
+      Map<String, dynamic> result,
     ) {
       if (result['success']) {
         emit(

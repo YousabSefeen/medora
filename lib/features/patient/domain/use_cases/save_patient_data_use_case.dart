@@ -12,7 +12,7 @@ class SavePatientDataUseCase extends BaseUseCase<void, PatientEntity> {
   SavePatientDataUseCase({required this.patientRepository});
 
   @override
-  Future<Either<Failure, void>> call(PatientEntity params) async {
-    return await patientRepository.savePatientData(params);
+  Future<Either<Failure, void>> call(PatientEntity email) async {
+    return await patientRepository.savePatientData(email);
   }
 }

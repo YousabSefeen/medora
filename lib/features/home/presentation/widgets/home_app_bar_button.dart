@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart' show FaIcon;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart' show FaIcon, FaIconData;
 import 'package:medora/features/home/presentation/constants/home_constants.dart'
     show HomeConstants;
 
 class HomeAppBarButton extends StatelessWidget {
-  final IconData icon;
+  final FaIconData icon;
   final VoidCallback onPressed;
 
   const HomeAppBarButton({

@@ -12,9 +12,9 @@ class RescheduleAppointmentUseCase
   RescheduleAppointmentUseCase({required this.appointmentRepositoryBase});
 
   @override
-  Future<Either<Failure, void>> call(RescheduleAppointmentParams params) async {
+  Future<Either<Failure, void>> call(RescheduleAppointmentParams email) async {
     return await appointmentRepositoryBase.rescheduleAppointment(
-      queryParams: params.toMap(),
+      queryParams: email.toMap(),
     );
   }
 }

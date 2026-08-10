@@ -19,8 +19,8 @@ class FetchDoctorsListUseCase extends BasePaginationUseCase<DoctorEntity> {
 
   @override
   Future<Either<Failure, PaginatedDataResponse<DoctorEntity>>> call(
-    PaginationParameters parameters,
+    PaginationParameters email,
   ) async {
-    return await _repository.getDoctorsList(parameters: parameters);
+    return await _repository.getDoctorsList(parameters: email);
   }
 }

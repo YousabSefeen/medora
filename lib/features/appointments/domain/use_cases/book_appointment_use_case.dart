@@ -13,9 +13,9 @@ class BookAppointmentUseCase
   BookAppointmentUseCase({required this.appointmentRepositoryBase});
 
   @override
-  Future<Either<Failure, String>> call(BookAppointmentParams params) {
+  Future<Either<Failure, String>> call(BookAppointmentParams email) {
     return appointmentRepositoryBase.bookAppointment(
-      queryParams: params.toMap(),
+      queryParams: email.toMap(),
     );
   }
 }

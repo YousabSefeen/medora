@@ -11,7 +11,7 @@ abstract class BasePaginationUseCase<T>
     extends BaseUseCase<PaginatedDataResponse<T>, PaginationParameters> {
 
   @override
-  Future<Either<Failure, PaginatedDataResponse<T>>> call(PaginationParameters parameters);
+  Future<Either<Failure, PaginatedDataResponse<T>>> call(PaginationParameters email);
 }
 
 //----------------------------------------------------------------------------

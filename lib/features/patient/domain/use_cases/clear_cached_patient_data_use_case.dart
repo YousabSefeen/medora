@@ -11,7 +11,7 @@ class ClearCachedPatientDataUseCase extends BaseUseCase<void, NoParams> {
   ClearCachedPatientDataUseCase({required this.patientRepository});
 
   @override
-  Future<Either<Failure, void>> call(NoParams params) async {
+  Future<Either<Failure, void>> call(NoParams email) async {
     return await patientRepository.clearCachedPatientData();
   }
 }

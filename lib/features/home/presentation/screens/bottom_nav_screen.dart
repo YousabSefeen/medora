@@ -1,20 +1,14 @@
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder, ReadContext;
-import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
-import 'package:medora/features/home/presentation/constants/bottom_nav_constants.dart'
-    show BottomNavConstants;
-import 'package:medora/features/home/presentation/controller/cubits/bottom_nav_cubit.dart'
-    show BottomNavCubit;
-import 'package:medora/features/home/presentation/controller/states/bottom_nav_state.dart'
-    show BottomNavState;
-import 'package:medora/features/home/presentation/widgets/bottom_nav_search_button.dart'
-    show BottomNavSearchButton;
-import 'package:medora/features/home/presentation/widgets/bottom_nav_tab.dart'
-    show BottomNavTab;
-import 'package:medora/features/search/presentation/screens/search_screen.dart'
-    show SearchScreen;
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medora/core/constants/themes/app_colors.dart';
+import 'package:medora/features/home/presentation/constants/bottom_nav_constants.dart';
+import 'package:medora/features/home/presentation/controller/cubits/bottom_nav_cubit.dart';
+import 'package:medora/features/home/presentation/controller/states/bottom_nav_state.dart';
+import 'package:medora/features/home/presentation/widgets/bottom_nav_search_button.dart';
+
+import 'package:medora/features/home/presentation/widgets/custom_animated_bottom_bar.dart';
+import 'package:medora/features/search/presentation/screens/search_screen.dart';
 
 class BottomNavScreen extends StatefulWidget {
   const BottomNavScreen({super.key});
@@ -79,46 +73,23 @@ class _BottomNavScreenState extends State<BottomNavScreen>
             BottomNavSearchButton(isFabHidden: !isVisible),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: _buildAnimatedNavigationBar(),
+      bottomNavigationBar: CustomAnimatedBottomBar(
+        hideAnimationController: _hideBottomBarAnimationController,
+      ),
       body: SafeArea(
         child: NotificationListener<ScrollNotification>(
           onNotification: _handleScrollNotification,
           child: BlocBuilder<BottomNavCubit, BottomNavState>(
             buildWhen: (prev, curr) => prev.index != curr.index,
-            builder: (context, state) => _buildBody(state.index),
+            builder: (context, state) {
+              if (state.index == BottomNavConstants.searchTabIndex) {
+                return const SearchScreen();
+              }
+              return BottomNavConstants.screens[state.index];
+            },
           ),
         ),
       ),
     );
   }
-
-  Widget _buildBody(int index) {
-    if (index == BottomNavConstants.searchTabIndex) return const SearchScreen();
-    return BottomNavConstants.screens[index];
-  }
-
-  Widget _buildAnimatedNavigationBar() => RepaintBoundary(
-    child: BlocBuilder<BottomNavCubit, BottomNavState>(
-      buildWhen: (prev, curr) => prev.index != curr.index,
-      builder: (context, state) {
-        return AnimatedBottomNavigationBar.builder(
-          itemCount: BottomNavConstants.iconList.length,
-          tabBuilder: (int index, bool isActive) => BottomNavTab(
-            iconData: BottomNavConstants.iconList[index],
-            title: BottomNavConstants.titles[index],
-            isActive: isActive,
-          ),
-          backgroundColor: AppColors.softBlue,
-          activeIndex: state.index,
-          onTap: (index) =>
-              context.read<BottomNavCubit>().changeTabIndex(index),
-          hideAnimationController: _hideBottomBarAnimationController,
-          gapLocation: GapLocation.center,
-          notchSmoothness: NotchSmoothness.defaultEdge,
-          leftCornerRadius: 32,
-          rightCornerRadius: 32,
-        );
-      },
-    ),
-  );
 }

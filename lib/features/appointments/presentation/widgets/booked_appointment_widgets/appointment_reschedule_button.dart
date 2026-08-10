@@ -1,26 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medora/core/constants/app_alerts/app_alerts.dart'
-    show AppAlerts;
+import 'package:go_router/go_router.dart';
+import 'package:medora/core/constants/app_alerts/app_alerts.dart';
 import 'package:medora/core/constants/app_duration/app_duration.dart';
-import 'package:medora/core/constants/app_routes/app_router.dart'
-    show AppRouter;
+
 import 'package:medora/core/constants/app_strings/app_strings.dart';
 import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/di/injection_container.dart' show sl;
 import 'package:medora/core/enum/lazy_request_state.dart';
-import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart'
-    show ClientAppointmentsEntity;
-import 'package:medora/features/appointments/domain/use_cases/reschedule_appointment_use_case.dart'
-    show RescheduleAppointmentParams;
+import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart';
+import 'package:medora/features/appointments/domain/use_cases/reschedule_appointment_use_case.dart';
 import 'package:medora/features/appointments/presentation/controller/cubit/reschedule_appointment_cubit.dart';
 import 'package:medora/features/appointments/presentation/controller/cubit/time_slot_cubit.dart';
-import 'package:medora/features/appointments/presentation/controller/cubit/upcoming_appointments_cubit.dart'
-    show UpcomingAppointmentsCubit;
+import 'package:medora/features/appointments/presentation/controller/cubit/upcoming_appointments_cubit.dart';
 import 'package:medora/features/appointments/presentation/controller/states/reschedule_appointment_state.dart';
 import 'package:medora/features/appointments/presentation/controller/states/time_slot_state.dart';
-import 'package:medora/features/appointments/presentation/ui_models/appointment_reschedule_ui_model.dart'
-    show AppointmentRescheduleUIModel;
+import 'package:medora/features/appointments/presentation/ui_models/appointment_reschedule_ui_model.dart';
 import 'package:medora/features/appointments/presentation/widgets/custom_widgets/adaptive_action_button.dart';
 import 'package:medora/features/appointments/presentation/widgets/doctor_appointment_booking_section.dart';
 import 'package:medora/features/shared/models/doctor_schedule_model.dart';
@@ -121,11 +116,14 @@ class _RescheduleConfirmationButton extends StatelessWidget {
               builder: (context, timeSlotState) {
                 final isEnabled = _isTimeSlotSelected(timeSlotState);
 
-                return AdaptiveActionButton(
-                  title: AppStrings.confirmReschedule,
-                  isEnabled: isEnabled,
-                  isLoading: _isRescheduleLoading(context),
-                  onPressed: () => _executeReschedule(context, timeSlotState),
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: AdaptiveActionButton(
+                    title: AppStrings.confirmReschedule,
+                    isEnabled: isEnabled,
+                    isLoading: _isRescheduleLoading(context),
+                    onPressed: () => _executeReschedule(context, timeSlotState),
+                  ),
                 );
               },
             ),
@@ -207,7 +205,7 @@ class _RescheduleConfirmationButton extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!context.mounted) return;
 
-      AppRouter.pop(context);
+      context.pop();
       _showSuccessDialogWithDelay(context);
       _resetRescheduleState(context);
     });

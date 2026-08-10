@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart'
     show FontAwesomeIcons;
-import 'package:medora/core/constants/app_routes/app_router.dart';
+import 'package:go_router/go_router.dart';
 import 'package:medora/core/constants/app_routes/app_router_names.dart';
 import 'package:medora/features/home/presentation/constants/home_constants.dart'
     show HomeConstants;
@@ -32,8 +32,7 @@ class NotificationIconButton extends StatelessWidget {
         ),
         child: HomeAppBarButton(
           icon: FontAwesomeIcons.solidBell,
-          onPressed: () =>
-              AppRouter.pushNamed(context, AppRouterNames.notifications),
+          onPressed: () => context.push(AppRouterNames.notifications),
         ),
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medora/core/constants/app_routes/app_router.dart'
-    show AppRouter;
+import 'package:go_router/go_router.dart';
+import 'package:medora/core/constants/app_routes/app_router_names.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/core/di/injection_container.dart' show sl;
@@ -15,19 +15,18 @@ import 'package:medora/features/payment_gateways/paymob/presentation/controller/
 import 'package:medora/features/payment_gateways/shared/actual_web_view_controller_navigator.dart';
 import 'package:medora/features/payment_gateways/shared/screens/web_view_payment_screen_mixin.dart'
     show WebViewPaymentScreenMixin;
-import 'package:medora/features/payment_gateways/transaction_process_states/payment_success/screens/payment_success_screen.dart'
-    show PaymentSuccessScreen;
 
 class PaymobPaymentScreen extends StatefulWidget {
   final PaymentGatewaysTypes selectedPaymentMethod;
   final String phoneNumber;
-  static const int defaultTotalPrice = 100;
 
   const PaymobPaymentScreen({
     super.key,
     required this.selectedPaymentMethod,
     required this.phoneNumber,
   });
+
+  static const int defaultTotalPrice = 100;
 
   @override
   State<PaymobPaymentScreen> createState() => _PaymobPaymentScreenState();
@@ -63,13 +62,11 @@ class _PaymobPaymentScreenState extends State<PaymobPaymentScreen>
   @override
   void handlePaymentSuccess(dynamic successData) {
     if (mounted) {
-      AppRouter.pushAndRemoveUntil(
-        context,
-        PaymentSuccessScreen(
-          paymentMethod: widget.selectedPaymentMethod,
-          paymobResponse: successData,
-        ),
-      );
+      final extra = {
+        'paymentMethod': widget.selectedPaymentMethod,
+        'paymobResponse': successData,
+      };
+      context.go(AppRouterNames.paymentSuccess, extra: extra);
     }
   }
 
@@ -83,7 +80,7 @@ class _PaymobPaymentScreenState extends State<PaymobPaymentScreen>
       child: BlocConsumer<PaymobPaymentCubit, PaymobPaymentState>(
         listener: (context, state) {
           if (shouldShowError(state)) {
-            handleErrorState();
+            handleErrorState(state.webViewErrorMessage);
           } else if (shouldSetupWebView(state)) {
             setupWebView();
           } else if (state.webViewStatus == WebViewStatus.success) {

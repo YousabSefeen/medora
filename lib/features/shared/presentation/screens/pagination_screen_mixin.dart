@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medora/core/constants/app_strings/app_strings.dart'
-    show AppStrings;
-import 'package:medora/core/constants/common_widgets/content_unavailable_widget.dart'
-    show ContentUnavailableWidget;
-import 'package:medora/core/constants/common_widgets/error_retry_widget.dart'
-    show ErrorRetryWidget;
-import 'package:medora/core/constants/common_widgets/loading_list.dart'
-    show LoadingList;
-import 'package:medora/core/enum/request_state.dart' show RequestState;
-import 'package:medora/features/shared/presentation/controllers/cubit/base_pagination_cubit.dart'
-    show BasePaginationCubit;
-import 'package:medora/features/shared/presentation/controllers/state/base_pagination_state.dart'
-    show BasePaginationState;
-import 'package:medora/features/shared/presentation/widgets/pagination_footer_widget_.dart'
-    show PaginationFooterWidget;
+import 'package:medora/core/constants/app_strings/app_strings.dart';
+import 'package:medora/core/constants/common_widgets/error_retry_widget.dart';
+import 'package:medora/core/constants/common_widgets/loading_list.dart';
+import 'package:medora/core/enum/request_state.dart';
+import 'package:medora/core/extensions/appointment_filter.dart';
+import 'package:medora/features/appointments/presentation/widgets/empty_appointments_state.dart';
+import 'package:medora/features/shared/presentation/controllers/cubit/base_pagination_cubit.dart';
+import 'package:medora/features/shared/presentation/controllers/state/base_pagination_state.dart';
+import 'package:medora/features/shared/presentation/widgets/pagination_footer_widget_.dart';
 
 mixin PaginationScreenMixin<
   E,
@@ -71,10 +65,8 @@ mixin PaginationScreenMixin<
     onRetry: () => context.read<C>().fetchInitialList(),
   );
 
-  ContentUnavailableWidget buildEmptyWidget() {
-    return const ContentUnavailableWidget(
-      description: AppStrings.emptyUpcomingAppointmentsMessage,
-    );
+  EmptyAppointmentsState buildEmptyWidget(AppointmentFilter appointmentFilter) {
+    return EmptyAppointmentsState(appointmentFilter: appointmentFilter);
   }
 
   // Logic for counting the number of items (List + Footer)
@@ -90,7 +82,11 @@ mixin PaginationScreenMixin<
   /// ========== Main function for building the interface ==========
 
   // Building the pagination body (called in build())
-  Widget buildPaginationBody(BuildContext context, S state) {
+  Widget buildPaginationBody({
+    required AppointmentFilter appointmentFilter,
+    required BuildContext context,
+    required S state,
+  }) {
     if (state.requestState == RequestState.loading && state.dataList.isEmpty) {
       return buildInitialLoading();
     }
@@ -99,7 +95,7 @@ mixin PaginationScreenMixin<
       return buildErrorWidget(state.failureMessage);
     }
     if (state.requestState == RequestState.loaded && state.dataList.isEmpty) {
-      return buildEmptyWidget();
+      return buildEmptyWidget(appointmentFilter);
     }
 
     return ListView.builder(

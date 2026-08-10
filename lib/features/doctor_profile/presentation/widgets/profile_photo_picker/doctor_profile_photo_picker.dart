@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart' show SizeExtension;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart'
-    show FaIcon, FontAwesomeIcons;
+    show FaIcon, FontAwesomeIcons, FaIconData;
+import 'package:go_router/go_router.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:medora/core/animations/custom_animated_expansion_tile.dart'
@@ -17,6 +18,7 @@ import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart'
     show AppTextStyles;
 import 'package:medora/core/extensions/theme_extension.dart';
+import 'package:medora/core/services/logger_service.dart';
 import 'package:medora/features/doctor_profile/presentation/controller/cubit/doctor_profile_cubit.dart'
     show DoctorProfileCubit;
 import 'package:medora/features/doctor_profile/presentation/controller/states/doctor_profile_state.dart'
@@ -78,7 +80,8 @@ class DoctorProfilePhotoPicker extends StatelessWidget {
   // ==================== Bottom Sheet Logic ====================
 
   void _showPhotoOptionsBottomSheet(BuildContext rootContext) {
-    // التقاط الـ Cubit من الشاشة الرئيسية لتمريره لاحقاً
+    // Capture the Cubit from the main screen to scroll through later
+
     final cubit = rootContext.read<DoctorProfileCubit>();
 
     AppAlerts.showCustomBottomSheet(
@@ -101,7 +104,8 @@ class DoctorProfilePhotoPicker extends StatelessWidget {
                 leadingIconColor: AppColors.softBlue,
                 trailingIcon: FontAwesomeIcons.chevronRight,
                 onTap: () {
-                  Navigator.pop(rootContext);
+
+                  rootContext.pop();
                   _cropImage(rootContext, cubit.state.originalImagePath);
                 },
               ),
@@ -113,7 +117,7 @@ class DoctorProfilePhotoPicker extends StatelessWidget {
                 trailingIcon: FontAwesomeIcons.chevronRight,
                 onTap: () {
                   cubit.clearAllPhotos();
-                  Navigator.pop(rootContext);
+                  rootContext.pop();
                 },
               ),
               const SizedBox(height: 30),
@@ -150,7 +154,7 @@ class DoctorProfilePhotoPicker extends StatelessWidget {
                   leadingIcon: FontAwesomeIcons.camera,
                   leadingIconColor: AppColors.softBlue,
                   onTap: () {
-                    Navigator.pop(bottomSheetContext);
+                    bottomSheetContext.pop();
                     _pickAndProcessImage(rootContext, ImageSource.camera);
                   },
                 ),
@@ -160,7 +164,7 @@ class DoctorProfilePhotoPicker extends StatelessWidget {
                   leadingIcon: FontAwesomeIcons.image,
                   leadingIconColor: AppColors.softBlue,
                   onTap: () {
-                    Navigator.pop(bottomSheetContext);
+                    bottomSheetContext.pop();
                     _pickAndProcessImage(rootContext, ImageSource.gallery);
                   },
                 ),
@@ -184,9 +188,9 @@ class DoctorProfilePhotoPicker extends StatelessWidget {
     required BuildContext context,
     bool isChange = false,
     required String title,
-    required IconData leadingIcon,
+    required FaIconData leadingIcon,
     required Color leadingIconColor,
-    IconData? trailingIcon,
+    FaIconData? trailingIcon,
     required VoidCallback onTap,
   }) => ListTile(
     contentPadding: isChange

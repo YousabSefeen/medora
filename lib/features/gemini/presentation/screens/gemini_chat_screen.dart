@@ -4,14 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart' as types;
 import 'package:flutter_chat_core/flutter_chat_core.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart'
     show XFile, ImagePicker, ImageSource;
-import 'package:medora/core/constants/app_routes/app_router.dart';
+import 'package:medora/core/constants/app_routes/app_router_names.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/mappers/specialty_mapper.dart' show SpecialtyMapper;
 import 'package:medora/core/utils/language_detector.dart' show LanguageDetector;
-import 'package:medora/features/doctors_specialties/presentation/screens/specialty_doctors_screen.dart'
-    show SpecialtyDoctorsScreen;
 import 'package:medora/features/gemini/presentation/controllers/cubit/google_gemini_cubit.dart'
     show GoogleGeminiCubit;
 import 'package:medora/features/gemini/presentation/widgets/custom_chat.dart';
@@ -168,7 +167,7 @@ class _GeminiChatScreenState extends State<GeminiChatScreen> {
 
   // دالة المنطق بداخل GeminiChatScreen
   void _handleSpecialtyNavigation(BuildContext context, String? href) {
-    if (href == null || !href.startsWith('specialty://')){
+    if (href == null || !href.startsWith('specialty://')) {
       log('Invalid specialty link: $href');
       return;
     }
@@ -181,11 +180,13 @@ class _GeminiChatScreenState extends State<GeminiChatScreen> {
       log('specialtyId: $specialtyId');
       final specialtyName = SpecialtyMapper.getEnglishName(specialtyId);
       log('specialtyName: $specialtyName');
-      AppRouter.push(
-        context,
-        SpecialtyDoctorsScreen(specialtyName: specialtyName),
-      );
-      // هنا يمكنك وضع Navigator.push أو أي منطق أعمال آخر
+
+      _navigateToSpecialtyDoctors(context, specialtyName);
     }
   }
+
+  void _navigateToSpecialtyDoctors(
+    BuildContext context,
+    String specialtyName,
+  ) => context.push(AppRouterNames.specialtyDoctors, extra: specialtyName);
 }

@@ -1,22 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medora/core/constants/app_strings/app_strings.dart'
-    show AppStrings;
+import 'package:medora/core/constants/app_strings/app_strings.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/enum/payment_gateways_types.dart';
-import 'package:medora/core/extensions/theme_extension.dart' show ThemeExtension;
-import 'package:medora/features/appointments/presentation/controller/cubit/book_appointment_cubit.dart'
-    show BookAppointmentCubit;
-import 'package:medora/features/appointments/presentation/controller/cubit/time_slot_cubit.dart'
-    show TimeSlotCubit;
-import 'package:medora/features/payment_gateways/transaction_process_states/payment_success/screens/payment_success_screen.dart'
-    show PaymentSuccessScreen;
-import 'package:medora/features/payment_gateways/transaction_process_states/payment_success/widgets/appointment_details_widget.dart'
-    show AppointmentDetailsWidget;
-import 'package:medora/features/payment_gateways/transaction_process_states/payment_success/widgets/doctor_info.dart'
-    show DoctorInfo;
-import 'package:medora/features/payment_gateways/transaction_process_states/payment_success/widgets/payment_method_details.dart'
-    show PaymentMethodDetails;
+import 'package:medora/core/extensions/theme_extension.dart';
+import 'package:medora/features/appointments/presentation/controller/cubit/book_appointment_cubit.dart';
+import 'package:medora/features/appointments/presentation/controller/cubit/time_slot_cubit.dart';
+import 'package:medora/features/payment_gateways/transaction_process_states/payment_success/screens/payment_success_screen.dart';
+import 'package:medora/features/payment_gateways/transaction_process_states/payment_success/widgets/appointment_details_widget.dart';
+import 'package:medora/features/payment_gateways/transaction_process_states/payment_success/widgets/doctor_info.dart';
+import 'package:medora/features/payment_gateways/transaction_process_states/payment_success/widgets/payment_method_details.dart';
 
 class AppointmentDetailsSuccessCard extends StatelessWidget {
   const AppointmentDetailsSuccessCard({super.key});
@@ -58,10 +51,11 @@ class AppointmentDetailsSuccessCard extends StatelessWidget {
             ),
             Text(
               AppStrings.paymentMethod,
-              style:context.textTheme.latoSemiBoldDark,
+              style: context.textTheme.latoSemiBoldDark,
             ),
 
             PaymentMethodDetails(paymentMethod: _paymentMethod(context)),
+            const SizedBox(height: 15),
           ],
         ),
       ),

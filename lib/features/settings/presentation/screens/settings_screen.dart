@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medora/core/constants/app_routes/app_router.dart'
-    show AppRouter;
-import 'package:medora/core/constants/app_routes/app_router_names.dart'
-    show AppRouterNames;
-import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
-import 'package:medora/features/auth/presentation/controller/cubit/login_cubit.dart'
-    show LoginCubit;
-import 'package:medora/features/home/presentation/widgets/home_screen_padding.dart'
-    show HomeScreenPadding;
+import 'package:medora/core/constants/app_routes/app_router_names.dart';
+import 'package:medora/core/constants/app_strings/app_strings.dart';
+import 'package:medora/core/constants/themes/app_colors.dart';
+import 'package:medora/features/auth/presentation/controller/cubit/auth_cubit.dart';
+import 'package:medora/features/home/presentation/widgets/home_screen_padding.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -53,8 +50,7 @@ class SettingsScreen extends StatelessWidget {
               size: 18.sp,
               color: Colors.black54,
             ),
-            onTap: () =>
-                AppRouter.pushNamed(context, AppRouterNames.doctorProfile),
+            onTap: () => context.push(AppRouterNames.doctorProfile),
           ),
           ListTile(
             leading: Icon(
@@ -73,21 +69,17 @@ class SettingsScreen extends StatelessWidget {
               size: 18.sp,
               color: Colors.black54,
             ),
-            onTap: () =>
-                AppRouter.pushNamed(context, AppRouterNames.bookedAppointments),
+            onTap: () => context.push(AppRouterNames.bookedAppointments),
           ),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
             width: double.infinity,
             child: ElevatedButton.icon(
               onPressed: () {
-                context.read<LoginCubit>().logout();
-                AppRouter.pushNamedAndRemoveUntil(
-                  context,
-                  AppRouterNames.login,
-                );
+                context.read<AuthCubit>().signOut();
+                context.go(AppRouterNames.signIn);
               },
-              label: const Text('Logout'),
+              label: const Text(AppStrings.signOut),
               icon: const Icon(
                 Icons.login_rounded,
                 color: Colors.black,

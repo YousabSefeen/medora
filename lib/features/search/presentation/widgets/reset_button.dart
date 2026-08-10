@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/core/constants/themes/app_colors.dart';
@@ -22,7 +23,7 @@ class ResetButton extends StatelessWidget {
   }
 
   void _navigateBackWithCriteriaSearch(BuildContext context) {
-    Navigator.of(context).pop();
+    context.pop();
     context.read<SearchCubit>().updateSearchType(SearchType.byName);
   }
 }

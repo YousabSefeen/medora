@@ -13,10 +13,10 @@ class FetchDoctorAppointmentsUseCase
 
   @override
   Future<Either<Failure, List<DoctorAppointmentEntity>>> call(
-    String params,
+    String email,
   ) async {
     return await appointmentRepositoryBase.fetchDoctorAppointments(
-      doctorId: params,
+      doctorId: email,
     );
   }
 }

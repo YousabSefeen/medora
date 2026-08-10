@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
@@ -28,7 +29,7 @@ class SpecialtiesSheetHeader extends StatelessWidget {
         children: [
           _specialtySearchField(context, onChanged),
           IconButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => context.pop(),
             icon: const Icon(Icons.close, color: Colors.black),
           ),
         ],

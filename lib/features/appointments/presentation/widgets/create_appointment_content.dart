@@ -18,9 +18,6 @@ class CreateAppointmentContent extends StatelessWidget {
 
   const CreateAppointmentContent({super.key, required this.doctor});
 
-  static const _horizontalPadding = 8.0;
-  static const _smallSpacing = 5.0;
-  static const _mediumSpacing = 20.0;
   static const _dividerPadding = 10.0;
 
   @override
@@ -28,17 +25,17 @@ class CreateAppointmentContent extends StatelessWidget {
     return SliverFillRemaining(
       hasScrollBody: false,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: _horizontalPadding),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: _smallSpacing),
+            const SizedBox(height: 5),
             DoctorInfoHeader(
               specialties: doctor.specialties,
               bio: doctor.bio,
               workingDays: doctor.doctorAvailability.workingDays,
             ),
-            const SizedBox(height: _mediumSpacing),
+            const SizedBox(height: 20),
             DoctorInfoFooter(
               variant: DoctorInfoVariant.details,
               fee: doctor.fees,
@@ -46,7 +43,15 @@ class CreateAppointmentContent extends StatelessWidget {
               iconSize: 18.sp,
               textSize: 12.sp,
             ),
-            _buildDivider(),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: _dividerPadding),
+              child: Divider(
+                color: Colors.black12,
+                thickness: 2,
+                indent: _dividerPadding,
+                endIndent: _dividerPadding,
+              ),
+            ),
             DoctorAppointmentBookingSection(
               doctorSchedule: DoctorScheduleModel(
                 doctorId: doctor.doctorId!,
@@ -58,14 +63,4 @@ class CreateAppointmentContent extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildDivider() => const Padding(
-    padding: EdgeInsets.symmetric(vertical: _dividerPadding),
-    child: Divider(
-      color: Colors.black12,
-      thickness: 2,
-      indent: _dividerPadding,
-      endIndent: _dividerPadding,
-    ),
-  );
 }

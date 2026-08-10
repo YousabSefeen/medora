@@ -4,8 +4,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart'
     show FaIcon, FontAwesomeIcons;
 import 'package:medora/core/animations/custom_animation_transition.dart'
     show CustomAnimationTransition;
-import 'package:medora/core/constants/app_alerts/app_alerts.dart'
-    show AppAlerts;
 import 'package:medora/core/constants/app_duration/app_duration.dart'
     show AppDurations;
 import 'package:medora/core/constants/app_strings/app_strings.dart'
@@ -13,6 +11,7 @@ import 'package:medora/core/constants/app_strings/app_strings.dart'
 import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/enum/animation_type.dart' show AnimationType;
 import 'package:medora/core/enum/request_state.dart' show RequestState;
+import 'package:medora/core/services/overlay_notification_service.dart';
 import 'package:medora/features/favorites/presentation/controller/cubit/favorites_cubit.dart'
     show FavoritesCubit;
 import 'package:medora/features/favorites/presentation/controller/states/favorites_states.dart'
@@ -40,7 +39,11 @@ class ToggleFavoriteButton extends StatelessWidget {
   /// Handles UI side effects when the toggle process fails.
   void _handleFavoriteToggleError(BuildContext context, FavoritesState state) {
     if (state.toggleState == RequestState.error) {
-      AppAlerts.showSnackBar(context, AppStrings.toggleFavoriteErrorMsg);
+      OverlayNotificationService.show(
+        context: context,
+        message: AppStrings.toggleFavoriteErrorMsg,
+        type: SnackBarType.error,
+      );
     }
   }
 

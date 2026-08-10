@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/enum/gender_type.dart' show GenderType;
+import 'package:medora/features/appointments/presentation/widgets/payment_selection_sheet.dart'
+    show PaymentSelectionSheet;
 import 'package:medora/features/patient/presentation/controllers/cubit/patient_cubit.dart'
     show PatientCubit;
 import 'package:medora/features/patient/presentation/widgets/patient_fields_controllers.dart'
     show PatientFieldsControllers;
-import 'package:medora/features/appointments/presentation/widgets/payment_selection_sheet.dart'
-    show PaymentSelectionSheet;
 
 import '../../../../core/constants/app_alerts/app_alerts.dart';
-import '../../../../core/constants/app_routes/app_router.dart';
 import '../../../../core/constants/app_strings/app_strings.dart';
 import '../../../appointments/presentation/widgets/custom_widgets/adaptive_action_button.dart';
 
@@ -43,8 +42,6 @@ class ProceedToPayButton extends StatelessWidget {
           patientCubit.cachePatientData(formControllers: formControllers);
           _openPaymentMethodSelection(context);
         }
-
-
       },
     );
   }
@@ -65,7 +62,7 @@ class ProceedToPayButton extends StatelessWidget {
   /// This is the first step in the payment process where the user selects
   /// their preferred payment method (Paymob, Stripe, PayPal)
   void _openPaymentMethodSelection(BuildContext context) {
-    AppRouter.dismissKeyboard();
+    _dismissKeyboard();
     AppAlerts.showCustomBottomSheet(
       context: context,
       appBarBackgroundColor: AppColors.white,
@@ -74,4 +71,7 @@ class ProceedToPayButton extends StatelessWidget {
       body: const PaymentSelectionSheet(),
     );
   }
+
+  static void _dismissKeyboard() =>
+      FocusManager.instance.primaryFocus?.unfocus();
 }

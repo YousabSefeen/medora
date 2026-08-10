@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:medora/core/constants/app_routes/app_router_names.dart';
+import 'package:medora/core/extensions/appointment_filter.dart';
 import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart';
-import 'package:medora/features/appointments/presentation/controller/cubit/upcoming_appointments_cubit.dart'
-    show UpcomingAppointmentsCubit;
-import 'package:medora/features/appointments/presentation/controller/states/upcoming_appointments_state.dart'
-    show UpcomingAppointmentsState;
-import 'package:medora/features/appointments/presentation/screens/appointment_details_screen.dart'
-    show AppointmentDetailsScreen;
-import 'package:medora/features/shared/presentation/screens/pagination_screen_mixin.dart'
-    show PaginationScreenMixin;
-
+import 'package:medora/features/appointments/presentation/controller/cubit/upcoming_appointments_cubit.dart';
+import 'package:medora/features/appointments/presentation/controller/states/upcoming_appointments_state.dart';
+import 'package:medora/features/shared/presentation/screens/pagination_screen_mixin.dart';
 import '../../../../core/enum/appointment_status.dart';
 import 'appointment_card.dart';
 
@@ -36,12 +33,8 @@ class _UpcomingAppointmentsListState extends State<UpcomingAppointmentsList>
   @override
   Widget buildDataCard(ClientAppointmentsEntity appointment, int index) {
     return GestureDetector(
-      onTap: () => Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) =>
-              AppointmentDetailsScreen(appointment: appointment),
-        ),
-      ),
+      onTap: () =>
+          context.push(AppRouterNames.appointmentDetails, extra: appointment),
       child: AppointmentCard(
         appointmentStatus: AppointmentStatus.confirmed,
         appointment: appointment,
@@ -56,7 +49,11 @@ class _UpcomingAppointmentsListState extends State<UpcomingAppointmentsList>
       buildWhen: (previous, current) =>
           previous.requestState != current.requestState ||
           previous.dataList != current.dataList,
-      builder: (context, state) => buildPaginationBody(context, state),
+      builder: (context, state) => buildPaginationBody(
+        appointmentFilter: AppointmentFilter.upcoming,
+        context: context,
+        state: state,
+      ),
     );
   }
 }

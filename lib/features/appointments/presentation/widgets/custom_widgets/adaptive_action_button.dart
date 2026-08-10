@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'package:medora/features/shared/presentation/widgets/custom_circular_progress.dart';
+
 import '../../../../../core/constants/themes/app_colors.dart';
 
 class AdaptiveActionButton extends StatelessWidget {
@@ -28,15 +30,13 @@ class AdaptiveActionButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: isEnabled ? onPressed : null,
         style: _buildButtonStyle(isEnabled),
-        child: isLoading
-            ? const CircularProgressIndicator(color: Colors.white)
-            : _buildButtonText(),
+        child: isLoading ? const CustomCircularProgress() : _buildButtonText(),
       ),
     );
   }
 
   ButtonStyle _buildButtonStyle(bool isEnabled) => ButtonStyle(
-    elevation: const WidgetStatePropertyAll(1),
+    elevation: const WidgetStatePropertyAll(0.5),
     backgroundColor: WidgetStatePropertyAll(
       isEnabled ? AppColors.softBlue : AppColors.customWhite,
     ),
@@ -46,12 +46,16 @@ class AdaptiveActionButton extends StatelessWidget {
     side: WidgetStatePropertyAll(
       isEnabled
           ? const BorderSide(color: Colors.transparent)
-          : const BorderSide(color: AppColors.black12),
+          : BorderSide(color: Colors.grey.shade400),
     ),
   );
 
   Widget _buildButtonText() => Text(
     title,
-    style: GoogleFonts.roboto(fontSize: 19.sp, fontWeight: FontWeight.w700),
+    style: GoogleFonts.caladea(
+      fontSize: 18.sp,
+      fontWeight: FontWeight.w700,
+      color: Colors.white,
+    ),
   );
 }

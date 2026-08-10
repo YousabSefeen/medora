@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:medora/core/constants/app_strings/app_strings.dart'
-    show AppStrings;
+import 'package:go_router/go_router.dart';
+import 'package:medora/core/constants/app_strings/app_errors_strings.dart';
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 import 'package:medora/core/enum/web_view_status.dart' show WebViewStatus;
-import 'package:medora/core/payment_gateway_manager/payment_helper/payment_navigation_helper.dart'
-    show PaymentNavigationHelper;
 import 'package:medora/features/payment_gateways/shared/widgets/web_view_payment_body.dart'
     show WebViewPaymentBody;
 import 'package:webview_flutter/webview_flutter.dart';
@@ -45,14 +43,19 @@ mixin WebViewPaymentScreenMixin<T extends StatefulWidget> on State<T> {
       state.webViewStatus == WebViewStatus.init &&
       state.progressValue == 0;
 
-  void handleErrorState() {
+  void handleErrorState(String? webViewErrorMessage) {
     if (mounted) {
-      Navigator.pop(context, AppStrings.paymentFailedError);
+      final errorMessage =
+          webViewErrorMessage ?? AppErrorsStrings.paymentFailedError;
+      context.pop(errorMessage);
     }
   }
 
-  void _popWithPaymentCancelledResult() =>
-      PaymentNavigationHelper.popWithPaymentCancelledResult(context);
+  void _popWithPaymentCancelledResult() {
+    if (context.mounted) {
+      context.pop(AppErrorsStrings.paymentCanceled);
+    }
+  }
 
   Widget buildPaymentScreen(BuildContext context, dynamic state) {
     return PopScope(

@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/enum/navigation_source.dart';
 import 'package:medora/features/appointments/presentation/widgets/create_appointment_app_bar.dart';
-import 'package:medora/features/appointments/presentation/widgets/create_appointment_content.dart'
-    show CreateAppointmentContent;
-import 'package:medora/features/appointments/presentation/widgets/create_appointment_footer_actions.dart'
-    show CreateAppointmentFooterActions;
+import 'package:medora/features/appointments/presentation/widgets/create_appointment_content.dart';
+import 'package:medora/features/appointments/presentation/widgets/create_appointment_footer_actions.dart';
 import 'package:medora/features/shared/domain/entities/doctor_entity.dart';
 
 class CreateAppointmentScreen extends StatelessWidget {
@@ -21,8 +19,7 @@ class CreateAppointmentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade50,
-
+      backgroundColor: AppColors.white,
       persistentFooterButtons: [CreateAppointmentFooterActions(doctor: doctor)],
       persistentFooterDecoration: _buildBoxDecoration(),
       body: SafeArea(
@@ -47,8 +44,8 @@ class CreateAppointmentScreen extends StatelessWidget {
     boxShadow: [
       BoxShadow(
         color: AppColors.black12,
-        spreadRadius: 5,
-        blurRadius: 7,
+        spreadRadius: 2,
+        blurRadius: 4,
         offset: Offset(0, 3),
       ),
     ],

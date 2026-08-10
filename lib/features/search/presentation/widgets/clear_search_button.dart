@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocSelector;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart'
-    show FontAwesomeIcons;
+    show FontAwesomeIcons, FaIcon;
 import 'package:medora/core/animations/custom_animation_transition.dart'
     show CustomAnimationTransition;
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
@@ -59,7 +59,7 @@ class ClearSearchButton extends StatelessWidget {
       const BoxDecoration(shape: BoxShape.circle, color: AppColors.red);
 
   Icon _buildIcon() =>
-      Icon(FontAwesomeIcons.xmark, size: 13.sp, color: Colors.white);
+      FaIcon(FontAwesomeIcons.xmark, size: 13.sp, color: Colors.white);
 
   ButtonStyle _buildButtonStyle() =>
       const ButtonStyle(overlayColor: WidgetStatePropertyAll(Colors.grey));

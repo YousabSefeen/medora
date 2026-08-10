@@ -3,18 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart' show ReadContext, BlocSelector;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart' show TypeAheadField;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart'
-    show FontAwesomeIcons;
+    show FontAwesomeIcons, FaIcon;
+import 'package:go_router/go_router.dart';
 import 'package:medora/core/constants/app_duration/app_duration.dart';
-import 'package:medora/core/constants/app_routes/app_router.dart'
-    show AppRouter;
+import 'package:medora/core/constants/app_routes/app_router_names.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart';
 import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/enum/navigation_source.dart' show NavigationSource;
 import 'package:medora/core/extensions/media_query_extension.dart'
     show MediaQueryExtension;
-import 'package:medora/features/appointments/presentation/screens/create_appointment_screen.dart'
-    show CreateAppointmentScreen;
 import 'package:medora/features/search/presentation/controller/cubit/home_doctor_search_cubit.dart'
     show HomeDoctorSearchCubit;
 import 'package:medora/features/search/presentation/controller/states/home_doctor_search_states.dart';
@@ -44,7 +42,7 @@ class DoctorSearchField extends StatelessWidget {
         return TypeAheadField<DoctorEntity>(
           hideOnEmpty: isFelledEmpty,
           hideOnUnfocus: false,
-          hideWithKeyboard: false,
+         // hideWithKeyboard: false,
           hideOnSelect: false,
 
           constraints: const BoxConstraints(),
@@ -159,7 +157,7 @@ class DoctorSearchField extends StatelessWidget {
         hintStyle: _createHintTextStyle(),
       );
 
-  Icon _buildPrefixIcon() => Icon(
+    FaIcon _buildPrefixIcon() => FaIcon(
     FontAwesomeIcons.magnifyingGlass,
     size: 15.sp,
     color: AppColors.white,
@@ -198,14 +196,13 @@ class DoctorSearchField extends StatelessWidget {
     DoctorEntity doctor,
   ) => HomeSearchDoctorCard(doctor: doctor);
 
-  void _handleDoctorSelection(DoctorEntity doctor, BuildContext context) =>
-      AppRouter.push(
-        context,
-        CreateAppointmentScreen(
-          doctor: doctor,
-          navigationSource: NavigationSource.search,
-        ),
-      );
+  void _handleDoctorSelection(DoctorEntity doctor, BuildContext context) {
+    final Map<String, dynamic> extra = {
+      'doctor': doctor,
+      'navigationSource': NavigationSource.search,
+    };
+    context.push(AppRouterNames.createAppointment, extra: extra);
+  }
 
   Padding _buildLoadingIndicator(BuildContext context) => const Padding(
     padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 5),

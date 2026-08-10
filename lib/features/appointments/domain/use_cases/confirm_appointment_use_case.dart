@@ -13,9 +13,9 @@ class ConfirmAppointmentUseCase
   ConfirmAppointmentUseCase({required this.appointmentRepositoryBase});
 
   @override
-  Future<Either<Failure, void>> call(ConfirmAppointmentParams params) {
+  Future<Either<Failure, void>> call(ConfirmAppointmentParams email) {
     return appointmentRepositoryBase.confirmAppointment(
-      queryParams: params.toMap(),
+      queryParams: email.toMap(),
     );
   }
 }

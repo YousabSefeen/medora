@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medora/core/constants/app_routes/app_router.dart';
 import 'package:medora/core/constants/app_routes/app_router_names.dart'
     show AppRouterNames;
 import 'package:medora/core/constants/app_strings/app_strings.dart'
@@ -40,5 +40,5 @@ class SeeAllSpecialties extends StatelessWidget {
   );
 
   void _navigateToSpecialties(BuildContext context) =>
-      AppRouter.pushNamed(context, AppRouterNames.medicalSpecialties);
+      context.push(AppRouterNames.medicalSpecialties);
 }

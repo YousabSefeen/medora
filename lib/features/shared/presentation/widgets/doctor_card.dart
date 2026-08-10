@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:medora/core/constants/app_routes/app_router.dart'
-    show AppRouter;
-import 'package:medora/features/appointments/presentation/screens/create_appointment_screen.dart'
-    show CreateAppointmentScreen;
+import 'package:go_router/go_router.dart';
+import 'package:medora/core/constants/app_routes/app_router_names.dart';
+import 'package:medora/core/enum/navigation_source.dart';
 import 'package:medora/features/shared/domain/entities/doctor_entity.dart'
     show DoctorEntity;
 import 'package:medora/features/shared/presentation/widgets/doctor_basic_info.dart'
@@ -19,15 +18,15 @@ class DoctorCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RepaintBoundary(
-      key:ValueKey(doctor.doctorId),
+      key: ValueKey(doctor.doctorId),
       child: Card(
         margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 8.h),
         child: InkWell(
           highlightColor: Colors.grey,
           splashColor: Colors.grey,
           borderRadius: BorderRadius.circular(12.r),
-          onTap: () =>
-              AppRouter.push(context, CreateAppointmentScreen(doctor: doctor)),
+          onTap: () => _navigatorToCreateAppointment(context),
+
           child: DoctorBasicInfo(
             doctor: doctor,
             config: DoctorCardConfig.defaultConfig(),
@@ -35,5 +34,13 @@ class DoctorCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _navigatorToCreateAppointment(BuildContext context) {
+    final Map<String, dynamic> extra = {
+      'doctor': doctor,
+      'navigationSource': NavigationSource.direct,
+    };
+    context.push(AppRouterNames.createAppointment, extra: extra);
   }
 }
