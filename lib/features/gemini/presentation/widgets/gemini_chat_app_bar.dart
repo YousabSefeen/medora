@@ -9,10 +9,11 @@ import 'package:medora/core/constants/themes/app_text_styles.dart'
 import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
 import 'package:medora/core/extensions/theme_extension.dart'
     show ThemeExtension;
-import 'package:medora/features/gemini/presentation/controllers/cubit/google_gemini_cubit.dart' show GoogleGeminiCubit;
+import 'package:medora/features/gemini/presentation/controllers/cubit/gemini_cubit.dart'
+    show GeminiCubit;
 
-import 'package:medora/features/gemini/presentation/controllers/states/gemini_chat_state.dart'
-    show GeminiChatState;
+import 'package:medora/features/gemini/presentation/controllers/states/gemini_state.dart'
+    show GeminiState;
 
 class GeminiChatAppBar extends StatelessWidget implements PreferredSizeWidget {
   const GeminiChatAppBar({super.key});
@@ -30,10 +31,10 @@ class GeminiChatAppBar extends StatelessWidget implements PreferredSizeWidget {
       )),
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(4.0),
-        child: BlocConsumer<GoogleGeminiCubit, GeminiChatState>(
-          listener: (BuildContext context, GeminiChatState state) =>
+        child: BlocConsumer<GeminiCubit, GeminiState>(
+          listener: (BuildContext context, GeminiState state) =>
               _handleErrorState(state, context),
-          builder: (BuildContext context, GeminiChatState state) =>
+          builder: (BuildContext context, GeminiState state) =>
               state.requestState == LazyRequestState.loading
               ? const PreferredSize(
                   preferredSize: Size.fromHeight(4),
@@ -48,7 +49,7 @@ class GeminiChatAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  void _handleErrorState(GeminiChatState state, BuildContext context) {
+  void _handleErrorState(GeminiState state, BuildContext context) {
     if (state.requestState == LazyRequestState.error) {
       print('_ChatViewState.build55555555555555555555555555555555555555555');
       if (state.requestStateError.contains('429')) {

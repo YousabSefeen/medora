@@ -2,16 +2,12 @@ import 'dart:io' show File;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart'
-    show Composer, SendButtonVisibilityMode;
-import 'package:flutter_screenutil/flutter_screenutil.dart' show SizeExtension;
-import 'package:font_awesome_flutter/font_awesome_flutter.dart'
-    show FaIcon, FontAwesomeIcons;
-import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
-import 'package:medora/features/gemini/presentation/controllers/cubit/google_gemini_cubit.dart'
-    show GoogleGeminiCubit;
-import 'package:medora/features/gemini/presentation/controllers/states/gemini_chat_state.dart'
-    show GeminiChatState;
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:medora/core/constants/themes/app_colors.dart';
+import 'package:medora/features/gemini/presentation/controllers/cubit/gemini_cubit.dart';
+import 'package:medora/features/gemini/presentation/controllers/states/gemini_state.dart';
 
 class GeminiChatComposer extends StatefulWidget {
   final BuildContext context;
@@ -32,7 +28,6 @@ class GeminiChatComposer extends StatefulWidget {
 class _GeminiChatComposerState extends State<GeminiChatComposer> {
   late TextEditingController _textEditingController;
 
-  // 1. تعريف متغير الحالة لاتجاه النص (الافتراضي حسب لغة جهازك أو تطبيقك)
   TextDirection _textDirection = TextDirection.rtl;
 
   @override
@@ -40,28 +35,27 @@ class _GeminiChatComposerState extends State<GeminiChatComposer> {
     super.initState();
     _textEditingController = TextEditingController();
 
-    // 2. إضافة مستمع لتغيرات النص
     _textEditingController.addListener(_handleTextDirection);
   }
 
-  // 3. دالة تحديد الاتجاه بناءً على أول حرف
+  //   Function to determine direction based on the first letter
   void _handleTextDirection() {
     if (_textEditingController.text.isEmpty ||
         _textEditingController.text.trim().isEmpty ||
         _textEditingController.text.trim().length > 1) {
       return;
     } else {
-      // الحصول على أول حرف
+      // Get the first character
       String firstChar = _textEditingController.text.trim().substring(0, 1);
 
-      // فحص إذا كان الحرف يقع ضمن نطاق الحروف العربية
+      // Check if the character falls within the range of Arabic characters
       final isArabic = RegExp(r'[\u0600-\u06FF]').hasMatch(firstChar);
 
       TextDirection newDirection = isArabic
           ? TextDirection.rtl
           : TextDirection.ltr;
 
-      // تحديث الواجهة فقط إذا تغير الاتجاه لتوفير الأداء
+      // Update the interface only if the orientation changes to optimize performance.
       if (newDirection != _textDirection) {
         setState(() {
           _textDirection = newDirection;
@@ -81,14 +75,13 @@ class _GeminiChatComposerState extends State<GeminiChatComposer> {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: _textDirection,
-      child: BlocSelector<GoogleGeminiCubit, GeminiChatState, String>(
+      child: BlocSelector<GeminiCubit, GeminiState, String>(
         selector: (state) => state.sourceImage,
         builder: (context, sourceImage) => Composer(
           sigmaY: 0,
           sigmaX: 0,
           left: 2,
           right: 0,
-        //  attachmentGap: 0,
 
           backgroundColor: AppColors.white,
           allowEmptyMessage: sourceImage == '' ? false : true,
@@ -100,6 +93,7 @@ class _GeminiChatComposerState extends State<GeminiChatComposer> {
           inputFillColor: AppColors.customWhite,
           padding: const EdgeInsets.only(bottom: 10),
           sendIcon: Icon(Icons.send, size: 25.sp),
+          gap: 5,
           topWidget: Padding(
             padding: const EdgeInsets.only(left: 8.0, top: 2),
             child: Align(
@@ -113,21 +107,28 @@ class _GeminiChatComposerState extends State<GeminiChatComposer> {
           attachmentIcon: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              IconButton(
-                constraints: const BoxConstraints(),
-                // onPressed: widget.onCameraTap,
-                onPressed: () {
-                  print('sourceImage $sourceImage');
-                },
-                icon: FaIcon(FontAwesomeIcons.camera, size: 20.sp),
+              const SizedBox(width: 5),
+              Expanded(
+                child: IconButton(
+                  constraints: const BoxConstraints(),
+                  onPressed: widget.onCameraTap,
+                  style: IconButton.styleFrom(
+                    backgroundColor: Colors.amber,
+                    shape: const CircleBorder(),
+                  ),
+
+                  icon: FaIcon(FontAwesomeIcons.camera, size: 20.r),
+                ),
               ),
-              IconButton(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                constraints: const BoxConstraints(),
+              Expanded(
+                child: IconButton(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  constraints: const BoxConstraints(),
 
-                onPressed: widget.onGalleryTap,
+                  onPressed: widget.onGalleryTap,
 
-                icon: FaIcon(FontAwesomeIcons.image, size: 20.sp),
+                  icon: FaIcon(FontAwesomeIcons.image, size: 20.r),
+                ),
               ),
             ],
           ),
@@ -138,14 +139,10 @@ class _GeminiChatComposerState extends State<GeminiChatComposer> {
 
   Widget _buildImageMessage(String sourceImage) => sourceImage == ''
       ? const SizedBox()
-      : Container(
-          margin: const EdgeInsets.all(0),
+      : Material(
+          color: AppColors.customWhite,
+          borderRadius: BorderRadius.circular(15),
 
-          padding: const EdgeInsets.all(0),
-          decoration: BoxDecoration(
-            color: AppColors.customWhite,
-            borderRadius: BorderRadius.circular(15),
-          ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,10 +155,9 @@ class _GeminiChatComposerState extends State<GeminiChatComposer> {
               ),
               IconButton(
                 constraints: const BoxConstraints(),
-                iconSize: 20.sp,
-                onPressed: () {
-                  widget.context.read<GoogleGeminiCubit>().setSourceImage('');
-                },
+                iconSize: 20.r,
+                onPressed: () =>
+                    widget.context.read<GeminiCubit>().clearSourceImage( ),
                 icon: const FaIcon(FontAwesomeIcons.xmark, color: Colors.red),
               ),
             ],

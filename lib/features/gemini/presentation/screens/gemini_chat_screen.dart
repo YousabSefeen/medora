@@ -1,41 +1,52 @@
-import 'dart:developer' show log;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart' as types;
-import 'package:flutter_chat_core/flutter_chat_core.dart';
-import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart'
-    show XFile, ImagePicker, ImageSource;
-import 'package:medora/core/constants/app_routes/app_router_names.dart';
-import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
-import 'package:medora/core/mappers/specialty_mapper.dart' show SpecialtyMapper;
-import 'package:medora/core/utils/language_detector.dart' show LanguageDetector;
-import 'package:medora/features/gemini/presentation/controllers/cubit/google_gemini_cubit.dart'
-    show GoogleGeminiCubit;
-import 'package:medora/features/gemini/presentation/widgets/custom_chat.dart';
-import 'package:medora/features/gemini/presentation/widgets/gemini_chat_app_bar.dart'
-    show GeminiChatAppBar;
+import 'package:image_picker/image_picker.dart';
 
-class GeminiChatScreen extends StatefulWidget {
+import '../../../../core/constants/themes/app_colors.dart';
+import '../../../../core/di/injection_container.dart';
+import '../controllers/cubit/gemini_cubit.dart';
+import '../helpers/chat_message_factory.dart';
+import '../helpers/specialty_link_handler.dart';
+import '../widgets/custom_chat.dart';
+import '../widgets/gemini_chat_app_bar.dart';
+
+class GeminiChatScreen extends StatelessWidget {
   const GeminiChatScreen({super.key});
 
   @override
-  State<GeminiChatScreen> createState() => _GeminiChatScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => sl<GeminiCubit>(),
+
+      child: const Scaffold(
+        backgroundColor: AppColors.customWhite,
+        appBar: GeminiChatAppBar(),
+        body: GeminiChatBody(),
+      ),
+    );
+  }
 }
 
-class _GeminiChatScreenState extends State<GeminiChatScreen> {
-  late final ImagePicker _picker;
+class GeminiChatBody extends StatefulWidget {
+  const GeminiChatBody({super.key});
+
+  @override
+  State<GeminiChatBody> createState() => _GeminiChatBodyState();
+}
+
+class _GeminiChatBodyState extends State<GeminiChatBody> {
+  late final ImagePicker _imagePicker;
   late final types.InMemoryChatController _chatController;
 
-  static const String _myId = 'user1';
+  static const String _userId = 'user1';
   static const String _geminiId = 'gemini_bot';
 
   @override
   void initState() {
     super.initState();
-    _picker = ImagePicker();
-    _chatController = InMemoryChatController();
+    _imagePicker = ImagePicker();
+    _chatController = types.InMemoryChatController();
   }
 
   @override
@@ -46,72 +57,68 @@ class _GeminiChatScreenState extends State<GeminiChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GoogleGeminiCubit(),
-      child: Scaffold(
-        backgroundColor: AppColors.customWhite,
-        appBar: const GeminiChatAppBar(),
-        body: Builder(
-          builder: (context) => CustomChat(
-            chatController: _chatController,
-            myId: _myId,
-            geminiId: _geminiId,
-            resolveUser: _resolveUser,
-            onMessageSend: (text) => _onUserSubmit(context, text),
-            onCameraTap: () => _pickImage(context, ImageSource.camera),
-            onGalleryTap: () => _pickImage(context, ImageSource.gallery),
-            onLinkTap: (href) => _handleSpecialtyNavigation(context, href),
-          ),
-        ),
-      ),
+    return CustomChat(
+      chatController: _chatController,
+      myId: _userId,
+      geminiId: _geminiId,
+      resolveUser: _resolveUser,
+      onMessageSend: (text) => _handleUserSubmit(context, text),
+      onCameraTap: () => _pickAndSetImage(context, ImageSource.camera),
+      onGalleryTap: () => _pickAndSetImage(context, ImageSource.gallery),
+      onLinkTap: (href) => SpecialtyLinkHandler.handleNavigation(context, href),
     );
   }
 
-  /// تقوم بجلب بيانات المستخدم بناءً على معرفه لتمييز الرسائل في واجهة المحادثة.
-  Future<User> _resolveUser(UserID id) async {
-    return id == _myId
-        ? const User(id: _myId, name: 'يوساب')
-        : const User(id: _geminiId, name: 'Gemini AI');
+  // Resolves user metadata based on ID for chat avatar and display labels.
+  Future<types.User> _resolveUser(types.UserID id) async {
+    return id == _userId
+        ? const types.User(id: _userId, name: 'Yousab')
+        : const types.User(id: _geminiId, name: 'Gemini AI');
   }
 
-  /// الدالة المسؤولة عن معالجة إرسال المستخدم، سواء كان نصاً فقط أو نصاً مع صورة،
-  /// ثم تهيئة تدفق الرد من الذكاء الاصطناعي.
-  void _onUserSubmit(BuildContext context, String text) {
-    final cubit = context.read<GoogleGeminiCubit>();
+  // Main handler for user submissions, dispatching user messages and initiating AI response streaming.
+  void _handleUserSubmit(BuildContext context, String text) {
+    final cubit = context.read<GeminiCubit>();
     final imagePath = cubit.state.sourceImage;
 
-    _displayUserContent(text, imagePath);
-    _processGeminiResponse(context, text);
+    _renderUserMessages(text: text, imagePath: imagePath);
+    _streamGeminiResponse(context, text);
   }
 
-  /// تعنى بإظهار محتوى المستخدم (نص/صورة) في قائمة المحادثة فور الإرسال،
-  /// مع مراعاة لغة النص والوسائط المرفقة.
-  void _displayUserContent(String text, String imagePath) {
+  // Renders both local user media and text messages to the chat controller UI.
+  void _renderUserMessages({required String text, required String imagePath}) {
     if (imagePath.isNotEmpty) {
-      _insertImageMessage(imagePath);
+      final imageMessage = ChatMessageFactory.createImageMessage(
+        imagePath: imagePath,
+        authorId: _userId,
+      );
+      _chatController.insertMessage(imageMessage);
     }
 
     if (text.trim().isNotEmpty) {
-      _insertTextMessage(text, _myId);
+      final textMessage = ChatMessageFactory.createTextMessage(
+        text: text,
+        authorId: _userId,
+      );
+      _chatController.insertMessage(textMessage);
     }
   }
 
-  /// تدير عملية استقبال الرد من Gemini وتحديث رسالة الرد بشكل لحظي (Streaming)
-  /// لضمان تجربة مستخدم سلسة وتفاعلية.
-  void _processGeminiResponse(BuildContext context, String text) {
+  // Subscribes to Gemini streaming responses and performs dynamic message creation/updates.
+  void _streamGeminiResponse(BuildContext context, String text) {
     String? responseMsgId;
-    TextMessage? lastResponseMsg;
+    types.TextMessage? lastResponseMsg;
 
-    context.read<GoogleGeminiCubit>().onActionSend(
+    context.read<GeminiCubit>().onActionSend(
       text: text,
       onUpdate: (fullText, isDone, lang) {
         if (responseMsgId == null) {
           responseMsgId = 'gemini_${DateTime.now().millisecondsSinceEpoch}';
-          lastResponseMsg = _createTextMessage(
-            fullText,
-            _geminiId,
-            responseMsgId!,
-            lang.name,
+          lastResponseMsg = ChatMessageFactory.createTextMessage(
+            text: fullText,
+            authorId: _geminiId,
+            customId: responseMsgId,
+            language: lang.name,
           );
           _chatController.insertMessage(lastResponseMsg!);
         } else {
@@ -126,67 +133,14 @@ class _GeminiChatScreenState extends State<GeminiChatScreen> {
     );
   }
 
-  void _insertTextMessage(String text, String authorId) {
-    final lang = LanguageDetector.detectLanguage(text);
-    final id = 'msg_${DateTime.now().millisecondsSinceEpoch}';
-    _chatController.insertMessage(
-      _createTextMessage(text, authorId, id, lang.name),
-    );
-  }
-
-  void _insertImageMessage(String path) => _chatController.insertMessage(
-    ImageMessage(
-      id: 'img_${DateTime.now().millisecondsSinceEpoch}',
-      authorId: _myId,
-      createdAt: DateTime.now(),
-      source: path,
-    ),
-  );
-
-  TextMessage _createTextMessage(
-    String text,
-    String authorId,
-    String id,
-    String langName,
-  ) => TextMessage(
-    id: id,
-    authorId: authorId,
-    text: text,
-    createdAt: DateTime.now(),
-    metadata: {'language': langName},
-  );
-
-  /// تتعامل مع اختيار الصور من الكاميرا أو الاستوديو وتخزين المسار في الحالة (State)
-  /// لعرضها كمعاينة قبل الإرسال النهائي.
-  Future<void> _pickImage(BuildContext context, ImageSource source) async {
-    final XFile? image = await _picker.pickImage(source: source);
-    if (context.mounted && image != null) {
-      context.read<GoogleGeminiCubit>().setSourceImage(image.path);
-    }
-  }
-
-  // دالة المنطق بداخل GeminiChatScreen
-  void _handleSpecialtyNavigation(BuildContext context, String? href) {
-    if (href == null || !href.startsWith('specialty://')) {
-      log('Invalid specialty link: $href');
-      return;
-    }
-    log(' Success specialty link: $href');
-
-    final idString = href.replaceFirst('specialty://', '');
-    final specialtyId = int.tryParse(idString);
-
-    if (specialtyId != null && specialtyId > 0) {
-      log('specialtyId: $specialtyId');
-      final specialtyName = SpecialtyMapper.getEnglishName(specialtyId);
-      log('specialtyName: $specialtyName');
-
-      _navigateToSpecialtyDoctors(context, specialtyName);
-    }
-  }
-
-  void _navigateToSpecialtyDoctors(
+  // Handles media capture/selection and passes the asset path to the Cubit state.
+  Future<void> _pickAndSetImage(
     BuildContext context,
-    String specialtyName,
-  ) => context.push(AppRouterNames.specialtyDoctors, extra: specialtyName);
+    ImageSource source,
+  ) async {
+    final XFile? image = await _imagePicker.pickImage(source: source);
+    if (context.mounted && image != null) {
+      context.read<GeminiCubit>().setSourceImage(image.path);
+    }
+  }
 }
