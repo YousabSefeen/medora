@@ -8,7 +8,7 @@ import 'package:medora/features/doctor_profile/presentation/widgets/custom_selec
     show CustomSelectionContainer;
 import 'package:medora/features/doctor_profile/presentation/widgets/days_sheet_button.dart'
     show DaysSheetButton;
-import 'package:medora/features/doctor_profile/presentation/widgets/section_title.dart'
+import 'package:medora/features/shared/presentation/widgets/section_title.dart'
     show SectionTitle;
 
 import '../controller/cubit/doctor_profile_cubit.dart';

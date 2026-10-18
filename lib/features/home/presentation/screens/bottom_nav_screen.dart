@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medora/core/constants/app_duration/app_duration.dart';
 import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/features/home/presentation/constants/bottom_nav_constants.dart';
 import 'package:medora/features/home/presentation/controller/cubits/bottom_nav_cubit.dart';
 import 'package:medora/features/home/presentation/controller/states/bottom_nav_state.dart';
 import 'package:medora/features/home/presentation/widgets/bottom_nav_search_button.dart';
-
 import 'package:medora/features/home/presentation/widgets/custom_animated_bottom_bar.dart';
 import 'package:medora/features/search/presentation/screens/search_screen.dart';
 
@@ -30,7 +30,7 @@ class _BottomNavScreenState extends State<BottomNavScreen>
   void initState() {
     super.initState();
     _hideBottomBarAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 500),
+      duration: AppDurations.milliseconds_500,
       vsync: this,
     );
   }

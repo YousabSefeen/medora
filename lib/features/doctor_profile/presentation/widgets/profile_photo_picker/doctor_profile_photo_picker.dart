@@ -2,28 +2,20 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart' show SizeExtension;
-import 'package:font_awesome_flutter/font_awesome_flutter.dart'
-    show FaIcon, FontAwesomeIcons, FaIconData;
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:medora/core/animations/custom_animated_expansion_tile.dart'
-    show CustomAnimatedExpansionTile;
+import 'package:medora/core/animations/custom_animated_expansion_tile.dart';
 import 'package:medora/core/constants/app_alerts/app_alerts.dart';
 import 'package:medora/core/constants/app_duration/app_duration.dart';
-import 'package:medora/core/constants/app_strings/app_strings.dart'
-    show AppStrings;
+import 'package:medora/core/constants/app_strings/app_strings.dart';
 import 'package:medora/core/constants/themes/app_colors.dart';
-import 'package:medora/core/constants/themes/app_text_styles.dart'
-    show AppTextStyles;
+import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/extensions/theme_extension.dart';
-import 'package:medora/core/services/logger_service.dart';
-import 'package:medora/features/doctor_profile/presentation/controller/cubit/doctor_profile_cubit.dart'
-    show DoctorProfileCubit;
-import 'package:medora/features/doctor_profile/presentation/controller/states/doctor_profile_state.dart'
-    show DoctorProfileState;
-import 'package:medora/features/doctor_profile/presentation/widgets/profile_photo_picker/profile_image_frame.dart';
+import 'package:medora/features/doctor_profile/presentation/controller/cubit/doctor_profile_cubit.dart';
+import 'package:medora/features/doctor_profile/presentation/controller/states/doctor_profile_state.dart';
 import 'package:medora/generated/assets.dart';
 
 class DoctorProfilePhotoPicker extends StatelessWidget {
@@ -31,7 +23,6 @@ class DoctorProfilePhotoPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 1. استخدام BlocSelector لتحسين الأداء (يستمع فقط لتغير مسار الصورة)
     return BlocSelector<DoctorProfileCubit, DoctorProfileState, String>(
       selector: (state) => state.pickedImagePath,
       builder: (context, pickedImagePath) {
@@ -44,15 +35,21 @@ class DoctorProfilePhotoPicker extends StatelessWidget {
     );
   }
 
-  // ==================== UI Builder Methods ====================
-
   Widget _buildImageCard(BuildContext rootContext, String path) =>
       GestureDetector(
         onTap: () => _showPhotoOptionsBottomSheet(rootContext),
         child: Stack(
-          alignment: Alignment.bottomRight,
+          alignment: Alignment.bottomCenter,
           children: [
-            ProfileImageFrame(child: Image.file(File(path), fit: BoxFit.cover)),
+            _ProfileImageFrame(
+              child: Image.file(
+                File(path),
+                fit: BoxFit.cover,
+                alignment: Alignment.topCenter,
+                width: double.infinity,
+                height: double.infinity,
+              ),
+            ),
             _buildEditPhotoIcon(),
           ],
         ),
@@ -74,7 +71,7 @@ class DoctorProfilePhotoPicker extends StatelessWidget {
 
   Widget _buildUploaderCard(BuildContext context) => GestureDetector(
     onTap: () => _pickAndProcessImage(context, ImageSource.gallery),
-    child: ProfileImageFrame(child: Assets.images.uploadProfileIcons.image()),
+    child: _ProfileImageFrame(child: Assets.images.uploadProfileIcons.image()),
   );
 
   // ==================== Bottom Sheet Logic ====================
@@ -104,7 +101,6 @@ class DoctorProfilePhotoPicker extends StatelessWidget {
                 leadingIconColor: AppColors.softBlue,
                 trailingIcon: FontAwesomeIcons.chevronRight,
                 onTap: () {
-
                   rootContext.pop();
                   _cropImage(rootContext, cubit.state.originalImagePath);
                 },
@@ -182,8 +178,6 @@ class DoctorProfilePhotoPicker extends StatelessWidget {
   void _toggleChangePhotoExpanded(BuildContext bottomSheetContext) =>
       bottomSheetContext.read<DoctorProfileCubit>().toggleChangePhotoExpanded();
 
-  // ==================== Helper Methods & Shared UI ====================
-
   ListTile _buildListTile({
     required BuildContext context,
     bool isChange = false,
@@ -208,7 +202,12 @@ class DoctorProfilePhotoPicker extends StatelessWidget {
     BuildContext context,
     ImageSource source,
   ) async {
-    final pickedFile = await ImagePicker().pickImage(source: source);
+    final pickedFile = await ImagePicker().pickImage(
+      source: source,
+      maxWidth: 1000,
+      maxHeight: 1000,
+      imageQuality: 80,
+    );
     if (pickedFile != null && context.mounted) {
       final cubit = context.read<DoctorProfileCubit>();
 
@@ -221,34 +220,28 @@ class DoctorProfilePhotoPicker extends StatelessWidget {
   Future<void> _cropImage(BuildContext context, String sourcePath) async {
     final croppedFile = await ImageCropper().cropImage(
       sourcePath: sourcePath,
-      compressQuality: 100,
-      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+      compressQuality: 80,
+      aspectRatio: const CropAspectRatio(ratioX: 3, ratioY: 4),
+      compressFormat: ImageCompressFormat.jpg,
       uiSettings: [
         AndroidUiSettings(
-          toolbarTitle: 'Cropper',
+          toolbarTitle: 'Crop Doctor Photo',
           toolbarColor: AppColors.black,
           toolbarWidgetColor: AppColors.white,
-          initAspectRatio: CropAspectRatioPreset.square,
+          initAspectRatio: CropAspectRatioPreset.ratio4x3,
           lockAspectRatio: true,
-          aspectRatioPresets: [
-            CropAspectRatioPreset.original,
-            CropAspectRatioPreset.square,
-            CropAspectRatioPreset.ratio4x3,
-            CropAspectRatioPresetCustom(),
-          ],
+          hideBottomControls: true,
+          aspectRatioPresets: [CropAspectRatioPreset.ratio4x3],
         ),
         IOSUiSettings(
-          title: 'Cropper',
-          aspectRatioPresets: [
-            CropAspectRatioPreset.original,
-            CropAspectRatioPreset.square,
-            CropAspectRatioPreset.ratio4x3,
-            CropAspectRatioPresetCustom(),
-          ],
+          title: 'Crop Doctor Photo',
+          aspectRatioPickerButtonHidden: true,
+          resetAspectRatioEnabled: false,
+          aspectRatioPresets: [CropAspectRatioPreset.ratio4x3],
         ),
         WebUiSettings(
           context: context,
-          size: const CropperSize(width: 520, height: 520),
+          size: const CropperSize(width: 600, height: 800),
         ),
       ],
     );
@@ -269,4 +262,37 @@ class CropAspectRatioPresetCustom implements CropAspectRatioPresetData {
 
   @override
   String get name => '2x3 (customized)';
+}
+
+class _ProfileImageFrame extends StatelessWidget {
+  final Widget child;
+  final double size;
+  final Color borderColor;
+
+  const _ProfileImageFrame({
+    super.key,
+    required this.child,
+    this.size = 110.0,
+    this.borderColor = AppColors.black26,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: size,
+      width: size,
+      padding: const EdgeInsets.all(2),
+      decoration: BoxDecoration(
+        border: Border.all(color: borderColor, width: 2),
+        shape: BoxShape.circle,
+      ),
+      child: ClipOval(
+        child: SizedBox(
+          width: double.infinity,
+          height: double.infinity,
+          child: child,
+        ),
+      ),
+    );
+  }
 }

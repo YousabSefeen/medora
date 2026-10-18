@@ -4,7 +4,7 @@ import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/features/doctor_profile/presentation/controller/form_controllers/doctor_fields_validator.dart'
     show DoctorFieldsValidator;
-import 'package:medora/features/doctor_profile/presentation/widgets/section_title.dart'
+import 'package:medora/features/shared/presentation/widgets/section_title.dart'
     show SectionTitle;
 
 import '../controller/cubit/doctor_profile_cubit.dart';

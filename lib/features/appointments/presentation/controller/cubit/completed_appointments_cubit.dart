@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:medora/core/services/logger_service.dart';
 import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart'
     show ClientAppointmentsEntity;
 import 'package:medora/features/appointments/domain/use_cases/fetch_completed_appointment_uc.dart'
@@ -29,5 +30,25 @@ class CompletedAppointmentsCubit
   Future<Either<Failure, PaginatedDataResponse<ClientAppointmentsEntity>>>
   getUseCaseCall(PaginationParameters params) {
     return useCase.call(params);
+  }
+
+  void updateAppointmentLocally({
+    required String appointmentId,
+    required bool isReviewed,
+    required String? reviewId,
+  }) {
+    if (state.dataList.isEmpty) return;
+
+    final updatedList = state.dataList.map((appointment) {
+      if (appointment.appointmentId == appointmentId) {
+        return appointment.copyWith(isReviewed: isReviewed, reviewId: reviewId);
+      }
+      AppLogger.warning(
+        'Success updateAppointmentLocally **\n reviewId ${appointment.reviewId}\n isReviewed ${appointment.isReviewed}****',
+      );
+
+      return appointment;
+    }).toList();
+    emit(state.copyWith(dataList: updatedList));
   }
 }

@@ -94,6 +94,8 @@ class PaymentSuccessScreen extends StatelessWidget {
     final patientCubit = context.read<PatientCubit>();
     context.read<UpcomingAppointmentsCubit>().addAppointmentLocally(
       clientAppointment: ClientAppointmentsEntity(
+        isReviewed: false,
+        reviewId: null,
         clientId: FirebaseAuth.instance.currentUser!.uid,
         doctorId: bookCubit.bookingDetails.doctorEntity.doctorId!,
         appointmentId: bookCubit.state.appointmentId,

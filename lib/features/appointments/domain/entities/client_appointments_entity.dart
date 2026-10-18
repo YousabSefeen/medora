@@ -14,6 +14,8 @@ class ClientAppointmentsEntity extends Equatable {
   final String appointmentTime;
   final String appointmentStatus;
   final DoctorEntity doctorEntity;
+  final bool isReviewed;
+  final String? reviewId;
 
   const ClientAppointmentsEntity({
     required this.clientId,
@@ -27,6 +29,8 @@ class ClientAppointmentsEntity extends Equatable {
     required this.appointmentTime,
     required this.appointmentStatus,
     required this.doctorEntity,
+    required this.isReviewed,
+    this.reviewId,
   });
 
   ClientAppointmentsEntity copyWith({
@@ -41,6 +45,9 @@ class ClientAppointmentsEntity extends Equatable {
     String? appointmentTime,
     String? appointmentStatus,
     DoctorEntity? doctorEntity,
+
+    bool? isReviewed,
+    String? reviewId,
   }) {
     return ClientAppointmentsEntity(
       clientId: clientId ?? this.clientId,
@@ -54,6 +61,8 @@ class ClientAppointmentsEntity extends Equatable {
       appointmentTime: appointmentTime ?? this.appointmentTime,
       appointmentStatus: appointmentStatus ?? this.appointmentStatus,
       doctorEntity: doctorEntity ?? this.doctorEntity,
+      isReviewed: isReviewed ?? this.isReviewed,
+      reviewId: reviewId ?? this.reviewId,
     );
   }
 
@@ -70,8 +79,11 @@ class ClientAppointmentsEntity extends Equatable {
     appointmentTime,
     appointmentStatus,
     doctorEntity,
+    isReviewed,
+    reviewId,
   ];
 }
+
 extension AppointmentParsing on ClientAppointmentsEntity {
   DateTime get dateTime {
     try {

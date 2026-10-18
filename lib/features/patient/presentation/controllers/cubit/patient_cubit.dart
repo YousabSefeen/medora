@@ -50,6 +50,7 @@ class PatientCubit extends Cubit<PatientState> {
             ),
           );
         }
+        emit(state.copyWith(getPatientDataState: LazyRequestState.loaded));
       },
     );
   }
@@ -75,8 +76,7 @@ class PatientCubit extends Cubit<PatientState> {
   void changeValidateMode() =>
       emit(state.copyWith(validateMode: AutovalidateMode.always));
 
-  void onChangeSelectedGenderIndex(int index) {
-    final gender = index == 0 ? GenderType.male : GenderType.female;
+  void onChangeSelectedGenderIndex(GenderType gender) {
     emit(state.copyWith(genderType: gender));
   }
 

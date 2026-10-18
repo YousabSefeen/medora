@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+    <circle fill="none" stroke="#000000" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="128" cy="124" r="56"></circle>
+    <circle fill="none" stroke="#000000" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="128" cy="124" r="20"></circle>
+    <path fill="none" stroke="#000000" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="  M128,48C72.534,48,24.874,80.912,4,128c20.874,47.088,68.534,80,124,80s103.126-32.912,124-80C231.126,80.912,183.466,48,128,48z"></path>
+    <path fill="none" stroke="#000000" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="  M4,128c41.333-40,82.667-60,124-60c41.333,0,82.667,20,124,60"></path>
+    <path fill="none" stroke="#000000" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="  M128,32V4 M89.035,36.806L80,12.798 M54.534,50.794L43.645,35.841 M23.624,73.235l-10.111-10.68 M128,224v28 M176,243.202  l-9.035-24.007 M201.466,205.206l10.889,14.953 M242.487,193.445l-10.111-10.68 M176,12.798l-9.035,24.007 M201.466,50.794  l10.889-14.953 M242.487,62.555l-10.111,10.68 M89.035,219.194L80,243.202 M43.645,220.159l10.889-14.953 M13.513,193.445  l10.111-10.68"></path>
+</svg>

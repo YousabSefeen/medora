@@ -13,9 +13,9 @@ class DeleteAppointmentUseCase
   DeleteAppointmentUseCase({required this.appointmentRepositoryBase});
 
   @override
-  Future<Either<Failure, void>> call(DeleteAppointmentParams email) async {
+  Future<Either<Failure, void>> call(DeleteAppointmentParams params) async {
     return await appointmentRepositoryBase.deleteAppointment(
-      queryParams: email.toMap(),
+      queryParams: params.toMap(),
     );
   }
 }

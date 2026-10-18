@@ -12,7 +12,7 @@ class SignUpUseCase extends BaseUseCase<void, SignUpParams> {
   SignUpUseCase({required this.authRepository});
 
   @override
-  Future<Either<Failure, void>> call(SignUpParams email) async {
-    return await authRepository.signUp(params: email);
+  Future<Either<Failure, void>> call(SignUpParams params) async {
+    return await authRepository.signUp(params: params);
   }
 }

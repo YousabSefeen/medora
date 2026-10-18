@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medora/core/constants/app_duration/app_duration.dart';
-import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
+import 'package:medora/core/enum/lazy_request_state.dart';
+import 'package:medora/core/extensions/context_extension.dart';
 import 'package:medora/core/services/overlay_notification_service.dart';
-import 'package:medora/features/appointments/presentation/widgets/custom_widgets/adaptive_action_button.dart'
-    show AdaptiveActionButton;
-import 'package:medora/features/doctor_profile/presentation/controller/states/doctor_profile_state.dart'
-    show DoctorProfileState;
+import 'package:medora/features/appointments/presentation/widgets/custom_widgets/adaptive_action_button.dart';
+import 'package:medora/features/doctor_profile/presentation/controller/states/doctor_profile_state.dart';
 
 import '../../../../core/constants/app_alerts/app_alerts.dart';
 import '../../../../core/constants/app_routes/app_router_names.dart';
@@ -42,8 +41,9 @@ class SubmitProfileButton extends StatelessWidget {
     );
   }
 
-  void _onSavePressed(BuildContext context) {
-    _dismissKeyboard();
+  void _onSavePressed(BuildContext context) async {
+    await context.ensureKeyboardIsClosed();
+    if (!context.mounted) return;
     // Fetches the real-time state directly from the Cubit to avoid any stale state
     // issues caused by buildWhen optimizations at the exact moment of pressing.
     final currentPath = context
@@ -81,9 +81,6 @@ class SubmitProfileButton extends StatelessWidget {
       );
     }
   }
-
-  // Dismisses the keyboard if it's currently open.
-  void _dismissKeyboard() => FocusManager.instance.primaryFocus?.unfocus();
 
   // - Shows success dialog
   void _showSuccessDialogAfterDelay(BuildContext context) =>

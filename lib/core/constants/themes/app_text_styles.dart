@@ -6,6 +6,13 @@ import 'app_colors.dart';
 
 extension AppTextStyles on TextTheme {
   // Original: headlineMedium (DoctorAvailabilityTimeFields)
+
+  TextStyle get appBarTitleStyle => GoogleFonts.poppins(
+    fontSize: 18.sp,
+    fontWeight: FontWeight.w600, // SemiBold ناعم
+    color: const Color(0xFF1E293B), // Slate Navy الداكن المعتمد للعناوين
+    letterSpacing: -0.2,
+  );
   TextStyle get mediumBlackBold => TextStyle(
     fontSize: 15.sp,
     color: Colors.black,
@@ -46,35 +53,6 @@ extension AppTextStyles on TextTheme {
     fontSize: 22.sp,
     color: Colors.white,
     fontWeight: FontWeight.w600,
-  );
-
-  // Original: titleSmall
-  TextStyle get smallGreyMedium => TextStyle(
-    fontSize: 14.sp,
-    fontWeight: FontWeight.w500,
-    color: Colors.grey,
-  );
-
-  // Original: titleLarge
-  TextStyle get smallOrangeMedium => TextStyle(
-    fontSize: 14.sp,
-    color: Colors.black87,
-    fontWeight: FontWeight.w400,
-    height: 1.6,
-  );
-
-  TextStyle get bodyMediumBold => TextStyle(
-    fontSize: 16.sp,
-    fontWeight: FontWeight.w600,
-    color: Colors.grey.shade900,
-    letterSpacing: 1,
-  );
-
-  TextStyle get bodyRegular => TextStyle(
-    fontSize: 15.sp,
-    fontWeight: FontWeight.w400,
-    color: Colors.grey.shade700,
-    letterSpacing: 1,
   );
 
   // Original: headlineLarge
@@ -163,10 +141,9 @@ extension AppTextStyles on TextTheme {
   );
 
   TextStyle get styleInputField => TextStyle(
-    color: Colors.black,
+    color: AppColors.darkBlue,
     fontSize: 16.sp,
-    letterSpacing: 1.5,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w400,
   );
 
   TextStyle get styleInputFieldError => TextStyle(
@@ -223,7 +200,6 @@ extension AppTextStyles on TextTheme {
       ],
     ),
   );
-
 
   TextStyle get arabicStyle => GoogleFonts.cairo(
     wordSpacing: 1.2,
@@ -309,6 +285,36 @@ extension AppTextStyles on TextTheme {
     color: Colors.white,
   );
 
+  // Original: titleSmall
+  TextStyle get smallGreyMedium => TextStyle(
+    fontSize: 12.sp,
+    color: Colors.grey[500],
+    fontWeight: FontWeight.w400,
+    height: 1.5,
+  );
+
+  // Original: titleLarge
+  TextStyle get smallOrangeMedium => TextStyle(
+    fontSize: 14.sp,
+    color: Colors.black87,
+    fontWeight: FontWeight.w400,
+    height: 1.6,
+  );
+
+  TextStyle get bodyMediumBold => TextStyle(
+    fontSize: 16.sp,
+    fontWeight: FontWeight.w600,
+    color: Colors.grey.shade900,
+    letterSpacing: 1,
+  );
+
+  TextStyle get bodyRegular => TextStyle(
+    fontSize: 15.sp,
+    fontWeight: FontWeight.w400,
+    color: Colors.grey.shade700,
+    letterSpacing: 1,
+  );
+
   // للنصوص الوصفية الأساسية باللون الرمادي الفاتح
   TextStyle get mediumLightGreyRegular => TextStyle(
     fontSize: 14.sp,
@@ -345,10 +351,70 @@ extension AppTextStyles on TextTheme {
     fontWeight: FontWeight.bold,
   );
 
+  TextStyle get mediumBlackBold16 => TextStyle(
+    fontSize: 16.sp,
+    color: Colors.black87,
+    fontWeight: FontWeight.bold,
+  );
+
   TextStyle get overlayNotificationStyle => TextStyle(
     fontSize: 13.sp,
     color: Colors.white,
     fontWeight: FontWeight.w500,
     height: 1.5,
+  );
+
+  TextStyle get largeBlack => TextStyle(
+    fontSize: 40.sp,
+    fontWeight: FontWeight.bold,
+    color: Colors.black,
+  );
+
+  TextStyle get subTitle => TextStyle(
+    color: Colors.grey.shade600, // Replace with AppColors.customBlueGrey
+    fontWeight: FontWeight.w500,
+    height: 1.9,
+  );
+
+  TextStyle get subTitleX => TextStyle(
+    fontSize: 13.sp,
+    color: Colors.grey.shade700,
+    fontWeight: FontWeight.w400,
+    letterSpacing: 0.5,
+    height: 1.5,
+  );
+
+  TextStyle get title => TextStyle(
+    fontSize: 13.sp,
+    fontWeight: FontWeight.bold,
+    color: Colors.black87,
+  );
+
+  TextStyle get subtitle => TextStyle(
+    fontSize: 12.sp,
+    color: Colors.grey.shade600,
+    height: 1.5,
+    fontWeight: FontWeight.w400,
+  );
+
+  TextStyle get trailingText => TextStyle(
+    fontSize: 11.sp,
+    fontWeight: FontWeight.w600,
+    color: AppColors.softBlue,
+  );
+
+  TextStyle get titleStyle => GoogleFonts.poppins(
+    textStyle: const TextStyle(
+      color: Colors.black, // Replace with AppColors.darkBlue
+      height: 1.9,
+      fontWeight: FontWeight.w600,
+    ),
+  );
+
+  TextStyle get doctorName => GoogleFonts.inter(
+    fontSize: 16.sp,
+    color: Colors.black,
+    fontWeight: FontWeight.w600,
+    letterSpacing: 0.3,
   );
 }

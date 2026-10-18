@@ -2,40 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medora/core/constants/app_routes/app_router_names.dart'
-    show AppRouterNames;
-import 'package:medora/core/constants/app_strings/app_strings.dart'
-    show AppStrings;
-import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
+import 'package:medora/core/constants/app_routes/app_router_names.dart';
+import 'package:medora/core/constants/app_strings/app_strings.dart';
+import 'package:medora/core/constants/themes/app_colors.dart';
 
 class SeeAllSpecialties extends StatelessWidget {
   const SeeAllSpecialties({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
+    return TextButton.icon(
+      label: const Icon(
+        Icons.arrow_forward_ios_rounded,
+        size: 13,
+        color: AppColors.softBlue,
+      ),
       style: _buildButtonStyle(),
       onPressed: () => _navigateToSpecialties(context),
-      child: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-        child: Text(AppStrings.seeAll),
-      ),
+      icon: const Text(AppStrings.seeAll),
     );
   }
 
   ButtonStyle _buildButtonStyle() => TextButton.styleFrom(
-    backgroundColor: Colors.grey.shade100,
-    foregroundColor: AppColors.blueShadowHeader,
-    elevation: 1,
-    shadowColor: AppColors.lightBlue.withValues(alpha: 0.4),
+    backgroundColor: AppColors.customWhite,
+    foregroundColor: AppColors.softBlue,
+    elevation: 0,
     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
     minimumSize: Size.zero,
     padding: EdgeInsets.zero,
     enabledMouseCursor: SystemMouseCursors.click,
     overlayColor: AppColors.black,
-    textStyle: GoogleFonts.caladea(
-      fontWeight: FontWeight.w600,
-      fontSize: 14.sp,
+    textStyle: GoogleFonts.poppins(
+      fontWeight: FontWeight.w500,
+      fontSize: 13.sp,
     ),
   );
 

@@ -12,11 +12,11 @@ class VerifyPhoneAndSendOtpUseCase
   VerifyPhoneAndSendOtpUseCase({required this.authRepository});
 
   @override
-  Future<Either<Failure, void>> call(VerifyPhoneAndSendOtpParams email) async {
+  Future<Either<Failure, void>> call(VerifyPhoneAndSendOtpParams params) async {
     return await authRepository.verifyPhoneAndSendOtp(
-      email: email.email,
-      onCodeSent: email.onCodeSent,
-      onVerificationFailed: email.onVerificationFailed,
+      email: params.email,
+      onCodeSent: params.onCodeSent,
+      onVerificationFailed: params.onVerificationFailed,
     );
   }
 }

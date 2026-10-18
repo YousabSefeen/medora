@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart';
-import 'package:medora/core/constants/common_widgets/app_network_image.dart'
-    show AppNetworkImage;
+import 'package:medora/core/constants/common_widgets/app_network_image.dart';
 import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/features/appointments/domain/entities/client_appointments_entity.dart';
 import 'package:medora/features/appointments/presentation/widgets/appointment_widgets/underline_title_widget.dart';
 import 'package:medora/features/appointments/presentation/widgets/icon_with_text.dart';
 import 'package:medora/features/shared/presentation/widgets/doctor_name.dart';
-import 'package:medora/features/shared/presentation/widgets/doctor_specialties.dart'
-    show DoctorSpecialties;
+import 'package:medora/features/shared/presentation/widgets/doctor_specialties.dart';
+
+import '../../../shared/presentation/widgets/custom_app_bar.dart';
 
 class AppointmentDetailsScreen extends StatelessWidget {
   final ClientAppointmentsEntity appointment;
@@ -27,32 +27,33 @@ class AppointmentDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: _buildAppBar(), body: _buildContent(context));
+    return Scaffold(
+      appBar: const CustomAppBar(
+        title: AppStrings.appointmentDetailsTitle,
+        backgroundColor: AppColors.white,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.only(
+          left: _horizontalPadding,
+          right: _horizontalPadding,
+          bottom: 50,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: _smallSpacing,
+          children: [
+            _buildDoctorCard(),
+
+            _buildDoctorInformationSection(),
+
+            _buildPatientInformationSection(),
+
+            _buildAppointmentScheduleSection(context),
+          ],
+        ),
+      ),
+    );
   }
-
-  AppBar _buildAppBar() =>
-      AppBar(title: const Text(AppStrings.appointmentDetailsTitle));
-
-  Widget _buildContent(BuildContext context) => SingleChildScrollView(
-    padding: const EdgeInsets.only(
-      left: _horizontalPadding,
-      right: _horizontalPadding,
-      bottom: 50,
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: _smallSpacing,
-      children: [
-        _buildDoctorCard(),
-
-        _buildDoctorInformationSection(),
-
-        _buildPatientInformationSection(),
-
-        _buildAppointmentScheduleSection(context),
-      ],
-    ),
-  );
 
   Widget _buildDoctorCard() => Card(
     margin: const EdgeInsets.symmetric(horizontal: _cardHorizontalMargin),

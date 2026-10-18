@@ -6,6 +6,8 @@ import 'package:medora/core/constants/app_strings/app_strings.dart'
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 import 'package:medora/core/constants/themes/app_text_styles.dart';
 
+import '../../../../core/extensions/theme_extension.dart';
+
 class SpecialtiesSheetHeader extends StatelessWidget {
   final String lastSearchTerm;
   final void Function(String) onChanged;
@@ -45,9 +47,7 @@ class SpecialtiesSheetHeader extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: SizedBox(
         child: TextFormField(
-          style: Theme.of(
-            context,
-          ).textTheme.styleInputField.copyWith(fontWeight: FontWeight.w400),
+          style: context.textTheme.styleInputField,
           controller: TextEditingController(text: lastSearchTerm),
           onChanged: onChanged,
           decoration: InputDecoration(

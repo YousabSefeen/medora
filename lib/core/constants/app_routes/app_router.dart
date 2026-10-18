@@ -15,8 +15,6 @@ import 'package:medora/features/auth/presentation/screens/phone_forgot_password_
 import 'package:medora/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:medora/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:medora/features/doctor_profile/presentation/screens/doctor_profile_screen.dart';
-import 'package:medora/features/doctors_specialties/presentation/screens/medical_specialties_screen.dart';
-import 'package:medora/features/doctors_specialties/presentation/screens/specialty_doctors_screen.dart';
 import 'package:medora/features/gemini/presentation/screens/gemini_chat_screen.dart';
 import 'package:medora/features/home/presentation/screens/bottom_nav_screen.dart';
 import 'package:medora/features/notifications/presentation/screens/notifications_screen.dart';
@@ -26,8 +24,14 @@ import 'package:medora/features/payment_gateways/paymob/transaction_process_stat
 import 'package:medora/features/payment_gateways/paypal/presentation/views/screens/paypal_payment_screen.dart';
 import 'package:medora/features/payment_gateways/stripe/presentation/View/Screens/stripe_payment_screen.dart';
 import 'package:medora/features/payment_gateways/transaction_process_states/payment_success/screens/payment_success_screen.dart';
+import 'package:medora/features/reviews/presentation/screen/review_screen.dart';
 import 'package:medora/features/shared/domain/entities/doctor_entity.dart';
 import 'package:medora/main.dart';
+
+import '../../../features/settings/presentation/screens/edit_profile_screen.dart';
+import '../../../features/settings/presentation/screens/medical_disclaimer_screen.dart';
+import '../../../features/specialties/presentation/screens/medical_specialties_screen.dart';
+import '../../../features/specialties/presentation/screens/specialty_doctors_screen.dart';
 
 class AppRouter {
   //final stableContext = AppRouter.router.routerDelegate.navigatorKey.currentContext;
@@ -39,14 +43,31 @@ class AppRouter {
     initialLocation: FirebaseAuth.instance.currentUser?.uid != null
         ? AppRouterNames.bottomNav
         : AppRouterNames.signIn,
-
+    //initialLocation:  AppRouterNames.testScreen,
     routes: [
+      GoRoute(
+        path: AppRouterNames.editProfile,
+        builder: (BuildContext context, GoRouterState state) =>
+              EditProfileScreen(initialName: 'Yousab Sefeen', email: 'yousab@gmail.com', initialPhone: '0122715559',),
+      ),
+      GoRoute(
+        path: AppRouterNames.medicalDisclaimer,
+        builder: (BuildContext context, GoRouterState state) =>
+            const MedicalDisclaimerScreen(),
+      ),
+      GoRoute(
+        path: AppRouterNames.reviews,
+        builder: (BuildContext context, GoRouterState state) =>
+            ReviewScreen(appointment: state.extra as ClientAppointmentsEntity),
+      ),
+
       GoRoute(
         path: AppRouterNames.testScreen,
 
         pageBuilder: (context, state) =>
             _buildAnimatedPage(state: state, child: const TestScreen()),
-      ),   GoRoute(
+      ),
+      GoRoute(
         path: AppRouterNames.signIn,
 
         pageBuilder: (context, state) =>
@@ -198,15 +219,14 @@ class AppRouter {
           );
         },
       ),
+
       GoRoute(
         path: AppRouterNames.specialtyDoctors,
-        pageBuilder: (context, state) {
+
+        builder: (context, state) {
           final specialtyName = state.extra as String;
 
-          return _buildAnimatedPage(
-            state: state,
-            child: SpecialtyDoctorsScreen(specialtyName: specialtyName),
-          );
+          return SpecialtyDoctorsScreen(specialtyName: specialtyName);
         },
       ),
 

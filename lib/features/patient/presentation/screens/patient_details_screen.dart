@@ -15,6 +15,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart'
     show AppStrings;
 import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
+import 'package:medora/core/enum/lazy_request_state.dart';
 import 'package:medora/features/appointments/presentation/controller/form_contollers/patient_fields_validator.dart'
     show PatientFieldsValidator;
 import 'package:medora/features/patient/presentation/controllers/cubit/patient_cubit.dart';
@@ -69,7 +70,14 @@ class _PatientDetailsScreenState extends State<PatientDetailsScreen> {
         value: context.read<PatientCubit>()
           ..getCachedPatientData()
           ..setControllers(_formControllers),
-        child: _buildFormContent(),
+        child: BlocBuilder<PatientCubit, PatientState>(
+          builder: (context, state) {
+            if (state.getPatientDataState == LazyRequestState.loading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            return _buildFormContent();
+          },
+        ),
       ),
     );
   }

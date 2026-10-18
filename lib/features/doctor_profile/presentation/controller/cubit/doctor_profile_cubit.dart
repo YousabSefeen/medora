@@ -208,6 +208,9 @@ class DoctorProfileCubit extends Cubit<DoctorProfileState>
           availableTo: state.workHoursSelected[AppStrings.to],
         ),
         fees: int.parse(controllers.feesController.text.trim()),
+        patientsCount: 0,
+        rating: 0.0,
+        ratingCount: 0,
       );
 
   @override

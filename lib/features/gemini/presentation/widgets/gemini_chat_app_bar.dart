@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart' show BlocConsumer;
-import 'package:medora/core/constants/app_alerts/app_alerts.dart'
-    show AppAlerts;
-import 'package:medora/core/constants/app_strings/app_strings.dart' show AppStrings;
-import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
-import 'package:medora/core/constants/themes/app_text_styles.dart'
-    show AppTextStyles;
-import 'package:medora/core/enum/lazy_request_state.dart' show LazyRequestState;
-import 'package:medora/core/extensions/theme_extension.dart'
-    show ThemeExtension;
-import 'package:medora/features/gemini/presentation/controllers/cubit/gemini_cubit.dart'
-    show GeminiCubit;
-
-import 'package:medora/features/gemini/presentation/controllers/states/gemini_state.dart'
-    show GeminiState;
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medora/core/constants/app_alerts/app_alerts.dart';
+import 'package:medora/core/constants/app_strings/app_strings.dart';
+import 'package:medora/core/constants/themes/app_colors.dart';
+import 'package:medora/core/constants/themes/app_text_styles.dart';
+import 'package:medora/core/enum/lazy_request_state.dart';
+import 'package:medora/core/extensions/theme_extension.dart';
+import 'package:medora/features/gemini/presentation/controllers/cubit/gemini_cubit.dart';
+import 'package:medora/features/gemini/presentation/controllers/states/gemini_state.dart';
 
 class GeminiChatAppBar extends StatelessWidget implements PreferredSizeWidget {
   const GeminiChatAppBar({super.key});
@@ -24,11 +18,12 @@ class GeminiChatAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      elevation: 1.5,
+      elevation: 1,
       backgroundColor: AppColors.customWhite,
-      title: Text(AppStrings.chatAppBarTitle, style: context.textTheme.buttonStyle.copyWith(
-        color: Colors.black
-      )),
+      title: Text(
+        AppStrings.chatAppBarTitle,
+        style: context.textTheme.appBarTitleStyle,
+      ),
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(4.0),
         child: BlocConsumer<GeminiCubit, GeminiState>(
@@ -51,7 +46,6 @@ class GeminiChatAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   void _handleErrorState(GeminiState state, BuildContext context) {
     if (state.requestState == LazyRequestState.error) {
-      print('_ChatViewState.build55555555555555555555555555555555555555555');
       if (state.requestStateError.contains('429')) {
         AppAlerts.showGeminiErrorDialog(
           context: context,

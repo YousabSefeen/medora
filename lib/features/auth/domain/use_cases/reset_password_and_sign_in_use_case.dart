@@ -13,9 +13,9 @@ class ResetPasswordAndSignInUseCase
     : _authRepository = authRepository;
 
   @override
-  Future<Either<Failure, void>> call(ResetPasswordParams email) async {
+  Future<Either<Failure, void>> call(ResetPasswordParams params) async {
     final resetResult = await _authRepository.confirmPasswordReset(
-      params: email,
+      params: params,
     );
 
     return await resetResult.fold(
@@ -25,7 +25,7 @@ class ResetPasswordAndSignInUseCase
       },
       (_) async {
         AppLogger.info('Reset successful, signing in...');
-        return await _authRepository.signIn(params: email.toSignInParams());
+        return await _authRepository.signIn(params: params.toSignInParams());
       },
     );
   }

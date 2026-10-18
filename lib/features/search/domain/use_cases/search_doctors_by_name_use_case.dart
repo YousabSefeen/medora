@@ -14,9 +14,9 @@ class SearchDoctorsByNameUseCase
   SearchDoctorsByNameUseCase({required this.searchRepositoryBase});
 
   @override
-  Future<Either<Failure, List<DoctorEntity>>> call(String email) async {
+  Future<Either<Failure, List<DoctorEntity>>> call(String params) async {
     return await searchRepositoryBase.searchDoctorsByName(
-      doctorName: email,
+      doctorName: params,
     );
   }
 }

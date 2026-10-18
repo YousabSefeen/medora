@@ -41,22 +41,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
-  animated_custom_dropdown:
-    dependency: "direct main"
-    description:
-      name: animated_custom_dropdown
-      sha256: "95ae9edcdcc788e82de4bcf5577d0cac2c7a381bdda66186bb945991dd43478c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.0.0"
-  animated_drop_down_form_field:
-    dependency: "direct main"
-    description:
-      name: animated_drop_down_form_field
-      sha256: "9cc455879382d0a1bc68c7db0d3453ba221858730900c5ca51364ad8fdfc1494"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.1"
   animated_text_kit:
     dependency: "direct main"
     description:
@@ -585,10 +569,9 @@ packages:
   flutter_chat_ui:
     dependency: "direct main"
     description:
-      name: flutter_chat_ui
-      sha256: cfbaac38f429beb33d9cc1ca920ae7ccbadbed282c99335d590d61306d3a3d0f
-      url: "https://pub.dev"
-    source: hosted
+      path: "../flutter_chat_ui/packages/flutter_chat_ui"
+      relative: true
+    source: path
     version: "2.11.1"
   flutter_datetime_picker_plus:
     dependency: "direct main"
@@ -821,6 +804,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.3+1"
+  google_mlkit_commons:
+    dependency: transitive
+    description:
+      name: google_mlkit_commons
+      sha256: "621e94de22fd0f1e902e593b892746d80ab7542b39c2552aa091d904eb82fc6f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.13.0"
+  google_mlkit_selfie_segmentation:
+    dependency: "direct main"
+    description:
+      name: google_mlkit_selfie_segmentation
+      sha256: cd814bb3e8c59b896a346cd20a9d93ca9f03c10f24b38405fc683aa942fcd0fa
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.12.1"
   google_sign_in:
     dependency: "direct main"
     description:
@@ -1189,6 +1188,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  native_cutout:
+    dependency: "direct main"
+    description:
+      name: native_cutout
+      sha256: "6bf714fd21dd3e9eb49f1b78e4f082c0d8fbc842f608adc43fc85f4d348aa0ce"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.0"
   nested:
     dependency: transitive
     description:
@@ -1301,6 +1308,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.0"
+  percent_indicator:
+    dependency: "direct main"
+    description:
+      name: percent_indicator
+      sha256: "157d29133bbc6ecb11f923d36e7960a96a3f28837549a20b65e5135729f0f9fd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.2.5"
   persistent_bottom_nav_bar:
     dependency: "direct main"
     description:

@@ -5,8 +5,8 @@ class HomeConstants {
   const HomeConstants._();
 
   // Layout Dimensions
-  static const double appBarHeight = 60.0;
-  static const double appBarIconSize = 33.0;
+  static const double appBarHeight = 65.0;
+  static const double appBarIconSize = 27.0;
   static const double elevation = 3.0;
   static const Color backgroundColor = Colors.white;
 
@@ -16,7 +16,7 @@ class HomeConstants {
 
   static const double barContentHeight = appBarHeight - 10;
 
-  static double get iconSize => 15.0.sp;
+  static double get iconSize => 12.0.sp;
 
   static EdgeInsets get homeBodyPadding =>
       EdgeInsets.symmetric(horizontal: 15.w);

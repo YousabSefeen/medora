@@ -22,6 +22,8 @@ ClientAppointmentsModel _$ClientAppointmentsModelFromJson(
   doctorModel: DoctorModel.fromJson(
     json['doctorModel'] as Map<String, dynamic>,
   ),
+  isReviewed: json['isReviewed'] as bool,
+  reviewId: json['reviewId'] as String?,
 );
 
 Map<String, dynamic> _$ClientAppointmentsModelToJson(
@@ -38,4 +40,6 @@ Map<String, dynamic> _$ClientAppointmentsModelToJson(
   'appointmentTime': instance.appointmentTime,
   'appointmentStatus': instance.appointmentStatus,
   'doctorModel': instance.doctorModel.toJson(),
+  'isReviewed': instance.isReviewed,
+  'reviewId': instance.reviewId,
 };

@@ -2,29 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:medora/core/animations/custom_modal_type_left_sheet.dart'
-    show CustomModalTypeLeftSheet;
-import 'package:medora/core/constants/app_alerts/gemini_error_dialog.dart'
-    show GeminiErrorDialog;
-import 'package:medora/core/constants/app_alerts/no_internet_dialog.dart'
-    show NoInternetDialog;
-import 'package:medora/core/constants/app_alerts/widgets/loading_dialog_body.dart'
-    show LoadingDialogBody;
+import 'package:medora/core/animations/custom_modal_type_left_sheet.dart';
+import 'package:medora/core/constants/app_alerts/gemini_error_dialog.dart';
+import 'package:medora/core/constants/app_alerts/no_internet_dialog.dart';
+import 'package:medora/core/constants/app_alerts/widgets/loading_dialog_body.dart';
 import 'package:medora/core/constants/app_duration/app_duration.dart';
-import 'package:medora/core/constants/app_strings/app_strings.dart'
-    show AppStrings;
+import 'package:medora/core/constants/app_strings/app_strings.dart';
 import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
-import 'package:medora/features/appointments/presentation/ui_models/appointment_reschedule_ui_model.dart'
-    show AppointmentRescheduleUIModel;
 import 'package:medora/features/auth/presentation/widgets/auth_error_snack_bar_content.dart';
 import 'package:medora/features/auth/presentation/widgets/email_already_in_use_snack_bar_content.dart';
 import 'package:medora/features/shared/presentation/widgets/custom_circular_progress.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 import '../../animations/custom_modal_type_bottom_sheet.dart';
-import 'appointment_cancellation_sheet.dart';
-import 'appointment_rescheduled_dialog.dart';
 import 'error_dialogs.dart';
 import 'widgets/app_alert_widgets.dart';
 
@@ -274,23 +265,7 @@ class AppAlerts {
     onRetryNow: onRetryNow,
   );
 
-  static void showCancelAppointmentBottomSheet({
-    required BuildContext context,
-    required VoidCallback onCancelPressed,
-    required VoidCallback onConfirmPressed,
-  }) => AppointmentCancellationSheet.showCancelAppointmentSheet(
-    context: context,
-    onCancelPressed: onCancelPressed,
-    onConfirmPressed: onConfirmPressed,
-  );
 
-  static void showRescheduleSuccessDialog({
-    required BuildContext context,
-    required AppointmentRescheduleUIModel appointmentReschedule,
-  }) => AppointmentRescheduledDialog.show(
-    context: context,
-    appointmentReschedule: appointmentReschedule,
-  );
 
   static Future<void> showCustomErrorDialog(
     BuildContext context,

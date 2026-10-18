@@ -11,7 +11,7 @@ class GetFavoriteIdsUseCase extends BaseUseCase<List<String>, NoParams> {
   GetFavoriteIdsUseCase({required this.favoritesRepository});
 
   @override
-  Future<Either<Failure, List<String>>> call(NoParams email) async {
+  Future<Either<Failure, List<String>>> call(NoParams params) async {
     return await favoritesRepository.getFavoriteIds();
   }
 }

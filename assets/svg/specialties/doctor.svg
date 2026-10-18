@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+    <path fill="none" stroke="#000000" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="  M224,252v-31.17c0-17.217-11.017-32.503-27.351-37.947L152,168v-23.808"></path>
+    <path fill="none" stroke="#000000" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="  M129.189,54.378L136,68L92.747,55.642C86.359,53.817,80,58.614,80,65.257V104c0,23.456,24,48,48,48s48-24.544,48-48V60.579  c0-4.936-3.601-9.133-8.479-9.884l-32.053-4.931C130.655,45.024,127.011,50.022,129.189,54.378z"></path>
+    <path fill="none" stroke="#000000" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="  M83.48,119.959C72,104,64,84.529,64,64c0-37.555,26.445-60,64-60s64,22.445,64,60c0,20.529-8,40-19.48,55.959"></path>
+    <path fill="none" stroke="#000000" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="  M32,252v-31.17c0-17.217,11.017-32.503,27.351-37.947L104,168v-23.808"></path>
+    <path fill="none" stroke="#000000" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="  M104,168c16,21.334,32,21.333,48,0"></path>
+    <circle fill="none" stroke="#000000" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="80" cy="230" r="22"></circle>
+    <circle fill="none" stroke="#000000" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="80" cy="230" r="8"></circle>
+    <path fill="none" stroke="#000000" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="  M80,222v-42c0-13.255,10.745-24,24-24"></path>
+    <polygon fill="none" stroke="#000000" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="  176,208 176,207.861 175.859,208 "></polygon>
+    <path fill="none" stroke="#000000" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="  M176,208v-28c0-13.255-10.745-24-24-24"></path>
+    <path fill="none" stroke="#000000" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="  M164,252c-4.418,0-8-3.582-8-8v-16.141c0-10.968,8.891-19.859,19.859-19.859c10.968,0,19.859,8.891,19.859,19.859v16.423  c0,4.263-3.456,7.718-7.718,7.718"></path>
+    <polyline fill="none" stroke="#000000" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="  104,168 128,252 152,168 "></polyline>
+</svg>

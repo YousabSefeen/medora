@@ -12,7 +12,7 @@ class UploadDoctorProfileUC extends BaseUseCase<void, DoctorEntity> {
   UploadDoctorProfileUC({required this.doctorProfileRepositoryBase});
 
   @override
-  Future<Either<Failure, void>> call(DoctorEntity email) {
-    return doctorProfileRepositoryBase.uploadDoctorProfile(email);
+  Future<Either<Failure, void>> call(DoctorEntity params) {
+    return doctorProfileRepositoryBase.uploadDoctorProfile(params);
   }
 }

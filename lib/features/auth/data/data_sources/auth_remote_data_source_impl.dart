@@ -6,7 +6,6 @@ import 'package:medora/core/constants/firestore_constants/firestore_constants.da
 import 'package:medora/core/enum/auth_provider_type.dart';
 import 'package:medora/core/services/logger_service.dart';
 import 'package:medora/features/auth/data/data_sources/auth_remote_data_source.dart';
-import 'package:medora/features/auth/data/models/user_model.dart';
 import 'package:medora/features/auth/domain/params/reset_password_and_sign_in_params.dart';
 import 'package:medora/features/auth/domain/params/sign_in_params.dart';
 import 'package:medora/features/auth/domain/params/sign_up_params.dart';
@@ -43,21 +42,11 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
   }
 
   Future<void> _createUserWithEmailAndPassword(SignUpParams params) async {
-    final UserCredential userCredential = await _auth
+    await _auth
         .createUserWithEmailAndPassword(
           email: params.email!,
           password: params.password!,
         );
-
-    final userModel = UserModel(
-      authProviderType: AuthProviderType.email.name,
-      name: params.name!,
-      phone: params.phone!,
-      email: params.email!,
-      createdAt: '',
-    );
-
-    await _uploadUserData(userModel: userModel, uid: userCredential.user!.uid);
   }
 
   @override
@@ -117,6 +106,7 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
     final String? idToken = googleAuth.idToken;
 
     final authClient = _googleSignIn.authorizationClient;
+
     var authorization = await authClient.authorizationForScopes(['email']);
 
     authorization ??= await authClient.authorizeScopes(['email']);
@@ -131,26 +121,9 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
       idToken: idToken,
     );
 
-    final UserCredential userCredential = await _auth.signInWithCredential(
+    await _auth.signInWithCredential(
       credential,
     );
-    final User? user = userCredential.user;
-    if (isSignIn) {
-      return;
-    } else {
-      if (user != null) {
-        if (userCredential.additionalUserInfo?.isNewUser ?? false) {
-          final userModel = UserModel(
-            authProviderType: AuthProviderType.google.name,
-            name: user.displayName ?? 'Google User',
-            email: user.email ?? '',
-            phone: user.phoneNumber ?? 'null',
-            createdAt: '',
-          );
-          await _uploadUserData(userModel: userModel, uid: user.uid);
-        }
-      }
-    }
   }
 
   Future<void> _authWithFacebook({required bool isSignIn}) async {
@@ -160,28 +133,10 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
       final OAuthCredential facebookAuthCredential =
           FacebookAuthProvider.credential(loginResult.accessToken!.tokenString);
 
-      final userCredential = await _auth.signInWithCredential(
+      await _auth.signInWithCredential(
         facebookAuthCredential,
       );
-      final User? user = userCredential.user;
-final email=user?.email;
-AppLogger.error('Email $email');
-      if (isSignIn) {
-        return;
-      } else {
-        if (user != null) {
-          if (userCredential.additionalUserInfo?.isNewUser ?? false) {
-            final userModel = UserModel(
-              authProviderType: AuthProviderType.facebook.name,
-              name: user.displayName ?? 'Facebook User',
-              email: user.email ?? '',
-              phone: user.phoneNumber ?? 'null',
-              createdAt: '',
-            );
-            await _uploadUserData(userModel: userModel, uid: user.uid);
-          }
-        }
-      }
+
       AppLogger.debug('🚀 Facebook Sign-In Successful!');
     } else {
       AppLogger.error(
@@ -210,18 +165,6 @@ AppLogger.error('Email $email');
     return await _auth.verifyPasswordResetCode(oobCode);
   }
 
-  Future<void> _uploadUserData({
-    required UserModel userModel,
-    required String uid,
-  }) async {
-    await _firestore
-        .collection(FirestoreConstants.usersCollection)
-        .doc(uid)
-        .set({
-          ...userModel.toJson(),
-          FirestoreConstants.fieldCreatedAt: FieldValue.serverTimestamp(),
-        });
-  }
 
   //NOTE: Not Use yet
   // ============================================================

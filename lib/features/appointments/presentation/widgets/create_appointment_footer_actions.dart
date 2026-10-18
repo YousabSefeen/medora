@@ -51,9 +51,15 @@ class CreateAppointmentFooterActions extends StatelessWidget {
       },
       builder: (context, state) {
         return Row(
-          spacing: 15,
           children: [
-            ToggleFavoriteButton(doctorInfo: doctor),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0, right: 15),
+              child: ToggleFavoriteButton(
+                doctorInfo: doctor,
+                iconSize: 17,
+                paddingIcon: 7,
+              ),
+            ),
             Expanded(
               child: AdaptiveActionButton(
                 bottomHeight: 45,

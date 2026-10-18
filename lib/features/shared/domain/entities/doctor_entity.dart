@@ -12,6 +12,9 @@ class DoctorEntity extends Equatable {
   final String location;
   final DoctorAvailabilityEntity doctorAvailability; // استخدام Entity
   final int fees;
+  final int patientsCount;
+  final double rating;
+  final int ratingCount;
 
   const DoctorEntity({
     this.doctorId,
@@ -22,8 +25,37 @@ class DoctorEntity extends Equatable {
     required this.location,
     required this.doctorAvailability, // Entity
     required this.fees,
+    required this.patientsCount,
+    required this.rating,
+    required this.ratingCount,
   });
-
+  DoctorEntity copyWith({
+    String? doctorId,
+    String? imageUrl,
+    String? name,
+    List<String>? specialties,
+    String? bio,
+    String? location,
+    DoctorAvailabilityEntity? doctorAvailability,
+    int? fees,
+    int? patientsCount,
+    double? rating,
+    int? ratingCount,
+  }) {
+    return DoctorEntity(
+      doctorId: doctorId ?? this.doctorId,
+      imageUrl: imageUrl ?? this.imageUrl,
+      name: name ?? this.name,
+      specialties: specialties ?? this.specialties,
+      bio: bio ?? this.bio,
+      location: location ?? this.location,
+      doctorAvailability: doctorAvailability ?? this.doctorAvailability,
+      fees: fees ?? this.fees,
+      patientsCount: patientsCount ?? this.patientsCount,
+      rating: rating ?? this.rating,
+      ratingCount: ratingCount ?? this.ratingCount,
+    );
+  }
   @override
   List<Object?> get props => [
     doctorId,
@@ -34,5 +66,8 @@ class DoctorEntity extends Equatable {
     location,
     doctorAvailability,
     fees,
+    patientsCount,
+    rating,
+    ratingCount,
   ];
 }

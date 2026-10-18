@@ -21,7 +21,9 @@ class DoctorModel extends Equatable {
   final DoctorAvailabilityModel doctorAvailability;
 
   final int fees;
-
+  final int patientsCount;
+  final double rating;
+  final int ratingCount;
   const DoctorModel({
     this.doctorId,
     required this.imageUrl,
@@ -30,7 +32,7 @@ class DoctorModel extends Equatable {
     required this.bio,
     required this.location,
     required this.doctorAvailability,
-    required this.fees,
+    required this.fees, required this.patientsCount, required this.rating, required this.ratingCount,
   });
 
   factory DoctorModel.fromJson(Map<String, dynamic> json) =>
@@ -50,6 +52,9 @@ class DoctorModel extends Equatable {
 
       doctorAvailability: doctorAvailability.toEntity(),
       fees: fees,
+      patientsCount: patientsCount,
+      rating: rating,
+      ratingCount: ratingCount,
     );
   }
   factory DoctorModel.fromEntity(DoctorEntity entity) {
@@ -62,6 +67,9 @@ class DoctorModel extends Equatable {
       location: entity.location,
       doctorAvailability: DoctorAvailabilityModel.fromEntity(entity.doctorAvailability),
       fees: entity.fees,
+      patientsCount: entity.patientsCount,
+      rating: entity.rating,
+      ratingCount: entity.ratingCount,
     );
   }
   @override
@@ -73,6 +81,6 @@ class DoctorModel extends Equatable {
     bio,
     location,
     doctorAvailability,
-    fees,
+    fees, patientsCount, rating, ratingCount,
   ];
 }

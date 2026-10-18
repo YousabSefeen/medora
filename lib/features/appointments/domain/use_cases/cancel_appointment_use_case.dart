@@ -11,9 +11,9 @@ class CancelAppointmentUseCase extends BaseUseCase<void, CancelAppointmentsParam
   CancelAppointmentUseCase({required this.appointmentRepositoryBase});
 
   @override
-  Future<Either<Failure, void>> call(CancelAppointmentsParams email) async {
+  Future<Either<Failure, void>> call(CancelAppointmentsParams params) async {
     return await appointmentRepositoryBase.cancelAppointment(
-      queryParams: email.toMap(),
+      queryParams: params.toMap(),
     );
   }
 }

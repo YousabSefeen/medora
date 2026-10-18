@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder;
-import 'package:medora/features/doctor_list/presentation/controller/cubit/doctor_list_cubit.dart'
-    show DoctorListCubit;
-import 'package:medora/features/doctor_list/presentation/controller/states/doctor_list_state.dart'
-    show DoctorListState;
-import 'package:medora/features/shared/domain/entities/doctor_entity.dart'
-    show DoctorEntity;
-import 'package:medora/features/shared/presentation/screens/sliver_pagination_screen_mixin.dart'
-    show SliverPaginationScreenMixin;
-import 'package:medora/features/shared/presentation/widgets/doctor_card.dart'
-    show DoctorCard;
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../shared/domain/entities/doctor_entity.dart';
+import '../../../shared/presentation/screens/sliver_pagination_screen_mixin.dart';
+import '../../../shared/presentation/widgets/doctor_card.dart';
+import '../controller/cubit/doctor_list_cubit.dart';
+import '../controller/states/doctor_list_state.dart';
 
 class PopularDoctorsSection extends StatefulWidget {
   final ScrollController scrollController;
@@ -38,7 +34,7 @@ class _PopularDoctorsSectionState extends State<PopularDoctorsSection>
 
   @override
   Widget buildEmptyWidget() => const SliverFillRemaining(
-    child: Text('No Data', style: TextStyle(color: Colors.red, fontSize: 25)),
+    child: Text('No Doctors Yet', style: TextStyle(color: Colors.red, fontSize: 25)),
   );
 
   @override

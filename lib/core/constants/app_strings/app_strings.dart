@@ -171,6 +171,7 @@ class AppStrings {
       'Your profile has been submitted successfully.';
 
   static const String dR = 'Dr. ';
+  static const String reviews = 'reviews';
   static const String successMessage = 'Book Appointment Successfully';
   static const String cancelledSuccessfullyMsg =
       'Appointment Cancelled Successfully';
@@ -223,6 +224,7 @@ class AppStrings {
       'Booking an appointment requires an active internet connection to confirm and secure your reservation.\n'
       'Please check your connection and try again.';
   static const String bookAppointment = 'Book Appointment';
+  static const String bookNow =   'Book Now';
   static const String next = 'Next';
   static const String payNow = 'Pay Now';
 
@@ -296,8 +298,17 @@ class AppStrings {
     'Completed',
     'Cancelled',
   ];
+  static const List<String> createAppoint = [
+    'Appointment',
+    'Details',
+    'Reviews',
+  ];
   static const String bookAgain = 'Book Again';
   static const String leaveAReview = 'Leave a Review';
+  static const String editReview = 'Edit Review';
+  static const String reviewsLabile = 'Reviews';
+  static const String userReviews = 'User Reviews';
+  static const String noReviews ='No reviews yet.';
 
 
 
@@ -400,15 +411,17 @@ class AppStrings {
   static const String appointmentsEndMessage =
       '📋 All appointments have been shown';
 
-  static const String askNow = 'Ask now';
+  static const String askAIDoctor ='Ask AI Doctor';
+  static const String askNow = 'ASK NOW';
 
   static const String popularDoctors = 'Popular Doctors';
-  static const String doctorSpecialties = 'Doctor Specialties';
+  static const String exploreSpecialties = 'Explore Specialties';
 
-  static const String seeAll = 'See all';
+  static const String seeAll = 'See All';
   static const String specialtiesLabel = 'Specialties';
   static const String myAppointments = 'My Appointments';
   static const String myFavoriteDoctors = 'My Favorite Doctors';
+  static const String favoriteDoctors = 'Favorite Doctors';
   static const String setting = 'Setting';
   static const String dummyTitle = 'Dummy Title ';
   static const String home = 'Home';
@@ -417,6 +430,12 @@ class AppStrings {
   static const String search = 'Search';
   static const String favorite = 'Favorite';
   static const String medicalSpecialties = 'Medical Specialties';
+  static const String doctors = 'Doctors';
+  static String noSpecialtyDoctorsYet(String specialty) =>
+      'No $specialty Doctors Yet';
+
+  static const String workingToAddSpecialists =
+      'We are working to add specialists\nin this field soon.';
   static const String notifications = 'Notifications';
 
   // Gemini Chat
@@ -505,6 +524,7 @@ Very important rules:
       "You haven't saved any doctors to your favorites list. Browse through the doctor list, find the right specialist, and save them for quick access next time.";
   static const String doctorsBrowse = 'Doctors browse';
   static const String userName = 'User Name';
+  static const String user = 'User';
 
   static const String confirmPassword = 'Confirm Password';
 
@@ -558,6 +578,74 @@ Very important rules:
 
   /// ✅ نص خطأ لرقم الهاتف غير صالح
   static const String invalidPhoneNumber = 'Invalid phone number';
+  static const String defaultUserImageUrl =
+      'https://res.cloudinary.com/dfls3gdea/image/upload/v1786946220/defaultUserImage_lg2spj.jpg';
+
+  static const String aboutDoctor =  'About Doctor';
+
+  static const String  workingSchedule = 'Working Schedule';
+  static const String  clinicLocation = 'Clinic Location';
+  static const String  practiceAddress = 'Practice Address';
+
+
+// Review Screen
+  static const String writeAReview = 'Write a Review';
+  static const String submitReview = 'Submit Review';
+  static const String saveChanges = 'Save Changes';
+  static const String writeYourReview = 'Write Your Review';
+  static const String enterYourComment = 'Enter your comment';
+  static const String reviewAddedSuccess = 'Thank you! Your review has been added successfully.';
+  static const String reviewUpdatedSuccess = 'Your review has been updated successfully.';
+  static const String reviewDeletedSuccess = 'Your review has been deleted successfully.';
+
+  /// Helper method for dynamic doctor experience text
+  static String howWasYourExperienceWith(String doctorName) =>
+      'How was your experience\nwith Dr. $doctorName?';
+// Common / General
+  static const String settings = 'Settings';
+  static const String logout = 'Log Out';
+
+  // Section Headers
+  static const String accountSettings = 'Account Settings';
+  static const String legalAndPrivacy = 'Legal & Privacy';
+  static const String supportAndAbout = 'Support & About';
+
+  // Account Items
+  static const String personalInformation = 'Personal Information';
+  static const String appLanguage = 'App Language';
+  static const String notificationPreferences = 'Notification Preferences';
+
+  // Legal & Google Play Compliance Items
+  static const String privacyPolicy = 'Privacy Policy';
+  static const String termsAndConditions = 'Terms & Conditions';
+  static const String medicalDisclaimer = 'Medical & AI Disclaimer';
+  static const String deleteAccount = 'Delete Account';
+
+  // Support & About Items
+  static const String helpAndSupport = 'Help & Support';
+  static const String rateApp = 'Rate App on Store';
+  static const String aboutApp = 'About App';
+
+
+  // Medical & AI Disclaimer
+  static const String disclaimerTitle = 'Medical & AI Disclaimer';
+  static const String disclaimerSubtitle =
+      'Please read carefully before using YouDoc AI Assistant';
+
+  static const String disclaimerPoint1Title = 'Not a Substitute for Professional Care';
+  static const String disclaimerPoint1Body =
+      'YouDoc AI is an informational tool and does not provide formal medical diagnosis, treatment, or clinical prescriptions.';
+
+  static const String disclaimerPoint2Title = 'Emergency Situations';
+  static const String disclaimerPoint2Body =
+      'If you are experiencing a life-threatening medical emergency, please contact your local emergency services or visit the nearest hospital immediately.';
+
+  static const String disclaimerPoint3Title = 'Accuracy & Guidance';
+  static const String disclaimerPoint3Body =
+      'AI insights are generated based on general medical data. Always consult with a certified doctor before making healthcare decisions.';
+
+  static const String agreeAndContinue = 'I Agree & Continue';
+  static const String editProfile = 'Edit Profile';
 }
 
 class PaymentMethod {

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+    <g fill="none" stroke="#000000" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+        <!-- شكل القلب الخارجي -->
+        <path d="M128 216S32 160 32 92a52 52 0 0 1 96-26.8A52 52 0 0 1 224 92c0 68-96 124-96 124z"/>
+        <!-- رسم خط النبض (ECG Line) بداخل القلب -->
+        <path d="M60 120h36l12-28 20 56 16-36 12 8h40"/>
+    </g>
+</svg>

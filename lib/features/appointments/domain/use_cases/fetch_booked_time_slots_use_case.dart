@@ -14,10 +14,10 @@ class FetchBookedTimeSlotsUseCase
 
   @override
   Future<Either<Failure, List<String>>> call(
-    FetchBookedTimeSlotsParams email,
+    FetchBookedTimeSlotsParams params,
   ) async {
     return await appointmentRepositoryBase.fetchBookedTimeSlots(
-      queryParams: email.toMap(),
+      queryParams: params.toMap(),
     );
   }
 }

@@ -10,7 +10,7 @@ class SendPasswordResetEmailUseCase extends BaseUseCase<void, String> {
   SendPasswordResetEmailUseCase({required this.authRepository});
 
   @override
-  Future<Either<Failure, void>> call(String email) async {
-    return await authRepository.sendPasswordResetEmail(email: email);
+  Future<Either<Failure, void>> call(String params) async {
+    return await authRepository.sendPasswordResetEmail(email: params);
   }
 }

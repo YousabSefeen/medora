@@ -13,13 +13,13 @@ class ToggleFavoriteUseCase
   ToggleFavoriteUseCase({required this.favoritesRepository});
 
   @override
-  Future<Either<Failure, void>> call(ToggleFavoriteParameters email) async {
-    if (email.isCurrentlyFavorite) {
+  Future<Either<Failure, void>> call(ToggleFavoriteParameters params) async {
+    if (params.isCurrentlyFavorite) {
       return await favoritesRepository.removeDoctorFromFavorites(
-        email.doctorId,
+        params.doctorId,
       );
     } else {
-      return await favoritesRepository.addDoctorToFavorites(email.doctorId);
+      return await favoritesRepository.addDoctorToFavorites(params.doctorId);
     }
   }
 }

@@ -26,4 +26,36 @@ class DoctorListCubit
   ) {
     return useCase.call(params);
   }
+
+  void updateDoctorRatingLocally({required DoctorRatingUpdatedEvent event}) {
+    if (state.dataList.isEmpty) return;
+
+    final int index = state.dataList.indexWhere(
+          (doc) => doc.doctorId == event.doctorId,
+    );
+
+    if (index != -1) {
+      final currentList = List<DoctorEntity>.from(state.dataList);
+
+      // استبدال كائن الطبيب بنسخة محدثة من التقييم والعدد
+      currentList[index] = currentList[index].copyWith(
+        rating: event.newRating,
+        ratingCount: event.newRatingCount,
+      );
+
+      emit(state.copyWith(dataList: currentList));
+    }
+  }
+}
+
+class DoctorRatingUpdatedEvent {
+  final String doctorId;
+  final double newRating;
+  final int newRatingCount;
+
+  DoctorRatingUpdatedEvent({
+    required this.doctorId,
+    required this.newRating,
+    required this.newRatingCount,
+  });
 }

@@ -13,13 +13,13 @@ class VerifyOtpAndUpdatePasswordUseCase
 
   @override
   Future<Either<Failure, void>> call(
-    VerifyOtpAndUpdatePasswordParams email,
+    VerifyOtpAndUpdatePasswordParams params,
   ) async {
     return await authRepository.verifyOtpAndUpdatePassword(
-      email: email.email,
-      verificationId: email.verificationId,
-      smsCode: email.smsCode,
-      newPassword: email.newPassword,
+      email: params.email,
+      verificationId: params.verificationId,
+      smsCode: params.smsCode,
+      newPassword: params.newPassword,
     );
   }
 }

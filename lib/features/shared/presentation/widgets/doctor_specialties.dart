@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medora/core/constants/themes/app_text_styles.dart';
 import 'package:medora/core/extensions/list_string_extension.dart';
+import 'package:medora/core/extensions/theme_extension.dart';
 
 class DoctorSpecialties extends StatelessWidget {
   final List<String> specialties;
@@ -10,14 +11,13 @@ final double? specialtiesFontSize;
 
   @override
   Widget build(BuildContext context) {
-    final specialtiesText = specialties.buildJoin();
-
     return Text(
-      specialtiesText,
-      style: Theme.of(
-        context,
-      ).listTileTheme.subtitleTextStyle!.copyWith(fontSize:specialtiesFontSize?? 13.sp),
-      maxLines: 2,
+     // specialties.buildJoin(),
+      '${specialties[0]}',
+      style: context.textTheme.smallGreyMedium.copyWith(
+          fontSize: specialtiesFontSize,height: 1.7
+      ),
+      maxLines: 1,
       overflow: TextOverflow.ellipsis,
     );
   }

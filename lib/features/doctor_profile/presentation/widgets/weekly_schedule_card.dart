@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:medora/features/doctor_profile/presentation/widgets/section_title.dart'
+import 'package:medora/features/shared/presentation/widgets/section_title.dart'
     show SectionTitle;
 import 'package:medora/features/doctor_profile/presentation/widgets/work_hours_section.dart'
     show WorkHoursSection;

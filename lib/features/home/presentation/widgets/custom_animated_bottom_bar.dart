@@ -1,6 +1,8 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:medora/core/constants/app_strings/app_strings.dart';
 import 'package:medora/core/constants/themes/app_colors.dart';
 import 'package:medora/core/constants/themes/app_text_styles.dart';
@@ -8,8 +10,6 @@ import 'package:medora/core/extensions/theme_extension.dart';
 import 'package:medora/features/home/presentation/constants/bottom_nav_constants.dart';
 import 'package:medora/features/home/presentation/controller/cubits/bottom_nav_cubit.dart';
 import 'package:medora/features/home/presentation/controller/states/bottom_nav_state.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CustomAnimatedBottomBar extends StatelessWidget {
   final AnimationController hideAnimationController;
@@ -39,8 +39,8 @@ class CustomAnimatedBottomBar extends StatelessWidget {
             hideAnimationController: hideAnimationController,
             gapLocation: GapLocation.center,
             notchSmoothness: NotchSmoothness.defaultEdge,
-            leftCornerRadius: 32,
-            rightCornerRadius: 32,
+            leftCornerRadius: 0,
+            rightCornerRadius: 0,
           );
         },
       ),

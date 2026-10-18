@@ -4,7 +4,7 @@ import 'package:medora/core/constants/themes/app_colors.dart' show AppColors;
 
 class AppBorders {
   static const double _defaultBorderWidth = 1.2;
-  static final double _defaultRadius = 8.r;
+  static final double _defaultRadius = 12.r;
 
   static final BorderRadius defaultBorderRadius = BorderRadius.circular(
     _defaultRadius,

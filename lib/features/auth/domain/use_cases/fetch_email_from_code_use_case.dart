@@ -10,7 +10,7 @@ class FetchEmailFromCodeUseCase extends BaseUseCase<String, String> {
   FetchEmailFromCodeUseCase({required this.authRepository});
 
   @override
-  Future<Either<Failure, String>> call(String email) async {
-    return await authRepository.fetchEmailFromCode(oobCode: email);
+  Future<Either<Failure, String>> call(String params) async {
+    return await authRepository.fetchEmailFromCode(oobCode: params);
   }
 }

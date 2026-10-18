@@ -21,10 +21,9 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
   final String _userId;
 
   AppointmentRemoteDataSource({
-    required FirebaseFirestore firestore,
-    required String userId,
-  }) : _firestore = firestore,
-       _userId = userId;
+    required this._firestore,
+    required this._userId,
+  });
 
   // -------------------------------------------------------------
   // 1. PAGINATION METHODS - بنفس نمط DoctorsList
@@ -244,6 +243,8 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
         FirestoreConstants.fieldExpiresAt: Timestamp.fromDate(
           DateTime.now().add(const Duration(minutes: 12)),
         ),
+        'isReviewed': false,
+        'reviewId': null,
       };
 
       await appointmentRef.set(data);
@@ -284,6 +285,9 @@ class AppointmentRemoteDataSource extends AppointmentRemoteDataSourceBase {
         updates: updateData,
         operationName: 'confirmAppointment',
       );
+      final doctorRef = _firestore.collection('doctors').doc(doctorId);
+
+      await doctorRef.update({'patientsCount': FieldValue.increment(1)});
     } catch (e) {
       _logError('confirmAppointment', e);
       rethrow;

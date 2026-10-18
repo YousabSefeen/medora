@@ -15,8 +15,8 @@ class DoctorsListRepositoryImpl extends DoctorsListRepository {
   final DoctorsListRemoteDataSource _remoteDataSource;
 
   DoctorsListRepositoryImpl({
-    required DoctorsListRemoteDataSource remoteDataSource,
-  }) : _remoteDataSource = remoteDataSource;
+    required this._remoteDataSource,
+  });
 
   @override
   Future<Either<Failure, PaginatedDataResponse<DoctorEntity>>> getDoctorsList({

@@ -1,4 +1,5 @@
 class AppRouterNames {
+  static const String reviews = '/reviewScreen';
   static const String phoneForgotPassword = '/phoneForgotPassword';
   static const String signIn = '/sign_in';
   static const String forgetPassword = '/__/auth/action';
@@ -25,4 +26,6 @@ class AppRouterNames {
   static const String createAppointment = '/create_appointment';
   static const String specialtyDoctors = '/specialty_doctors';
   static const String testScreen = '/testScreen';
+  static const String medicalDisclaimer = '/medicalDisclaimerScreen';
+  static const String editProfile = '/editProfileScreen';
 }

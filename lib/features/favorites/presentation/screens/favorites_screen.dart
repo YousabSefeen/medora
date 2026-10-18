@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:medora/core/constants/app_strings/app_strings.dart'
-    show AppStrings;
-import 'package:medora/features/favorites/presentation/widgets/favorites_doctors_list.dart'
-    show FavoritesDoctorsList;
-import 'package:medora/features/home/presentation/widgets/home_screen_padding.dart'
-    show HomeScreenPadding;
-import 'package:medora/features/shared/presentation/widgets/page_sliver_header.dart'
-    show PageSliverHeader;
+import 'package:medora/core/constants/app_strings/app_strings.dart';
+import 'package:medora/features/favorites/presentation/widgets/favorites_doctors_list.dart';
+import 'package:medora/features/home/presentation/widgets/home_screen_padding.dart';
+
+import '../../../shared/presentation/widgets/custom_app_bar.dart';
 
 class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({super.key});
@@ -38,7 +35,10 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         physics: const BouncingScrollPhysics(),
         slivers: [
-          const PageSliverHeader(title: AppStrings.myFavoriteDoctors),
+          CustomAppBar.sliver(
+            title: AppStrings.favoriteDoctors,
+            context: context,
+          ),
           FavoritesDoctorsList(scrollController: _scrollController),
         ],
       ),

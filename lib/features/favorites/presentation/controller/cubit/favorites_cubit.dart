@@ -24,6 +24,7 @@ import 'package:medora/features/shared/presentation/controllers/cubit/base_pagin
     show BasePaginationCubit;
 
 import '../../../../../core/error/failure.dart' show Failure;
+import '../../../../doctor_list/presentation/controller/cubit/doctor_list_cubit.dart';
 
 class FavoritesCubit extends BasePaginationCubit<DoctorEntity, FavoritesState> {
   final GetFavoriteIdsUseCase getFavoriteIdsUseCase;
@@ -120,4 +121,24 @@ class FavoritesCubit extends BasePaginationCubit<DoctorEntity, FavoritesState> {
         AppDurations.milliseconds_500,
         () => _applyOptimisticUpdates(!originalIsFavorite, doctorInfo),
       );
+
+  void updateDoctorRatingLocally({required DoctorRatingUpdatedEvent event}) {
+    if (state.dataList.isEmpty) return;
+
+    final int index = state.dataList.indexWhere(
+      (doc) => doc.doctorId == event.doctorId,
+    );
+
+    if (index != -1) {
+      final currentList = List<DoctorEntity>.from(state.dataList);
+
+      // استبدال كائن الطبيب بنسخة محدثة من التقييم والعدد
+      currentList[index] = currentList[index].copyWith(
+        rating: event.newRating,
+        ratingCount: event.newRatingCount,
+      );
+
+      emit(state.copyWith(dataList: currentList));
+    }
+  }
 }

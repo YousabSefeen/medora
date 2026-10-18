@@ -55,7 +55,6 @@ class AdaptiveActionButton extends StatelessWidget {
     style: GoogleFonts.caladea(
       fontSize: 18.sp,
       fontWeight: FontWeight.w700,
-      color: Colors.white,
     ),
   );
 }

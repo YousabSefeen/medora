@@ -75,4 +75,10 @@ class AppColors {
   static const Color authContainerColor =Color(0xFF172A45);
   static const Color authErrorColor = Color(0xFFFF8A8A);
 
+  static const Color dustyBlue = Color(0xFF7A8B9B);
+  static const Color slateGray = Color(0xFF64748B); // رمادي مزرق (ممتاز للنصوص الفرعية والتفاصيل)
+  static const Color brightRed = Color(0xFFFF4D4D); // أحمر ساطع (ممتاز لحالات الخطأ، الإلغاء، أو التنبيهات)
+  static const Color steelGray = Color(0xFF8D99AE); // رمادي معدني (مناسب للأيقونات غير النشطة أو الحواف)
+  static const Color midnightBlue = Color(0xFF2C3E50); // أزرق داكن جداً (مثالي للعناوين والنصوص الأساسية)
+  static const Color ashGray = Color(0xFF6C7A89); // رمادي باهت (خيار آخر للنصوص الثانوية والوصف)
 }

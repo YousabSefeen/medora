@@ -17,12 +17,61 @@ class Assets {
 class $AssetsSvgGen {
   const $AssetsSvgGen();
 
+  final $AssetsSpecialtiesGen specialties = const $AssetsSpecialtiesGen();
   final SvgGenImage appLogo = const SvgGenImage('assets/svg/app_logo.svg');
   final SvgGenImage facebookLogo = const SvgGenImage(
     'assets/svg/facebook_logo.svg',
   );
   final SvgGenImage googleLogo = const SvgGenImage(
     'assets/svg/google_logo.svg',
+  );
+}
+
+class $AssetsSpecialtiesGen {
+  const $AssetsSpecialtiesGen();
+
+  final SvgGenImage cardiology = const SvgGenImage(
+    'assets/svg/specialties/cardiology.svg',
+  );
+  final SvgGenImage dentistry = const SvgGenImage(
+    'assets/svg/specialties/dentistry.svg',
+  );
+  final SvgGenImage dermatology = const SvgGenImage(
+    'assets/svg/specialties/dermatology.svg',
+  );
+  final SvgGenImage doctor = const SvgGenImage(
+    'assets/svg/specialties/doctor.svg',
+  );
+  final SvgGenImage endocrinology = const SvgGenImage(
+    'assets/svg/specialties/endocrinology.svg',
+  );
+  final SvgGenImage ent = const SvgGenImage('assets/svg/specialties/ent.svg');
+  final SvgGenImage internalMedicine = const SvgGenImage(
+    'assets/svg/specialties/internal_medicine.svg',
+  );
+  final SvgGenImage neurology = const SvgGenImage(
+    'assets/svg/specialties/neurology.svg',
+  );
+  final SvgGenImage obstetricsAndGynecology = const SvgGenImage(
+    'assets/svg/specialties/obstetrics_and_gynecology.svg',
+  );
+  final SvgGenImage ophthalmology = const SvgGenImage(
+    'assets/svg/specialties/ophthalmology.svg',
+  );
+  final SvgGenImage orthopedics = const SvgGenImage(
+    'assets/svg/specialties/orthopedics.svg',
+  );
+  final SvgGenImage pediatrics = const SvgGenImage(
+    'assets/svg/specialties/pediatrics.svg',
+  );
+  final SvgGenImage psychiatry = const SvgGenImage(
+    'assets/svg/specialties/psychiatry.svg',
+  );
+  final SvgGenImage pulmonology = const SvgGenImage(
+    'assets/svg/specialties/pulmonology.svg',
+  );
+  final SvgGenImage urology = const SvgGenImage(
+    'assets/svg/specialties/urology.svg',
   );
 }
 
@@ -74,58 +123,7 @@ class $AssetsImagesGen {
   );
 }
 
-class $AssetsSpecialtiesGen {
-  const $AssetsSpecialtiesGen();
 
-  final AssetGenImage cardiology = const AssetGenImage(
-    'assets/images/specialties/cardiology.png',
-  );
-  final AssetGenImage dentistry = const AssetGenImage(
-    'assets/images/specialties/dentistry.png',
-  );
-  final AssetGenImage dermatology = const AssetGenImage(
-    'assets/images/specialties/dermatology.png',
-  );
-  final AssetGenImage endocrinology = const AssetGenImage(
-    'assets/images/specialties/endocrinology.png',
-  );
-  final AssetGenImage gastroenterology = const AssetGenImage(
-    'assets/images/specialties/gastroenterology.png',
-  );
-  final AssetGenImage generalPractice = const AssetGenImage(
-    'assets/images/specialties/generalPractice.png',
-  );
-  final AssetGenImage neurology = const AssetGenImage(
-    'assets/images/specialties/neurology.png',
-  );
-  final AssetGenImage nutrition = const AssetGenImage(
-    'assets/images/specialties/nutrition.png',
-  );
-  final AssetGenImage obstetricsAndGynecology = const AssetGenImage(
-    'assets/images/specialties/obstetricsAndGynecology.png',
-  );
-  final AssetGenImage ophthalmology = const AssetGenImage(
-    'assets/images/specialties/ophthalmology.png',
-  );
-  final AssetGenImage orthopedics = const AssetGenImage(
-    'assets/images/specialties/orthopedics.png',
-  );
-  final AssetGenImage otolaryngology = const AssetGenImage(
-    'assets/images/specialties/otolaryngology.png',
-  );
-  final AssetGenImage pediatrics = const AssetGenImage(
-    'assets/images/specialties/pediatrics.png',
-  );
-  final AssetGenImage physicalTherapy = const AssetGenImage(
-    'assets/images/specialties/physicalTherapy.png',
-  );
-  final AssetGenImage psychiatry = const AssetGenImage(
-    'assets/images/specialties/psychiatry.png',
-  );
-  final AssetGenImage urology = const AssetGenImage(
-    'assets/images/specialties/urology.png',
-  );
-}
 
 class $AssetsLottieGen {
   const $AssetsLottieGen();

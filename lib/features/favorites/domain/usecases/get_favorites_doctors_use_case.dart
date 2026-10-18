@@ -18,10 +18,10 @@ class GetFavoritesDoctorsUseCase extends BasePaginationUseCase<DoctorEntity> {
 
   @override
   Future<Either<Failure, PaginatedDataResponse<DoctorEntity>>> call(
-    PaginationParameters email,
+    PaginationParameters params,
   ) async {
     return await favoritesRepository.getFavoritesDoctors(
-      parameters: email,
+      parameters: params,
     );
   }
 }

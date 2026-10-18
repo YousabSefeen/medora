@@ -23,7 +23,8 @@ class ClientAppointmentsModel {
   final String appointmentStatus;
 
   final DoctorModel doctorModel;
-
+  final bool isReviewed;
+  final String? reviewId;
   ClientAppointmentsModel({
     required this.appointmentId,
     required this.clientId,
@@ -36,6 +37,8 @@ class ClientAppointmentsModel {
     required this.appointmentTime,
     required this.appointmentStatus,
     required this.doctorModel,
+    required this.isReviewed,
+    this.reviewId,
   });
 
   factory ClientAppointmentsModel.fromJson(Map<String, dynamic> json) =>
@@ -56,6 +59,8 @@ class ClientAppointmentsModel {
       appointmentTime: appointmentTime,
       appointmentStatus: appointmentStatus,
       doctorEntity: doctorModel.toEntity(),
+      isReviewed: isReviewed,
+      reviewId: reviewId,
     );
   }
 
@@ -73,6 +78,8 @@ class ClientAppointmentsModel {
       appointmentStatus: entity.appointmentStatus,
 
       doctorModel: DoctorModel.fromEntity(entity.doctorEntity),
+      isReviewed: entity.isReviewed,
+      reviewId: entity.reviewId,
     );
   }
 }

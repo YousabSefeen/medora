@@ -5,7 +5,7 @@ import '../error/failure.dart' show Failure;
 
 // Base interface for Use Cases
 abstract class BaseUseCase<T, Params> {
-  Future<Either<Failure, T>> call(Params email);
+  Future<Either<Failure, T>> call(Params params);
 }
 
 // Base interface for Stream-based Use Cases

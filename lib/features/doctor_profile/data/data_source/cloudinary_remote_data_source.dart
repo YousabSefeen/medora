@@ -1,7 +1,8 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:medora/core/constants/keys/app_keys.dart' show AppKeys;
+import 'package:medora/core/constants/keys/app_keys.dart';
+import 'package:medora/core/services/logger_service.dart';
 
 class CloudinaryRemoteDataSource {
   final Dio _dio;
@@ -32,6 +33,9 @@ class CloudinaryRemoteDataSource {
       final response = await _dio.post(url, data: formData);
 
       if (response.statusCode == 200 && response.data != null) {
+        AppLogger.warning('Success');
+
+        // secure_url will directly contain the image link after automatic cropping and background removal.
         return response.data['secure_url'] as String;
       }
 
@@ -41,7 +45,8 @@ class CloudinaryRemoteDataSource {
         message: 'Failed to upload image to Cloudinary',
       );
     } catch (e) {
-      rethrow; // نترك إدارة الأخطاء للـ Repository لتحويلها لـ Failure
+      AppLogger.error('CloudinaryRemoteDataSource/uploadImage  $e');
+      rethrow;
     }
   }
 }

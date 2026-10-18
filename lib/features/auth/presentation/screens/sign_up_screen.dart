@@ -23,6 +23,9 @@ import 'package:medora/features/auth/presentation/widgets/obscure_text_visibilit
 import 'package:medora/features/auth/presentation/widgets/sign_up_header.dart';
 import 'package:medora/features/shared/presentation/widgets/custom_circular_progress.dart';
 
+import '../../../user/domain/value_objects/add_user_params.dart';
+import '../../../user/presentation/controllers/cubit/user_cubit.dart';
+
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
@@ -38,10 +41,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   );
   final ValueNotifier<bool> _obscureConfirmPasswordNotifier =
       ValueNotifier<bool>(true);
-  AutovalidateMode _autoValidateMode = AutovalidateMode.disabled;
 
+  AutovalidateMode _autoValidateMode = AutovalidateMode.disabled;
+  AuthProviderType _authProviderType = AuthProviderType.email;
   @override
   void initState() {
+    // _authProviderType=AuthProviderType.email;
     _signUpControllers = RegisterControllers();
 
     super.initState();
@@ -145,6 +150,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   suffixIcon: ObscureTextVisibilityButton(
                                     isObscured: obscureText,
                                     onTap: _toggleConfirmPasswordVisibility,
+
                                   ),
                                 ),
                           ),
@@ -167,16 +173,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           const SizedBox(height: 24),
                           AuthFooter(
                             isSignInScreen: false,
-                            onGoogleSignIn: () => _signUp(
-                              params: const SignUpParams(
-                                providerType: AuthProviderType.google,
+                            onGoogleSignIn: () {
+                              _authProviderType = AuthProviderType.google;
+                              _signUp(
+                                params: SignUpParams(
+                                  providerType: _authProviderType,
                               ),
-                            ),
-                            onFacebookSignIn: () => _signUp(
-                              params: const SignUpParams(
-                                providerType: AuthProviderType.facebook,
+                              );
+                            },
+                            onFacebookSignIn: () {
+                              _authProviderType = AuthProviderType.facebook;
+                              _signUp(
+                                params: SignUpParams(
+                                  providerType: _authProviderType,
                               ),
-                            ),
+                              );
+                            },
 
                             onNavigateToSignIn: () => context.pop(),
                           ),
@@ -207,15 +219,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
           !_obscureConfirmPasswordNotifier.value;
 
   void _submitForm() {
+    _authProviderType = AuthProviderType.email;
     FocusManager.instance.primaryFocus?.unfocus();
+    if (_autoValidateMode == AutovalidateMode.disabled) {
+      setState(() {
+        _autoValidateMode = AutovalidateMode.always;
+      });
+    }
 
-    setState(() {
-      _autoValidateMode = AutovalidateMode.always;
-    });
     if (_signUpControllers.formKey.currentState!.validate()) {
       final params = SignUpParams(
-        name: _signUpControllers.userNameController.text.trim(),
-        phone: _signUpControllers.phoneController.text.trim(),
+
         email: _signUpControllers.emailController.text.trim(),
         password: _signUpControllers.passwordController.text.trim(),
         providerType: AuthProviderType.email,
@@ -224,17 +238,37 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
-  void _signUp({required SignUpParams params}) =>
-      context.read<AuthCubit>().signUp(params: params);
+  void _signUp({required SignUpParams params}) {
+    context.read<AuthCubit>().signUp(params: params);
+  }
 
   bool _listenWhen(AuthState previous, AuthState current) =>
       current is AuthLoading ||
       current is AuthSuccess ||
       current is AuthFailure;
 
-  void _handleSignUpListenerStates(BuildContext context, AuthState state) {
+  void _handleSignUpListenerStates(BuildContext context,
+      AuthState state) async {
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
     if (state is AuthSuccess) {
+      if (_authProviderType == AuthProviderType.email) {
+        await context.read<UserCubit>().addUser(params: AddUserParams(
+
+          authProviderType: _authProviderType,
+          name: _signUpControllers.userNameController.text.trim(),
+          imageUrl: AppStrings.defaultUserImageUrl,
+          phone: _signUpControllers.phoneController.text.trim(),
+          email: _signUpControllers.emailController.text.trim(),
+        ));
+      } else {
+        await context.read<UserCubit>().addUser(params: AddUserParams(
+
+          authProviderType: _authProviderType,
+
+        ));
+      }
+
+      if (!context.mounted) return;
       context.go(AppRouterNames.bottomNav);
     } else if (state is AuthFailure) {
       if (state.errorMessage == AppStrings.emailAlreadyInUseError) {
